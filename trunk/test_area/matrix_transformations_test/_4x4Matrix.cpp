@@ -1,16 +1,19 @@
 #include "numeric_types.h"
+#include "_4x4Matrix.h"
+
 #include <cstdio>
+#include <cstdlib>
 
 _4x4Matrix::_4x4Matrix()
 {
   // Create 4 rows of 4 elements in a row in memory
-  m_data = (sfloat32*)calloc( 16, sizeof(sfloat32) )
+  m_data = (sfloat32*)calloc( 16, sizeof(sfloat32) );
 }
 
 _4x4Matrix::_4x4Matrix( const _4x4Matrix& M )
 {
   // Create 4 rows of 4 elements in a row in memory
-  m_data = (sfloat32*)calloc( 16, sizeof(sfloat32) )
+  m_data = (sfloat32*)calloc( 16, sizeof(sfloat32) );
   
   m_data[0]  = M.m_data[0];
   m_data[1]  = M.m_data[1];
@@ -55,7 +58,7 @@ void _4x4Matrix::set_all( const sfloat32& F )
 _4x4Matrix& _4x4Matrix::operator=( const _4x4Matrix& M )
 {
   // Check for assignment against self
-  if ( this == &rhs )
+  if ( this == &M )
     return *this;
   
   m_data[0]  = M.m_data[0];
@@ -215,16 +218,16 @@ void _4x4Matrix::scale( _4x4Matrix& M, const sfloat32& F )
 }
 
 void _4x4Matrix::print() const
-{
-  for ( uint8 i = 0; i < 4; i++ )
+{  
+  for ( uint8 i = 0; i < 16; i++ )
   {
-    for ( uint8 j = 0; j < 4; j++ )
-    {
-      printf( "%6.2f", m_data[i+j] );
-    }
+    printf( "% 10.3f ", m_data[i] );
     
-    printf( "\n" );
-  }    
+    if ( (i+1) % 4 == 0 )
+      printf( "\n" );
+  }  
+
+  printf( "\n" );
 
   return;
 }

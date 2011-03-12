@@ -8,6 +8,9 @@
 /// @auth Gary Steelman
 ////////////////////////////////////////////////////////////////////////////////
 
+#ifndef NUMERIC_TYPES_H
+#define NUMERIC_TYPES_H
+
 #include <climits>
 #include <cfloat>
 
@@ -113,5 +116,7 @@
 #define SFLOAT32_MIN  FLT_MIN
 #define SFLOAT64_MIN  DBL_MIN
 #define SDOUBLE64_MIN DBL_MIN
+
+#endif
 
 // END OF FILE -----------------------------------------------------------------
