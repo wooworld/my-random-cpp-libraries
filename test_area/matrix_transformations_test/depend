@@ -1,2 +1,2 @@
-_4x4Matrix.o: _4x4Matrix.cpp numeric_types.h _4x4Matrix.h
-driver.o: driver.cpp numeric_types.h _4x4Matrix.h
+_4x4Matrix.o: _4x4Matrix.cpp ../../lib/numeric_types.h _4x4Matrix.h
+driver.o: driver.cpp ../../lib/numeric_types.h _4x4Matrix.h

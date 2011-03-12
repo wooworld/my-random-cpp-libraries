@@ -1,7 +1,7 @@
 #ifndef _4X4MATRIX_H
 #define _4X4MATRIX_H
 
-#include "numeric_types.h"
+#include "../../lib/numeric_types.h"
 
 class _4x4Matrix
 {
