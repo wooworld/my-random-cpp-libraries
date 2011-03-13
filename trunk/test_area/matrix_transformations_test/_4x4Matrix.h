@@ -15,6 +15,7 @@ class _4x4Matrix
     _4x4Matrix  operator*(  const _4x4Matrix& M );
     _4x4Matrix  operator+(  const _4x4Matrix& M );
     _4x4Matrix  operator-(  const _4x4Matrix& M );
+    _4x4Matrix  operator!();
  
     const sfloat32& operator[]( const uint32& i ) const;
           sfloat32& operator[]( const uint32& i );
@@ -23,7 +24,7 @@ class _4x4Matrix
     
     void print() const;  
   
-  private:
+  protected:
     sfloat32 *m_data;
 };
 
