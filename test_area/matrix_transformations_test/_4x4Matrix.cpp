@@ -182,6 +182,30 @@ _4x4Matrix _4x4Matrix::operator-( const _4x4Matrix& M )
   return Temp;
 }
 
+_4x4Matrix _4x4Matrix::operator!()
+{
+  _4x4Matrix Temp;
+  
+  // Temp[0] = m_data[0];
+  Temp[1]  = m_data[4];
+  Temp[2]  = m_data[8];
+  Temp[3]  = m_data[12];
+  Temp[4]  = m_data[1];
+  // Temp[5] = m_data[5];
+  Temp[6]  = m_data[9];
+  Temp[7]  = m_data[13];
+  Temp[8]  = m_data[2];
+  Temp[9]  = m_data[6];
+  // Temp[10] = m_data[10];
+  Temp[11] = m_data[14];
+  Temp[12] = m_data[3];
+  Temp[13] = m_data[7];
+  Temp[14] = m_data[11];
+  // Temp[15] = m_data[15];  
+  
+  return Temp;
+}
+
 const sfloat32& _4x4Matrix::operator[]( const uint32& i ) const
 {
   // Assumes i = [0,15] 
