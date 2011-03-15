@@ -1,7 +1,4 @@
-#include "../../lib/numeric_types.h"
 #include "_4x4Matrix_Identity.h"
-
-#include <cstdlib>
 
 _4x4Matrix_Identity::_4x4Matrix_Identity()
 {

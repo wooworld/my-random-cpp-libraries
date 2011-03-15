@@ -2,16 +2,19 @@
 #define _3DFRAME_H
 
 #include "../../lib/numeric_types.h"
+#include "../../lib/numeric_constants.h"
 #include "_4x4Matrix.h"
 #include "_3x3Matrix.h"
-#include "_3x3Matrix_Arbitrary_Rotation.h"
-
+#include "_4x4Matrix_Arbitrary_Rotation.h"
+#include "_4x4Matrix_Euler_Rotation.h"
+#include <cstdio>
 
 class _3DFrame
 {
   public:
     _3DFrame();
     _3DFrame( const _3DFrame& F );
+    ~_3DFrame();
     
     _3DFrame&   operator=( const _3DFrame& F );
     _3DFrame    operator*( const _3DFrame& F );
@@ -34,9 +37,11 @@ class _3DFrame
     // void trans_z_world( const sfloat32& z );
     
                                // rotate x, rotate y, rotate z
-    // void rot_curr_rad( const sfloat32& phi, const sfloat32& psi, const sfloat32& theta );
-    void rot_curr_rad( const sfloat32& alpha, const sfloat32& beta, const sfloat32& gamma );
-    void rot_curr_deg( const sfloat32& phi, const sfloat32& psi, const sfloat32& theta );
+    void arb_rot_curr_rad( const sfloat32& alpha, const sfloat32& beta, const sfloat32& gamma );
+    void arb_rot_curr_deg( const sfloat32& alpha, const sfloat32& beta, const sfloat32& gamma );
+                               // rotate z, rotate y, rotate z
+    void euler_rot_curr_rad( const sfloat32& phi, const sfloat32& theta, const sfloat32& psi );
+    void euler_rot_curr_deg( const sfloat32& phi, const sfloat32& theta, const sfloat32& psi );
     
     void print();
     void print_frame();

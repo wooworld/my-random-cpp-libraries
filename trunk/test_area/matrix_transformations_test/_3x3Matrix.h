@@ -2,6 +2,9 @@
 #define _3X3MATRIX_H
 
 #include "../../lib/numeric_types.h"
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 class _3x3Matrix
 {

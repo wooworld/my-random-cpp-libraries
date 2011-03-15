@@ -1,8 +1,4 @@
-#include "../../lib/numeric_types.h"
 #include "_4x4Matrix.h"
-
-#include <cstdio>
-#include <cstdlib>
 
 _4x4Matrix::_4x4Matrix()
 {
@@ -12,25 +8,8 @@ _4x4Matrix::_4x4Matrix()
 
 _4x4Matrix::_4x4Matrix( const _4x4Matrix& M )
 {
-  // Create 4 rows of 4 elements in a row in memory
   m_data = (sfloat32*)calloc( 16, sizeof(sfloat32) );
-  
-  m_data[0]  = M.m_data[0];
-  m_data[1]  = M.m_data[1];
-  m_data[2]  = M.m_data[2];
-  m_data[3]  = M.m_data[3];
-  m_data[4]  = M.m_data[4];
-  m_data[5]  = M.m_data[5];
-  m_data[6]  = M.m_data[6];
-  m_data[7]  = M.m_data[7];
-  m_data[8]  = M.m_data[8];
-  m_data[9]  = M.m_data[9];
-  m_data[10] = M.m_data[10];
-  m_data[11] = M.m_data[11];
-  m_data[12] = M.m_data[12];
-  m_data[13] = M.m_data[13];
-  m_data[14] = M.m_data[14];
-  m_data[15] = M.m_data[15];
+  memcpy( m_data, M.m_data, 16 * sizeof(sfloat32) );
 }
 
 void _4x4Matrix::set_all( const sfloat32& F )
@@ -61,22 +40,7 @@ _4x4Matrix& _4x4Matrix::operator=( const _4x4Matrix& M )
   if ( this == &M )
     return *this;
   
-  m_data[0]  = M.m_data[0];
-  m_data[1]  = M.m_data[1];
-  m_data[2]  = M.m_data[2];
-  m_data[3]  = M.m_data[3];
-  m_data[4]  = M.m_data[4];
-  m_data[5]  = M.m_data[5];
-  m_data[6]  = M.m_data[6];
-  m_data[7]  = M.m_data[7];
-  m_data[8]  = M.m_data[8];
-  m_data[9]  = M.m_data[9];
-  m_data[10] = M.m_data[10];
-  m_data[11] = M.m_data[11];
-  m_data[12] = M.m_data[12];
-  m_data[13] = M.m_data[13];
-  m_data[14] = M.m_data[14];
-  m_data[15] = M.m_data[15];
+  memcpy( m_data, M.m_data, 16 * sizeof(sfloat32) );
   
   return *this;
 }
