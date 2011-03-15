@@ -1,29 +1,15 @@
-#include "../../lib/numeric_types.h"
 #include "_3x3Matrix.h"
-
-#include <cstdio>
-#include <cstdlib>
 
 _3x3Matrix::_3x3Matrix()
 {
-  // Create 4 rows of 4 elements in a row in memory
+  // Create 3 rows of 3 elements in a row in memory
   m_data = (sfloat32*)calloc( 9, sizeof(sfloat32) );
 }
 
 _3x3Matrix::_3x3Matrix( const _3x3Matrix& M )
 {
-  // Create 4 rows of 4 elements in a row in memory
   m_data = (sfloat32*)calloc( 9, sizeof(sfloat32) );
-  
-  m_data[0] = M.m_data[0];
-  m_data[1] = M.m_data[1];
-  m_data[2] = M.m_data[2];
-  m_data[3] = M.m_data[3];
-  m_data[4] = M.m_data[4];
-  m_data[5] = M.m_data[5];
-  m_data[6] = M.m_data[6];
-  m_data[7] = M.m_data[7];
-  m_data[8] = M.m_data[8];
+  memcpy( m_data, M.m_data, 9 * sizeof(sfloat32) );
 }
 
 void _3x3Matrix::set_all( const sfloat32& F )
@@ -47,15 +33,7 @@ _3x3Matrix& _3x3Matrix::operator=( const _3x3Matrix& M )
   if ( this == &M )
     return *this;
   
-  m_data[0] = M.m_data[0];
-  m_data[1] = M.m_data[1];
-  m_data[2] = M.m_data[2];
-  m_data[3] = M.m_data[3];
-  m_data[4] = M.m_data[4];
-  m_data[5] = M.m_data[5];
-  m_data[6] = M.m_data[6];
-  m_data[7] = M.m_data[7];
-  m_data[8] = M.m_data[8];
+  memcpy( m_data, M.m_data, 9 * sizeof(sfloat32) );
   
   return *this;
 }

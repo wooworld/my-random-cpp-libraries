@@ -2,6 +2,10 @@
 #define _4X4MATRIX_H
 
 #include "../../lib/numeric_types.h"
+#include "../../lib/numeric_types.h"
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
 
 class _4x4Matrix
 {

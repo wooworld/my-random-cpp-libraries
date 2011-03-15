@@ -1,15 +1,7 @@
-#include "../../lib/numeric_types.h"
-#include "../../lib/numeric_constants.h"
 #include "_3DFrame.h"
-// #include "_3DFrame_Aribitrary_Rotation.h"
-// #include "_3x3Matrix.h"
-
-#include <cstdio>
-#include <cstdlib>
 
 _3DFrame::_3DFrame()
 {
-  // Create 4 rows of 4 elements in a row in memory
   m_trans = (sfloat32*)calloc( 3, sizeof(sfloat32) );
   
   m_frame[0]  = 1.0;
@@ -20,27 +12,16 @@ _3DFrame::_3DFrame()
 
 _3DFrame::_3DFrame( const _3DFrame& M )
 {
-  // Create 4 rows of 4 elements in a row in memory
   m_trans = (sfloat32*)calloc( 3, sizeof(sfloat32) );
+  memcpy( m_trans, M.m_trans, 3 * sizeof(sfloat32) );
   
-  m_frame[0]  = M.m_frame[0];
-  m_frame[1]  = M.m_frame[1];
-  m_frame[2]  = M.m_frame[2];
-  m_frame[3]  = M.m_frame[3];
-  m_frame[4]  = M.m_frame[4];
-  m_frame[5]  = M.m_frame[5];
-  m_frame[6]  = M.m_frame[6];
-  m_frame[7]  = M.m_frame[7];
-  m_frame[8]  = M.m_frame[8];
-  m_frame[9]  = M.m_frame[9];
-  m_frame[10] = M.m_frame[10];
-  m_frame[11] = M.m_frame[11];
-  
-  // Ensure the last row doesn't somehow get set to non-standard values
-  m_frame[12] = 0.0;
-  m_frame[13] = 0.0;
-  m_frame[14] = 0.0;
-  m_frame[15] = 1.0;
+  m_frame = M.m_frame;
+  m_rot   = M.m_rot;
+}
+
+_3DFrame::~_3DFrame()
+{
+
 }
 
 _3DFrame& _3DFrame::operator=( const _3DFrame& M )
@@ -49,24 +30,9 @@ _3DFrame& _3DFrame::operator=( const _3DFrame& M )
   if ( this == &M )
     return *this;
   
-  m_frame[0]  = M.m_frame[0];
-  m_frame[1]  = M.m_frame[1];
-  m_frame[2]  = M.m_frame[2];
-  m_frame[3]  = M.m_frame[3];
-  m_frame[4]  = M.m_frame[4];
-  m_frame[5]  = M.m_frame[5];
-  m_frame[6]  = M.m_frame[6];
-  m_frame[7]  = M.m_frame[7];
-  m_frame[8]  = M.m_frame[8];
-  m_frame[9]  = M.m_frame[9];
-  m_frame[10] = M.m_frame[10];
-  m_frame[11] = M.m_frame[11];
-  
-  // Ensure the last row doesn't somehow get set to non-standard values
-  m_frame[12] = 0.0;
-  m_frame[13] = 0.0;
-  m_frame[14] = 0.0;
-  m_frame[15] = 1.0;
+  m_frame = M.m_frame;
+  m_rot   = M.m_rot;
+  memcpy( m_trans, M.m_trans, 3 * sizeof(sfloat32) );
   
   return *this;
 }
@@ -123,24 +89,13 @@ void _3DFrame::set_rotation_matrix( const _3x3Matrix& M )
 
 void _3DFrame::set_translation_vector( const sfloat32 *F )
 {
-  
+  memcpy( m_trans, F, 3 * sizeof(sfloat32) );
 
   return;
 }
 
 void _3DFrame::trans_curr( const sfloat32& a, const sfloat32& b, const sfloat32& c )
 {
-  // sfloat32 temp_x;
-  // sfloat32 temp_y;
-  // sfloat32 temp_z;
-  
-  // temp_x = m_frame[0]*a + m_frame[1]*b  + m_frame[2]*c  + m_frame[3];
-  // temp_y = m_frame[4]*a + m_frame[5]*b  + m_frame[6]*c  + m_frame[7];
-  // temp_z = m_frame[8]*a + m_frame[9]*b  + m_frame[10]*c + m_frame[11];
-  
-  // m_frame[3]  = temp_x;
-  // m_frame[7]  = temp_y;
-  // m_frame[11] = temp_z;
   m_frame[3]  += (m_frame[0]*a + m_frame[1]*b + m_frame[2]*c);
   m_frame[7]  += (m_frame[4]*a + m_frame[5]*b + m_frame[6]*c);
   m_frame[11] += (m_frame[8]*a + m_frame[9]*b + m_frame[10]*c);
@@ -175,20 +130,38 @@ void _3DFrame::trans_z_curr( const sfloat32& c )
   return;
 }
 
-void _3DFrame::rot_curr_rad( const sfloat32& alpha, const sfloat32& beta, const sfloat32& gamma )
+void _3DFrame::arb_rot_curr_rad( const sfloat32& alpha, const sfloat32& beta, const sfloat32& gamma )
 {
-  _3x3Matrix_Arbitrary_Rotation R( alpha, beta, gamma );
+  _4x4Matrix_Arbitrary_Rotation R( alpha, beta, gamma );
 
-  set_rotation_matrix( get_rotation_matrix() * R );
+  m_frame = m_frame * R;
 
   return;
 }
 
-void _3DFrame::rot_curr_deg( const sfloat32& alpha, const sfloat32& beta, const sfloat32& gamma )
+void _3DFrame::arb_rot_curr_deg( const sfloat32& alpha, const sfloat32& beta, const sfloat32& gamma )
 {
-  _3x3Matrix_Arbitrary_Rotation R( alpha*_RAD_PER_DEG, beta*_RAD_PER_DEG, gamma*_RAD_PER_DEG );
+  _4x4Matrix_Arbitrary_Rotation R( alpha*_RAD_PER_DEG, beta*_RAD_PER_DEG, gamma*_RAD_PER_DEG );
 
-  set_rotation_matrix( get_rotation_matrix() * R );
+  m_frame = m_frame * R;
+
+  return;
+}
+
+void _3DFrame::euler_rot_curr_rad( const sfloat32& phi, const sfloat32& theta, const sfloat32& psi )
+{
+  _4x4Matrix_Euler_Rotation R( phi, theta, psi );
+
+  m_frame = m_frame * R;
+
+  return;
+}
+
+void _3DFrame::euler_rot_curr_deg( const sfloat32& phi, const sfloat32& theta, const sfloat32& psi )
+{
+  _4x4Matrix_Euler_Rotation R( phi*_RAD_PER_DEG, theta*_RAD_PER_DEG, psi*_RAD_PER_DEG );
+
+  m_frame = m_frame * R;
 
   return;
 }
