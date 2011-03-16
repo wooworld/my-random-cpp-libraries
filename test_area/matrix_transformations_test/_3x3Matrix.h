@@ -16,7 +16,9 @@ class _3x3Matrix
     
     _3x3Matrix& operator=(  const _3x3Matrix& M );
     _3x3Matrix  operator*(  const _3x3Matrix& M );
+    _3x3Matrix& operator*=( const _3x3Matrix& M );
     _3x3Matrix  operator+(  const _3x3Matrix& M );
+    _3x3Matrix& operator+=( const _3x3Matrix& M );
     _3x3Matrix  operator-(  const _3x3Matrix& M );
     _3x3Matrix  operator!();
  

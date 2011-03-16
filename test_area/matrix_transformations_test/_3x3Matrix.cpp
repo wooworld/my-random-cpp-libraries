@@ -55,24 +55,24 @@ _3x3Matrix _3x3Matrix::operator*( const _3x3Matrix& M )
   return Temp;
 }
 
-// _3x3Matrix& _3x3Matrix::operator*=( const _3x3Matrix& M )
-// {
-  // _3x3Matrix Temp;
+_3x3Matrix& _3x3Matrix::operator*=( const _3x3Matrix& M )
+{
+  _3x3Matrix Temp;
 
-  // Temp[0] = m_data[0]*M.m_data[0] + m_data[1]*M.m_data[3] + m_data[2]*M.m_data[6];
-  // Temp[1] = m_data[0]*M.m_data[1] + m_data[1]*M.m_data[4] + m_data[2]*M.m_data[7];
-  // Temp[2] = m_data[0]*M.m_data[2] + m_data[1]*M.m_data[5] + m_data[2]*M.m_data[8];
-  // Temp[3] = m_data[3]*M.m_data[0] + m_data[4]*M.m_data[3] + m_data[5]*M.m_data[6];
-  // Temp[4] = m_data[3]*M.m_data[1] + m_data[4]*M.m_data[4] + m_data[5]*M.m_data[7];
-  // Temp[5] = m_data[3]*M.m_data[2] + m_data[4]*M.m_data[5] + m_data[5]*M.m_data[8];
-  // Temp[6] = m_data[6]*M.m_data[0] + m_data[7]*M.m_data[3] + m_data[8]*M.m_data[6];
-  // Temp[7] = m_data[6]*M.m_data[1] + m_data[7]*M.m_data[4] + m_data[8]*M.m_data[7];
-  // Temp[6] = m_data[6]*M.m_data[2] + m_data[7]*M.m_data[5] + m_data[8]*M.m_data[8];
+  Temp[0] = m_data[0]*M.m_data[0] + m_data[1]*M.m_data[3] + m_data[2]*M.m_data[6];
+  Temp[1] = m_data[0]*M.m_data[1] + m_data[1]*M.m_data[4] + m_data[2]*M.m_data[7];
+  Temp[2] = m_data[0]*M.m_data[2] + m_data[1]*M.m_data[5] + m_data[2]*M.m_data[8];
+  Temp[3] = m_data[3]*M.m_data[0] + m_data[4]*M.m_data[3] + m_data[5]*M.m_data[6];
+  Temp[4] = m_data[3]*M.m_data[1] + m_data[4]*M.m_data[4] + m_data[5]*M.m_data[7];
+  Temp[5] = m_data[3]*M.m_data[2] + m_data[4]*M.m_data[5] + m_data[5]*M.m_data[8];
+  Temp[6] = m_data[6]*M.m_data[0] + m_data[7]*M.m_data[3] + m_data[8]*M.m_data[6];
+  Temp[7] = m_data[6]*M.m_data[1] + m_data[7]*M.m_data[4] + m_data[8]*M.m_data[7];
+  Temp[6] = m_data[6]*M.m_data[2] + m_data[7]*M.m_data[5] + m_data[8]*M.m_data[8];
   
-  // *this = Temp;
+  *this = Temp;
   
-  // return *this;
-// }
+  return *this;
+}
 
 _3x3Matrix _3x3Matrix::operator+( const _3x3Matrix& M )
 {
@@ -89,6 +89,21 @@ _3x3Matrix _3x3Matrix::operator+( const _3x3Matrix& M )
   Temp[8] = m_data[8] + M.m_data[8];
   
   return Temp;
+}
+
+_3x3Matrix _3x3Matrix::operator+=( const _3x3Matrix& M )
+{  
+  m_data[0] += M.m_data[0];
+  m_data[1] += M.m_data[1];
+  m_data[2] += M.m_data[2];
+  m_data[3] += M.m_data[3];
+  m_data[4] += M.m_data[4];
+  m_data[5] += M.m_data[5];
+  m_data[6] += M.m_data[6];
+  m_data[7] += M.m_data[7];
+  m_data[8] += M.m_data[8];
+  
+  return *this;
 }
 
 _3x3Matrix _3x3Matrix::operator-( const _3x3Matrix& M )
@@ -108,6 +123,22 @@ _3x3Matrix _3x3Matrix::operator-( const _3x3Matrix& M )
   return Temp;
 }
 
+_3x3Matrix _3x3Matrix::operator-( const _3x3Matrix& M )
+{
+  m_data[0] -= M.m_data[0];
+  m_data[1] -= M.m_data[1];
+  m_data[2] -= M.m_data[2];
+  m_data[3] -= M.m_data[3];
+  m_data[4] -= M.m_data[4];
+  m_data[5] -= M.m_data[5];
+  m_data[6] -= M.m_data[6];
+  m_data[7] -= M.m_data[7];
+  m_data[8] -= M.m_data[8];
+  
+  return *this;
+}
+
+// Transpose
 _3x3Matrix _3x3Matrix::operator!()
 {
   _3x3Matrix Temp;
@@ -127,8 +158,6 @@ _3x3Matrix _3x3Matrix::operator!()
 
 const sfloat32& _3x3Matrix::operator[]( const uint32& i ) const
 {
-  // Assumes i = [0,15] 
-  // Could do an if ( i > 15 ) check, but it's slower
   return m_data[i];
 }
 
@@ -140,15 +169,15 @@ sfloat32& _3x3Matrix::operator[]( const uint32& i )
 void _3x3Matrix::scale( _3x3Matrix& M, const sfloat32& F )
 {
   // Doesn't protect against overflow
-  m_data[0] *= F;
-  m_data[1] *= F;
-  m_data[2] *= F;
-  m_data[3] *= F;
-  m_data[4] *= F;
-  m_data[5] *= F;
-  m_data[6] *= F;
-  m_data[7] *= F;
-  m_data[8] *= F;
+  M.m_data[0] *= F;
+  M.m_data[1] *= F;
+  M.m_data[2] *= F;
+  M.m_data[3] *= F;
+  M.m_data[4] *= F;
+  M.m_data[5] *= F;
+  M.m_data[6] *= F;
+  M.m_data[7] *= F;
+  M.m_data[8] *= F;
   
   return;
 }
@@ -161,7 +190,7 @@ void _3x3Matrix::print() const
     
     if ( (i+1) % 3 == 0 )
       printf( "\n" );
-  }  
+  }
 
   printf( "\n" );
 

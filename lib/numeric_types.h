@@ -1,5 +1,4 @@
 // BEGINNING OF FILE -----------------------------------------------------------
-
 ////////////////////////////////////////////////////////////////////////////////
 /// @file numeric_types.h
 /// @desc Defines custom numeric types for primitive numbers for clarity of 
