@@ -3,11 +3,13 @@
 
 #include "../../lib/numeric_types.h"
 #include "../../lib/numeric_constants.h"
-#include "_4x4Matrix.h"
+// #include "_4x4Matrix.h"
 #include "_3x3Matrix.h"
-#include "_4x4Matrix_Arbitrary_Rotation.h"
-#include "_4x4Matrix_Euler_Rotation.h"
+#include "_3DPoint.h"
+// #include "_4x4Matrix_Arbitrary_Rotation.h"
+// #include "_4x4Matrix_Euler_Rotation.h"
 #include <cstdio>
+
 
 class _3DFrame
 {
@@ -49,9 +51,8 @@ class _3DFrame
     void print_trans();
     
   protected:
-    _4x4Matrix m_frame;
     _3x3Matrix m_rot;
-    sfloat32 * m_trans;
+    _3Dpoint   m_loc;
 };
 
 #endif
