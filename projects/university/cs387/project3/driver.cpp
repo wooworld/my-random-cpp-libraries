@@ -1,40 +1,40 @@
 /*
-  @file prime_sieve.cpp
+  @file bitonic_sort.cpp
   @desc A simple parallel implementation of the bitonic sort algorithm. 
         This can be used to sort arrays of numbers quickly.
   @auth Gary Steelman
-  @date 17 Mar 2011
+  @date 08 Mar 2011
   @note This program utilizes the MPI parallel library on a 64-bit cluster.
 */
 
 // My libraries
-#include "../../../../lib/numeric_types.h"
+// #include "../../../../lib/numeric_types.h"
 
 // STL libraries
 #include <iostream>
+#include <fstream>
 #include <cmath>
-#include <vector>
+#include <bitset>
+#include <string>
+#include <cstdlib>
+#include <ctime>
 
 // MPI library for parallel computation
 #include <mpi.h>
 
 // Global constants for readability and maintainability
-#define _MASTER_ID           0         // Master ID
-#define _PRIME               0         // Mark numbers as 0 if they are prime
-#define _NONPRIME            1         // Mark numbers as 1 if they are nonprime
-#define _GET_PRIMES_AFTER_ME 1000000   // Output a list of primes after this number
-#define _LIST_NUM_PRIMES     20        // Output this many primes
+#define _MASTER_ID 0         // Master ID
 
 using namespace std;
 
-/*******************************************************************************
-PRE-DECLARATIONS
-*******************************************************************************/
+/***
+  PRE-DECLARATIONS
+***/
 void driver( int argc, char* argv[] );
 
-/*******************************************************************************
-MAIN
-*******************************************************************************/
+/***
+  MAIN
+***/
 int main( int argc, char * argv[] )
 {
   driver( argc, argv );
@@ -42,42 +42,49 @@ int main( int argc, char * argv[] )
   return 0;
 }
 
-/*******************************************************************************
-  @fn void driver( int argc, char* argv[] )
+/*
+  @fn    void driver( int argc, char* argv[] )
   @brief The driver for this program.
-  @pre argv[1] contains a number representing the upper bound to search to
+  @pre   argv[1] contains a number of random numbers to generate and sort or an
+          input file
   @param int argc - The number of arguments used on the command line.
   @param char* argv[] -- The arguments used on the command line.
           [0] -- Executable Name
-          [1] -- Number for the upper bound for searching to
+          [1] -- 0 if parameter [2] is a number
+                 1 if parameter [2] is an input file
+          [2] -- A number (ie 500000) of random numbers for the program to 
+                 generate and then sort. This number must be divisible by 2.
+                 OR a filename (ie "input.txt") containing one number per line
+                 which is a list of numbers to sort.
   @post Performs the operations for this program.
   @return N/A.
-*******************************************************************************/
+*/
 void driver( int argc, char* argv[] )
 {
-  sint32    numProcs         = 0; // Number of processes being used
-  sint32    myID             = 0; // Holds the rank of each process
+  // Check for correct number of supplied arguments via command line
+  if ( argc != 3 )
+  {
+    cout << "Incorrect call from the command line. Use the syntax: \n"
+         << "./BITONIC [0 | 1] [numbers to sort | filename]" << endl;
+    MPI_Finalize();
+    return;
+  }
 
-  sdouble64 myNumPrimes      = 0; // Number of primes this process has found
-  sdouble64 numPrimes        = 0; // Sum of myNumPrimes
-  sdouble64 wallClockStart   = 0; // Starting time of the algorithm
-  sdouble64 wallClockEnd     = 0; // Ending time of the algorithm
-
-  sdouble64 globalUBound     = atof( argv[1] ); // The upper bound to search to
-  uint32    sqrtGlobalUBound = static_cast<uint32>(sqrt( globalUBound ));
-
-  sdouble64 myLBound         = 0; // The lower bound for this process' search interval
-  sdouble64 myUBound         = 0; // The upper bound for this process' search interval
-  uint32    myIntervalSize   = 0; // The size of this process' search interval
-
-  uint32    currPrime        = 0; // The number assumed prime by master whose multiples
-                                  // are marked out by all processes
-  sdouble64 currPrimeSquared = 0; // currPrime * currPrime
-  uint32    prevPrime        = 0; // The previous currPrime
-  uint32    currPrimeNextMult= 0; // The first multiple of currPrime in this
-                                  // process' interval
-  vector<bool> myNumbers;         // The markings for primacy of numbers
-
+  /***
+    Variables
+  **/
+  int    numProcs         = 0; // Number of processes being used
+  int    myID             = 0; // Holds the rank of each process
+  char   inputType        = atoi( argv[1] ); // The type of input: number or file
+  int    numToSort        = 0; // The number of numbers to sort if inputType = 0
+  string fileLoc          = ""; // The location of the input file if inputType = 1
+  int*   myNumbers        = 0; // The numbers initially generated for this process
+  int    myNumbersSize    = 0; // The size of the array locally
+  double wallClockStart   = 0; // Starting time of the algorithm
+  double wallClockEnd     = 0; // Ending time of the algorithm
+  char   currWorkingDir[255];  // The current working directory
+         getcwd( currWorkingDir, 255 );
+  
   // Initialize the MPI background work
   MPI_Init( &argc, &argv );
 
@@ -85,129 +92,163 @@ void driver( int argc, char* argv[] )
   MPI_Comm_size( MPI_COMM_WORLD, &numProcs );
   MPI_Comm_rank( MPI_COMM_WORLD, &myID );
 
-  // Master searches 0..sqrt(N) or the whole search space
-  if ( myID == _MASTER_ID )
-  {
-    myLBound = 0;
-
-    // Protection for only one process running
-    if ( numProcs > 1 )
-    {
-      myUBound = sqrtGlobalUBound;
-    }
-
-    // Versus multiple processes running
-    else
-    {
-      myUBound = globalUBound;
-    }
-
-    myIntervalSize = static_cast<uint32>(myUBound - myLBound);
-  }
-
-  // Slaves split the remaining interval evenly based on process ID
-  else
-  {
-    // The width of each interval
-    myIntervalSize = static_cast<uint32>(ceil( 1.0 / (sdouble64)(numProcs - 1) * (globalUBound - (sdouble64)sqrtGlobalUBound) ));
-
-    // Set the lower bound of the slaves' intervals based on ID
-    myLBound = (sdouble64)sqrtGlobalUBound + (sdouble64)(myID - 1) * (sdouble64)myIntervalSize;
-
-    // Set the upper bound of the slaves' intervals based on their lower bound
-    // If the last interval being assigned is this one, ensure that the upper 
-    // bound does not exceed globalUBound
-    myUBound = ( (myID + 1) == numProcs) ? ( globalUBound ) : ( myLBound + (sdouble64)myIntervalSize );
-  }
-
-  // All processes begin searching at 2
-  currPrime = 2;
-
-  // If the interval size is > UINT32_MAX then we have a problem because
-  // C++ can't have a vector of size larger than UINT32_MAX and this problem
-  // becomes infeasible with this implementation
-  if ( (myUBound - myLBound) > (sdouble64)UINT32_MAX )
-  {
-    cout << "Process " << myID
-         << " memory allocation problem: too big for STL vector." << endl;
-
-    MPI_Finalize();
-
-    return;
-  }
-
-  cout << "Process " << myID << " searching ["
-       << myLBound << "," << myUBound << "); size = " << myIntervalSize << endl;
-
-  // Resizing the arrays here avoids looped memory reallocation later
-  myNumbers.resize( myIntervalSize, _PRIME );
-
-  // Each process waits for all processes to initialize.
-  MPI_Barrier( MPI_COMM_WORLD );
-
-  if ( myID == _MASTER_ID )
-  {
-    // Master will not count 0 and 1 as prime
-    myNumbers[0] = _NONPRIME;
-    myNumbers[1] = _NONPRIME;
-
-    cout << "Number of processes to be used: " << numProcs << endl;
-    cout << "Beginning location of primes in the interval ["
-         << myLBound << "," << static_cast<uint32>(globalUBound) << "]" << endl;
-    wallClockStart = MPI_Wtime();
-  }
-
-  while ( currPrime < sqrtGlobalUBound )
-  {    
-    // Broadcast the next prime number in the list to all processes
-    MPI_Bcast( &currPrime, 1, MPI_UNSIGNED_LONG, _MASTER_ID, MPI_COMM_WORLD );
+  /***
+    Populate local numbers based on inputType 
+  ***/  
   
-    currPrimeSquared = (currPrime * currPrime);
-
-    // Find least multiple of currPrime in this process' interval
-    if ( myLBound >= currPrimeSquared )
+  // Input type is the number of numbers to sort
+  if ( inputType == 0 )
+  {
+    numToSort = atoi( argv[2] );
+  
+    // Ensure the number of numbers to sort is even
+    if ( numToSort % 2 != 0 )
     {
-      currPrimeNextMult = static_cast<uint32>(
-                            floor(fmod((currPrime - floor(fmod(myLBound, currPrime))), currPrime))
-                          );
+      if ( myID == _MASTER_ID )
+      {
+        cout << "The number of numbers to sort must be divisible by 2." << endl;
+      }
+      
+      MPI_Finalize();
+      return;
     }
+  
+    myNumbersSize = numToSort / numProcs;
+    myNumbers = new int[myNumbersSize];
     
-    // Find currPrimeSquared in our interval, start with that
-    else if ( myUBound >= currPrimeSquared && myLBound <= currPrimeSquared )
-    {
-      currPrimeNextMult = currPrimeSquared;
-    }
+    srand( time( NULL ) );
     
-    // Search begins too high for this process
-    else
+    for ( int i = 0; i < myNumbersSize; i++ )
     {
-      continue;
+      myNumbers[i] = rand() % myNumbersSize;
     }
+  }
+  
+  // Input type is a file of numbers to sort
+  else if ( inputType == 1 )
+  {
+    // Due to the nature of where the MST cluster runs executables from, prefix
+    // the fileLoc with the path to where the input file(s) are stored
+    fileLoc = argv[2];    
+    fileLoc = "cs387/project3/" + fileLoc;    
     
-    // Mark all multiples of currPrime as nonprime in this interval
-    for ( uint32 i = currPrimeNextMult; i < myIntervalSize; i+=currPrime )
-    {
-      myNumbers[i] = _NONPRIME;
-    }
-
-    // Select the next prime in the master's interval
     if ( myID == _MASTER_ID )
     {
-      for ( uint32 i = currPrime + 1; i <= sqrtGlobalUBound; i++ )
+      cout << "Running from " << currWorkingDir << endl;      
+      cout << "Attepmting to open file " << currWorkingDir << "/" << fileLoc << endl;
+    }
+    
+    ifstream inFile;
+    inFile.open( fileLoc.c_str() );
+
+    if ( !inFile.is_open() )
+    {
+      if ( myID == _MASTER_ID )
       {
-        // Current number is recognized as prime
-        if ( myNumbers[i] == _PRIME || i == sqrtGlobalUBound )
-        {
-          currPrime = i;
-          break;
-        }
+        cout << "Error opening the input file \"" << fileLoc << "\"" << endl;
+      }
+      
+      MPI_Finalize();
+      return;
+    }
+    
+    // Calculate the number of numbers in the file
+    int inFileLength = 
+      count
+        (
+        istreambuf_iterator<char>(inFile), 
+        istreambuf_iterator<char>(), 
+        '\n'
+        );
+    
+    if ( inFileLength % 2 != 0 || inFileLength == 0 )
+    {
+      if ( myID == _MASTER_ID )
+      {
+        cout << "The number of numbers in the file, " << inFileLength
+             << " is not divisible by 2." << endl;
+      }
+      
+      MPI_Finalize();
+      return;
+    }
+    
+    myNumbersSize = inFileLength / numProcs;    
+    myNumbers = new int[myNumbersSize];
+    
+    // Ensure reading from beginning of file
+    inFile.seekg( 0, ios::beg );
+    
+    // Advance inFile read pointer to the beginning of this process' interval
+    string currNum = "";
+    for ( int i = 0; i < ( myID * myNumbersSize ); ++i )
+    {
+      getline( inFile, currNum );
+    }
+    
+    // Read in the numbers for this process
+    for ( int i = 0; ( i < myNumbersSize && getline( inFile, currNum ) ); i++ )
+    {
+      myNumbers[i] = atoi( currNum.c_str() );
+      
+      if ( myID == numProcs - 1 ) 
+      {
+        cout << myNumbers[i] << endl;
       }
     }
+    
+    inFile.close();
   }
-
-  // Wait for all processes to finish markings
+  
+  else
+  {
+    if ( myID == _MASTER_ID )
+    {   
+      cout << "Your input type must be a 0 or a 1." << endl;
+    }
+    
+    MPI_Finalize();
+    return;
+  }
+  
+  // Ensure all processes have finished reading input before continuing
+  MPI_Barrier( MPI_COMM_WORLD );
+  
+  // Start clock
+  if ( myID == _MASTER_ID )
+  {
+    
+    cout << "Number of processes to be used: " << numProcs << endl;
+    cout << "Number of numbers per process: " << myNumbersSize << endl;
+    cout << "Taking " << (double)myNumbersSize * (double)sizeof(int) / 1024.0 / 1024.0
+         << " MB of RAM" << endl;
+         
+    cout << "sizeof(char) << " << sizeof(char) << endl;
+    cout << "sizeof(short) << " << sizeof(short) << endl;
+    cout << "sizeof(int) << " << sizeof(int) << endl;
+    cout << "sizeof(long) << " << sizeof(long) << endl;
+    cout << "sizeof(double) << " << sizeof(double) << endl;
+    cout << "sizeof(float) << " << sizeof(float) << endl;
+    
+    wallClockStart = MPI_Wtime();
+  }
+  
+  /***
+    Perform local sort on myNumbers
+  ***/
+  
+  
+  // Wait for all processes to finish local sorting
   MPI_Barrier( MPI_COMM_WORLD );
 
+  /***
+    Perform parallel bitonic sort
+  ***/
+  
+  // Wait for all processes to finish bitonic sorting
+  MPI_Barrier( MPI_COMM_WORLD );
+  
+  // Stop clock
   if ( myID == _MASTER_ID )
   {
     wallClockEnd = MPI_Wtime();
@@ -218,97 +259,18 @@ void driver( int argc, char* argv[] )
          << endl;
   }
 
-  // Count the number of primes found by this process
-  for ( uint32 i = 0; i < myIntervalSize; i++ )
-  {
-    if ( myNumbers[i] == _PRIME )
-    {
-      myNumPrimes++;
-    }
-  }
-
-  // Combine all myNumPrimes from each process, totaling the number of primes
-  // discovered globally and output it
-  MPI_Reduce( &myNumPrimes, &numPrimes, 1, MPI_DOUBLE, MPI_SUM, _MASTER_ID, MPI_COMM_WORLD );
-
-  if ( myID == _MASTER_ID )
-  {
-    cout << "The number of primes in [" << myLBound << ","
-         << static_cast<uint32>(globalUBound) << "] is "
-         << static_cast<uint32>(numPrimes) << endl;
-    cout << "The first " << _LIST_NUM_PRIMES << " after " << _GET_PRIMES_AFTER_ME
-         << " are: " << endl;
-  }
-
-  MPI_Barrier( MPI_COMM_WORLD );
+  // Output the 10 numbers starting at index 100,000
   
-  if ( myLBound <= _GET_PRIMES_AFTER_ME )
-  {
-    currPrimeNextMult = floor(fmod(((sdouble64)_GET_PRIMES_AFTER_ME - floor(fmod(myLBound, (sdouble64)_GET_PRIMES_AFTER_ME))), (sdouble64)_GET_PRIMES_AFTER_ME));
-
-    // Check to make sure the multiple found is actually _GET_PRIMES_AFTER_ME
-    // and not just a multiple of it
-    if ( myLBound + currPrimeNextMult == _GET_PRIMES_AFTER_ME )
-    {
-      // Count the number of primes output
-      uint32 j = 0;
-
-      // Loop through the numbers after _GET_PRIMES_AFTER_ME and output
-      // whenever a number is found to be prime
-      for ( uint32 i = currPrimeNextMult; i < myIntervalSize; i++ )
-      {
-        if ( myNumbers[i] == _PRIME )
-        {
-          cout << static_cast<uint32>(myLBound) + i << endl;
-          j++;
-        }
-
-        if ( j >= _LIST_NUM_PRIMES )
-        {
-          break;
-        }
-      }
-    }
-  }
-
-  MPI_Barrier( MPI_COMM_WORLD );
+  // Output the 10 numbers starting at index 200,000
   
-  if ( myID == _MASTER_ID )
-  {
-    cout << "The greatest prime number found is: " << endl;
-  }
   
-  MPI_Barrier( MPI_COMM_WORLD );
-  
-  // Start at the highest processing interval and work backward to find
-  // the greatest prime number found
-  if ( numProcs > 1 && myID == numProcs - 1 )
-  {
-    for ( uint32 i = myIntervalSize; i >= 0; i-- )
-    {
-      if ( myNumbers[i] == _PRIME )
-      {
-        cout << static_cast<uint32>(myLBound) + i << endl;
-        break;
-      }
-    }
-  }
-  
-  else if ( numProcs == 1 )
-  {
-    for ( uint32 i = myIntervalSize; i >= 0; i-- )
-    {
-      if ( myNumbers[i] == _PRIME )
-      {
-        cout << i << endl;
-        break;
-      }
-    }
-  }
   
   // Finish the parallel computation
   MPI_Finalize();
 
+  // Clear the array of numbers
+  delete [] myNumbers;
+  
   return;
 }
 
