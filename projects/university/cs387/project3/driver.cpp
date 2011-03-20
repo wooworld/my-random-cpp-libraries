@@ -18,6 +18,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>
+#include <vector>
 
 // MPI library for parallel computation
 #include <mpi.h>
@@ -31,6 +32,8 @@ using namespace std;
   PRE-DECLARATIONS
 ***/
 void driver( int argc, char* argv[] );
+void compareHigh( const int& j );
+void compareLow ( const int& j );
 
 /***
   MAIN
@@ -73,18 +76,19 @@ void driver( int argc, char* argv[] )
   /***
     Variables
   **/
-  int    numProcs         = 0; // Number of processes being used
-  int    myID             = 0; // Holds the rank of each process
-  char   inputType        = atoi( argv[1] ); // The type of input: number or file
-  int    numToSort        = 0; // The number of numbers to sort if inputType = 0
-  string fileLoc          = ""; // The location of the input file if inputType = 1
-  int*   myNumbers        = 0; // The numbers initially generated for this process
-  int    myNumbersSize    = 0; // The size of the array locally
-  double wallClockStart   = 0; // Starting time of the algorithm
-  double wallClockEnd     = 0; // Ending time of the algorithm
-  char   currWorkingDir[255];  // The current working directory
-         getcwd( currWorkingDir, 255 );
+  int         numProcs         = 0; // Number of processes being used
+  int         myID             = 0; // Holds the rank of each process
+  char        inputType        = atoi( argv[1] ); // The type of input: number or file
+  int         numToSort        = 0; // The number of numbers to sort if inputType = 0
+  string      fileLoc          = "";// The location of the input file if inputType = 1
+  vector<int> myNumbers;            // Container for the numbers for this process
+
+  double      wallClockStart   = 0; // Starting time of the algorithm
+  double      wallClockEnd     = 0; // Ending time of the algorithm
   
+  char        currWorkingDir[255];  // The current working directory
+              getcwd( currWorkingDir, 255 );
+   
   // Initialize the MPI background work
   MPI_Init( &argc, &argv );
 
@@ -102,25 +106,22 @@ void driver( int argc, char* argv[] )
     numToSort = atoi( argv[2] );
   
     // Ensure the number of numbers to sort is even
-    if ( numToSort % 2 != 0 )
+    if ( (numToSort % 2) != 0 || numToSort < 0 )
     {
       if ( myID == _MASTER_ID )
-      {
-        cout << "The number of numbers to sort must be divisible by 2." << endl;
-      }
+        cout << "The number of numbers to sort must be divisible by 2 and > 0." << endl;
       
       MPI_Finalize();
       return;
     }
-  
-    myNumbersSize = numToSort / numProcs;
-    myNumbers = new int[myNumbersSize];
+    
+    myNumbers.resize( numToSort / numProcs );
     
     srand( time( NULL ) );
     
-    for ( int i = 0; i < myNumbersSize; i++ )
+    for ( int i = 0; i < myNumbers.size(); i++ )
     {
-      myNumbers[i] = rand() % myNumbersSize;
+      myNumbers[i] = rand() % numToSort;
     }
   }
   
@@ -144,9 +145,7 @@ void driver( int argc, char* argv[] )
     if ( !inFile.is_open() )
     {
       if ( myID == _MASTER_ID )
-      {
         cout << "Error opening the input file \"" << fileLoc << "\"" << endl;
-      }
       
       MPI_Finalize();
       return;
@@ -166,35 +165,36 @@ void driver( int argc, char* argv[] )
       if ( myID == _MASTER_ID )
       {
         cout << "The number of numbers in the file, " << inFileLength
-             << " is not divisible by 2." << endl;
+             << " is not divisible by 2 and > 0." << endl;
       }
       
       MPI_Finalize();
       return;
     }
     
-    myNumbersSize = inFileLength / numProcs;    
-    myNumbers = new int[myNumbersSize];
-    
+    myNumbers.resize( inFileLength / numProcs );
+        
     // Ensure reading from beginning of file
     inFile.seekg( 0, ios::beg );
     
     // Advance inFile read pointer to the beginning of this process' interval
     string currNum = "";
-    for ( int i = 0; i < ( myID * myNumbersSize ); ++i )
+    for ( int i = 0; i < ( myID * myNumbers.size() ); ++i )
     {
       getline( inFile, currNum );
     }
     
     // Read in the numbers for this process
-    for ( int i = 0; ( i < myNumbersSize && getline( inFile, currNum ) ); i++ )
+    for ( int i = 0; ( i < myNumbers.size() && getline( inFile, currNum ) ); i++ )
     {
       myNumbers[i] = atoi( currNum.c_str() );
       
-      if ( myID == numProcs - 1 ) 
-      {
-        cout << myNumbers[i] << endl;
-      }
+      // if ( myID == numProcs - 1 ) 
+      // if ( myID == 1 )
+      // if ( myID == 0 )
+      // {
+        // cout << myNumbers[i] << endl;
+      // }
     }
     
     inFile.close();
@@ -203,9 +203,7 @@ void driver( int argc, char* argv[] )
   else
   {
     if ( myID == _MASTER_ID )
-    {   
-      cout << "Your input type must be a 0 or a 1." << endl;
-    }
+      cout << "Your input type must be a 0 (for a number) or a 1 (for a file)." << endl;
     
     MPI_Finalize();
     return;
@@ -219,31 +217,87 @@ void driver( int argc, char* argv[] )
   {
     
     cout << "Number of processes to be used: " << numProcs << endl;
-    cout << "Number of numbers per process: " << myNumbersSize << endl;
-    cout << "Taking " << (double)myNumbersSize * (double)sizeof(int) / 1024.0 / 1024.0
-         << " MB of RAM" << endl;
-         
-    cout << "sizeof(char) << " << sizeof(char) << endl;
-    cout << "sizeof(short) << " << sizeof(short) << endl;
-    cout << "sizeof(int) << " << sizeof(int) << endl;
-    cout << "sizeof(long) << " << sizeof(long) << endl;
-    cout << "sizeof(double) << " << sizeof(double) << endl;
-    cout << "sizeof(float) << " << sizeof(float) << endl;
-    
+    cout << "Number of numbers per process: " << myNumbers.size() << endl;
+    cout << "Taking " 
+         << (static_cast<double>(myNumbers.size()) * static_cast<double>(sizeof(int)) / 1024.0 / 1024.0)
+         << " MB of RAM" << endl;    
     wallClockStart = MPI_Wtime();
   }
   
   /***
-    Perform local sort on myNumbers
+    Perform local sort on initial myNumbers
   ***/
   
-  
-  // Wait for all processes to finish local sorting
-  MPI_Barrier( MPI_COMM_WORLD );
+  sort ( myNumbers.begin(), myNumbers.end() );
 
   /***
     Perform parallel bitonic sort
   ***/
+  
+  int   d             = floor(log(numProcs + 0.5)/log(2.0)); // Dimension of the hypercube
+  int   swapPartner   = 0;     // Process this process will binary compare
+                               // and swap with each step
+  bool  windowIDEven  = false; // Whether or not the window ID is even
+  bool  jBitZero      = false; // Whether or not the jth bit of myID is zero
+  
+  // d phases in the sort
+  for ( int i = 1; i <= d; i++ )
+  {
+    // Calculate windowID and determine if it is even or odd
+    // WindowID = 011
+    //            001 ( >> 1)
+    //       (int)001 == 1
+    //            % 2 == 1 == ODD
+    windowIDEven = ( ((myID >> i) % 2 == 0) ? true : false );
+    
+    // j steps based on the relative ID within each window per phase
+    for ( int j = (i-1); j >= 0; j-- )
+    { 
+      // Wait for all processes to finish swapping data before next step    
+      MPI_Barrier( MPI_COMM_WORLD );      
+    
+      // Calculate communication partner by XOR with 1 shifted left j positions
+      // myID = 011
+      //      ^ 001 ( 1 << 0 )
+      //        010 
+      // myID = 011
+      //      ^ 010 ( 1 << 1 )
+      //        001
+      // myID = 011
+      //      ^ 100 ( 1 << 2 )
+      //        111
+      //
+      // myID = 100
+      //      ^ 100 ( 1 << 2 )
+      //        000
+      swapPartner = ( myID ^ (1 << j) );      
+    
+      // Determine if the jth bit of myBitID is 0
+      // myID = 011
+      //      & 010 ( 1 << 1 )
+      //        010
+      //   (int)010 == 2 != 0 => false
+      // myID = 011
+      //      & 100
+      //        000
+      //   (int)000 == 0 == 0 => true
+      jBitZero = ( (myID & (1 << j)) == 0 ? true : false );
+    
+      if ( (windowIDEven && jBitZero) || (!windowIDEven && !jBitZero) )
+      {
+        compareLow( swapPartner );
+        // if ( myID == 3 || myID == 4 )
+          // cout << myID << " compareLow against " << swapPartner << endl;
+      }
+      
+      else
+      {
+        compareHigh( swapPartner );
+        // if ( myID == 3 || myID == 4 )
+          // cout << myID << " compareHigh against " << swapPartner << endl;
+      }
+    }  
+  }
   
   // Wait for all processes to finish bitonic sorting
   MPI_Barrier( MPI_COMM_WORLD );
@@ -254,7 +308,7 @@ void driver( int argc, char* argv[] )
     wallClockEnd = MPI_Wtime();
     cout << "Computation complete." << endl;
     cout << "Wall clock time used: " << endl;
-    cout << (wallClockEnd - wallClockStart)        << " seconds, eqivalent to: \n"
+    cout << (wallClockEnd - wallClockStart) << " seconds, eqivalent to: \n"
          << (wallClockEnd - wallClockStart) / 60.0 << " minutes."
          << endl;
   }
@@ -267,9 +321,18 @@ void driver( int argc, char* argv[] )
   
   // Finish the parallel computation
   MPI_Finalize();
+  
+  return;
+}
 
-  // Clear the array of numbers
-  delete [] myNumbers;
+void compareHigh( const int& j )
+{
+  
+  return;
+}
+
+void compareLow( const int& j )
+{
   
   return;
 }
