@@ -1,0 +1,49 @@
+sort(A)
+sort(B)
+B.min = 0
+A.max = size(A)-1
+
+B:
+  receive(top X elements from A in descending order)
+
+  for i=0..X
+    if new[i] > B[B.min]
+      add_to_send_queue(B[B.min])
+      B[B.min] = new[i]
+  
+      if new[i] > B[B.min+1]
+	B.min++
+  endfor
+
+  sendqueue(A); (and this starts the similar thing in A)
+
+A:
+  send(top X elements in descending order to B)
+  receive(Y queued elements from B)
+
+  A.max = size(a)-1
+
+  for i=0..Y
+    A[A.max] = new[i]
+    A.max--
+  endfor
+  if (A[A.max+1] > A[A.max])
+    A.max++
+  If Y < X (received fewer items than we sent), break
+
+
+resort_A:
+	new new_array
+	i = 0
+	A.begin = 0
+	A.end = size(A) - 1
+
+	while (A.begin != A.end)
+		if A[A.begin] < A[A.end]
+			new_array[i] = A[A.begin]
+			A.begin++
+		else
+			new_array[i] = A[A.end]
+			A.end--
+		i++
+	new_array[i] = A[A.end]
