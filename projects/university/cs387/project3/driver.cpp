@@ -24,7 +24,9 @@
 #include <mpi.h>
 
 // Global constants for readability and maintainability
-#define _MASTER_ID 0         // Master ID
+#define _MASTER_ID    0 // Master ID
+#define _PERCENT_SEND 3 // Percentage of data set sent as a chunk to communication
+                        // partner whenever swapping happens
 
 using namespace std;
 
@@ -32,8 +34,8 @@ using namespace std;
   PRE-DECLARATIONS
 ***/
 void driver( int argc, char* argv[] );
-void compareHigh( const int& j );
-void compareLow ( const int& j );
+void compareHigh( const int& swapPartner );
+void compareLow ( const int& swapPartner );
 
 /***
   MAIN
@@ -228,6 +230,8 @@ void driver( int argc, char* argv[] )
     Perform local sort on initial myNumbers
   ***/
   
+  // TODO: MERGE SORT
+  
   sort ( myNumbers.begin(), myNumbers.end() );
 
   /***
@@ -245,7 +249,7 @@ void driver( int argc, char* argv[] )
   {
     // Calculate windowID and determine if it is even or odd
     // WindowID = 011
-    //            001 ( >> 1)
+    //            001 (myID >> 1)
     //       (int)001 == 1
     //            % 2 == 1 == ODD
     windowIDEven = ( ((myID >> i) % 2 == 0) ? true : false );
@@ -285,16 +289,83 @@ void driver( int argc, char* argv[] )
     
       if ( (windowIDEven && jBitZero) || (!windowIDEven && !jBitZero) )
       {
-        compareLow( swapPartner );
+        // compareLow( swapPartner );
         // if ( myID == 3 || myID == 4 )
           // cout << myID << " compareLow against " << swapPartner << endl;
+          
+        
+        
+        
+        
+        int HminSetSize = 0;
+        vector<int> HminSet;  
+        MPI_Status status;        
+        
+        // Send Low's max value to high 
+        MPI_Send( &myNumbers.back(), 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD ); 
+       
+        // Ask how many numbers incoming
+        MPI_Recv( &HminSetSize, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD, &status );
+       
+        // Receive all numbers in high that are less than max  
+        HminSet.resize( HminSetSize ); 
+        MPI_Recv( &HminSet[0], HminSetSize, MPI_INT, swapPartner, 42, MPI_COMM_WORLD, &status );
+        
+        // Mashup high's min set and our numbers, sort
+        myNumbers.insert( myNumbers.end(), HminSet.begin(), HminSet.end() );
+        
+        // Sort myNumbers
+        sort( myNumbers.begin(), myNumbers.end() );
+        
+        // Send top HminSet numbers to high
+        MPI_Send( &myNumbers[myNumbers.size()-HminSetSize], HminSetSize, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+        
+        // Remove the top HminSet numbers from myNumbers
+        myNumbers.erase( myNumbers.end() - HminSetSize, myNumbers.end() );
       }
       
       else
       {
-        compareHigh( swapPartner );
+        // compareHigh( swapPartner );
         // if ( myID == 3 || myID == 4 )
           // cout << myID << " compareHigh against " << swapPartner << endl;
+          
+        int Lmax = 0;
+        int greaterLmax = 0;
+        vector<int> replaceMyNumbers;
+        MPI_Status status;
+        
+        // Receive Low's max value from low
+        MPI_Recv( &Lmax, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD, &status );
+        
+        // Find index in myNumbers that has the first number > Lmax
+        for ( int i = 0; i < myNumbers.size(); i++ )
+        {
+          if ( myNumbers[i] > Lmax )
+          {
+            greaterLmax = i;
+            break;
+          }
+        }
+        
+        // Tell low how many numbers are outgoing
+        MPI_Send( &greaterLmax, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+        
+        // Send all numbers <= Lmax to low
+        MPI_Send( &myNumbers[0], greaterLmax, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+        
+        // Receive the numbers to replace the numbers just sent
+        replaceMyNumbers.resize( greaterLmax );
+        MPI_Recv( &replaceMyNumbers[0], greaterLmax, MPI_INT, swapPartner, 42, MPI_COMM_WORLD, &status );
+        
+        // Delete the first Lmax numbers from myNumbers
+        myNumbers.erase( myNumbers.begin(), myNumbers.begin() + greaterLmax );
+        
+        // Insert the new numbers
+        myNumbers.insert( myNumbers.begin(), replaceMyNumbers.begin(), replaceMyNumbers.end() );
+        
+        sort( myNumbers.begin(), myNumbers.end() );
+        
       }
     }  
   }
@@ -313,6 +384,14 @@ void driver( int argc, char* argv[] )
          << endl;
   }
 
+  if ( myID == 2 /* || myID == 5 */ )
+  {
+    for ( int i = 0; i < 10; i++ )
+    {
+      cout << myNumbers[i] << endl;
+    }
+  }
+  
   // Output the 10 numbers starting at index 100,000
   
   // Output the 10 numbers starting at index 200,000
@@ -325,15 +404,83 @@ void driver( int argc, char* argv[] )
   return;
 }
 
-void compareHigh( const int& j )
+void compareHigh( const int& swapPartner )
 {
+  /* int Lmax = 0;
+  int greaterLmax = 0;
+  vector<int> replaceMyNumbers;
+  
+  // Receive Low's max value from low
+  MPI_recv( Lmax, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+  
+  // Find index in myNumbers that has the first number > Lmax
+  for ( int i = 0; i < myNumbers.size(); i++ )
+  {
+    if ( myNumbers[i] > Lmax )
+    {
+      greaterLmax = i;
+      break;
+    }
+  }
+  
+  // Tell low how many numbers are outgoing
+  MPI_send( greaterLmax, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+  
+  // Send all numbers <= Lmax to low
+  MPI_send( myNumbers.begin(), greaterLmax, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+  
+  // Receive the numbers to replace the numbers just sent
+  replaceMyNumbers.resize( greaterLmax );
+  MPI_recv( replaceMyNumbers, greaterLmax, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+  
+  // Delete the first Lmax numbers from myNumbers
+  myNumbers.erase( myNumbers.begin(), myNumbers.begin() + Lmax );
+  
+  // Insert the new numbers
+  myNumbers.insert( myNumbers.begin(), replaceMyNumbers.begin(), replaceMyNumbers.end() ); */
   
   return;
 }
 
-void compareLow( const int& j )
+void compareLow( const int& swapPartner )
 {
+  // Swap the highest X elements from this set to the upper set
+  /* MPI_Sendrecv_replace( 
+    (myNumbers.end() - x),
+    x,
+    MPI_INT,
+    swapPartner,
+    0,
+    myID,
+    0,
+    MPI_COMM_WORLD
+  );*/
   
+  /* int HminSetSize = 0;
+  vector<int> HminSet;    
+  
+  // Send Low's max value to high 
+  MPI_send( myNumbers[size()-1], 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD ); 
+ 
+  // Ask how many numbers incoming
+  MPI_recv( HminSetSize, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+ 
+  // Receive all numbers in high that are less than max  
+  HminSet.resize( HminSetSize ); 
+  MPI_recv( HminSet, HminSetSize - 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+  
+  // Mashup high's min set and our numbers, sort
+  myNumbers.insert( myNumbers.end(), HminSet.begin(), HminSet.end() );
+  
+  // Sort myNumbers
+  sort( myNumbers.begin(), myNumbers.end() );
+  
+  // Send top HminSet numbers to high
+  MPI_send( myNumbers.end() - HminSet, HminSet, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+  
+  // Remove the top HminSet numbers from myNumbers
+  myNumbers.erase( myNumbers.end() - HminSet, myNumbers.end() ); */
+ 
   return;
 }
 
