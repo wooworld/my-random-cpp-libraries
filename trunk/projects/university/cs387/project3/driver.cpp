@@ -7,9 +7,6 @@
   @note This program utilizes the MPI parallel library on a 64-bit cluster.
 */
 
-// My libraries
-// #include "../../../../lib/numeric_types.h"
-
 // STL libraries
 #include <iostream>
 #include <fstream>
@@ -24,9 +21,9 @@
 #include <mpi.h>
 
 // Global constants for readability and maintainability
-#define _MASTER_ID    0 // Master ID
-#define _PERCENT_SEND 3 // Percentage of data set sent as a chunk to communication
-                        // partner whenever swapping happens
+#define _MASTER_ID    0   // Master ID
+#define _PERCENT_SEND 3.0 // Percentage of data set sent as a chunk to communication
+                          // partner whenever swapping happens
 
 using namespace std;
 
@@ -36,6 +33,7 @@ using namespace std;
 void driver( int argc, char* argv[] );
 void compareHigh( const int& swapPartner );
 void compareLow ( const int& swapPartner );
+void resort( vector<int>& v );
 
 /***
   MAIN
@@ -257,6 +255,7 @@ void driver( int argc, char* argv[] )
     // j steps based on the relative ID within each window per phase
     for ( int j = (i-1); j >= 0; j-- )
     { 
+      cout << myID << ": " << i << "," << j << endl;
       // Wait for all processes to finish swapping data before next step    
       MPI_Barrier( MPI_COMM_WORLD );      
     
@@ -292,83 +291,148 @@ void driver( int argc, char* argv[] )
         // compareLow( swapPartner );
         // if ( myID == 3 || myID == 4 )
           // cout << myID << " compareLow against " << swapPartner << endl;
+
+        int         in_buf_size  = 0;
+        int         out_buf_size = (static_cast<double>(myNumbers.size()) * _PERCENT_SEND / 100.0) + 1;
+        int         Lmax         = 0;
+        int         stopflag     = 0;
+        vector<int> in_buf;        
+        vector<int> out_buf( out_buf_size + 1, 0 );
+        MPI_Status status;       
+        
+        while ( stopflag == 0 )
+        {          
+          // Copy the top X elements of myNumbers into a descending order outbound buffer
+          // Unnecessary if I can find a way to get MPI to send() backward in an 
+          //   array rather than forward
+          // for ( int i = 0; i < out_buf_size; i++ )
+          // {
+            // out_buf[i + 1] = myNumbers[myNumbers.size() - 1 - i];
+          // }
+          // out_buf[0] = stopflag;
           
+          vector<int>::reverse_iterator rit;
+          int q = 1;
+          for ( rit = myNumbers.rbegin(); rit < myNumbers.rend() || q == out_buf_size; rit++ )
+          {
+            out_buf[q] = *rit;
+            q++;
+          }
+          
+          cout << "compareLow " << myID << " sending " << out_buf_size << "/" << out_buf.size() << " elements off the top" << endl;
         
+          // Send the top X number of elements in descending order to high
+          MPI_Send( &out_buf[0], out_buf.size(), MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+          
+          // Wait for high to do its replacement (see: bad for efficiency!) and
+          // send back elements low needs
+          MPI_Recv( &in_buf_size, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD, &status );
+          in_buf.resize( in_buf_size );
+          MPI_Recv( &in_buf[0], in_buf.size(), MPI_INT, swapPartner, 42, MPI_COMM_WORLD, &status );
+          
+          if ( in_buf[1] == 1 )
+          {
+            break;
+          } 
+          
+          cout << "compareLow " << myID << " receiving " << in_buf_size << "/" << in_buf.size() << " elements off the top" << endl;
         
-        
-        
-        int HminSetSize = 0;
-        vector<int> HminSet;  
-        MPI_Status status;        
-        
-        // Send Low's max value to high 
-        MPI_Send( &myNumbers.back(), 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD ); 
-       
-        // Ask how many numbers incoming
-        MPI_Recv( &HminSetSize, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD, &status );
-       
-        // Receive all numbers in high that are less than max  
-        HminSet.resize( HminSetSize ); 
-        MPI_Recv( &HminSet[0], HminSetSize, MPI_INT, swapPartner, 42, MPI_COMM_WORLD, &status );
-        
-        // Mashup high's min set and our numbers, sort
-        myNumbers.insert( myNumbers.end(), HminSet.begin(), HminSet.end() );
-        
-        // Sort myNumbers
-        sort( myNumbers.begin(), myNumbers.end() );
-        
-        // Send top HminSet numbers to high
-        MPI_Send( &myNumbers[myNumbers.size()-HminSetSize], HminSetSize, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
-        
-        // Remove the top HminSet numbers from myNumbers
-        myNumbers.erase( myNumbers.end() - HminSetSize, myNumbers.end() );
+          
+          Lmax = myNumbers.size() - 1;
+          
+          // Overwrite our highest numbers with the ones sent, swap complete
+          for ( int i = 0; i < in_buf.size() && Lmax >=0 && Lmax < myNumbers.size(); i++ )
+          {
+            myNumbers[Lmax] = in_buf[i];
+            Lmax--;
+          }
+          
+          if ( (Lmax+1 < myNumbers.size()-1) && (myNumbers[Lmax+1] > myNumbers[Lmax]) )
+          {
+            // I feel like this should be a --
+            Lmax++;
+            // Lmax--;
+          }
+          
+          else
+          {
+            stopflag = 1;
+          }
+        }  
       }
       
       else
       {
-        // compareHigh( swapPartner );
-        // if ( myID == 3 || myID == 4 )
-          // cout << myID << " compareHigh against " << swapPartner << endl;
-          
-        int Lmax = 0;
-        int greaterLmax = 0;
-        vector<int> replaceMyNumbers;
-        MPI_Status status;
+        compareHigh( swapPartner );
+        if ( myID == 3 || myID == 4 )
+          cout << myID << " compareHigh against " << swapPartner << endl;
         
-        // Receive Low's max value from low
-        MPI_Recv( &Lmax, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD, &status );
+        int         in_buf_size  = (static_cast<double>(myNumbers.size()) * _PERCENT_SEND / 100.0) + 1;
+        int         out_buf_size = 0;
+        int         Hmin         = 0;
+        int         stopflag     = 0;
+        vector<int> in_buf( in_buf_size + 1 ); // Room for buffer and stopflag
+        vector<int> out_buf(1);
+        MPI_Status  status;
         
-        // Find index in myNumbers that has the first number > Lmax
-        for ( int i = 0; i < myNumbers.size(); i++ )
+        while( stopflag == 0 )
         {
-          if ( myNumbers[i] > Lmax )
+          // 1: Listen for top in_buf_size elements from A
+          MPI_Recv( &in_buf[0], in_buf.size(), MPI_INT, swapPartner, 42, MPI_COMM_WORLD, &status );
+          
+          // if ( in_buf[0] == 1 )
+          // {
+            // break;
+          // }
+          
+          cout << "compareHigh " << myID << " receiving " << in_buf_size << "/" << in_buf.size() << " elements off the top" << endl;
+          
+          stopflag = 0;
+          
+          // 2: Loop through received elements, replacing our elements as it makes sense,
+          //    making sure to skip over stopflag's position
+          for ( int i = 1; i < in_buf.size(); i++ )
           {
-            greaterLmax = i;
-            break;
+            if ( Hmin < myNumbers.size() && in_buf[i] > myNumbers[Hmin] )
+            {
+              out_buf.push_back( myNumbers[Hmin] );
+              myNumbers[Hmin] = in_buf[i];
+              Hmin++;
+              
+              // The moment we won't replace, break
+              /* if ( Hmin < myNumbers.size()-2 && in_buf[i] < myNumbers[Hmin + 1] )
+              {
+                Hmin++;
+              }
+              
+              else
+              {
+                stopflag = 1;
+                break;
+              } */
+            }
+            
+            else
+            {
+              stopflag = 1;
+              break;
+            }
           }
+
+          // Send numbers to low
+          out_buf[0] = stopflag;
+          out_buf_size = out_buf.size();
+          MPI_Send( &out_buf_size, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
+          MPI_Send( &out_buf[0], out_buf.size(), MPI_INT, swapPartner, 42, MPI_COMM_WORLD );  
+          cout << "compareLow " << myID << " sending " << out_buf_size << "/" << out_buf.size() << " elements off the top" << endl;
         }
-        
-        // Tell low how many numbers are outgoing
-        MPI_Send( &greaterLmax, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
-        
-        // Send all numbers <= Lmax to low
-        MPI_Send( &myNumbers[0], greaterLmax, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
-        
-        // Receive the numbers to replace the numbers just sent
-        replaceMyNumbers.resize( greaterLmax );
-        MPI_Recv( &replaceMyNumbers[0], greaterLmax, MPI_INT, swapPartner, 42, MPI_COMM_WORLD, &status );
-        
-        // Delete the first Lmax numbers from myNumbers
-        myNumbers.erase( myNumbers.begin(), myNumbers.begin() + greaterLmax );
-        
-        // Insert the new numbers
-        myNumbers.insert( myNumbers.begin(), replaceMyNumbers.begin(), replaceMyNumbers.end() );
-        
-        sort( myNumbers.begin(), myNumbers.end() );
-        
-      }
-    }  
-  }
+      }          
+      
+      cout << myID << " resorting " << myNumbers.size() << endl;
+      
+      resort( myNumbers );
+    }
+  }  
   
   // Wait for all processes to finish bitonic sorting
   MPI_Barrier( MPI_COMM_WORLD );
@@ -386,7 +450,7 @@ void driver( int argc, char* argv[] )
 
   if ( myID == 2 /* || myID == 5 */ )
   {
-    for ( int i = 0; i < 10; i++ )
+    for ( int i = 0; i < myNumbers.size(); i++ )
     {
       cout << myNumbers[i] << endl;
     }
@@ -406,38 +470,7 @@ void driver( int argc, char* argv[] )
 
 void compareHigh( const int& swapPartner )
 {
-  /* int Lmax = 0;
-  int greaterLmax = 0;
-  vector<int> replaceMyNumbers;
   
-  // Receive Low's max value from low
-  MPI_recv( Lmax, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
-  
-  // Find index in myNumbers that has the first number > Lmax
-  for ( int i = 0; i < myNumbers.size(); i++ )
-  {
-    if ( myNumbers[i] > Lmax )
-    {
-      greaterLmax = i;
-      break;
-    }
-  }
-  
-  // Tell low how many numbers are outgoing
-  MPI_send( greaterLmax, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
-  
-  // Send all numbers <= Lmax to low
-  MPI_send( myNumbers.begin(), greaterLmax, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
-  
-  // Receive the numbers to replace the numbers just sent
-  replaceMyNumbers.resize( greaterLmax );
-  MPI_recv( replaceMyNumbers, greaterLmax, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
-  
-  // Delete the first Lmax numbers from myNumbers
-  myNumbers.erase( myNumbers.begin(), myNumbers.begin() + Lmax );
-  
-  // Insert the new numbers
-  myNumbers.insert( myNumbers.begin(), replaceMyNumbers.begin(), replaceMyNumbers.end() ); */
   
   return;
 }
@@ -455,33 +488,39 @@ void compareLow( const int& swapPartner )
     0,
     MPI_COMM_WORLD
   );*/
-  
-  /* int HminSetSize = 0;
-  vector<int> HminSet;    
-  
-  // Send Low's max value to high 
-  MPI_send( myNumbers[size()-1], 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD ); 
- 
-  // Ask how many numbers incoming
-  MPI_recv( HminSetSize, 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
- 
-  // Receive all numbers in high that are less than max  
-  HminSet.resize( HminSetSize ); 
-  MPI_recv( HminSet, HminSetSize - 1, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
-  
-  // Mashup high's min set and our numbers, sort
-  myNumbers.insert( myNumbers.end(), HminSet.begin(), HminSet.end() );
-  
-  // Sort myNumbers
-  sort( myNumbers.begin(), myNumbers.end() );
-  
-  // Send top HminSet numbers to high
-  MPI_send( myNumbers.end() - HminSet, HminSet, MPI_INT, swapPartner, 42, MPI_COMM_WORLD );
-  
-  // Remove the top HminSet numbers from myNumbers
-  myNumbers.erase( myNumbers.end() - HminSet, myNumbers.end() ); */
+
  
   return;
+}
+
+void resort( vector<int>& v )
+{  
+  vector<int> temp( v.size() );
+  int i = 0;
+  int Li = 0;
+  int Ri = v.size() - 1;
+  
+  // while ( Li != Ri )
+  for ( int i = 0; (i < temp.size() && Li != Ri); i++ )
+  {
+    if ( Li < temp.size() && Ri >= 0 && v[Li] < v[Ri] )
+    {
+      temp[i] = v[Li];
+      Li++;
+    }
+    
+    else
+    {
+      temp[i] = v[Ri];
+      Ri--;
+    }
+    
+    // i++;
+  }
+  
+  v = temp;  
+  
+  cout << "resort complete!" << endl;
 }
 
 /* END OF FILE */
