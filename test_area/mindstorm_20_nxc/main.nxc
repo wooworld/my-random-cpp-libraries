@@ -1,0 +1,31 @@
+/*
+  @file main.c
+  @auth Gary Steelman
+  @desc The main controller for the NXT 2.0
+  @edit 16 Mar 2011
+*/
+
+#include "_3DFrame.h"
+
+// #include "cmath"
+// #include "cstdio"
+// #include "cstring"
+
+task main()
+{
+  printf( "lol\n" ); 
+  
+  _3DFrame F;
+  
+  _3D_translate( F,  1, 2, 3 );
+  
+  _3D_rot_x( F, _PI );
+  
+  print( F );
+  
+  _3D_rot_x( F, -_PI );
+  
+  print( F );
+ 
+  
+}
