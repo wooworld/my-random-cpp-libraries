@@ -145,6 +145,7 @@ class TSP
     void predecessor( const search_node& iNode, deque<search_node>& avail );
     
     bool is_goal( const search_node& s ) const;
+    //Checks to see if the node is a goal node for Bi-Directional A*Graph Search
     bool is_BiASGS_goal( 
                   const search_node& s, 
                   const multiset<search_node, less<search_node> >& frontier );

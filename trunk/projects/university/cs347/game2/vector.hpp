@@ -461,26 +461,23 @@ const T& Vector<T>::max( const unsigned long int& start = 0, const unsigned long
 template <typename T>
 const T& Vector<T>::min( const unsigned long int& start = 0, const unsigned long int& end = 0 ) const
 {
-  unsigned long int s = start;
-  unsigned long int e = end;
-  
-  if ( s > e )
+  if ( start > end )
   {
-    T temp = s;
-    s = e;
-    e = temp;
+    T temp = start;
+    start = end;
+    end = temp;
   }
   
-  if ( s > m_size )
+  if ( start > m_size )
     throw Exception( 2, "Out of bounds access. Vector::min()." );
   
   //just end at the end if they want to end before the vector does
-  if ( e > m_size )
-    e = m_size;
+  if ( end > m_size )
+    end = m_size;
     
-  T result = m_data[s];
+  T result = m_data[start];
   
-  for ( unsigned long int i = s; i <= e; i++ )
+  for ( unsigned long int i = start; i <= end; i++ )
     if ( m_data[i] < result )
       result = m_data[i];
   
