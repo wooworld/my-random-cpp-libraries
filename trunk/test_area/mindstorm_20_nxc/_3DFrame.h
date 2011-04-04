@@ -7,35 +7,35 @@
 */
 
 #include "numeric_types.h"
-// #include "_3x3Matrix.h"
-// #include "_3DFrame.h"
+// #include "numeric_constants.h"
+#include "cmath.h"
+#include "cstdlib.h"
 
 typedef struct
 {
   sfloat32 m[12];
 } _3DFrame;
 
-void _3DFrame_Construct( _3DFrame& F );
-// void _3DFrame_Destruct ( _3DFrame& P );
-void _3DFrame_Copy     ( _3DFrame& A, const _3DFrame& B );
-void _3DFrame_Print();
+void     _3D_Init      ( _3DFrame& F );
+void     _3D_Destroy   ( _3DFrame& F );
+void     _3D_Copy      ( _3DFrame& A, const _3DFrame& B );
+void     _3D_Print     ( const _3DFrame& F );
 
-_3DFrame _3DFrame_Multiply ( const _3DFrame& A, const _3DFrame& B );
-// _3DPoint _3DFrame_Multiply ( const _3DFrame& F, const _3DPoint& P );
-// _3DFrame _3DFrame_Add      ( const _3DFrame& A, const _3DFrame& B );
-// _3DFrame _3DFrame_Subtract ( const _3DFrame& A, const _3DFrame& B );
+_3DFrame _3D_Mult      ( const _3DFrame& A, const _3DFrame& B );
 
-void _3DFrame_Set_Rot  ( const _3x3Matrix& M );
-void _3DFrame_Set_Loc  ( const _3DPoint& P );
+void     _3D_set_rot_x ( _3DFrame& F, sfloat32 alpha );
+void     _3D_set_rot_y ( _3DFrame& F, sfloat32 beta  );
+void     _3D_set_rot_z ( _3DFrame& F, sfloat32 gamma );
 
-void _3DFrame_Rotate   ( const _3x3Matrix& M );
-void _3DFrame_Translate( const _3x3Point& P );
+void     _3D_set_x     ( _3DFrame& F, sfloat32 x );
+void     _3D_set_y     ( _3DFrame& F, sfloat32 y );
+void     _3D_set_z     ( _3DFrame& F, sfloat32 z );
+void     _3D_set_loc   ( _3DFrame& F,  sfloat32 x, sfloat32 y, sfloat32 z );
 
-void _3DFrame_Construct( _3DFrame& F )
-{
-  m[0]  = 1.0;
-  m[5]  = 1.0;
-  m[10] = 1.0;
-  
-  return;
-}
+_3DFrame _3D_rot_x     ( _3DFrame& F, sfloat32 alpha );
+_3DFrame _3D_rot_y     ( _3DFrame& F, sfloat32 beta );
+_3DFrame _3D_rot_z     ( _3DFrame& F, sfloat32 gamma );
+_3DFrame _3D_translate ( sfloat32 x, sfloat32 y, sfloat32 z );
+
+void     _3D_clear_rot ( _3DFrame& F );
+void     _3D_clear_loc ( _3DFrame& F );
