@@ -135,6 +135,7 @@ class State
     vector<bool>& get_visited();
     const vector<bool>& get_visited() const;
     void set_visited( const unsigned int& n );
+    //needs comments
     void set_unvisited( const unsigned int& n );
     
     unsigned int location() const;
