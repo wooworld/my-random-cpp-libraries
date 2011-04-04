@@ -1,0 +1,37 @@
+Jobname: N128M_P16
+Running under user: gws4g2
+From queue: shortrun_cpu
+PBS Job ID: 75200.nic-p2.srv.mst.edu
+Master process running on: compute-6-14.local
+Working directory is: /nethome/users/gws4g2/cs387/project3
+
+PBS has allocated the following nodes:
+compute-6-14
+compute-6-14
+compute-6-14
+compute-6-14
+compute-6-14
+compute-6-14
+compute-6-14
+compute-6-14
+compute-6-15
+compute-6-15
+compute-6-15
+compute-6-15
+compute-6-15
+compute-6-15
+compute-6-15
+compute-6-15
+
+This job has allocated 16 cpus
+
+Starting execution at Thu, 24 Mar 2011 17:36:33
+################################################################################
+
+Number of processes to be used: 16
+Number of numbers per process: 8000000
+Taking 30.5176 MB of RAM
+Computation complete.
+Wall clock time used: 
+134.8 seconds, eqivalent to: 
+2.24667 minutes.
