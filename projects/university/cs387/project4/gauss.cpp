@@ -60,7 +60,7 @@ void driver( int argc, char* argv[] )
   {
     cout << "Incorrect call from the command line. Use the syntax: \n"
          << "./GAUSS [filename]" << endl;
-    MPI_Finalize();
+
     return;
   }
 
@@ -70,8 +70,11 @@ void driver( int argc, char* argv[] )
   int            numProcs       = 0;       // Number of processes being used
   int            myID           = 0;       // Holds the rank of each process
   string         fileLoc        = argv[1]; // The location of the input file
+  string         currLine       = "";      // The current line of the input file
   int            dimension      = 0;       // The dimensionality of the nxn matrix
-  int            numCols        = 0;       // The number of columns for this process
+  // int            numCols        = 0;       // The number of columns for this process
+  int            extraCols      = 0;       // The number of extra columns that must
+                                           // be appended to the matrix to make it square
   vector< vector<double> > myNumbers;      // Container for the numbers for this process
                                            // [numCols][dimension]
 
@@ -87,7 +90,7 @@ void driver( int argc, char* argv[] )
   // Do this FIRST (to avoid error)
   MPI_Comm_size( MPI_COMM_WORLD, &numProcs );
   MPI_Comm_rank( MPI_COMM_WORLD, &myID );
-
+                 
   /***
     Populate local numbers based on processor ID
   ***/
@@ -95,7 +98,7 @@ void driver( int argc, char* argv[] )
   if ( myID == _MASTER_ID )
   {
     cout << "Running from " << currWorkingDir << endl;
-    cout << "Attepmting to open file " << currWorkingDir << "/" << fileLoc << endl;
+    cout << "Attepmting to open file " << fileLoc << endl;
   }
 
   ifstream inFile;
@@ -110,27 +113,43 @@ void driver( int argc, char* argv[] )
     return;
   }
   
-  // Get the dimensionality
-  dimension = ??;
-
-  // Calculate the number of columns, uniform across all processes
-  numCols = ??;
-  
-  myNumbers.resize( numCols );
-  
-  // Expand each column to contain room for the numbers
-  for ( int i = 0; i < myNumbers.size(); i++ )
-    myNumbers[i].resize( dimension );
-
   // Ensure reading from beginning of file
   inFile.seekg( 0, ios::beg );
   
-  // Read input file numbers into myNumbers
+  // Get the dimensionality and number of "identity columns" necessary
+  getline( inFile, currLine );
+  dimension = atoi( currLine.c_str() );
+  extraCols = numProcs - (dimension % numProcs);
   
+  // Creates a column of proper size to append to this process' columns
+  vector<double> app_col( dimension + extraCols, 0.0 );
+  
+  for ( int i = 0; i < dimension; i++ )
+  {
+    // This process needs to store |dimension| numbers in a column
+    if ( i % numProcs == myID )
+    {
+      for ( int j = 0; (j < dimension && getline( inFile, currLine) ); j++ )
+        app_col[j] = atof( currLine.c_str() );
+        
+      myNumbers.push_back( app_col );      
+    }
+    
+    // This process does not need to store numbers, just advance
+    else
+      for ( int j = 0; (j < dimension && getline( inFile, currLine) ); j++ ) {}      
+  }
   
   inFile.close();
   
-  // Change columns into identity columns if necessary due to an odd number of columns
+  // This process got shorted a column because the number of columns isn't even
+  if ( myNumbers.size() < ceil( dimension / static_cast<float>(numProcs) ) )
+  {
+    app_col.clear();
+    app_col.resize( dimension + extraCols, 0.0 );
+    app_col[dimension + myID - 1] = 1.0;
+    myNumbers.push_back( app_col );
+  }
 
   // Ensure all processes have finished reading input before continuing
   MPI_Barrier( MPI_COMM_WORLD );
@@ -139,13 +158,12 @@ void driver( int argc, char* argv[] )
   if ( myID == _MASTER_ID )
   {
     cout << "Number of processes to be used: " << numProcs << endl;
-    cout << "Number of numbers per process: " << myNumbers.size() << endl;
-    cout << "Taking "
-         << (static_cast<double>(myNumbers.size()) * static_cast<double>(sizeof(int)) / 1024.0 / 1024.0)
-         << " MB of RAM" << endl;
+    cout << "Dimension of matrix: " << dimension << "x" << dimension << endl;
+    cout << "        Expanded to: " << dimension+extraCols << "x" << dimension+extraCols << endl;
+
     wallClockStart = MPI_Wtime();
   }
-
+  
   /***
     Perform pivoting to avoid divide by zero and error propogation
   ***/
@@ -172,6 +190,19 @@ void driver( int argc, char* argv[] )
          << endl;
   }
 
+  // Output the numbers for visual confirmation of correctness
+  for ( int i = 0; i < myNumbers.size(); i++ )
+  {
+    cout << myID << "," << i << ": ";
+    
+    for ( int j = 0; j < myNumbers[i].size(); j++ )
+    {
+      cout << myNumbers[i][j] << " ";
+    }
+    
+    cout << endl;
+  }
+  
   // Output the calculated determinant 
 
   // Finish the parallel computation
