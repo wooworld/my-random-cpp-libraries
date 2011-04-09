@@ -1,0 +1,50 @@
+#include "NXCDefs.h"
+#include "_3DFrame.h"
+#include "numeric_constants.h"
+
+task main()
+{
+  _3DFrame F;
+
+  _3D_Init( F );
+
+  // _3D_translate( F, 1, 2, 3 );
+  
+  // _3D_rot_x( F, _PI );
+  
+  // _3D_Print( F );
+  
+  // _3D_rot_x( F, -_PI );
+
+  // _3D_Print( F );
+  
+  TextOut( 0, LCD_LINE1, "4" );
+  
+  string out = "TEST";
+  TextOut( 0, LCD_LINE2, out );
+  
+  out = NumToStr( 4.5 );
+  TextOut( 0, LCD_LINE3, out );
+
+  out = FormatNum( "%4.1f ", 4.0 );
+  TextOut( 0, LCD_LINE4, out );
+
+  float curr_num;
+  F.m[0] = 5.2;
+  curr_num = F.m[0];
+  out = FormatNum( "%4.1f", F.m[0] );
+  out = FormatNum( "%4.1f", curr_num );
+  TextOut( 0, LCD_LINE5, out );
+  
+  //out = NumToStr( FormatNum( "%4.2f ", F.m[0] ) );
+  //strcat( out, NumToStr( FormatNum( "%4.2f ", F.m[1] ) ) );
+  //strcat( out, NumToStr( FormatNum( "%4.2f ", F.m[2] ) ) );
+  //strcat( out, NumToStr( FormatNum( "%4.2f ", F.m[3] ) ) );
+  //TextOut( 0, LCD_LINE4, FormatNum( "%4.2f ", F.m[0] ), DRAW_OPT_NORMAL );
+
+  
+  while ( true )
+  {
+    Wait(MS_20);
+  }
+}
