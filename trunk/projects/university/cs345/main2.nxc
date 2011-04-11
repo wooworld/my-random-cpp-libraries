@@ -6,7 +6,7 @@
 */
 
 #include "NXCDefs.h"           // Unnecessary, included for clarity
-#include "_3DFrame.h"          // The Frames used to track points of interest
+#include "_3DFrame2.h"         // The Frames used to track points of interest
 #include "numeric_constants.h" // Useful numeric constants
 
 /*
@@ -20,45 +20,31 @@ task main()
   unsigned int start_time = 0;
   unsigned int end_time = 0;
   start_time = CurrentTick();
-  
-  _3DFrame F;
+
+  float F[12];
   _3D_Init( F );
+
+  float G[12];
+  G = F;
+
+  _3D_translate( F, 1, 2, 3 );
   
-  _3DFrame G;
-  _3D_Init( G );
-  
-  _3D_Copy( G, _3D_translate( F, 1, 2, 3 ) );
-  
-  _3D_Print_Upper( G );
+  _3D_Print_Upper( F );
   
   _3D_move( F, G );
   
-  _3D_Copy( F, _3D_rot_x( G, _PI ) );
+  G = F;
+  
+  _3D_rot_x( F, _PI );
   
   _3D_Print_Lower( F );
   
-  _3D_move( G, F );
+  _3D_move( F, G );
   
   end_time = CurrentTick();
   
   NumOut( 0, LCD_LINE8, end_time - start_time );
-  
-  /*_3D_Copy( F, _3D_translate( F, -1, -2, -3 ) );
-  
-  _3D_Print_Lower( F );
-  
-  Wait( SEC_5 );
 
-  _3D_Copy( F, _3D_translate( F, 1, 2, 3 ) );
-  
-  _3D_Copy( F, _3D_rot_x( F, _PI ) );
-
-  _3D_Print_Upper( F );
-  
-  _3D_Copy( F, _3D_rot_x( F, -_PI ) );
-  
-  _3D_Print_Lower( F );
-  */
   while ( true )
   {
     Wait( MS_20 );
