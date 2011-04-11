@@ -11,8 +11,6 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
-#include <bitset>
-#include <string>
 #include <cstdlib>
 #include <ctime>
 #include <vector>
@@ -39,14 +37,14 @@ int main( int argc, char * argv[] )
   driver( argc, argv );
 
   MPI_Finalize();
-  
+
   return 0;
 }
 
 /*
   @fn    void driver( int argc, char* argv[] )
   @brief The driver for this program.
-  @pre   argv[1] contains the name of an input file containing the matrix to 
+  @pre   argv[1] contains the name of an input file containing the matrix to
             perform computations on. The required format of the file is described
             in instructions.htm or can be generated using generate_matrix.pl
   @param int argc - The number of arguments used on the command line.
@@ -87,17 +85,23 @@ void driver( int argc, char* argv[] )
   char           currWorkingDir[255];      // The current working directory
                  getcwd( currWorkingDir, 255 );
 
+  int    local_max_idx = 0;
+  double local_det     = 1.0;
+  int    numSwaps      = 0;
+  int    my_i          = 0;
+  vector<double> mult_factors;
+
   // Initialize the MPI background work
   MPI_Init( &argc, &argv );
 
   // Do this FIRST (to avoid error)
   MPI_Comm_size( MPI_COMM_WORLD, &numProcs );
   MPI_Comm_rank( MPI_COMM_WORLD, &myID );
-                 
+
   /***
     Populate local numbers based on processor ID
   ***/
-  
+
   if ( myID == _MASTER_ID )
   {
     cout << "Running from " << currWorkingDir << endl;
@@ -114,18 +118,18 @@ void driver( int argc, char* argv[] )
 
     return;
   }
-  
+
   // Ensure reading from beginning of file
   inFile.seekg( 0, ios::beg );
-  
+
   // Get the dimensionality and number of "identity columns" necessary
   getline( inFile, currLine );
   dimension = atoi( currLine.c_str() );
-  extraCols = numProcs - (dimension % numProcs);
-  
+  extraCols = (numProcs - (dimension % numProcs)) % numProcs;
+
   // Creates a column of proper size to append to this process' columns
   vector<double> app_col( dimension + extraCols, 0.0 );
-  
+
   for ( int i = 0; i < dimension; i++ )
   {
     // This process needs to store |dimension| numbers in a column
@@ -133,54 +137,27 @@ void driver( int argc, char* argv[] )
     {
       for ( int j = 0; (j < dimension && getline( inFile, currLine) ); j++ )
         app_col[j] = atof( currLine.c_str() );
-        
-      myNumbers.push_back( app_col );      
+
+      myNumbers.push_back( app_col );
     }
-    
+
     // This process does not need to store numbers, just advance
     else
-      for ( int j = 0; (j < dimension && getline( inFile, currLine) ); j++ ) {}      
+      for ( int j = 0; (j < dimension && getline( inFile, currLine) ); j++ ) {}
   }
-  
+
   inFile.close();
-  
+
   // This process got shorted a column because the number of columns isn't even
   // multiple of the number of processes and needs an identity column
   if ( myNumbers.size() < ceil( dimension / static_cast<float>(numProcs) ) )
   {
-    cout << myID << " appending an identity column: " << endl;
     app_col.clear();
     app_col.resize( dimension + extraCols, 0.0 );
     app_col[dimension + myID - 2] = 1.0;
     myNumbers.push_back( app_col );
-    cout << "  zero placed in index " << dimension + myID - 1 << endl;
   }
 
-  // Output the numbers for visual confirmation of correctness
-  /* for ( int i = 0; i < myNumbers.size(); i++ )
-  {
-    cout << myID << "," << i << ": ";
-    
-    for ( int j = 0; j < myNumbers[i].size(); j++ )
-    {
-      cout << myNumbers[i][j] << " ";
-    }
-    
-    cout << endl;
-  } */  
-  
-  cout << myID << " has " << myNumbers.size() << " columns." << endl;
-  
-  if ( myID == numProcs - 1 )
-  {
-    cout << "Processor << " <<  myID << "," << myNumbers.size()-1 << ": ";
-    
-    for ( int q = 0; q < myNumbers[0].size(); q++ )
-      cout << myNumbers[myNumbers.size()-1][q] << " ";
-      
-    cout << endl;
-  }
-  
   // Ensure all processes have finished reading input before continuing
   MPI_Barrier( MPI_COMM_WORLD );
 
@@ -193,118 +170,88 @@ void driver( int argc, char* argv[] )
 
     wallClockStart = MPI_Wtime();
   }
-  
-  MPI_Barrier( MPI_COMM_WORLD );
-  
-  int    local_max_idx = 0;
-  double local_det     = 1.0;
-  int    numSwaps      = 0;
-  int    my_i          = 0;
-  vector<double> mult_factors;  
-  
+
   // For each column in the matrix
   for ( int i = 0; i < (dimension + extraCols); i++ )
   {
-    // This process performs operations on its my_ith column relative to the 
+    // This process performs operations on its my_ith column relative to the
     // iteration over the entire matrix
     my_i = i / numProcs;
-    
-    cout << myID << ": " << i << " -> " << my_i << " (pivot)" << endl;
-    
+
   /***
     Perform pivoting to avoid divide by zero and error propogation
-  ***/  
-  
-    // This process owns this column
+  ***/
+
+    local_max_idx = i;
+
     if ( i % numProcs == myID )
     {
-      /* local_max_idx = distance
-                      ( 
-                        myNumbers[my_i].begin(), 
-                        max_element
-                        ( 
-                          myNumbers[my_i].begin()+i,
-                          myNumbers[my_i].end(),
-                          myCompare
-                        ) 
-                      // );
-                      ) - 1; //?!?! */
-                      
-      local_max_idx = i;
-      for ( int k = i; k < myNumbers[my_i].size(); k++ )
-        if ( myCompare( myNumbers[my_i][local_max_idx], myNumbers[my_i][k] ) )
-          local_max_idx = k;                      
+      // Locate the max value at or below the diagonal in this column
+      for ( int j = local_max_idx; j < myNumbers[my_i].size(); j++ )
+        if ( myCompare( myNumbers[my_i][local_max_idx], myNumbers[my_i][j] ) )
+          local_max_idx = j;
 
-      // Multiply the local determinant by the value about to be placed on the 
-      // global diagonal
+      // Multiply the local determinant value to be placed on the diagonal
       local_det *= myNumbers[my_i][local_max_idx];
     }
-    
+
     // Broadcast the location of the max value found to all processes
     MPI_Bcast( &local_max_idx, 1, MPI_DOUBLE, (i % numProcs), MPI_COMM_WORLD );
-    
-    // Swap the value from the diagonal, increment counter
+
+    // Perform row swap, increment swap counter once
     if ( i != local_max_idx )
     {
-      swap( myNumbers[my_i][i], myNumbers[my_i][local_max_idx] );    
+      for ( int j = 0; j < myNumbers.size(); j++ )
+        swap( myNumbers[j][i], myNumbers[j][local_max_idx] );
+
       numSwaps++;
     }
-   
+
   /***
     Calculate multiplication factors for row reduction
   ***/
-    cout << myID << ": " << i << " -> " << my_i << " (mult factors)" << endl;
-    // mult_factors.resize( dimension + extraCols - i );
+  
+    // Number of multiplication factors is the number of number of rows below i
     mult_factors.resize( dimension + extraCols - i - 1 );
-    
-    cout << myID << ": " << i << " -> " << my_i << ": mult_factors.size() = " << mult_factors.size() << endl;
+
     if ( mult_factors.size() > 0 )
     {
       if ( i % numProcs == myID )
-      {     
-        // Populate vector of multiplication factors to zero out this column
+      {
+        // Populate multiplication factors to zero out this column
         for ( int j = 0; j < mult_factors.size(); j++ )
         {
-          mult_factors[j] = 
-            (myNumbers[my_i][i] == 0.0) ? 
-            0.0 : 
+          // Avoid divide by 0 by populating with a 0
+          mult_factors[j] =
+            (myNumbers[my_i][i] == 0.0) ?
+            0.0 :
             myNumbers[my_i][i+1+j] / myNumbers[my_i][i]
           ;
         }
       }
-      
-      // Broadcast the multiplication factors to every process for row operation
-      MPI_Bcast( &mult_factors[0], mult_factors.size(), MPI_DOUBLE, (i % numProcs ), MPI_COMM_WORLD );
-    }
 
-    cout << myID << ": " << i << " -> " << my_i << " (row ops)" << endl;
-    
-    /***
-      Reduce row values based on multiplication factors
-    ***/
-    
-    // All processes perform row operation on their columns
-    for ( int k = 0; k < myNumbers.size(); k++ )
-    {
-      for ( int j = 0; j < mult_factors.size(); j++ )
-      {
-        // myNumbers[k][i+1+j] -= mult_factors[j] * myNumbers[my_i][i];
-        myNumbers[k][i+1+j] -= mult_factors[j] * myNumbers[k][i];
-        
-      }
+      // Broadcast multiplication factors for row operations
+      MPI_Bcast( &mult_factors[0], mult_factors.size(), MPI_DOUBLE, (i % numProcs ), MPI_COMM_WORLD );
+
+  /***
+    Reduce row values based on multiplication factors
+  ***/
+
+      // All processes perform row operation on their columns
+      for ( int k = 0; k < myNumbers.size(); k++ )
+        for ( int j = 0; j < mult_factors.size(); j++ )
+          myNumbers[k][i+1+j] -= mult_factors[j] * myNumbers[k][i];
     }
-    
-    cout << myID << ": " << i << " -> " << my_i << " (end)" << endl;
-  }  
-  
+  }
+
   /***
     Calculate determinant of the resultant matrix
   ***/
-  
+
   // Reduce w/ multiply across all processes' local determinant factors to obtain
-  // global determinant
+  // global determinant. Change determinant's sign based on number of row swaps
   MPI_Reduce( &local_det, &determinant, 1, MPI_DOUBLE, MPI_PROD, _MASTER_ID, MPI_COMM_WORLD );
-  determinant = (numSwaps & 1) ? (determinant) : (-1 * determinant);
+  determinant = (numSwaps & 1) ? (-1*determinant) : (determinant);
 
   // Stop clock
   if ( myID == _MASTER_ID )
@@ -317,21 +264,6 @@ void driver( int argc, char* argv[] )
          << endl;
     cout << "The computed determinant of the orignal matrix is: " << determinant << endl;
   }
-
-  // MPI_Barrier( MPI_COMM_WORLD );
-  
-  // Output the numbers for visual confirmation of correctness
-  /*   for ( int i = 0; i < myNumbers.size(); i++ )
-  {
-    cout << myID << "," << i << ": ";
-    
-    for ( int j = 0; j < myNumbers[i].size(); j++ )
-    {
-      cout << myNumbers[i][j] << " ";
-    }
-    
-    cout << endl;
-  } */
 
   return;
 }
