@@ -221,12 +221,13 @@ _3DFrame _3D_rot_y       ( const _3DFrame& F, float beta );
 _3DFrame _3D_rot_z       ( const _3DFrame& F, float gamma );
 _3DFrame _3D_translate   ( const _3DFrame& F, float x, float y, float z );
 
+void     _3D_move        ( const _3DFrame& F, const _3DFrame& G );
+
 void     _3D_clear_rot   ( _3DFrame& F );
 void     _3D_clear_loc   ( _3DFrame& F );
 
 safecall void _3D_Init( _3DFrame& F )
 {
-  //ArrayInit( F.m, 0.0, 12 );
   F.m = _3D_INIT_ARRAY;
 
   return;
@@ -438,12 +439,13 @@ _3DFrame _3D_translate( const _3DFrame& F, float x, float y, float z )
   return temp;
 }
 
-/*_3D_translate( _3DFrame& F, float x, float y, float z )
+void _3D_move( const _3DFrame& F, const _3DFrame& G )
 {
-  F.m[3]  = F.m[0]*x + F.m[1]*y + F.m[2]*z + F.m[3];
-  F.m[7]  = F.m[4]*x + F.m[5]*y + F.m[6]*z + F.m[7];
-  F.m[11] = F.m[8]*x + F.m[9]*y + F.m[10]*z + F.m[11];
-}*/
+  // Perform inverse kinematics on
+  // G.m from F.m to attain angles for motors necessary to end in G from F.
+
+  return;
+}
 
 safecall void _3D_clear_rot( _3DFrame& F )
 {
