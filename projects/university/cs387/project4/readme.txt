@@ -2,7 +2,7 @@ CONTENTS:
 readme.txt     - This explanation file
 report.docx    - The report for the project in a docx
 run_times.xlsx - The excel sheet used to record timings for runs
-driver.cpp     - The driver source code for the program
+gauss.cpp      - The driver source code for the program
   
 COMPILATION:
 mpiCC -o GAUSS driver.cpp

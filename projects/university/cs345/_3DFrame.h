@@ -3,184 +3,9 @@
   @auth Gary Steelman
   @desc The structure declaration and function prototypes for a 3D Frame
     to be used with the Lego Mindstorm NXT 2.0 kit.
-  @edit 09 Apr 2011
-*/
-
-/*
-  @fn     void _3D_Init( _3DFrame& F )
-  @desc   Initializes a _3DFrame object with an identity matrix for its rotation.
-  @pre    F exists.
-  @param  _3DFrame& F -- the _3DFrame to initialize.
-  @post   F is now useable as a _3DFrame.
-  @note   This must be called after creating a _3DFrame object to make it useful.
-
-  
-  @fn     void _3D_Destroy( _3DFrame& F )
-  @desc   Destroys a _3DFrame object. 
-  @pre    F has been initialized using _3D_Init().
-  @param  _3DFrame& F -- the _3DFrame to destroy.
-  @post   Memory in use by F is freed.
-
-  
-  @fn     void _3D_Copy( _3DFrame& A, const _3DFrame& B )
-  @desc   Copies B into A.
-  @pre    A has been initialized using _3D_Init().
-  @pre    B has been initialized using _3D_Init().
-  @param  _3DFrame& A -- the frame to copy into.
-  @param  _3DFrame& B -- the frame to copy from.
-  @post   Copies all entries in B to A.
-
-  
-  @fn     void _3D_Print( const _3DFrame& F )
-  @desc   Prints F to the NXT brick LCD screen.
-  @pre    F has been initialized using _3D_Init().
-  @param  _3DFrame& F -- the _3DFrame to output to the LCD screen.
-  @post   Outputs F's entries in a 3x4 fashion to the NXT's LCD screen.
-
-  
-  @fn     _3DFrame _3D_Mult( const _3DFrame& A, const _3DFrame& B )
-  @desc   Multiplies A by B and returns the result; eg return (A * B)
-  @pre    A has been initialized using _3D_Init().
-  @pre    B has been initialized using _3D_Init().
-  @param  _3DFrame& A -- the left hand side to multiply by.
-  @param  _3DFrame& B -- the right hand side to multiply by.
-  @rtn    _3DFrame -- the result of the multiplication A*B.
-  @post   Multiplies A by B and returns the result.
-
-  
-  @fn     void _3D_set_rot_x( _3DFrame& F, float alpha )
-  @desc   Sets F to be the frame for rotating about the current X axis by alpha.
-  @pre    F has been initialized using _3D_Init().
-  @pre    alpha is a rotation value in radians.
-  @param  _3DFrame& F -- the _3DFrame to set the rotation matrix to of.
-  @param  float alpha -- the magnitude of the rotation in radians. 
-  @post   Sets F to be a rotation about the current X axist by an angle alpha.
-
-  
-  @fn     void _3D_set_rot_y( _3DFrame& F, float beta )
-  @desc   Sets F to be the frame for rotating about the current Y axis by beta.
-  @pre    F has been initialized using _3D_Init().
-  @pre    beta is a rotation value in radians.
-  @param  _3DFrame& F -- the _3DFrame to set the rotation matrix to of.
-  @param  float beta -- the magnitude of the rotation in radians. 
-  @post   Sets F to be a rotation about the current Y axist by an angle beta.
-
-  
-  @fn     void _3D_set_rot_z( _3DFrame& F, float gamma )
-  @desc   Sets F to be the frame for rotating about the current Z axis by gamma.
-  @pre    F has been initialized using _3D_Init().
-  @pre    gamma is a rotation value in radians.
-  @param  _3DFrame& F -- the _3DFrame to set the rotation matrix to of.
-  @param  float gamma -- the magnitude of the rotation in radians. 
-  @post   Sets F to be a rotation about the current Z axist by an angle gamma.
-
-  
-  @fn     void _3D_set_x( _3DFrame& F, float x )
-  @desc   Sets F's X axis position to x.
-  @pre    F has been initialized using _3D_Init().
-  @pre    x is a real number.
-  @param  _3DFrame& F -- the _3DFrame to set the X component of.
-  @param  float x -- the value to relocate the frame to.
-  @post   Sets F's X axis position to x.
-
-  
-  @fn     void _3D_set_y( _3DFrame& F, float y )
-  @desc   Sets F's Y axis position to y.
-  @pre    F has been initialized using _3D_Init().
-  @pre    y is a real number.
-  @param  _3DFrame& F -- the _3DFrame to set the Y component of.
-  @param  float y -- the value to relocate the frame to.
-  @post   Sets F's Y axis position to y.
-
-  
-  @fn     void _3D_set_z( _3DFrame& F, float Z )
-  @desc   Sets F's Z axis position to z.
-  @pre    F has been initialized using _3D_Init().
-  @pre    z is a real number.
-  @param  _3DFrame& F -- the _3DFrame to set the Z component of.
-  @param  float z -- the value to relocate the frame to.
-  @post   Sets F's Z axis position to z.
-
-  
-  @fn     void _3D_set_loc( _3DFrame& F, float x, float y, float z )
-  @desc   Sets F's X axis position to x, Y axis position to y, and Z axis 
-            position to z.
-  @pre    F has been initialized using _3D_Init().
-  @pre    x is a real number.
-  @pre    y is a real number.
-  @pre    z is a real number.
-  @param  _3DFrame& F -- the _3DFrame to set the x, y, and z components of.
-  @param  float x -- the x value to relocate the frame to.
-  @param  float y -- the y value to relocate the frame to.
-  @param  float z -- the z value to relocate the frame to.
-  @post   Sets F's X, Y, and Z axis positions to x, y, z.
-  @note   This is NOT translation! This is a direct relocation! This /can/ and
-            probably will break the math and orientation of the frame!
-
-            
-  @fn     _3DFrame _3D_rot_x( const _3DFrame& F, float alpha )
-  @desc   Returns the rotation of F about its current X axis by alpha radians.
-  @pre    F has been initialized using _3D_Init().
-  @pre    alpha is a real number in radians.
-  @param  const _3DFrame& F -- the _3DFrame to rotate.
-  @param  float alpha -- the value to rotate the frame by.
-  @rtn    _3DFrame& F -- The result of the rotation.
-  @post   Returns the rotation of F about its current X axis by alpha radians.
-
-  
-  @fn     _3DFrame _3D_rot_y( const _3DFrame& F, float beta )
-  @desc   Returns the rotation of F about its current Y axis by beta radians.
-  @pre    F has been initialized using _3D_Init().
-  @pre    beta is a real number in radians.
-  @param  const _3DFrame& F -- the _3DFrame to rotate.
-  @param  float beta -- the value to rotate the frame by.
-  @rtn    _3DFrame& F -- The result of the rotation.
-  @post   Returns the rotation of F about its current Y axis by beta radians.
-
-  
-  @fn     _3DFrame _3D_rot_z( const _3DFrame& F, float gamma )
-  @desc   Returns the rotation of F about its current Z axis by gamma radians.
-  @pre    F has been initialized using _3D_Init().
-  @pre    gamma is a real number in radians.
-  @param  const _3DFrame& F -- the _3DFrame to rotate.
-  @param  float gamma -- the value to rotate the frame by.
-  @rtn    _3DFrame& F -- The result of the rotation.
-  @post   Returns the rotation of F about its current Z axis by gamma radians.
-
-  
-  @fn     _3DFrame _3D_translate ( const _3DFrame& F, float x, float y, float z )
-  @desc   Returns the translation of F along its X, Y, and Z axes by x, y, and z.
-  @pre    F has been initialized using _3D_Init().
-  @pre    x is a real number.
-  @pre    y is a real number.
-  @pre    z is a real number.
-  @param  const _3DFrame& F -- the _3DFrame to translate by x, y, z.
-  @param  float x -- the x value to translate along F's X axis.
-  @param  float y -- the y value to translate along F's Y axis.
-  @param  float z -- the z value to translate along F's Z axis.
-  @rtn    _3DFrame& F -- The result of the translation.
-  @post   Returns the translation of F along its X, Y, and Z axes by x, y, and z.
-
-  
-  @fn     void _3D_clear_rot( _3DFrame& F )
-  @desc   Sets the rotation matrix of F to 0.0.
-  @pre    F has been initialized using _3D_Init().
-  @param  _3DFrame& F -- the _3DFrame to clear the rotation matrix from.
-  @post   Sets the rotation matrix of F to 0.0.
-
-  
-  @fn     void _3D_reset_rot( _3DFrame& F )
-  @desc   Sets the rotation matrix of F to the identity (congruent to world frame).
-  @pre    F has been initialized using _3D_Init().
-  @param  _3DFrame& F -- the _3DFrame to reset the rotation matrix of. 
-  @post   Sets the rotation matrix of F to the identity (congruent to world frame).
-
-  
-  @fn     void _3D_clear_loc( _3DFrame& F );
-  @desc   Sets the location vector of F to 0.0.
-  @pre    F has been initialized using _3D_Init().
-  @param  _3DFrame& F -- the _3DFrame to clear the location vector from.
-  @post   Sets the location vector of F to 0.0.
+  @edit 12 Apr 2011
+  @note This file includes many optimizations specifically for use with NXC on
+    the Lego Mindstorm NXT 2.0.
 */
 
 #ifndef _3DFRAMEH
@@ -188,302 +13,261 @@
 
 #include "NXCDefs.h"
 
-typedef struct
+// The initial array structure for a 3D Frame.
+float _3D_INIT_ARRAY[] = { 1.0, 0.0, 0.0, 0.0,
+                           0.0, 1.0, 0.0, 0.0,
+                           0.0, 0.0, 1.0, 0.0 };
+
+#define _3D_Init( _F )      _F = _3D_INIT_ARRAY
+#define _3D_Copy( _A, _B )  _A = _B
+
+#define _3D_set_x( _F, _x ) _F[3] = _x
+#define _3D_set_y( _F, _y ) _F[7] = _y
+#define _3D_set_z( _F, _z ) _F[11] = _z
+
+void     _3D_Print       ( float F[] );
+void     _3D_Print_Upper ( float F[] );
+void     _3D_Print_Lower ( float F[] );
+                           
+void     _3D_Mult        ( float A[], float B[], float& C[] );
+
+void     _3D_set_rot_x   ( float& F[], float alpha );
+void     _3D_set_rot_y   ( float& F[], float beta );
+void     _3D_set_rot_z   ( float& F[], float gamma );
+
+void     _3D_set_loc     ( float F[], float x, float y, float z, float& G[] );
+
+void     _3D_rot_x       ( float F[], float alpha, float& G[] );
+void     _3D_rot_y       ( float F[], float beta, float& G[] );
+void     _3D_rot_z       ( float F[], float gamma, float& G[] );
+void     _3D_rot_euler   ( float F[], float phi, float theta, float psi, float& G[] );
+void     _3D_translate   ( float F[], float x, float y, float z, float& G[] );
+
+void     _3D_move        ( float F[], float G[] );
+
+void     _3D_clear_rot   ( float& F[] );
+void     _3D_reset_rot   ( float& F[] );
+void     _3D_clear_loc   ( float& F[] );
+
+/******************************************************************************/
+
+void _3D_Print( float F[] )
 {
-  float m[12];
-} _3DFrame;
-
-// Due to current BricxCC implementation this is necessary
-float _3D_INIT_ARRAY[] = {1.0, 0.0, 0.0, 0.0,
-                          0.0, 1.0, 0.0, 0.0,
-                          0.0, 0.0, 1.0, 0.0};
-
-void     _3D_Init        ( _3DFrame& F );
-void     _3D_Destroy     ( _3DFrame& F );
-void     _3D_Copy        ( _3DFrame& A, const _3DFrame& B );
-void     _3D_Print       ( const _3DFrame& F );
-void     _3D_Print_Upper ( const _3DFrame& F );
-void     _3D_Print_Lower ( const _3DFrame& F );
-
-_3DFrame _3D_Mult        ( const _3DFrame& A, const _3DFrame& B );
-
-void     _3D_set_rot_x   ( _3DFrame& F, float alpha );
-void     _3D_set_rot_y   ( _3DFrame& F, float beta  );
-void     _3D_set_rot_z   ( _3DFrame& F, float gamma );
-
-void     _3D_set_x       ( _3DFrame& F, float x );
-void     _3D_set_y       ( _3DFrame& F, float y );
-void     _3D_set_z       ( _3DFrame& F, float z );
-void     _3D_set_loc     ( _3DFrame& F, float x, float y, float z );
-
-_3DFrame _3D_rot_x       ( const _3DFrame& F, float alpha );
-_3DFrame _3D_rot_y       ( const _3DFrame& F, float beta );
-_3DFrame _3D_rot_z       ( const _3DFrame& F, float gamma );
-_3DFrame _3D_translate   ( const _3DFrame& F, float x, float y, float z );
-
-void     _3D_move        ( const _3DFrame& F, const _3DFrame& G );
-
-void     _3D_clear_rot   ( _3DFrame& F );
-void     _3D_clear_loc   ( _3DFrame& F );
-
-safecall void _3D_Init( _3DFrame& F )
-{
-  F.m = _3D_INIT_ARRAY;
-
-  return;
+  _3D_Print_Upper( F );
 }
 
-safecall void _3D_Destroy( _3DFrame& F )
+void _3D_Print_Upper( float F[] )
 {
-}
-
-safecall void _3D_Copy( _3DFrame& A, const _3DFrame& B )
-{
-  A.m = B.m;
-
-  return;
-}
-
-void _3D_Print( const _3DFrame& F )
-{
-  // For each column of the matrix
   for ( int i = 0; i < 4; i++ )
-  {
-    // For each row of the matrix
     for ( int j = 0; j < 3; j++ )
-    {
-       // Each character is 5 px wide, +1 space between chars
-       TextOut( i*24, LCD_LINE1-8*j, FormatNum( "%4.1f", F.m[(j*4) + i] ) );
-    }
-  }
+       TextOut( i*24, LCD_LINE1-8*j, FormatNum( "%4.1f", F[(j*4) + i] ) );
 }
 
-void _3D_Print_Upper( const _3DFrame& F )
+void _3D_Print_Lower( float F[] )
 {
-  // For each column of the matrix
   for ( int i = 0; i < 4; i++ )
-  {
-    // For each row of the matrix
     for ( int j = 0; j < 3; j++ )
-    {
-       // Each character is 5 px wide, +1 space between chars
-       TextOut( i*24, LCD_LINE1-8*j, FormatNum( "%4.1f", F.m[(j*4) + i] ) );
-    }
-  }
+       TextOut( i*24, LCD_LINE5-8*j, FormatNum( "%4.1f", F[(j*4) + i] ) );
 }
 
-void _3D_Print_Lower( const _3DFrame& F )
+void _3D_Mult( float A[], float B[], float& C[] )
 {
-  // For each column of the matrix
-  for ( int i = 0; i < 4; i++ )
-  {
-    // For each row of the matrix
-    for ( int j = 0; j < 3; j++ )
-    {
-       // Each character is 5 px wide, +1 space between chars
-       TextOut( i*24, LCD_LINE5-8*j, FormatNum( "%4.1f", F.m[(j*4) + i] ) );
-    }
-  }
-}
-
-_3DFrame _3D_Mult( const _3DFrame& A, const _3DFrame& B )
-{
-  _3DFrame temp;
-  ArrayInit( temp.m, 0.0, 12 );
+  float A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11;
+  float B0, B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11;
   
-  temp.m[0]  = A.m[0]*B.m[0] + A.m[1]*B.m[4] + A.m[2]*B.m[8];
-  temp.m[1]  = A.m[0]*B.m[1] + A.m[1]*B.m[5] + A.m[2]*B.m[9];
-  temp.m[2]  = A.m[0]*B.m[2] + A.m[1]*B.m[6] + A.m[2]*B.m[10];
-  temp.m[3]  = A.m[0]*B.m[3] + A.m[1]*B.m[7] + A.m[2]*B.m[11] + A.m[3];
-  temp.m[4]  = A.m[4]*B.m[0] + A.m[5]*B.m[4] + A.m[6]*B.m[8];
-  temp.m[5]  = A.m[4]*B.m[1] + A.m[5]*B.m[5] + A.m[6]*B.m[9];
-  temp.m[6]  = A.m[4]*B.m[2] + A.m[5]*B.m[6] + A.m[6]*B.m[10];
-  temp.m[7]  = A.m[4]*B.m[3] + A.m[5]*B.m[7] + A.m[6]*B.m[11] + A.m[7];
-  temp.m[8]  = A.m[8]*B.m[0] + A.m[9]*B.m[4] + A.m[10]*B.m[8];
-  temp.m[9]  = A.m[8]*B.m[1] + A.m[9]*B.m[5] + A.m[10]*B.m[9];
-  temp.m[10] = A.m[8]*B.m[2] + A.m[9]*B.m[6] + A.m[10]*B.m[10];
-  temp.m[11] = A.m[8]*B.m[3] + A.m[9]*B.m[7] + A.m[10]*B.m[11] + A.m[11];
-
-  return temp;
+  A0  = A[0]; A1  = A[1]; A2  = A[2];  A3  = A[3];
+  A4  = A[4]; A5  = A[5]; A6  = A[6];  A7  = A[7];
+  A8  = A[8]; A9  = A[9]; A10 = A[10]; A11 = A[11];
+  
+  B0  = B[0]; B1  = B[1]; B2  = B[2];  B3  = B[3];
+  B4  = B[4]; B5  = B[5]; B6  = B[6];  B7  = B[7];
+  B8  = B[8]; B9  = B[9]; B10 = B[10]; B11 = B[11];
+  
+  C[0]  = A0*B0 + A1*B4 + A2*B8;
+  C[1]  = A0*B1 + A1*B5 + A2*B9;
+  C[2]  = A0*B2 + A1*B6 + A2*B10;
+  C[3]  = A0*B3 + A1*B7 + A2*B11 + A3;
+  C[4]  = A4*B0 + A5*B4 + A6*B8;
+  C[5]  = A4*B1 + A5*B5 + A6*B9;
+  C[6]  = A4*B2 + A5*B6 + A6*B10;
+  C[7]  = A4*B3 + A5*B7 + A6*B11 + A7;
+  C[8]  = A8*B0 + A9*B4 + A10*B8;
+  C[9]  = A8*B1 + A9*B5 + A10*B9;
+  C[10] = A8*B2 + A9*B6 + A10*B10;
+  C[11] = A8*B3 + A9*B7 + A10*B11 + A11;  
 }
 
-safecall void _3D_set_rot_x( _3DFrame& F, float alpha )
+void _3D_set_rot_x( float& F[], float alpha )
 {
-  float sa = sin( alpha );
-  float ca = cos( alpha );
-
-  F.m[0]  = 1.0;
-  F.m[1]  = 0.0;
-  F.m[2]  = 0.0;
-  F.m[4]  = 0.0;
-  F.m[5]  = ca;
-  F.m[6]  = -1.0 * sa;
-  F.m[8]  = 0.0;
-  F.m[9]  = sa;
-  F.m[10] = ca;
-
-  return;
+  float sa  = sin(alpha);
+  float ca  = cos(alpha);
+  float nsa = -sa;
+  float F3, F7, F11;
+  
+  F3 = F[3]; F7 = F[7]; F11 = F[11];
+  
+  ArrayBuild( F, 1.0, 0.0, 0.0, F3,
+                 0.0, ca,  nsa, F7,
+                 0.0, sa,  ca,  F11 );  
 }
 
-safecall void _3D_set_rot_y( _3DFrame& F, float beta )
+void _3D_set_rot_y( float& F[], float beta )
 {
-  float sb = sin( beta );
-  float cb = cos( beta );
-
-  F.m[0]  = cb;
-  F.m[1]  = 0.0;
-  F.m[2]  = sb;
-  F.m[4]  = 0.0;
-  F.m[5]  = 1.0;
-  F.m[6]  = 0.0;
-  F.m[8]  = -1.0 * sb;
-  F.m[9]  = 0.0;
-  F.m[10] = cb;
-
-  return;
+  float sb  = sin( beta );
+  float cb  = cos( beta );
+  float nsb = -sb;
+  float F3, F7, F11;
+  
+  F3 = F[3]; F7 = F[7]; F11 = F[11];
+  
+  ArrayBuild( F, cb,  0.0, sb,  F3,
+                 0.0, 1.0, 0.0, F7,
+                 nsb, 0.0, cb,  F11 );
 }
 
-safecall void _3D_set_rot_z( _3DFrame& F, float gamma )
+void _3D_set_rot_z( float& F[], float gamma )
 {
-  float sg = sin( gamma );
-  float cg = cos( gamma );
-
-  F.m[0]  = cg;
-  F.m[1]  = -1.0 * sg;
-  F.m[2]  = 0.0;
-  F.m[4]  = sg;
-  F.m[5]  = cg;
-  F.m[6]  = 0.0;
-  F.m[8]  = 0.0;
-  F.m[9]  = 0.0;
-  F.m[10] = 1.0;
-
-  return;
+  float sg  = sin( gamma );
+  float cg  = cos( gamma );
+  float nsg = -sg;
+  float F3, F7, F11;
+  
+  F3 = F[3]; F7 = F[7]; F11 = F[11];
+  
+  ArrayBuild( F, cg,  nsg, 0.0, F3,
+                 sg,  cg,  0.0, F7,
+                 0.0, 0.0, 1.0, F11 );
 }
 
-safecall void _3D_set_x( _3DFrame& F, float x )
+void _3D_set_rot_euler( float F[], float phi, float theta, float psi )
 {
-  F.m[3] = x;
-
-  return;
+  float F0, F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11;
+  float G0, G1, G2, G3, G4, G5, G6, G7, G8, G9, G10, G11;
+  float sphi   = sin( phi );
+  float cphi   = cos( phi );
+  float stheta = sin( theta );
+  float ctheta = cos( theta );
+  float spsi   = sin( psi );
+  float cpsi   = cos( psi );
+  
+  G[0] = (cphi * ctheta * cpsi) - (sphi * spsi);
+  G[1] = 
+  
+  A0  = A[0]; A1  = A[1]; A2  = A[2];  A3  = A[3];
+  A4  = A[4]; A5  = A[5]; A6  = A[6];  A7  = A[7];
+  A8  = A[8]; A9  = A[9]; A10 = A[10]; A11 = A[11];
+  
+  B0  = B[0]; B1  = B[1]; B2  = B[2];  B3  = B[3];
+  B4  = B[4]; B5  = B[5]; B6  = B[6];  B7  = B[7];
+  B8  = B[8]; B9  = B[9]; B10 = B[10]; B11 = B[11];
+  
+  C[0]  = A0*B0 + A1*B4 + A2*B8;
+  C[1]  = A0*B1 + A1*B5 + A2*B9;
+  C[2]  = A0*B2 + A1*B6 + A2*B10;
+  C[3]  = A0*B3 + A1*B7 + A2*B11 + A3;
+  C[4]  = A4*B0 + A5*B4 + A6*B8;
+  C[5]  = A4*B1 + A5*B5 + A6*B9;
+  C[6]  = A4*B2 + A5*B6 + A6*B10;
+  C[7]  = A4*B3 + A5*B7 + A6*B11 + A7;
+  C[8]  = A8*B0 + A9*B4 + A10*B8;
+  C[9]  = A8*B1 + A9*B5 + A10*B9;
+  C[10] = A8*B2 + A9*B6 + A10*B10;
+  C[11] = A8*B3 + A9*B7 + A10*B11 + A11;  
 }
 
-safecall void _3D_set_y( _3DFrame& F, float y )
+void _3D_rot_x( float F[], float alpha, float& G[] )
 {
-  F.m[7] = y;
+  float rot_x[12];
+  float temp[12];
+  
+  _3D_set_rot_x( rot_x, alpha );
 
-  return;
+  _3D_Mult( F, rot_x, G );
 }
 
-safecall void _3D_set_z( _3DFrame& F, float z )
+void _3D_rot_y( float F[], float beta, float& G[] )
 {
-  F.m[11] = z;
+  float rot_y[12];
+  float temp[12];
+  
+  _3D_set_rot_y( rot_y, beta );
 
-  return;
+  _3D_Mult( F, rot_y, G );
 }
 
-safecall void _3D_set_loc  ( _3DFrame& F,  float x, float y, float z )
+void _3D_rot_z( float F[], float gamma, float& G[] )
 {
-  F.m[3]  = x;
-  F.m[7]  = y;
-  F.m[11] = z;
+  float rot_z[12];
+  float temp[12];
+  
+  _3D_set_rot_z( rot_z, gamma );
 
-  return;
+  _3D_Mult( F, rot_z, G );
 }
 
-_3DFrame _3D_rot_x( const _3DFrame& F, float alpha )
+void _3D_rot_euler( float F[], float phi, float theta, float psi, float& G[] )
 {
-  _3DFrame temp;
-
-  ArrayInit( temp.m, 0.0, 12 );
-
-  _3D_set_rot_x( temp, alpha );
-
-  //_3D_Copy( temp, _3D_Mult( temp, F ) );
-  _3D_Copy( temp, _3D_Mult( F, temp ) );
-
-  return temp;
+  float rot_euler[12];
+  float temp[12];
+  
+  _3D_set_rot_euler( rot_euler, phi, theta, psi );
+  
+  _3D_Mult( F, rot_euler, G );
 }
 
-_3DFrame _3D_rot_y( const _3DFrame& F, float beta )
+void _3D_set_loc( float F[], float x, float y, float z, float& G[] )
 {
-  _3DFrame temp;
-  temp.m = _3D_INIT_ARRAY;
-  //ArrayInit( temp.m, 0.0, 12 );
-
-  _3D_set_rot_y( temp, beta );
-
-  return _3D_Mult( temp, F );
+  _3D_set_x( F, x );
+  _3D_set_y( F, y );
+  _3D_set_z( F, z );
 }
 
-_3DFrame _3D_rot_z( const _3DFrame& F, float gamma )
+void _3D_translate( float& F[], float x, float y, float z, float& G[] )
 {
-  _3DFrame temp;
-  temp.m = _3D_INIT_ARRAY;
-  //ArrayInit( temp.m, 0.0, 12 );
-
-  _3D_set_rot_z( temp, gamma );
-
-  return _3D_Mult( temp, F );
+  G = F;
+  
+  G[3]  = F[0]*x + F[1]*y + F[2]*z + F[3];
+  G[7]  = F[4]*x + F[5]*y + F[6]*z + F[7];
+  G[11] = F[8]*x + F[9]*y + F[10]*z + F[11];
 }
 
-_3DFrame _3D_translate( const _3DFrame& F, float x, float y, float z )
+void _3D_move( float F[], float G[] )
 {
-  _3DFrame temp;
-  temp.m = F.m;
-
-  temp.m[3]  = F.m[0]*x + F.m[1]*y + F.m[2]*z + F.m[3];
-  temp.m[7]  = F.m[4]*x + F.m[5]*y + F.m[6]*z + F.m[7];
-  temp.m[11] = F.m[8]*x + F.m[9]*y + F.m[10]*z + F.m[11];
-
-  return temp;
+  // Perform inverse kinematics to find the angles for the motors necessary
+  // to move from F to G.
+  //_3D_Print_Upper( F );
+  //_3D_Print_Lower( G );
+  
+  //Wait( SEC_5 );
 }
 
-void _3D_move( const _3DFrame& F, const _3DFrame& G )
+void _3D_clear_rot( float& F[] )
 {
-  // Perform inverse kinematics on
-  // G.m from F.m to attain angles for motors necessary to end in G from F.
-
-  return;
+  float F3, F7, F11;
+  
+  F3 = F[3]; F7 = F[7]; F11 = F[11];
+  
+  ArrayBuild( F, 0.0, 0.0, 0.0, F3,
+                 0.0, 0.0, 0.0, F7,
+                 0.0, 0.0, 0.0, F11 );  
 }
 
-safecall void _3D_clear_rot( _3DFrame& F )
+void _3D_reset_rot( float& F[] )
 {
-  F.m[0]  = 0.0;
-  F.m[1]  = 0.0;
-  F.m[2]  = 0.0;
-  F.m[4]  = 0.0;
-  F.m[5]  = 0.0;
-  F.m[6]  = 0.0;
-  F.m[8]  = 0.0;
-  F.m[9]  = 0.0;
-  F.m[10] = 0.0;
-
-  return;
+  float F3, F7, F11;
+  
+  F3 = F[3]; F7 = F[7]; F11 = F[11];
+  
+  ArrayBuild( F, 1.0, 0.0, 0.0, F3,
+                 0.0, 1.0, 0.0, F7,
+                 0.0, 0.0, 1.0, F11 );  
 }
 
-safecall void _3D_reset_rot( _3DFrame& F )
+void _3D_clear_loc( float& F[] )
 {
-  F.m[0]  = 1.0;
-  F.m[1]  = 0.0;
-  F.m[2]  = 0.0;
-  F.m[4]  = 0.0;
-  F.m[5]  = 1.0;
-  F.m[6]  = 0.0;
-  F.m[8]  = 0.0;
-  F.m[9]  = 0.0;
-  F.m[10] = 1.0;
-
-  return;
-}
-
-safecall void _3D_clear_loc( _3DFrame& F )
-{
-  F.m[3]  = 0.0;
-  F.m[7]  = 0.0;
-  F.m[11] = 0.0;
-
-  return;
+  F[3]  = 0.0;
+  F[7]  = 0.0;
+  F[11] = 0.0;
 }
 
 #endif
