@@ -6,7 +6,7 @@
 */
 
 #include "NXCDefs.h"           // Unnecessary, included for clarity
-#include "_3DFrame.h"          // The Frames used to track points of interest
+#include "_3DFrame.h"         // The Frames used to track points of interest
 #include "numeric_constants.h" // Useful numeric constants
 
 /*
@@ -18,49 +18,92 @@
 task main()
 {
   unsigned int start_time = 0;
-  unsigned int end_time = 0;
-  start_time = CurrentTick();
+  float    total_time     = 0;
   
-  _3DFrame F;
+  float F[12];
+  float G[12];
+  float H[12];
   _3D_Init( F );
+  G = F;
+  H = F;
+
+  _3D_Print_Upper( F );
+  Wait( SEC_2 );
+
+  _3D_translate( F, 1, 2, 3, G );
+  _3D_move( F, G );
+  F = G;
   
-  _3DFrame G;
-  _3D_Init( G );
+  _3D_translate( F, -1, -2, -3, G );
+  _3D_move( F, G );
+  F = G;
   
-  _3D_Copy( G, _3D_translate( F, 1, 2, 3 ) );
+  _3D_rot_x( F, _PI, G );
+  _3D_move( F, G );
+  F = G;
   
-  _3D_Print_Upper( G );
+  _3D_rot_x( F, -_PI, G );
+  _3D_move( F, G );
+  F = G;
+  
+  start_time = CurrentTick();
+
+  float J[12];
+  _3D_Init( J );
+
+  float K[12];
+  K = J;
+
+  _3D_translate( J, 1, 2, 3, K );
+  
+  _3D_Print_Upper( K );
+  
+  _3D_move( J, K );
+  
+  K = J;
+  
+  _3D_rot_x( J, _PI, K );
+  
+  _3D_Print_Lower( K );
+  
+  _3D_move( J, K );
+  
+  total_time = CurrentTick();
+  
+  NumOut( 0, LCD_LINE8, total_time - start_time );
+  
+/*  start_time = CurrentTick();
+  
+  repeat( 1000 )
+  {
+    _3D_Mult( F, G, H );
+  }
+
+  float end_time = (CurrentTick() - start_time) / 1000.0;
+  NumOut( 0, LCD_LINE1, end_time ); */
+
+  /*
+  _3D_translate( F, 1, 2, 3 );
+  
+  _3D_Print_Upper( F );
   
   _3D_move( F, G );
   
-  _3D_Copy( F, _3D_rot_x( G, _PI ) );
+  G = F;
+  
+  _3D_rot_x( F, _PI );
   
   _3D_Print_Lower( F );
   
-  _3D_move( G, F );
+  _3D_move( F, G );
   
   end_time = CurrentTick();
   
   NumOut( 0, LCD_LINE8, end_time - start_time );
-  
-  /*_3D_Copy( F, _3D_translate( F, -1, -2, -3 ) );
-  
-  _3D_Print_Lower( F );
-  
-  Wait( SEC_5 );
-
-  _3D_Copy( F, _3D_translate( F, 1, 2, 3 ) );
-  
-  _3D_Copy( F, _3D_rot_x( F, _PI ) );
-
-  _3D_Print_Upper( F );
-  
-  _3D_Copy( F, _3D_rot_x( F, -_PI ) );
-  
-  _3D_Print_Lower( F );
   */
   while ( true )
   {
     Wait( MS_20 );
   }
 }
+
