@@ -34,15 +34,18 @@ void     _3D_Mult        ( float A[], float B[], float& C[] );
 void     _3D_set_rot_x   ( float& F[], float alpha );
 void     _3D_set_rot_y   ( float& F[], float beta );
 void     _3D_set_rot_z   ( float& F[], float gamma );
+void     _3D_set_rot_euler_ZYZ( float& F[], float phi, float theta, float psi );
 
 void     _3D_set_loc     ( float F[], float x, float y, float z, float& G[] );
 
 void     _3D_rot_x       ( float F[], float alpha, float& G[] );
 void     _3D_rot_y       ( float F[], float beta, float& G[] );
 void     _3D_rot_z       ( float F[], float gamma, float& G[] );
-void     _3D_rot_euler   ( float F[], float phi, float theta, float psi, float& G[] );
-void     _3D_translate   ( float F[], float x, float y, float z, float& G[] );
+void     _3D_rot_euler_ZYZ( float F[], float phi, float theta, float psi, float& G[] );
+void     _3D_translate_rel( float F[], float x, float y, float z, float& G[] );
+void     _3D_translate_abs( float F[], float x, float y, float z, float& G[] );
 
+void     _3D_distance    ( float F[], float G[], float& d );
 void     _3D_move        ( float F[], float G[] );
 
 void     _3D_clear_rot   ( float& F[] );
@@ -75,13 +78,13 @@ void _3D_Mult( float A[], float B[], float& C[] )
   float A0, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11;
   float B0, B1, B2, B3, B4, B5, B6, B7, B8, B9, B10, B11;
   
-  A0  = A[0]; A1  = A[1]; A2  = A[2];  A3  = A[3];
-  A4  = A[4]; A5  = A[5]; A6  = A[6];  A7  = A[7];
-  A8  = A[8]; A9  = A[9]; A10 = A[10]; A11 = A[11];
+  A0 = A[0]; A1 = A[1]; A2  = A[2];  A3  = A[3];
+  A4 = A[4]; A5 = A[5]; A6  = A[6];  A7  = A[7];
+  A8 = A[8]; A9 = A[9]; A10 = A[10]; A11 = A[11];
   
-  B0  = B[0]; B1  = B[1]; B2  = B[2];  B3  = B[3];
-  B4  = B[4]; B5  = B[5]; B6  = B[6];  B7  = B[7];
-  B8  = B[8]; B9  = B[9]; B10 = B[10]; B11 = B[11];
+  B0 = B[0]; B1 = B[1]; B2  = B[2];  B3  = B[3];
+  B4 = B[4]; B5 = B[5]; B6  = B[6];  B7  = B[7];
+  B8 = B[8]; B9 = B[9]; B10 = B[10]; B11 = B[11];
   
   C[0]  = A0*B0 + A1*B4 + A2*B8;
   C[1]  = A0*B1 + A1*B5 + A2*B9;
@@ -139,10 +142,10 @@ void _3D_set_rot_z( float& F[], float gamma )
                  0.0, 0.0, 1.0, F11 );
 }
 
-void _3D_set_rot_euler( float F[], float phi, float theta, float psi )
+void _3D_set_rot_euler_ZYZ( float& F[], float phi, float theta, float psi )
 {
-  float F0, F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11;
-  float G0, G1, G2, G3, G4, G5, G6, G7, G8, G9, G10, G11;
+  float F0, F1, F2, F4, F5, F6, F8, F9, F10;
+
   float sphi   = sin( phi );
   float cphi   = cos( phi );
   float stheta = sin( theta );
@@ -150,29 +153,21 @@ void _3D_set_rot_euler( float F[], float phi, float theta, float psi )
   float spsi   = sin( psi );
   float cpsi   = cos( psi );
   
-  G[0] = (cphi * ctheta * cpsi) - (sphi * spsi);
-  G[1] = 
+  F0 = (cphi * ctheta * cpsi) - (sphi * spsi);
+  F1 = -(cphi * ctheta * cpsi) - (sphi * cpsi);
+  F2 = cphi * stheta;
+
+  F4 = (sphi * ctheta * cpsi) + (cphi * spsi);
+  F5 = -(sphi * ctheta * spsi) + (cphi * cpsi);
+  F6 = sphi * stheta;
   
-  A0  = A[0]; A1  = A[1]; A2  = A[2];  A3  = A[3];
-  A4  = A[4]; A5  = A[5]; A6  = A[6];  A7  = A[7];
-  A8  = A[8]; A9  = A[9]; A10 = A[10]; A11 = A[11];
+  F8 = -stheta * cpsi;
+  F9 = stheta * spsi;
+  F10 = ctheta;
   
-  B0  = B[0]; B1  = B[1]; B2  = B[2];  B3  = B[3];
-  B4  = B[4]; B5  = B[5]; B6  = B[6];  B7  = B[7];
-  B8  = B[8]; B9  = B[9]; B10 = B[10]; B11 = B[11];
-  
-  C[0]  = A0*B0 + A1*B4 + A2*B8;
-  C[1]  = A0*B1 + A1*B5 + A2*B9;
-  C[2]  = A0*B2 + A1*B6 + A2*B10;
-  C[3]  = A0*B3 + A1*B7 + A2*B11 + A3;
-  C[4]  = A4*B0 + A5*B4 + A6*B8;
-  C[5]  = A4*B1 + A5*B5 + A6*B9;
-  C[6]  = A4*B2 + A5*B6 + A6*B10;
-  C[7]  = A4*B3 + A5*B7 + A6*B11 + A7;
-  C[8]  = A8*B0 + A9*B4 + A10*B8;
-  C[9]  = A8*B1 + A9*B5 + A10*B9;
-  C[10] = A8*B2 + A9*B6 + A10*B10;
-  C[11] = A8*B3 + A9*B7 + A10*B11 + A11;  
+  ArrayBuild( F, F0, F1, F2,  0.0,
+                 F4, F5, F6,  0.0,
+                 F8, F9, F10, 0.0 );  
 }
 
 void _3D_rot_x( float F[], float alpha, float& G[] )
@@ -205,12 +200,12 @@ void _3D_rot_z( float F[], float gamma, float& G[] )
   _3D_Mult( F, rot_z, G );
 }
 
-void _3D_rot_euler( float F[], float phi, float theta, float psi, float& G[] )
+void _3D_rot_euler_ZYZ( float F[], float phi, float theta, float psi, float& G[] )
 {
   float rot_euler[12];
   float temp[12];
   
-  _3D_set_rot_euler( rot_euler, phi, theta, psi );
+  _3D_set_rot_euler_ZYZ( rot_euler, phi, theta, psi );
   
   _3D_Mult( F, rot_euler, G );
 }
@@ -222,23 +217,41 @@ void _3D_set_loc( float F[], float x, float y, float z, float& G[] )
   _3D_set_z( F, z );
 }
 
-void _3D_translate( float& F[], float x, float y, float z, float& G[] )
+void _3D_translate_rel( float F[], float x, float y, float z, float& G[] )
+{
+  //G = F;
+  
+  G[3]  = F[0]*x + F[1]*y + F[2]*z  + F[3];
+  G[7]  = F[4]*x + F[5]*y + F[6]*z  + F[7];
+  G[11] = F[8]*x + F[9]*y + F[10]*z + F[11];
+}
+
+void _3D_translate_abs( float F[], float x, float y, float z, float& G[] )
 {
   G = F;
+
+  G[3]  = F[3]  + x;
+  G[7]  = F[7]  + y;
+  G[11] = F[11] + z;
+}
+
+void _3D_distance( float F[], float G[], float& d )
+{
+  float dx = F[3]  - G[3];
+  float dy = F[7]  - G[7];
+  float dz = F[11] - G[11];
   
-  G[3]  = F[0]*x + F[1]*y + F[2]*z + F[3];
-  G[7]  = F[4]*x + F[5]*y + F[6]*z + F[7];
-  G[11] = F[8]*x + F[9]*y + F[10]*z + F[11];
+  d = sqrt( (dx*dx) + (dy*dy) + (dz*dz) );
 }
 
 void _3D_move( float F[], float G[] )
 {
   // Perform inverse kinematics to find the angles for the motors necessary
   // to move from F to G.
-  //_3D_Print_Upper( F );
-  //_3D_Print_Lower( G );
+  _3D_Print_Upper( F );
+  _3D_Print_Lower( G );
   
-  //Wait( SEC_5 );
+  Wait( SEC_5 );
 }
 
 void _3D_clear_rot( float& F[] )
