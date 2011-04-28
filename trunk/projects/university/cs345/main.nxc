@@ -6,8 +6,59 @@
 */
 
 #include "NXCDefs.h"           // Unnecessary, included for clarity
-#include "_3DFrame.h"         // The Frames used to track points of interest
+#include "_3DFrame.h"          // The Frames used to track points of interest
 #include "numeric_constants.h" // Useful numeric constants
+
+#define SMALL_GEAR_TEETH  12
+#define LARGE_GEAR_TEETH  36
+
+#define GEAR_RATIO        (LARGE_GEAR_TEETH / SMALL_GEAR_TEETH)
+#define DEG_PER_STEP      _DEG_PER_CIRCLE * GEAR_RATIO
+
+#define BOT_WIDTH         17
+#define BOT_LEG_LEN       10
+#define REV_CIRC_DIST     (2.0 * _PI * BOT_WIDTH)
+
+#define ACC_ROT_ERR       7.5
+#define ROT_ERR_SPD       10
+
+#define MOT_LEFT          OUT_B
+#define MOT_RIGHT         OUT_A
+#define MOT_ALL           OUT_AB
+
+// Comment out this line to indicate the robot is walking on a non-frictionless surface
+//#define FRICTIONLESS      1
+
+#ifdef FRICTIONLESS
+  #define SLIP_FIX        1.0
+  #define CM_PER_STEP     (44.5 / 5.0)
+  #define DEG_PER_ROT     DEG_PER_STEP * ((REV_CIRC_DIST / CM_PER_STEP) + SLIP_FIX)
+  #define BOT_MAX_SPD     70
+  #define BOT_MAX_ACC     15
+#else
+  #define CM_PER_STEP     (31.0 / 5.0)
+  #define DEG_PER_ROT     DEG_PER_STEP * (REV_CIRC_DIST / CM_PER_STEP)
+  #define BOT_MAX_SPD     100
+  #define BOT_MAX_ACC     25
+#endif
+
+#define BOT_WALK_SPD BOT_MAX_SPD
+#define BOT_ROT_SPD  BOT_MAX_SPD
+
+safecall void InitMotors();
+
+safecall void Step  ( float steps, char speed );
+safecall void RStep ( float steps, char speed );
+
+safecall void Rotate( float degrees, char speed );
+
+safecall void Move  ( float F[], float& G[] );
+safecall void RMove ( float F[], float& G[] );
+
+float ORIGIN[12];
+float currLoc[12];
+float nextLoc[12];
+float tempLoc[12];
 
 /*
   @task main
@@ -30,80 +81,276 @@ task main()
   _3D_Print_Upper( F );
   Wait( SEC_2 );
 
-  _3D_translate( F, 1, 2, 3, G );
-  _3D_move( F, G );
-  F = G;
+  //_3D_translate( F, 1, 2, 0, G );
+  //_3D_move( F, G );
+  //F = G;
   
-  _3D_translate( F, -1, -2, -3, G );
-  _3D_move( F, G );
-  F = G;
+  //_3D_translate( F, -1, -2, 0, G );
+  //_3D_move( F, G );
+  //F = G;
   
-  _3D_rot_x( F, _PI, G );
-  _3D_move( F, G );
-  F = G;
+  // Turn 45 degrees right, move 10 units forward
+  /*_3D_rot_y( F, -_PI / 4.0, G );
+  _3D_translate_rel( G, 0.0, 0.0, sqrt(200.0), H );
+  _3D_move( F, H );
+  Move( F, H );
+  F = H;
   
-  _3D_rot_x( F, -_PI, G );
-  _3D_move( F, G );
-  F = G;
+  Wait( SEC_5 );
   
-  start_time = CurrentTick();
-
-  float J[12];
-  _3D_Init( J );
-
-  float K[12];
-  K = J;
-
-  _3D_translate( J, 1, 2, 3, K );
-  
-  _3D_Print_Upper( K );
-  
-  _3D_move( J, K );
-  
-  K = J;
-  
-  _3D_rot_x( J, _PI, K );
-  
-  _3D_Print_Lower( K );
-  
-  _3D_move( J, K );
-  
-  total_time = CurrentTick();
-  
-  NumOut( 0, LCD_LINE8, total_time - start_time );
-  
-/*  start_time = CurrentTick();
-  
-  repeat( 1000 )
-  {
-    _3D_Mult( F, G, H );
-  }
-
-  float end_time = (CurrentTick() - start_time) / 1000.0;
-  NumOut( 0, LCD_LINE1, end_time ); */
-
-  /*
-  _3D_translate( F, 1, 2, 3 );
-  
-  _3D_Print_Upper( F );
-  
-  _3D_move( F, G );
-  
-  G = F;
-  
-  _3D_rot_x( F, _PI );
-  
-  _3D_Print_Lower( F );
-  
-  _3D_move( F, G );
-  
-  end_time = CurrentTick();
-  
-  NumOut( 0, LCD_LINE8, end_time - start_time );
+  _3D_rot_y( F, -_PI * 3.0 / 4.0, G );
+  _3D_translate_rel( G, -10.0, 0.0, -10.0, H );
+  _3D_move( F, H );
+  Move( F, H );
+  F = H;
   */
+
+  _3D_Init( ORIGIN );
+  _3D_Init( currLoc );
+  _3D_Init( nextLoc );
+  _3D_Init( tempLoc );
+  
+  InitMotors();
+  
+  // Z is forward, X is left, Y is up
+  _3D_translate_rel( currLoc, -10.0, 0.0, -10.0, nextLoc );
+  _3D_move( currLoc, nextLoc );
+  
+  Wait( SEC_1 );
+  
+  // nextLoc's rotation is in the direction of movement, not currLoc's rotation!
+  Move( currLoc, nextLoc );
+  
+  currLoc = nextLoc;
+  
+  Wait( SEC_3 );
+  
+  Move( currLoc, ORIGIN );
+
+  currLoc = nextLoc;
+
+  //Step( 5.0, 100 );
+  
+  //Rotate( 360.0, 100 );
+  /*
+  Rotate( -_PI / 4 * _DEG_PER_RAD, BOT_ROT_SPD );
+  Step( sqrt(200.0) / CM_PER_STEP, BOT_WALK_SPD );
+  Rotate( -_PI * 3 / 4 * _DEG_PER_RAD, BOT_ROT_SPD );
+  Step( 10.0 / CM_PER_STEP, BOT_WALK_SPD );
+  Rotate( -_PI / 2 * _DEG_PER_RAD, BOT_ROT_SPD );
+  Step( 10.0 / CM_PER_STEP, BOT_WALK_SPD );
+  */
+  
+  
+  
   while ( true )
   {
-    Wait( MS_20 );
+    //printf( "Waiting!", 4 );
+    Wait( SEC_5 );
   }
+}
+
+// Walk forward
+// Use a lower speed for more accurate movement results
+safecall void Step( float steps, char speed )
+{
+  printf( "Stepping!", 4 );
+  
+  float angle_target;
+  float MOT_RIGHT_FIX;
+  float MOT_LEFT_FIX;
+  
+  angle_target = DEG_PER_STEP * steps;
+  
+  RotateMotorEx( MOT_ALL, speed, angle_target, 0, TRUE, FALSE );
+  Off( MOT_ALL );
+  
+  /*
+    Calculate and apply small angle fixes to better align the motors after the
+    initial rotation stops. Iterates until both motors have been aligned to
+    within ACC_ROT_ERR degrees of the intended degrees of rotation
+  */
+  do
+  {
+
+    MOT_RIGHT_FIX = angle_target - MotorRotationCount( MOT_RIGHT );
+    MOT_LEFT_FIX  = angle_target - MotorRotationCount( MOT_LEFT );
+  
+    RotateMotor( MOT_RIGHT, ROT_ERR_SPD, MOT_RIGHT_FIX );
+    Off( MOT_RIGHT );
+
+    RotateMotor( MOT_LEFT, ROT_ERR_SPD, MOT_LEFT_FIX );
+    Off( MOT_LEFT );
+    
+    // VM Clocks once per MS, need to do this to allow the values read to be
+    // the correctly output values from the previous tick
+    Wait( MS_1 );
+    
+  } while ( abs( MOT_RIGHT_FIX ) > ACC_ROT_ERR || abs( MOT_LEFT_FIX ) > ACC_ROT_ERR );
+  
+  // Rotation count resets can take up to 1 MS to apply, allot time for it
+  ResetRotationCount( MOT_ALL );
+  Wait( MS_1 );
+}
+
+// Walk backward
+safecall void RStep( float steps, char speed )
+{
+  printf( "RStepping!", 4 );
+}
+
+safecall void Rotate( float degrees, char speed )
+{
+  printf( "Rotating!", 4 );
+  
+  float angle_target;
+  float MOT_RIGHT_FIX;
+  float MOT_LEFT_FIX;
+
+  angle_target = DEG_PER_ROT * degrees / _DEG_PER_CIRCLE;
+
+  if ( abs(angle_target) < 0.001 )
+  {
+    return;
+  }
+  
+  // Rotate right by holding right at stop and forward left
+  // Could just as easily do this by holding left at stop and backward right
+  else if ( angle_target < 0.0 )
+  {
+    // angle_target was <0, symbolizing a right-rotation, but the value must
+    // be positive to make the left motor move forward
+    RotateMotor( MOT_LEFT, speed, -angle_target );
+    Off( MOT_LEFT );
+    
+    do
+    {
+      MOT_LEFT_FIX  = MotorRotationCount( MOT_LEFT ) + angle_target;
+
+      RotateMotor( MOT_LEFT, ROT_ERR_SPD, MOT_LEFT_FIX );
+      Off( MOT_LEFT );
+
+      Wait( MS_1 );
+
+    } while ( abs( MOT_LEFT_FIX ) > ACC_ROT_ERR );
+  }
+  
+  // Rotate left by holding left at stop and forward right
+  // Could just as easily do this by holding right at stop and backward left
+  else
+  {
+    RotateMotor( MOT_RIGHT, speed, angle_target );
+    Off( MOT_RIGHT );
+
+    do
+    {
+      MOT_RIGHT_FIX  = angle_target - MotorRotationCount( MOT_RIGHT );
+
+      RotateMotor( MOT_RIGHT, ROT_ERR_SPD, MOT_RIGHT_FIX );
+      Off( MOT_RIGHT );
+
+      Wait( MS_1 );
+
+    } while ( abs( MOT_RIGHT_FIX ) > ACC_ROT_ERR );
+  }
+
+  // DO NOT RESET MOTOR ROTATION COUNTS, NECESSARY FOR PATH CORRECTION LATER
+}
+
+void InitMotors()
+{
+  // Set the interval the motors are timed at
+  SetMotorRegulationTime( MS_1 );
+  
+  // Don't limit intermediary results
+  SetMotorRegulationOptions( OUT_REGOPTION_NO_SATURATION );
+  
+  // Max speed for motors is 100 (max) and max acceleration is 25
+  PosRegSetMax( MOT_ALL , BOT_MAX_SPD, BOT_MAX_ACC );
+}
+
+// Move from one reference frame to another
+void Move( float F[], float& G[] )
+{
+  float F2  = F[2];
+  float F10 = F[10];
+  float G2  = G[2];
+  float G3  = G[3];
+  float G10 = G[10];
+  float G11 = G[11];
+  float currAngle;
+  float destAngle;
+  float angleDiff;
+  float distance;
+  float rotation;
+
+  // Calculate the angle off of the Z+ axis currently facing
+  /*currAngle = F10 <= 0 ?
+    atan2( F10, -sqrt(1.0-(F10*F10)) ) :
+    atan2( F10, sqrt(1.0-(F10*F10)) );*/
+  currAngle = (F2 <= 0 ? -acos( F10 ) : acos( F10 ));
+
+  // Calculate the angle off of the Z+ axis to end facing
+  /*destAngle = G2 <= 0 ?
+    atan2( G10, -sqrt(1.0-(G10*G10)) ) :
+    atan2( G10, sqrt(1.0-(G10*G10)) );*/
+  //destAngle = G2 <= 0 ?
+    destAngle = atan2( G3, G11 );
+  //destAngle = (G2 <= 0 ? -acos( G10 ) : acos( G10 ));
+  
+
+  // Acute angle between the two Z vectors
+  /*angleDiff = acos(
+                ( F2*G2 + F10*G10 ) /
+                ( sqrt(F2*F2 + F10*F10) * sqrt(G2*G2 + G10*G10) )
+              );*/
+
+  NumOut( 0, LCD_LINE1, currAngle * _DEG_PER_RAD );
+  NumOut( 0, LCD_LINE2, destAngle * _DEG_PER_RAD );
+  //NumOut( 0, LCD_LINE3, angleDiff * _DEG_PER_RAD );
+
+  // Know to rotate angleDiff degrees, now calculate positive or negative direction
+  //rotation = angleDiff;
+
+  // Convert both destination and current angles to "positive" angles, can be
+  // > 180 degrees
+  if ( destAngle < 0 )
+    destAngle = _DEG_PER_CIRCLE + destAngle;
+  if ( currAngle < 0 )
+    currAngle = _DEG_PER_CIRCLE + currAngle;
+  
+  angleDiff = destAngle - currAngle;
+  NumOut( 0, LCD_LINE3, angleDiff * _DEG_PER_RAD );
+  
+  /*if ( currAngle < destAngle )
+    if ( currAngle + (_DEG_PER_CIRCLE / 2) < destAngle )
+      rotation *= -1.0;
+  else if ( destAngle < currAngle )
+    if ( destAngle + (_DEG_PER_CIRCLE / 2) < currAngle )
+      rotation *= -1.0;
+  */
+  // Calculate then walk the robot to G's location
+  _3D_distance( F, G, distance );
+  
+  //NumOut( 0, LCD_LINE4, rotation * _DEG_PER_RAD );
+  NumOut( 0, LCD_LINE5, distance );
+  NumOut( 0, LCD_LINE6, distance / CM_PER_STEP );
+  
+  // Turn robot toward destination
+  //Rotate( rotation, BOT_ROT_SPD );
+  
+  // distance is the number of cm to move, coordinate axes are units of cm.
+  //Step( (distance / CM_PER_STEP), BOT_WALK_SPD );
+  
+  // Update the robot's current frame to reflect the rotation toward the destination
+  float tempThing[12];
+  tempThing = G;
+  _3D_rot_y( tempThing, rotation, G );
+}
+
+// Move from one reference frame to another, walking backward
+void RMove( float F[], float G[] )
+{
+
 }
 
