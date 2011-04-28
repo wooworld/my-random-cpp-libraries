@@ -250,8 +250,6 @@ void _3D_move( float F[], float G[] )
   // to move from F to G.
   _3D_Print_Upper( F );
   _3D_Print_Lower( G );
-  
-  Wait( SEC_5 );
 }
 
 void _3D_clear_rot( float& F[] )

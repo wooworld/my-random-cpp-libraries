@@ -22,6 +22,8 @@
 #define ACC_ROT_ERR       7.5
 #define ROT_ERR_SPD       10
 
+#define MIN_ROT           0.5
+
 #define MOT_LEFT          OUT_B
 #define MOT_RIGHT         OUT_A
 #define MOT_ALL           OUT_AB
@@ -30,13 +32,13 @@
 //#define FRICTIONLESS      1
 
 #ifdef FRICTIONLESS
-  #define SLIP_FIX        1.0
-  #define CM_PER_STEP     (44.5 / 5.0)
+  #define SLIP_FIX        1.5
+  #define CM_PER_STEP     (((44.5 + 40.5 + 42.0 + 43.2 + 43.0 + 40.1) / 6.0) / 5.0)
   #define DEG_PER_ROT     DEG_PER_STEP * ((REV_CIRC_DIST / CM_PER_STEP) + SLIP_FIX)
   #define BOT_MAX_SPD     70
   #define BOT_MAX_ACC     15
 #else
-  #define CM_PER_STEP     (31.0 / 5.0)
+  #define CM_PER_STEP     (((31.0 + 35.2 + 33.7 + 33.9 + 36.3 + 32.0) / 6.0) / 5.0)
   #define DEG_PER_ROT     DEG_PER_STEP * (REV_CIRC_DIST / CM_PER_STEP)
   #define BOT_MAX_SPD     100
   #define BOT_MAX_ACC     25
@@ -68,7 +70,7 @@ float tempLoc[12];
 */
 task main()
 {
-  unsigned int start_time = 0;
+  /*unsigned int start_time = 0;
   float    total_time     = 0;
   
   float F[12];
@@ -76,34 +78,7 @@ task main()
   float H[12];
   _3D_Init( F );
   G = F;
-  H = F;
-
-  _3D_Print_Upper( F );
-  Wait( SEC_2 );
-
-  //_3D_translate( F, 1, 2, 0, G );
-  //_3D_move( F, G );
-  //F = G;
-  
-  //_3D_translate( F, -1, -2, 0, G );
-  //_3D_move( F, G );
-  //F = G;
-  
-  // Turn 45 degrees right, move 10 units forward
-  /*_3D_rot_y( F, -_PI / 4.0, G );
-  _3D_translate_rel( G, 0.0, 0.0, sqrt(200.0), H );
-  _3D_move( F, H );
-  Move( F, H );
-  F = H;
-  
-  Wait( SEC_5 );
-  
-  _3D_rot_y( F, -_PI * 3.0 / 4.0, G );
-  _3D_translate_rel( G, -10.0, 0.0, -10.0, H );
-  _3D_move( F, H );
-  Move( F, H );
-  F = H;
-  */
+  H = F;*/
 
   _3D_Init( ORIGIN );
   _3D_Init( currLoc );
@@ -114,38 +89,25 @@ task main()
   
   // Z is forward, X is left, Y is up
   _3D_translate_rel( currLoc, -10.0, 0.0, -10.0, nextLoc );
-  _3D_move( currLoc, nextLoc );
-  
-  Wait( SEC_1 );
-  
-  // nextLoc's rotation is in the direction of movement, not currLoc's rotation!
   Move( currLoc, nextLoc );
-  
   currLoc = nextLoc;
   
-  Wait( SEC_3 );
+  /*_3D_translate_rel( ORIGIN, -10.0, 0.0, 0.0, nextLoc );
+  _3D_move( currLoc, nextLoc );
+  Wait( SEC_5 );
+  Move( currLoc, nextLoc );
+  Wait( SEC_5 );
+  _3D_move( currLoc, nextLoc );
+  Wait( SEC_5);
+  currLoc = nextLoc;*/
   
-  Move( currLoc, ORIGIN );
-
+  nextLoc = ORIGIN;
+  Move( currLoc, nextLoc );
+  _3D_move( currLoc, nextLoc );
   currLoc = nextLoc;
-
-  //Step( 5.0, 100 );
-  
-  //Rotate( 360.0, 100 );
-  /*
-  Rotate( -_PI / 4 * _DEG_PER_RAD, BOT_ROT_SPD );
-  Step( sqrt(200.0) / CM_PER_STEP, BOT_WALK_SPD );
-  Rotate( -_PI * 3 / 4 * _DEG_PER_RAD, BOT_ROT_SPD );
-  Step( 10.0 / CM_PER_STEP, BOT_WALK_SPD );
-  Rotate( -_PI / 2 * _DEG_PER_RAD, BOT_ROT_SPD );
-  Step( 10.0 / CM_PER_STEP, BOT_WALK_SPD );
-  */
-  
-  
   
   while ( true )
   {
-    //printf( "Waiting!", 4 );
     Wait( SEC_5 );
   }
 }
@@ -170,12 +132,14 @@ safecall void Step( float steps, char speed )
     initial rotation stops. Iterates until both motors have been aligned to
     within ACC_ROT_ERR degrees of the intended degrees of rotation
   */
-  do
-  {
-
-    MOT_RIGHT_FIX = angle_target - MotorRotationCount( MOT_RIGHT );
-    MOT_LEFT_FIX  = angle_target - MotorRotationCount( MOT_LEFT );
+  MOT_RIGHT_FIX = angle_target - MotorRotationCount( MOT_RIGHT );
+  MOT_LEFT_FIX  = angle_target - MotorRotationCount( MOT_LEFT );
   
+  while ( abs( MOT_RIGHT_FIX ) > ACC_ROT_ERR || abs( MOT_LEFT_FIX ) > ACC_ROT_ERR )
+  {
+    //printf( "Stepfix L: %f, R: %f", MOT_LEFT_FIX, MOT_RIGHT_FIX );
+    NumOut( 0, LCD_LINE7, MOT_LEFT_FIX );
+    NumOut( 0, LCD_LINE8, MOT_RIGHT_FIX );
     RotateMotor( MOT_RIGHT, ROT_ERR_SPD, MOT_RIGHT_FIX );
     Off( MOT_RIGHT );
 
@@ -186,7 +150,9 @@ safecall void Step( float steps, char speed )
     // the correctly output values from the previous tick
     Wait( MS_1 );
     
-  } while ( abs( MOT_RIGHT_FIX ) > ACC_ROT_ERR || abs( MOT_LEFT_FIX ) > ACC_ROT_ERR );
+    MOT_RIGHT_FIX = angle_target - MotorRotationCount( MOT_RIGHT );
+    MOT_LEFT_FIX  = angle_target - MotorRotationCount( MOT_LEFT );
+  }
   
   // Rotation count resets can take up to 1 MS to apply, allot time for it
   ResetRotationCount( MOT_ALL );
@@ -209,7 +175,7 @@ safecall void Rotate( float degrees, char speed )
 
   angle_target = DEG_PER_ROT * degrees / _DEG_PER_CIRCLE;
 
-  if ( abs(angle_target) < 0.001 )
+  if ( abs(angle_target) < MIN_ROT )
   {
     return;
   }
@@ -220,19 +186,23 @@ safecall void Rotate( float degrees, char speed )
   {
     // angle_target was <0, symbolizing a right-rotation, but the value must
     // be positive to make the left motor move forward
-    RotateMotor( MOT_LEFT, speed, -angle_target );
+    angle_target = -angle_target;
+    
+    RotateMotor( MOT_LEFT, speed, angle_target );
     Off( MOT_LEFT );
     
-    do
+    MOT_LEFT_FIX = angle_target - MotorRotationCount( MOT_LEFT );
+    
+    while ( abs( MOT_LEFT_FIX ) > ACC_ROT_ERR )
     {
-      MOT_LEFT_FIX  = MotorRotationCount( MOT_LEFT ) + angle_target;
-
+      printf( "Rotfix L: %f", MOT_LEFT_FIX );
       RotateMotor( MOT_LEFT, ROT_ERR_SPD, MOT_LEFT_FIX );
       Off( MOT_LEFT );
 
       Wait( MS_1 );
 
-    } while ( abs( MOT_LEFT_FIX ) > ACC_ROT_ERR );
+      MOT_LEFT_FIX = angle_target - MotorRotationCount( MOT_LEFT );
+    }
   }
   
   // Rotate left by holding left at stop and forward right
@@ -242,19 +212,24 @@ safecall void Rotate( float degrees, char speed )
     RotateMotor( MOT_RIGHT, speed, angle_target );
     Off( MOT_RIGHT );
 
-    do
-    {
-      MOT_RIGHT_FIX  = angle_target - MotorRotationCount( MOT_RIGHT );
+    MOT_RIGHT_FIX  = angle_target - MotorRotationCount( MOT_RIGHT );
 
+    while ( abs( MOT_RIGHT_FIX ) > ACC_ROT_ERR )
+    {
+      printf( "Rotfix R: %f", MOT_RIGHT_FIX );
       RotateMotor( MOT_RIGHT, ROT_ERR_SPD, MOT_RIGHT_FIX );
       Off( MOT_RIGHT );
 
       Wait( MS_1 );
 
-    } while ( abs( MOT_RIGHT_FIX ) > ACC_ROT_ERR );
+      MOT_RIGHT_FIX  = angle_target - MotorRotationCount( MOT_RIGHT );
+    }
   }
 
   // DO NOT RESET MOTOR ROTATION COUNTS, NECESSARY FOR PATH CORRECTION LATER
+  /* resetting for now because implementation of path correction is coming later */
+  ResetRotationCount( MOT_ALL );
+  Wait( MS_1 );
 }
 
 void InitMotors()
@@ -273,10 +248,12 @@ void InitMotors()
 void Move( float F[], float& G[] )
 {
   float F2  = F[2];
+  float F3  = F[3];
   float F10 = F[10];
-  float G2  = G[2];
+  float F11 = F[11];
+  //float G2  = G[2];
   float G3  = G[3];
-  float G10 = G[10];
+  //float G10 = G[10];
   float G11 = G[11];
   float currAngle;
   float destAngle;
@@ -285,67 +262,49 @@ void Move( float F[], float& G[] )
   float rotation;
 
   // Calculate the angle off of the Z+ axis currently facing
-  /*currAngle = F10 <= 0 ?
-    atan2( F10, -sqrt(1.0-(F10*F10)) ) :
-    atan2( F10, sqrt(1.0-(F10*F10)) );*/
-  currAngle = (F2 <= 0 ? -acos( F10 ) : acos( F10 ));
+  currAngle = atan2( F2, F10 );
 
   // Calculate the angle off of the Z+ axis to end facing
-  /*destAngle = G2 <= 0 ?
-    atan2( G10, -sqrt(1.0-(G10*G10)) ) :
-    atan2( G10, sqrt(1.0-(G10*G10)) );*/
-  //destAngle = G2 <= 0 ?
-    destAngle = atan2( G3, G11 );
-  //destAngle = (G2 <= 0 ? -acos( G10 ) : acos( G10 ));
+  destAngle = atan2( G3-F3, G11-F11 );
   
-
-  // Acute angle between the two Z vectors
-  /*angleDiff = acos(
-                ( F2*G2 + F10*G10 ) /
-                ( sqrt(F2*F2 + F10*F10) * sqrt(G2*G2 + G10*G10) )
-              );*/
-
   NumOut( 0, LCD_LINE1, currAngle * _DEG_PER_RAD );
   NumOut( 0, LCD_LINE2, destAngle * _DEG_PER_RAD );
-  //NumOut( 0, LCD_LINE3, angleDiff * _DEG_PER_RAD );
-
-  // Know to rotate angleDiff degrees, now calculate positive or negative direction
-  //rotation = angleDiff;
 
   // Convert both destination and current angles to "positive" angles, can be
   // > 180 degrees
   if ( destAngle < 0 )
-    destAngle = _DEG_PER_CIRCLE + destAngle;
+    destAngle = _RAD_PER_CIRCLE + destAngle;
   if ( currAngle < 0 )
-    currAngle = _DEG_PER_CIRCLE + currAngle;
+    currAngle = _RAD_PER_CIRCLE + currAngle;
   
   angleDiff = destAngle - currAngle;
+
   NumOut( 0, LCD_LINE3, angleDiff * _DEG_PER_RAD );
-  
-  /*if ( currAngle < destAngle )
-    if ( currAngle + (_DEG_PER_CIRCLE / 2) < destAngle )
-      rotation *= -1.0;
+
+  if ( currAngle < destAngle )
+    if ( currAngle + (_RAD_PER_CIRCLE / 2) < destAngle )
+      angleDiff = -(_RAD_PER_CIRCLE - angleDiff);
   else if ( destAngle < currAngle )
-    if ( destAngle + (_DEG_PER_CIRCLE / 2) < currAngle )
-      rotation *= -1.0;
-  */
+    if ( destAngle + (_RAD_PER_CIRCLE / 2) < currAngle )
+      angleDiff = -(_RAD_PER_CIRCLE - angleDiff);
+
+  NumOut( 0, LCD_LINE4, angleDiff * _DEG_PER_RAD );
+
   // Calculate then walk the robot to G's location
   _3D_distance( F, G, distance );
-  
-  //NumOut( 0, LCD_LINE4, rotation * _DEG_PER_RAD );
   NumOut( 0, LCD_LINE5, distance );
   NumOut( 0, LCD_LINE6, distance / CM_PER_STEP );
   
   // Turn robot toward destination
-  //Rotate( rotation, BOT_ROT_SPD );
+  Rotate( angleDiff * _DEG_PER_RAD, BOT_ROT_SPD );
   
   // distance is the number of cm to move, coordinate axes are units of cm.
-  //Step( (distance / CM_PER_STEP), BOT_WALK_SPD );
+  Step( (distance / CM_PER_STEP), BOT_WALK_SPD );
   
   // Update the robot's current frame to reflect the rotation toward the destination
-  float tempThing[12];
-  tempThing = G;
-  _3D_rot_y( tempThing, rotation, G );
+  float GCopy[12];
+  GCopy = G;
+  _3D_rot_y( GCopy, angleDiff, G );
 }
 
 // Move from one reference frame to another, walking backward

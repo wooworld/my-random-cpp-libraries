@@ -5,6 +5,7 @@
 #define _E  2.71828183
 
 #define _DEG_PER_CIRCLE 360.0
+#define _RAD_PER_CIRCLE (2.0 * _PI)
 
 #define _RAD_PER_DEG (_PI / 180.0)
 #define _DEG_PER_RAD (180.0 / _PI)
