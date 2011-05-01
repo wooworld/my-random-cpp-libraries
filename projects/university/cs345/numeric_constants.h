@@ -9,5 +9,7 @@
 
 #define _RAD_PER_DEG (_PI / 180.0)
 #define _DEG_PER_RAD (180.0 / _PI)
+#define DegToRad( a ) a * _RAD_PER_DEG
+#define RadToDeg( a ) a * _DEG_PER_RAD
 
 #endif
