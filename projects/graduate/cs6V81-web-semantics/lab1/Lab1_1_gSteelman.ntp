@@ -1,0 +1,7 @@
+_:AX2dXa69fd6aX3aX1328f4abf8bX3aXX2dX7fff <http://www.w3.org/2001/vcard-rdf/3.0#Family> "Seida" .
+_:AX2dXa69fd6aX3aX1328f4abf8bX3aXX2dX7fff <http://www.w3.org/2001/vcard-rdf/3.0#Given> "Steven" .
+<http://utdallas/semclass#stevenSeida> <http://www.w3.org/2001/vcard-rdf/3.0#N> _:AX2dXa69fd6aX3aX1328f4abf8bX3aXX2dX7fff .
+<http://utdallas/semclass#stevenSeida> <http://www.w3.org/2001/vcard-rdf/3.0#TITLE> "Senior Lecturer" .
+<http://utdallas/semclass#stevenSeida> <http://www.w3.org/2001/vcard-rdf/3.0#BDAY> "January 1, 1901" .
+<http://utdallas/semclass#stevenSeida> <http://www.w3.org/2001/vcard-rdf/3.0#EMAIL> "steven.seida@utdallas.edu" .
+<http://utdallas/semclass#stevenSeida> <http://www.w3.org/2001/vcard-rdf/3.0#FN> "Steven Seida" .
