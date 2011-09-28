@@ -46,12 +46,7 @@ public class homework2
 			
 			SearchAgent agent1_1 = new SearchAgent(problem, search1_1);
 			
-			System.out.println("1.1 \nDefault A*:");
-			System.out.println("Solutin Path:");
-			for ( int i = 0; i < agent1_1.getActions().size(); i++ )
-				System.out.println("\t" + agent1_1.getActions().get(i).toString());
-			System.out.println("Nodes Expanded: " + agent1_1.getInstrumentation().getProperty("nodesExpanded"));
-			System.out.println();
+			print_results("1.1", "Default A*", agent1_1);
 			
 			// Problem 1-2 (w=.75)
 			Search search1_2_75 = new AStarSearch1_2(
@@ -64,12 +59,7 @@ public class homework2
 			
 			SearchAgent agent1_2_75 = new SearchAgent(problem, search1_2_75);
 			
-			System.out.println("1.2 \nh-Weighted A* (w=0.75):");
-			System.out.println("Solutin Path:");
-			for ( int i = 0; i < agent1_2_75.getActions().size(); i++ )
-				System.out.println("\t" + agent1_2_75.getActions().get(i).toString());
-			System.out.println("Nodes Expanded: " + agent1_2_75.getInstrumentation().getProperty("nodesExpanded"));
-			System.out.println();
+			print_results("1.2", "Weighted A* (w=0.75)", agent1_2_75);
 			
 			// Problem 1-2 (w=.25)
 			Search search1_2_25 = new AStarSearch1_2(
@@ -82,12 +72,7 @@ public class homework2
 			
 			SearchAgent agent1_2_25 = new SearchAgent(problem, search1_2_25);
 			
-			System.out.println("1.2 \ng-Weighted A* (w=0.25):");
-			System.out.println("Solutin Path:");
-			for ( int i = 0; i < agent1_2_25.getActions().size(); i++ )
-				System.out.println("\t" + agent1_2_25.getActions().get(i).toString());
-			System.out.println("Nodes Expanded: " + agent1_2_25.getInstrumentation().getProperty("nodesExpanded"));
-			System.out.println();
+			print_results("1.2", "Weighted A* (w=0.25)", agent1_2_25);
 			
 			// Problem 1-3
 			Search search1_3 = new AStarSearch1_3(
@@ -99,12 +84,7 @@ public class homework2
 			
 			SearchAgent agent1_3 = new SearchAgent(problem, search1_3);
 			
-			System.out.println("1.3 \nDefault A* + Semi-Manhattan Distance:");
-			System.out.println("Solutin Path:");
-			for ( int i = 0; i < agent1_3.getActions().size(); i++ )
-				System.out.println("\t" + agent1_3.getActions().get(i).toString());
-			System.out.println("Nodes Expanded: " + agent1_3.getInstrumentation().getProperty("nodesExpanded"));
-			System.out.println();
+			print_results("1.3", "Default A* + Semi-Manhattan Distance", agent1_3);
 		}
 		
 		catch ( Exception e )
@@ -112,6 +92,17 @@ public class homework2
 			System.out.println( "Exception: " );
 			System.out.println( e.toString( ) );
 		}
+	}
+	
+	static void print_results( String number, String title, SearchAgent agent )
+	{
+		System.out.println(number);
+		System.out.println(title + ":");
+		System.out.println("Solution Path:");
+		for ( int i = 0; i < agent.getActions().size(); i++ )
+			System.out.println("\t" + agent.getActions().get(i).toString());
+		System.out.println("Nodes Expanded: " + agent.getInstrumentation().getProperty("nodesExpanded"));
+		System.out.println();
 	}
 
 }
