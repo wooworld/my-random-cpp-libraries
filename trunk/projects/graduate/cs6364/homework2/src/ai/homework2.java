@@ -1,3 +1,10 @@
+/*
+ * @file homework2.java
+ * @auth Gary Steelman
+ * @desc CS6364 Homework 2 Question 1 - A* Search
+ */
+
+
 package ai;
 
 import aima.core.environment.map.Map;

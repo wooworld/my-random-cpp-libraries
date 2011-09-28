@@ -1,8 +1,17 @@
 package lab1;
 
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.sdb.*;
+import com.hp.hpl.jena.rdf.model.*; 
+import com.hp.hpl.jena.sdb.SDBFactory;
+import com.hp.hpl.jena.sdb.Store;
+import com.hp.hpl.jena.sdb.StoreDesc;
+import com.hp.hpl.jena.sdb.sql.JDBC;
+import com.hp.hpl.jena.sdb.sql.SDBConnection;
+import com.hp.hpl.jena.sdb.store.DatabaseType;
+import com.hp.hpl.jena.sdb.store.LayoutType;
+import com.hp.hpl.jena.sdb.store.StoreFactory;
 import com.hp.hpl.jena.vocabulary.*;
+import java.sql.*;
+
 
 import java.io.*;
 
@@ -23,18 +32,16 @@ public class Lab1_2e
 		
 		model.setNsPrefix( "nsUTD", nsUTD );
 		
-		//Resource stevenSeida
-			//= model.createResource( seidaURI )
-			model.createResource( seidaURI ) 
-				.addProperty(VCARD.FN, fullName)
-				.addProperty(VCARD.EMAIL, email)
-				.addProperty(VCARD.BDAY, birthday )
-				.addProperty(VCARD.TITLE, title)
-				.addProperty(VCARD.N,
-						model.createResource()
-							.addProperty(VCARD.Given, fName)
-							.addProperty(VCARD.Family, lName)
-						);
+		model.createResource( seidaURI ) 
+			.addProperty(VCARD.FN, fullName)
+			.addProperty(VCARD.EMAIL, email)
+			.addProperty(VCARD.BDAY, birthday )
+			.addProperty(VCARD.TITLE, title)
+			.addProperty(VCARD.N,
+					model.createResource()
+						.addProperty(VCARD.Given, fName)
+						.addProperty(VCARD.Family, lName)
+					);
 		
 		try 
 		{
@@ -58,13 +65,20 @@ public class Lab1_2e
 		{
 			System.out.println( "Exception: " );
 			System.out.println( e.toString( ) );
-		}
+		}		
 		
 		//-------------------------------
-		// PART 2
+		// PART 2-1
 		//-------------------------------
+		System.setProperty("jena.db.user", "jenasdb");
+		System.setProperty("jena.db.password", "fastdb");
+			
 		Store store = SDBFactory.connectStore("sdb.ttl");
 		Model modelFromSDB = SDBFactory.connectDefaultModel(store);
+		
+		modelFromSDB.removeAll();		
+		
+		modelFromSDB.setNsPrefix( "nsUTD", nsUTD);
 		
 		modelFromSDB.createResource( seidaURI ) 
 			.addProperty(VCARD.FN, fullName)
@@ -101,6 +115,54 @@ public class Lab1_2e
 			System.out.println( e.toString( ) );
 		}
 		
-		modelFromSDB.close();		
+		modelFromSDB.close();	
+		
+		//-------------------------------
+		// PART 2-2
+		//-------------------------------				
+		ModelMaker modelMaker = ModelFactory.createMemModelMaker();		
+		modelMaker.createModel("myrdf");
+		Model namedSDBModel = SDBFactory.connectNamedModel(store, "myrdf");
+		
+		namedSDBModel.removeAll();		
+		
+		namedSDBModel.setNsPrefix( "nsUTD", nsUTD);
+		
+		namedSDBModel.createResource( seidaURI ) 
+			.addProperty(VCARD.FN, fullName)
+			.addProperty(VCARD.EMAIL, email)
+			.addProperty(VCARD.BDAY, birthday )
+			.addProperty(VCARD.TITLE, title)
+			.addProperty(VCARD.N,
+					namedSDBModel.createResource()
+						.addProperty(VCARD.Given, fName)
+						.addProperty(VCARD.Family, lName)
+					);
+
+		try 
+		{
+			BufferedWriter outXML = new BufferedWriter( new FileWriter( "Lab1_2-2_gSteelman.xml" ) );
+			BufferedWriter outXMLClean = new BufferedWriter( new FileWriter( "Lab1_2-2_gSteelman-Clean.xml" ) );
+			BufferedWriter outN_TRIPLE = new BufferedWriter( new FileWriter( "Lab1_2-2_gSteelman.ntp" ) );
+			BufferedWriter outN3 = new BufferedWriter( new FileWriter( "Lab1_2-2_gSteelman.n3" ) );			
+			
+			namedSDBModel.write( outXML, "RDF/XML");
+			namedSDBModel.write( outXMLClean, "RDF/XML-ABBREV");
+			namedSDBModel.write( outN_TRIPLE, "N-TRIPLE");
+			namedSDBModel.write( outN3, "N3");			
+			
+			outXML.close();
+			outXMLClean.close();
+			outN_TRIPLE.close();
+			outN3.close();			
+		} 
+		
+		catch (IOException e) 
+		{
+			System.out.println( "Exception: " );
+			System.out.println( e.toString( ) );
+		}
+		
+		namedSDBModel.close();			
 	}
 }
