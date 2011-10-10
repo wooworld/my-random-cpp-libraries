@@ -102,6 +102,7 @@ public class homework2
 		for ( int i = 0; i < agent.getActions().size(); i++ )
 			System.out.println("\t" + agent.getActions().get(i).toString());
 		System.out.println("Nodes Expanded: " + agent.getInstrumentation().getProperty("nodesExpanded"));
+		System.out.println("Path cost: " + agent.getInstrumentation().getProperty("pathCost"));
 		System.out.println();
 	}
 
