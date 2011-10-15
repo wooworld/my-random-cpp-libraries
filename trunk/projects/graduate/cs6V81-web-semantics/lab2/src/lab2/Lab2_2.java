@@ -59,8 +59,8 @@ public class Lab2_2 {
 		//-------------------------------
 		// PART 3
 		//-------------------------------
-		System.setProperty("jena.db.user", "jenasdb");
-		System.setProperty("jena.db.password", "fastdb");
+		// System.setProperty("jena.db.user", "jenasdb");
+		// System.setProperty("jena.db.password", "fastdb");
 		
 		// Connect to the SDB database using an unnamed Model
 		Store store = SDBFactory.connectStore("sdb.ttl");
