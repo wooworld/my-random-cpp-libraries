@@ -175,11 +175,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\uno_ai_player.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\uno_card.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\uno_deck.cpp"
 				>
 			</File>
 			<File
+				RelativePath=".\uno_game_state.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\uno_player.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\uno_runner.cpp"
 				>
 			</File>
 		</Filter>
@@ -189,11 +205,27 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\uno_ai_player.h"
+				>
+			</File>
+			<File
+				RelativePath=".\uno_card.h"
+				>
+			</File>
+			<File
 				RelativePath=".\uno_deck.h"
 				>
 			</File>
 			<File
+				RelativePath=".\uno_game_state.h"
+				>
+			</File>
+			<File
 				RelativePath=".\uno_player.h"
+				>
+			</File>
+			<File
+				RelativePath=".\uno_runner.h"
 				>
 			</File>
 		</Filter>

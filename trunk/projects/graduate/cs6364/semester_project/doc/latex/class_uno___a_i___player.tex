@@ -1,0 +1,131 @@
+\hypertarget{class_uno___a_i___player}{
+\section{\-Uno\-\_\-\-A\-I\-\_\-\-Player \-Class \-Reference}
+\label{class_uno___a_i___player}\index{\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}}
+}
+
+
+\-An \-A\-I player for the game.  
+
+
+
+
+{\ttfamily \#include $<$uno\-\_\-ai\-\_\-player.\-h$>$}
+
+\-Inheritance diagram for \-Uno\-\_\-\-A\-I\-\_\-\-Player\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_uno___a_i___player}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_uno___a_i___player_ae977868f52c315663174b5c4943ac9ef}{\-Uno\-\_\-\-A\-I\-\_\-\-Player} ()
+\begin{DoxyCompactList}\small\item\em \-Default constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_uno___a_i___player_ab16352005d98a759d298d05afdaaea9e}{\-Uno\-\_\-\-A\-I\-\_\-\-Player} (const string \&n, unsigned int s, unsigned int l)
+\begin{DoxyCompactList}\small\item\em \-Identification constructor. \end{DoxyCompactList}\item 
+\hyperlink{class_uno___a_i___player_a535884ee15f0d243b43227d941a102c8}{\-Uno\-\_\-\-A\-I\-\_\-\-Player} (const \hyperlink{uno__player_8h_acd9523c15e47a87e3740cf5ade73556e}{hand} \&h, const string \&n, unsigned int s, unsigned int l)
+\begin{DoxyCompactList}\small\item\em \-Full value specification constructor. \end{DoxyCompactList}\item 
+void \hyperlink{class_uno___a_i___player_a3c67651d11a500c8ebac0f155ac4a6c6}{take\-\_\-turn} ()
+\begin{DoxyCompactList}\small\item\em \-Makes the \-A\-I player take his turn. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Public \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_uno___a_i___player_acfca158f34aca68fab02191035463c1d}{
+\hyperlink{class_uno___game___state}{\-Uno\-\_\-\-Game\-\_\-\-State} \hyperlink{class_uno___a_i___player_acfca158f34aca68fab02191035463c1d}{m\-\_\-state}}
+\label{class_uno___a_i___player_acfca158f34aca68fab02191035463c1d}
+
+\begin{DoxyCompactList}\small\item\em \-The current state of the game according to this player. \end{DoxyCompactList}\item 
+\hypertarget{class_uno___a_i___player_a59968669473342ba3fe0aad108439719}{
+vector$<$ \hyperlink{class_uno___game___state}{\-Uno\-\_\-\-Game\-\_\-\-State} $>$ \hyperlink{class_uno___a_i___player_a59968669473342ba3fe0aad108439719}{m\-\_\-frontier}}
+\label{class_uno___a_i___player_a59968669473342ba3fe0aad108439719}
+
+\begin{DoxyCompactList}\small\item\em \-The set of states the \-A\-I considers and scores when think()ing each turn. \end{DoxyCompactList}\item 
+unsigned char \hyperlink{class_uno___a_i___player_a028b0df8cca96eb10fc87bebf0f48c25}{m\-\_\-level}
+\begin{DoxyCompactList}\small\item\em \-The player's \-A\-I difficulty level. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-An \-A\-I player for the game. 
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{class_uno___a_i___player_ae977868f52c315663174b5c4943ac9ef}{
+\index{\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}!\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}}
+\index{\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}!Uno_AI_Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}}
+\subsubsection[{\-Uno\-\_\-\-A\-I\-\_\-\-Player}]{\setlength{\rightskip}{0pt plus 5cm}\-Uno\-\_\-\-A\-I\-\_\-\-Player\-::\-Uno\-\_\-\-A\-I\-\_\-\-Player (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___a_i___player_ae977868f52c315663174b5c4943ac9ef}
+
+
+\-Default constructor. 
+
+\-Constructs an \hyperlink{class_uno___a_i___player}{\-Uno\-\_\-\-A\-I\-\_\-\-Player} with an empty hand, a blank name, and score and level of zero. \hypertarget{class_uno___a_i___player_ab16352005d98a759d298d05afdaaea9e}{
+\index{\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}!\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}}
+\index{\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}!Uno_AI_Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}}
+\subsubsection[{\-Uno\-\_\-\-A\-I\-\_\-\-Player}]{\setlength{\rightskip}{0pt plus 5cm}\-Uno\-\_\-\-A\-I\-\_\-\-Player\-::\-Uno\-\_\-\-A\-I\-\_\-\-Player (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{n, }
+\item[{unsigned int}]{s, }
+\item[{unsigned int}]{l}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___a_i___player_ab16352005d98a759d298d05afdaaea9e}
+
+
+\-Identification constructor. 
+
+\-Constructs an \hyperlink{class_uno___a_i___player}{\-Uno\-\_\-\-A\-I\-\_\-\-Player} with an with the given name, score, and level. \hypertarget{class_uno___a_i___player_a535884ee15f0d243b43227d941a102c8}{
+\index{\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}!\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}}
+\index{\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}!Uno_AI_Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}}
+\subsubsection[{\-Uno\-\_\-\-A\-I\-\_\-\-Player}]{\setlength{\rightskip}{0pt plus 5cm}\-Uno\-\_\-\-A\-I\-\_\-\-Player\-::\-Uno\-\_\-\-A\-I\-\_\-\-Player (
+\begin{DoxyParamCaption}
+\item[{const {\bf hand} \&}]{h, }
+\item[{const string \&}]{n, }
+\item[{unsigned int}]{s, }
+\item[{unsigned int}]{l}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___a_i___player_a535884ee15f0d243b43227d941a102c8}
+
+
+\-Full value specification constructor. 
+
+\-Constructs an \hyperlink{class_uno___a_i___player}{\-Uno\-\_\-\-A\-I\-\_\-\-Player} with an with the given hand, name, score, and level. 
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{class_uno___a_i___player_a3c67651d11a500c8ebac0f155ac4a6c6}{
+\index{\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}!take\-\_\-turn@{take\-\_\-turn}}
+\index{take\-\_\-turn@{take\-\_\-turn}!Uno_AI_Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}}
+\subsubsection[{take\-\_\-turn}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-A\-I\-\_\-\-Player\-::take\-\_\-turn (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___a_i___player_a3c67651d11a500c8ebac0f155ac4a6c6}
+
+
+\-Makes the \-A\-I player take his turn. 
+
+\-Taking a turn consists of multiple actions\-: \begin{DoxyItemize}
+\item \-Attempt to play a card from the hand. \item \-If no play can be made, draw a card. \item \-Attempt to play the drawn card. \end{DoxyItemize}
+
+
+\subsection{\-Member \-Data \-Documentation}
+\hypertarget{class_uno___a_i___player_a028b0df8cca96eb10fc87bebf0f48c25}{
+\index{\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}!m\-\_\-level@{m\-\_\-level}}
+\index{m\-\_\-level@{m\-\_\-level}!Uno_AI_Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}}
+\subsubsection[{m\-\_\-level}]{\setlength{\rightskip}{0pt plus 5cm}unsigned char {\bf \-Uno\-\_\-\-A\-I\-\_\-\-Player\-::m\-\_\-level}}}
+\label{class_uno___a_i___player_a028b0df8cca96eb10fc87bebf0f48c25}
+
+
+\-The player's \-A\-I difficulty level. 
+
+\-The level of the \-A\-I represents its difficulty level. \-A higher value means that an \-A\-I player will make more intelligent plays and be harder to defeat. 
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\-C\-:/\-Users/\-Gary/\-Documents/\-School/my-\/random-\/cpp-\/libraries/trunk/projects/graduate/cs6364/semester\-\_\-project/semester\-\_\-project/\hyperlink{uno__ai__player_8h}{uno\-\_\-ai\-\_\-player.\-h}\item 
+\-C\-:/\-Users/\-Gary/\-Documents/\-School/my-\/random-\/cpp-\/libraries/trunk/projects/graduate/cs6364/semester\-\_\-project/semester\-\_\-project/\hyperlink{uno__ai__player_8cpp}{uno\-\_\-ai\-\_\-player.\-cpp}\end{DoxyCompactItemize}
