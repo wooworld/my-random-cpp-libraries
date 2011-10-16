@@ -13,35 +13,9 @@
 #define UNO_DECK_H
 
 #include <vector>
-#include <map>
-#include <string>
-#include <iostream>
+#include "uno_card.h"
 
 using namespace std;
-
-/** 
- * \brief Type definition for a single uno card represented by a char.
- *
- * The Uno card is equivalent to a char type. A card's construction utilizes 
- * the bits of a char rather than its decimal value. 
- * The construction looks like this:
- *   
- * 76543210
- *
- * RGBYVVVV
- *
- * The R bit is 1 if the card is red. 
- * The G bit is 1 if the card is green.
- * The B bit is 1 if the card is blue. 
- * The Y bit is 1 if the card is yellow.
- * You may use more than one color, but it is not regulation.
- * The right-most 4 bits are reserved for the card's face value. So if the card
- * is a "red 8" card, its construction is 10001000. A "yellow draw two" 
- * is 00011100. Wild and Wild Draw Four cards have no color. 
- * \sa UNO_COLOR
- * \sa UNO_TYPE
- */
-typedef unsigned char card;
 
 /** 
  * \brief Type defition for a deck of Uno cards represented by a vector<card>.
@@ -51,99 +25,8 @@ typedef unsigned char card;
  */
 typedef vector<card> deck;
 
-/**
- * \brief A dictionary for the pretty names of cards based on their types.
- * \sa card_name()
- */
-typedef map<card, string> card_dictionary;
-
-/**
- * Each Uno card (excluding the Wild cards) has one of four colors:
- * Red, Green, Blue, or Yellow. These colors are represented by these
- * definitions. 
- */
-#define UNO_NO_COLOR ( 0 )       /*!< No color Uno card value. */
-#define UNO_RED      ( 1 << 7 )  /*!< Red Uno card value. */
-#define UNO_GREEN    ( 1 << 6 )  /*!< Green Uno card value. */
-#define UNO_BLUE     ( 1 << 5 )  /*!< Blue Uno card value. */
-#define UNO_YELLOW   ( 1 << 4 )  /*!< Yellow Uno card value. */
-#define UNO_NUM_COLORS 4         /*!< Number of colors of Uno cards. */
-
-/** 
- * \brief An array of UNO_COLOR available for use in the game 
- */
-const unsigned char UNO_COLOR[] = {
-  UNO_RED,
-  UNO_GREEN,
-  UNO_BLUE,
-  UNO_YELLOW
-};
-
-/** 
- * Each Uno card has a face value, called a card type. These card values are
- * represented with these definitions.
- */
-#define UNO_ZERO            0    /*!< Uno card 0 value. */
-#define UNO_ONE             1    /*!< Uno card 1 value. */
-#define UNO_TWO             2    /*!< Uno card 2 value. */
-#define UNO_THREE           3    /*!< Uno card 3 value. */
-#define UNO_FOUR            4    /*!< Uno card 4 value. */
-#define UNO_FIVE            5    /*!< Uno card 5 value. */
-#define UNO_SIX             6    /*!< Uno card 6 value. */
-#define UNO_SEVEN           7    /*!< Uno card 7 value. */
-#define UNO_EIGHT           8    /*!< Uno card 8 value. */
-#define UNO_NINE            9    /*!< Uno card 9 value. */
-#define UNO_SKIP            10   /*!< Uno card skip value. */
-#define UNO_REVERSE         11   /*!< Uno card reverse value. */
-#define UNO_DRAW_TWO        12   /*!< Uno card draw two value. */
-#define UNO_WILD            13   /*!< Uno card wild value. */
-#define UNO_WILD_DRAW_FOUR  14   /*!< Uno card wild draw four value. */
-#define UNO_RESERVED        15   /*!< Uno card reserved value. */
-#define UNO_NUM_TYPES       15   /*!< Number of different types of Uno cards. */
-
-/** 
- * \brief An array of UNO_TYPE available for use in the game 
- */
-const unsigned char UNO_TYPE[] = {
-  UNO_ZERO,
-  UNO_ONE,
-  UNO_TWO,
-  UNO_THREE,
-  UNO_FOUR,
-  UNO_FIVE,
-  UNO_SIX,
-  UNO_SEVEN,
-  UNO_EIGHT,
-  UNO_NINE,
-  UNO_SKIP,
-  UNO_REVERSE,
-  UNO_DRAW_TWO,
-  UNO_WILD,
-  UNO_WILD_DRAW_FOUR
-};
-
 #define UNO_DECKS_PER_GAME  1    /*!< The number of Uno decks to use per game. */
 #define UNO_DECK_SIZE       108  /*!< Standard size of an Uno deck. */
-#define UNO_INIT_HAND_SIZE  7    /*!< Initial hand size for an Uno hand. */
-#define UNO_MAX_PLAYERS     10   /*!< Maximum number of players for an Uno game. */
-#define UNO_MIN_PLAYERS     2    /*!< Minimum number of players for an Uno game. */
-
-/** 
- * \brief Converts an UNO_COLOR and UNO_TYPE to a usable card.
- * \param a An UNO_COLOR. 
- * \param b An UNO_TYPE.
- * \sa typedef char card;
- * \sa UNO_COLOR
- * \sa UNO_TYPE
- *
- * Takes an Uno color and an uno card type and converts it to a usable card. 
- * For example:
- *
- * CARD( UNO_RED, UNO_THREE ); designates a Red 3 card.
- *
- * CARD( UNO_COLOR[1], UNO_TYPE[UNO_DRAW_TWO] ); designates a green draw two.
- */
-#define CARD(a, b) ((a)|(b))
 
 /** 
  * \brief An array representing the default Uno deck made to game standards. 
@@ -259,18 +142,67 @@ const card DEFAULT_DECK[] = {
   CARD( UNO_NO_COLOR, UNO_WILD_DRAW_FOUR )
 };
 
-void map_names();
-
+/** 
+ * \brief Creates and populates a deck of Uno cards.
+ *
+ * Takes a deck and makes a new Uno deck inside of it. 
+ * \pre UNO_DECKS_PER_GAME > 0
+ * \pre UNO_DECK_SIZE > 0
+ * \param d A deck to store the instatiated deck in. 
+ * \sa typedef vector<card> deck
+ *
+ * \note The previous deck's contents will be cleared.
+ * \note The deck is NOT shuffled. 
+ * \sa shuffle_deck( deck& d)
+ *
+ * UNO_DECKS_PER_GAME directly influences the created deck. If this number
+ * is greater than 1, the created deck will have UNO_DECKS_PER_GAME standard decks 
+ * worth of cards in it. For example, if UNO_DECKS_PER_GAME = 2, then the created
+ * deck will have two standard decks worth of cards in it (for a total of 216 cards).
+ * \sa UNO_DECKS_PER_GAME
+ */
 void create_deck( deck& d );
 
+/** 
+ * \brief Shuffles (randomly rearranges) the cards in an Uno deck.
+ * \param d A deck to shuffle. 
+ * \sa typedef vector<card> deck
+ */
 void shuffle_deck( deck& d );
 
+/** 
+ * \brief Swaps all cards in the two decks.
+ * \param d One of the two decks to swap between.
+ * \param g The other of the two decks to swap between.
+ * \sa typedef vector<card> deck
+ */
 void swap_decks( deck& d, deck& g );
 
+/** 
+ * \brief Prints out a deck of Uno cards.
+ * \param d A deck to print out to the screen.
+ * \sa typedef vector<card> deck
+ * \note This is a relatively expensive operation, use sparingly.
+ */
 void print_deck( deck& d );
 
-string card_name( card c );
+/** 
+ * \brief Prints the values out a deck of Uno cards.
+ * \param d A deck to print out the values of each card to the screen.
+ * \sa typedef vector<card> deck
+ * \note This is less expensive than printing the names of each card, but is
+ * still relatively expenive, use sparingly. 
+ */
+void print_deck_values( deck& d );
 
-card draw_card( deck& d );
+/** 
+ * \brief Draws a card from the given Uno deck.
+ * \param d The deck to draw a card from.
+ * \sa typedef char card
+ * 
+ * Drawing a card removes a card from the top of the deck. After this operation
+ * d.size() will be one less than it was before the call.
+ */
+card take_card( deck& d );
 
 #endif

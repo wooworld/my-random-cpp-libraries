@@ -1,0 +1,283 @@
+\hypertarget{class_uno___runner}{
+\section{\-Uno\-\_\-\-Runner \-Class \-Reference}
+\label{class_uno___runner}\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}}
+}
+
+
+\-Runs an \-Uno game.  
+
+
+
+
+{\ttfamily \#include $<$uno\-\_\-runner.\-h$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_uno___runner_a485bf9506331363e4b0d6208ee446497}{\-Uno\-\_\-\-Runner} ()
+\begin{DoxyCompactList}\small\item\em \-Default constructor. \end{DoxyCompactList}\item 
+bool \hyperlink{class_uno___runner_ae015517f7d4493ddbaaeacd98be0b9b8}{setup} ()
+\begin{DoxyCompactList}\small\item\em \-Shuffles the deck, all players draw initial hands. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_uno___runner_aa3f43b6ab9042ff74a34ad3fae8a0b11}{num\-\_\-players} ()
+\begin{DoxyCompactList}\small\item\em \-Returns the number of players in the game. \end{DoxyCompactList}\item 
+bool \hyperlink{class_uno___runner_a982f614c5afa8faa57aedc3116f3d237}{add\-\_\-player} (const \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player} \&p)
+\begin{DoxyCompactList}\small\item\em \-Adds player p to the game if possible. \end{DoxyCompactList}\item 
+bool \hyperlink{class_uno___runner_acae1277934b338e4c6edd8d45eea5a3e}{remove\-\_\-player} (unsigned char i, unsigned char c=0)
+\begin{DoxyCompactList}\small\item\em \-Removes player i from the game if possible. \end{DoxyCompactList}\item 
+void \hyperlink{class_uno___runner_a2ca7c819e3fc8774853cc5a49333eeb9}{set\-\_\-deck} (const \hyperlink{uno__deck_8h_ab634a15f4d19d3af113a71241b79c408}{deck} \&d)
+\begin{DoxyCompactList}\small\item\em \-Sets the deck to use for the game. \end{DoxyCompactList}\item 
+void \hyperlink{class_uno___runner_aecbd83efd47580d89f7ef9b030572c74}{use\-\_\-default\-\_\-deck} ()
+\begin{DoxyCompactList}\small\item\em \-Sets the deck to the default deck. \end{DoxyCompactList}\item 
+void \hyperlink{class_uno___runner_a885e7ac58c656e1cb0bc4e49cd494874}{print\-\_\-played} (unsigned char f)
+\begin{DoxyCompactList}\small\item\em \-Prints out the played cards to the screen. \end{DoxyCompactList}\item 
+void \hyperlink{class_uno___runner_a53b830015937722abd8ec515405534f9}{print\-\_\-unplayed} (unsigned char f)
+\begin{DoxyCompactList}\small\item\em \-Prints out the unplayed cards to the screen. \end{DoxyCompactList}\item 
+void \hyperlink{class_uno___runner_a2d16089c5bdf20c1120be067797a349a}{print\-\_\-state} ()
+\begin{DoxyCompactList}\small\item\em \-Prints out the state of the game. \-This includes\-: \end{DoxyCompactList}\item 
+bool \hyperlink{class_uno___runner_a876150bbc2a8aeadb3343681fb841c80}{check\-\_\-runability} ()
+\begin{DoxyCompactList}\small\item\em \-Checks to see if the game state is legal and can start a game. \end{DoxyCompactList}\item 
+void \hyperlink{class_uno___runner_a3f0847989a9868bcd023b41ee5f28d0a}{run} ()
+\begin{DoxyCompactList}\small\item\em \-Runs the \-Uno game. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Runs an \-Uno game. 
+
+\-To actually play a game of \-Uno using the \-A\-I, create an object of this type, call \hyperlink{class_uno___runner_ae015517f7d4493ddbaaeacd98be0b9b8}{setup()}, then \hyperlink{class_uno___runner_a3f0847989a9868bcd023b41ee5f28d0a}{run()}. 
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{class_uno___runner_a485bf9506331363e4b0d6208ee446497}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}}
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{\-Uno\-\_\-\-Runner}]{\setlength{\rightskip}{0pt plus 5cm}\-Uno\-\_\-\-Runner\-::\-Uno\-\_\-\-Runner (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_a485bf9506331363e4b0d6208ee446497}
+
+
+\-Default constructor. 
+
+\-Sets up m\-\_\-state to have the following\-: \-U\-N\-O\-\_\-\-N\-U\-M\-\_\-\-P\-L\-A\-Y\-E\-R\-S with no cards in their hands, no names, no score, and no difficulty level. \-It is \-Player 0's turn. \-One unplayed deck of \-U\-N\-O\-\_\-\-D\-E\-C\-K\-S\-\_\-\-P\-E\-R\-\_\-\-G\-A\-M\-E $\ast$ \-U\-N\-O\-\_\-\-D\-E\-C\-K\-\_\-\-S\-I\-Z\-E cards. \-One played deck of zero cards. 
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{class_uno___runner_a982f614c5afa8faa57aedc3116f3d237}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!add\-\_\-player@{add\-\_\-player}}
+\index{add\-\_\-player@{add\-\_\-player}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{add\-\_\-player}]{\setlength{\rightskip}{0pt plus 5cm}bool \-Uno\-\_\-\-Runner\-::add\-\_\-player (
+\begin{DoxyParamCaption}
+\item[{const {\bf \-Uno\-\_\-\-Player} \&}]{p}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_a982f614c5afa8faa57aedc3116f3d237}
+
+
+\-Adds player p to the game if possible. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em p} & \-The \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player} to add to the game. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+true if the player could be added to the game properly. 
+
+false if the player could not be added to the game.
+\end{DoxyReturn}
+\-If \hyperlink{class_uno___runner_aa3f43b6ab9042ff74a34ad3fae8a0b11}{num\-\_\-players()} + 1 $>$ \-U\-N\-O\-\_\-\-M\-A\-X\-\_\-\-P\-L\-A\-Y\-E\-R\-S, player p will not be added to the game and this function will return false. \hypertarget{class_uno___runner_a876150bbc2a8aeadb3343681fb841c80}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!check\-\_\-runability@{check\-\_\-runability}}
+\index{check\-\_\-runability@{check\-\_\-runability}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{check\-\_\-runability}]{\setlength{\rightskip}{0pt plus 5cm}bool \-Uno\-\_\-\-Runner\-::check\-\_\-runability (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_a876150bbc2a8aeadb3343681fb841c80}
+
+
+\-Checks to see if the game state is legal and can start a game. 
+
+\begin{DoxyReturn}{\-Returns}
+true if the game state is \-O\-K. 
+
+false otherwise. 
+\end{DoxyReturn}
+\hypertarget{class_uno___runner_aa3f43b6ab9042ff74a34ad3fae8a0b11}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!num\-\_\-players@{num\-\_\-players}}
+\index{num\-\_\-players@{num\-\_\-players}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{num\-\_\-players}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int \-Uno\-\_\-\-Runner\-::num\-\_\-players (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_aa3f43b6ab9042ff74a34ad3fae8a0b11}
+
+
+\-Returns the number of players in the game. 
+
+\begin{DoxyReturn}{\-Returns}
+\-The number of players in the game.
+\end{DoxyReturn}
+\-This value is, by default, \-U\-N\-O\-\_\-\-N\-U\-M\-\_\-\-P\-L\-A\-Y\-E\-R\-S though players can be added or removed via \hyperlink{class_uno___runner_a982f614c5afa8faa57aedc3116f3d237}{add\-\_\-player()} and \hyperlink{class_uno___runner_acae1277934b338e4c6edd8d45eea5a3e}{remove\-\_\-player()}. \hypertarget{class_uno___runner_a885e7ac58c656e1cb0bc4e49cd494874}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!print\-\_\-played@{print\-\_\-played}}
+\index{print\-\_\-played@{print\-\_\-played}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{print\-\_\-played}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Runner\-::print\-\_\-played (
+\begin{DoxyParamCaption}
+\item[{unsigned char}]{f}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_a885e7ac58c656e1cb0bc4e49cd494874}
+
+
+\-Prints out the played cards to the screen. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The format to output the cards in. 0 = \-Output the names of the cards like \-R5 for red 5. 1 = \-Output the values of the cards, like 64 for a green 0. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_uno___runner_a2d16089c5bdf20c1120be067797a349a}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!print\-\_\-state@{print\-\_\-state}}
+\index{print\-\_\-state@{print\-\_\-state}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{print\-\_\-state}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Runner\-::print\-\_\-state (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_a2d16089c5bdf20c1120be067797a349a}
+
+
+\-Prints out the state of the game. \-This includes\-: 
+
+\begin{DoxyItemize}
+\item \-Each player's name. \item \-Each player's score. \item \-Each player's hand. \item \-Each player's difficulty level (if \-A\-I player). \item \-The played deck of cards. \item \-The unplayed deck of cards. \begin{DoxyNote}{\-Note}
+\-This is a very expensive operation, use sparingly! 
+\end{DoxyNote}
+\end{DoxyItemize}
+\hypertarget{class_uno___runner_a53b830015937722abd8ec515405534f9}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!print\-\_\-unplayed@{print\-\_\-unplayed}}
+\index{print\-\_\-unplayed@{print\-\_\-unplayed}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{print\-\_\-unplayed}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Runner\-::print\-\_\-unplayed (
+\begin{DoxyParamCaption}
+\item[{unsigned char}]{f}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_a53b830015937722abd8ec515405534f9}
+
+
+\-Prints out the unplayed cards to the screen. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em f} & \-The format to output the cards in. 0 = \-Output the names of the cards like \-R5 for red 5. 1 = \-Output the values of the cards, like 64 for a green 0. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_uno___runner_acae1277934b338e4c6edd8d45eea5a3e}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!remove\-\_\-player@{remove\-\_\-player}}
+\index{remove\-\_\-player@{remove\-\_\-player}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{remove\-\_\-player}]{\setlength{\rightskip}{0pt plus 5cm}bool \-Uno\-\_\-\-Runner\-::remove\-\_\-player (
+\begin{DoxyParamCaption}
+\item[{unsigned char}]{i, }
+\item[{unsigned char}]{c = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_acae1277934b338e4c6edd8d45eea5a3e}
+
+
+\-Removes player i from the game if possible. 
+
+\begin{DoxyPrecond}{\-Precondition}
+0 $<$= i $<$ \hyperlink{class_uno___runner_aa3f43b6ab9042ff74a34ad3fae8a0b11}{num\-\_\-players()} 
+\end{DoxyPrecond}
+
+\begin{DoxyParams}{\-Parameters}
+{\em i} & is the player to remove from the game. \\
+\hline
+{\em c} & is where to place the player's cards. \-Valid values are\-: 0 = \-Place cards back onto bottom of the unplayed deck. 1 = \-Place cards back onto bottom of the played deck. 2 = \-Remove cards from the game state completely. \-The cards vanish into the ether. \-The default value for c is 0. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+true if the player could be removed from the game properly. 
+
+false otherwise if the player could not be removed.
+\end{DoxyReturn}
+\-If \hyperlink{class_uno___runner_aa3f43b6ab9042ff74a34ad3fae8a0b11}{num\-\_\-players()} -\/ 1 $<$ \-U\-N\-O\-\_\-\-M\-I\-N\-\_\-\-P\-L\-A\-Y\-E\-R\-S, player p will not be removed from the game and this function will return false. \hypertarget{class_uno___runner_a3f0847989a9868bcd023b41ee5f28d0a}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!run@{run}}
+\index{run@{run}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{run}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Runner\-::run (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_a3f0847989a9868bcd023b41ee5f28d0a}
+
+
+\-Runs the \-Uno game. 
+
+\begin{DoxyPrecond}{\-Precondition}
+\hyperlink{class_uno___runner_ae015517f7d4493ddbaaeacd98be0b9b8}{setup()} or equivalent member data population has been executed. 
+
+\hyperlink{class_uno___runner_a876150bbc2a8aeadb3343681fb841c80}{check\-\_\-runability()} returns true. 
+\end{DoxyPrecond}
+\hypertarget{class_uno___runner_a2ca7c819e3fc8774853cc5a49333eeb9}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!set\-\_\-deck@{set\-\_\-deck}}
+\index{set\-\_\-deck@{set\-\_\-deck}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{set\-\_\-deck}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Runner\-::set\-\_\-deck (
+\begin{DoxyParamCaption}
+\item[{const {\bf deck} \&}]{d}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_a2ca7c819e3fc8774853cc5a49333eeb9}
+
+
+\-Sets the deck to use for the game. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em d} & \-The deck to use for the game. \-Completely replaces the current deck. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_uno___runner_ae015517f7d4493ddbaaeacd98be0b9b8}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!setup@{setup}}
+\index{setup@{setup}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{setup}]{\setlength{\rightskip}{0pt plus 5cm}bool \-Uno\-\_\-\-Runner\-::setup (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_ae015517f7d4493ddbaaeacd98be0b9b8}
+
+
+\-Shuffles the deck, all players draw initial hands. 
+
+\begin{DoxyPrecond}{\-Precondition}
+\-The default constructor has been called. 
+\end{DoxyPrecond}
+\begin{DoxyReturn}{\-Returns}
+true if the setup executed properly, 
+
+false otherwise.
+\end{DoxyReturn}
+\-Sets up m\-\_\-state to have the following\-: \-U\-N\-O\-\_\-\-N\-U\-M\-\_\-\-P\-L\-A\-Y\-E\-R\-S with 7 cards in their hands, no names, no score, and no difficulty level. \-It is \-Player 0's turn. \-One shuffled unplayed deck of \-U\-N\-O\-\_\-\-D\-E\-C\-K\-S\-\_\-\-P\-E\-R\-\_\-\-G\-A\-M\-E $\ast$ \-U\-N\-O\-\_\-\-D\-E\-C\-K\-\_\-\-S\-I\-Z\-E cards. \-One played deck of zero cards. \hypertarget{class_uno___runner_aecbd83efd47580d89f7ef9b030572c74}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!use\-\_\-default\-\_\-deck@{use\-\_\-default\-\_\-deck}}
+\index{use\-\_\-default\-\_\-deck@{use\-\_\-default\-\_\-deck}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{use\-\_\-default\-\_\-deck}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Runner\-::use\-\_\-default\-\_\-deck (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_aecbd83efd47580d89f7ef9b030572c74}
+
+
+\-Sets the deck to the default deck. 
+
+\begin{DoxyNote}{\-Note}
+\-Clears the played deck. 
+\end{DoxyNote}
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\-C\-:/\-Users/\-Gary/\-Documents/\-School/my-\/random-\/cpp-\/libraries/trunk/projects/graduate/cs6364/semester\-\_\-project/semester\-\_\-project/\hyperlink{uno__runner_8h}{uno\-\_\-runner.\-h}\item 
+\-C\-:/\-Users/\-Gary/\-Documents/\-School/my-\/random-\/cpp-\/libraries/trunk/projects/graduate/cs6364/semester\-\_\-project/semester\-\_\-project/\hyperlink{uno__runner_8cpp}{uno\-\_\-runner.\-cpp}\end{DoxyCompactItemize}

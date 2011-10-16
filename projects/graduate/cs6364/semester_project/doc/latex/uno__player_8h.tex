@@ -7,19 +7,49 @@
 \-Contains the \-Uno \-Player class and functionality.  
 
 
-{\ttfamily \#include $<$vector$>$}\*
-{\ttfamily \#include $<$map$>$}\*
 {\ttfamily \#include $<$string$>$}\*
-{\ttfamily \#include $<$iostream$>$}\*
+{\ttfamily \#include $<$list$>$}\*
 {\ttfamily \#include \char`\"{}uno\-\_\-deck.\-h\char`\"{}}\*
+{\ttfamily \#include \char`\"{}uno\-\_\-card.\-h\char`\"{}}\*
 \subsection*{\-Classes}
 \begin{DoxyCompactItemize}
 \item 
 class \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player}
+\begin{DoxyCompactList}\small\item\em \-Models a real player for the game. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Defines}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{uno__player_8h_a058c261e6049c86b46f65bced45c7077}{\-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E}~7
 \end{DoxyCompactItemize}
+\subsection*{\-Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef list$<$ \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card} $>$ \hyperlink{uno__player_8h_acd9523c15e47a87e3740cf5ade73556e}{hand}
+\begin{DoxyCompactList}\small\item\em \-Type defition for a deck of \-Uno cards represented by a vector$<$card$>$. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{\-Detailed \-Description}
-\-Contains the \-Uno \-Player class and functionality. \-This file contains functions, macros, and types for creating and modeling a player for a card game called \-Uno. \begin{DoxySeeAlso}{\-See also}
+\-Contains the \-Uno \-Player class and functionality. \begin{DoxySeeAlso}{\-See also}
 \hyperlink{uno__player_8cpp}{uno\-\_\-player.\-cpp} 
 \end{DoxySeeAlso}
+
+
+\subsection{\-Define \-Documentation}
+\hypertarget{uno__player_8h_a058c261e6049c86b46f65bced45c7077}{
+\index{uno\-\_\-player.\-h@{uno\-\_\-player.\-h}!\-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E@{\-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E}}
+\index{\-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E@{\-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E}!uno_player.h@{uno\-\_\-player.\-h}}
+\subsubsection[{\-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E~7}}
+\label{uno__player_8h_a058c261e6049c86b46f65bced45c7077}
+\-Initial hand size for an \-Uno hand. 
+
+\subsection{\-Typedef \-Documentation}
+\hypertarget{uno__player_8h_acd9523c15e47a87e3740cf5ade73556e}{
+\index{uno\-\_\-player.\-h@{uno\-\_\-player.\-h}!hand@{hand}}
+\index{hand@{hand}!uno_player.h@{uno\-\_\-player.\-h}}
+\subsubsection[{hand}]{\setlength{\rightskip}{0pt plus 5cm}typedef list$<${\bf card}$>$ {\bf hand}}}
+\label{uno__player_8h_acd9523c15e47a87e3740cf5ade73556e}
+
+
+\-Type defition for a deck of \-Uno cards represented by a vector$<$card$>$. 
+
+\-The \-Uno deck is vector of \-Uno cards. \-The deck has functionality modeling use of a real \-Uno deck. \-See the other functions for details. 

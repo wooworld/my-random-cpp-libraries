@@ -75,6 +75,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li><a href="annotated.html"><span>Class&#160;List</span></a></li>
       <li><a href="classes.html"><span>Class&#160;Index</span></a></li>
+      <li><a href="hierarchy.html"><span>Class&#160;Hierarchy</span></a></li>
       <li><a href="functions.html"><span>Class&#160;Members</span></a></li>
     </ul>
   </div>
@@ -101,35 +102,299 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="contents">
 <!-- doxytag: class="Uno_Player" -->
+<p>Models a real player for the game.  
+ <a href="class_uno___player.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="uno__player_8h_source.html">uno_player.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for Uno_Player:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_uno___player.png" usemap="#Uno_Player_map" alt=""/>
+  <map id="Uno_Player_map" name="Uno_Player_map">
+<area href="class_uno___a_i___player.html" title="An AI player for the game." alt="Uno_AI_Player" shape="rect" coords="0,56,97,80"/>
+</map>
+ </div></div>
 
 <p><a href="class_uno___player-members.html">List of all members.</a></p>
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0447ff92b80be8d98d0052d7d2a868d7"></a><!-- doxytag: member="Uno_Player::Uno_Player" ref="a0447ff92b80be8d98d0052d7d2a868d7" args="()" -->
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a0447ff92b80be8d98d0052d7d2a868d7">Uno_Player</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_uno___player.html">Uno_Player</a> constructor! <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a0447ff92b80be8d98d0052d7d2a868d7">Uno_Player</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a0447ff92b80be8d98d0052d7d2a868d7"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a01b27e59f1de1e13627c2e72e69c65c6">Uno_Player</a> (const string &amp;n, unsigned int s)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Identification constructor.  <a href="#a01b27e59f1de1e13627c2e72e69c65c6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#acd18cd073963d561da37018f114ef29b">Uno_Player</a> (const <a class="el" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a> &amp;h, const string &amp;n, unsigned int s)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Full value specification constructor.  <a href="#acd18cd073963d561da37018f114ef29b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#ac803ffaaf0efeaa27d3d4993545bee39">draw_card</a> (<a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;d)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a card from the deck and puts it in the player's hand.  <a href="#ac803ffaaf0efeaa27d3d4993545bee39"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a5f0d9630e8e143f34c4d63340bac90e0">draw_initial_hand</a> (<a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;d)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws UNO_INIT_HAND_SIZE cards from the deck and puts them in the player's hand.  <a href="#a5f0d9630e8e143f34c4d63340bac90e0"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a2e94c703cf4f680c4dcbcb1adbb4816b">play_card_by_name</a> (<a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a> c)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays a card with the given name from the player's hand.  <a href="#a2e94c703cf4f680c4dcbcb1adbb4816b"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#abe1a86f4792fa9e703ffeb28e453160f">play_card_by_index</a> (unsigned char i)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays a card at the given index from the player's hand.  <a href="#abe1a86f4792fa9e703ffeb28e453160f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a3af4557fcf900bc6357000449ecb5860">print_hand</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints out this player's hand of cards.  <a href="#a3af4557fcf900bc6357000449ecb5860"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a17a542fc645418ee806c79ebe253a62e">print_hand_values</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints out the values of this player's hand of cards.  <a href="#a17a542fc645418ee806c79ebe253a62e"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a210acf259dc060d31139866fdaa91e98">hand</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's hand of cards.  <a href="#a210acf259dc060d31139866fdaa91e98"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#aae7371d13b426d5da6a290ab00590a17">name</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's name.  <a href="#aae7371d13b426d5da6a290ab00590a17"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#ad890e9b411f90bd5be34fffd9704f122">score</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's score.  <a href="#ad890e9b411f90bd5be34fffd9704f122"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#acac0c2dc34e3ab51edc7525ca70b8bfb">level</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's AI difficulty level.  <a href="#acac0c2dc34e3ab51edc7525ca70b8bfb"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a9d50084b9fd4b005286ffdaa004f2664">m_hand</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's hand of cards.  <a href="#a9d50084b9fd4b005286ffdaa004f2664"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a06af109b4d621efa14ba98e4c9395739">m_name</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's name.  <a href="#a06af109b4d621efa14ba98e4c9395739"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a9805f306a500b1898c0a0922d76de444">m_score</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's score.  <a href="#a9805f306a500b1898c0a0922d76de444"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>The <a class="el" href="class_uno___player.html">Uno_Player</a> class models a player for the game. </p>
-</div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a210acf259dc060d31139866fdaa91e98"></a><!-- doxytag: member="Uno_Player::hand" ref="a210acf259dc060d31139866fdaa91e98" args="" -->
+<div class="textblock"><p>Models a real player for the game. </p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a0447ff92b80be8d98d0052d7d2a868d7"></a><!-- doxytag: member="Uno_Player::Uno_Player" ref="a0447ff92b80be8d98d0052d7d2a868d7" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> <a class="el" href="class_uno___player.html#a210acf259dc060d31139866fdaa91e98">Uno_Player::hand</a></td>
+          <td class="memname">Uno_Player::Uno_Player </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Default constructor. </p>
+<p>Constructs an <a class="el" href="class_uno___player.html" title="Models a real player for the game.">Uno_Player</a> with an empty hand, a blank name, and score and level of zero. </p>
+
+</div>
+</div>
+<a class="anchor" id="a01b27e59f1de1e13627c2e72e69c65c6"></a><!-- doxytag: member="Uno_Player::Uno_Player" ref="a01b27e59f1de1e13627c2e72e69c65c6" args="(const string &amp;n, unsigned int s)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Uno_Player::Uno_Player </td>
+          <td>(</td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Identification constructor. </p>
+<p>Constructs an <a class="el" href="class_uno___player.html" title="Models a real player for the game.">Uno_Player</a> with an with the given name, score, and level. </p>
+
+</div>
+</div>
+<a class="anchor" id="acd18cd073963d561da37018f114ef29b"></a><!-- doxytag: member="Uno_Player::Uno_Player" ref="acd18cd073963d561da37018f114ef29b" args="(const hand &amp;h, const string &amp;n, unsigned int s)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Uno_Player::Uno_Player </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a> &amp;&#160;</td>
+          <td class="paramname"><em>h</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const string &amp;&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>s</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Full value specification constructor. </p>
+<p>Constructs an <a class="el" href="class_uno___player.html" title="Models a real player for the game.">Uno_Player</a> with an with the given hand, name, score, and level. </p>
+
+</div>
+</div>
+<hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ac803ffaaf0efeaa27d3d4993545bee39"></a><!-- doxytag: member="Uno_Player::draw_card" ref="ac803ffaaf0efeaa27d3d4993545bee39" args="(deck &amp;d)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Uno_Player::draw_card </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Draws a card from the deck and puts it in the player's hand. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">d</td><td>The deck to draw a card from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Takes the top card from the deck and places it into the player's hand. The deck's size is decreased by one and the player's hand size is increased by one. </p>
+
+</div>
+</div>
+<a class="anchor" id="a5f0d9630e8e143f34c4d63340bac90e0"></a><!-- doxytag: member="Uno_Player::draw_initial_hand" ref="a5f0d9630e8e143f34c4d63340bac90e0" args="(deck &amp;d)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Uno_Player::draw_initial_hand </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Draws UNO_INIT_HAND_SIZE cards from the deck and puts them in the player's hand. </p>
+<dl class="pre"><dt><b>Precondition:</b></dt><dd>d.size() &gt;= UNO_INIT_HAND_SIZE </dd></dl>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">d</td><td>The deck to draw a card from.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Takes the UNO_INIT_HAND_SIZE cards from the deck and places it into the player's hand. The deck's size is decreased by UNO_INIT_HAND_SIZE and the player's hand size is increased UNO_INIT_HAND_SIZE. </p>
+
+</div>
+</div>
+<a class="anchor" id="abe1a86f4792fa9e703ffeb28e453160f"></a><!-- doxytag: member="Uno_Player::play_card_by_index" ref="abe1a86f4792fa9e703ffeb28e453160f" args="(unsigned char i)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a> Uno_Player::play_card_by_index </td>
+          <td>(</td>
+          <td class="paramtype">unsigned char&#160;</td>
+          <td class="paramname"><em>i</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Plays a card at the given index from the player's hand. </p>
+<dl class="pre"><dt><b>Precondition:</b></dt><dd>0 &lt;= i &lt; m_hand.size() </dd></dl>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The index of the card in the player's hand to play. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The card played.</dd></dl>
+<p>Takes a card at index i and returns it. The card at index i is removed from the player's hand.</p>
+<dl class="note"><dt><b>Note:</b></dt><dd>This is the preferred version of playing a card, as it is faster. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a2e94c703cf4f680c4dcbcb1adbb4816b"></a><!-- doxytag: member="Uno_Player::play_card_by_name" ref="a2e94c703cf4f680c4dcbcb1adbb4816b" args="(card c)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a> Uno_Player::play_card_by_name </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a>&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Plays a card with the given name from the player's hand. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>The card to play. To specify this name, use CARD. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The card played. If the specified card, c, does not exist in the player's hand, the card <a class="el" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD(UNO_NO_COLOR, UNO_RESERVED)</a> is returned. </dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD</a></dd></dl>
+<p>Takes a card specified by c and returns it. The card c is removed from the player's hand.</p>
+<p>This version of play_card is much less efficient than the index version. </p>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_uno___player.html#abe1a86f4792fa9e703ffeb28e453160f" title="Plays a card at the given index from the player&#39;s hand.">play_card_by_index( unsigned char i )</a> </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a3af4557fcf900bc6357000449ecb5860"></a><!-- doxytag: member="Uno_Player::print_hand" ref="a3af4557fcf900bc6357000449ecb5860" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Uno_Player::print_hand </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Prints out this player's hand of cards. </p>
+<dl class="see"><dt><b>See also:</b></dt><dd>typedef vector&lt;card&gt; <a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408" title="Type defition for a deck of Uno cards represented by a vector&lt;card&gt;.">deck</a> </dd></dl>
+<dl class="note"><dt><b>Note:</b></dt><dd>This is a relatively expensive operation, use sparingly. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a17a542fc645418ee806c79ebe253a62e"></a><!-- doxytag: member="Uno_Player::print_hand_values" ref="a17a542fc645418ee806c79ebe253a62e" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Uno_Player::print_hand_values </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Prints out the values of this player's hand of cards. </p>
+<dl class="see"><dt><b>See also:</b></dt><dd>typedef vector&lt;card&gt; <a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408" title="Type defition for a deck of Uno cards represented by a vector&lt;card&gt;.">deck</a> </dd></dl>
+<dl class="note"><dt><b>Note:</b></dt><dd>This is a less expensive operation than <a class="el" href="class_uno___player.html#a3af4557fcf900bc6357000449ecb5860" title="Prints out this player&#39;s hand of cards.">print_hand()</a> but is still relatively expensive, use sparingly. </dd></dl>
+
+</div>
+</div>
+<hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a9d50084b9fd4b005286ffdaa004f2664"></a><!-- doxytag: member="Uno_Player::m_hand" ref="a9d50084b9fd4b005286ffdaa004f2664" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a> <a class="el" href="class_uno___player.html#a9d50084b9fd4b005286ffdaa004f2664">Uno_Player::m_hand</a></td>
         </tr>
       </table>
 </div>
@@ -140,28 +405,12 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="acac0c2dc34e3ab51edc7525ca70b8bfb"></a><!-- doxytag: member="Uno_Player::level" ref="acac0c2dc34e3ab51edc7525ca70b8bfb" args="" -->
+<a class="anchor" id="a06af109b4d621efa14ba98e4c9395739"></a><!-- doxytag: member="Uno_Player::m_name" ref="a06af109b4d621efa14ba98e4c9395739" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned char <a class="el" href="class_uno___player.html#acac0c2dc34e3ab51edc7525ca70b8bfb">Uno_Player::level</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The player's AI difficulty level. </p>
-<p>The level of the AI represents its difficulty level. A higher value means that an AI player will make more intelligent plays and be harder to defeat. </p>
-
-</div>
-</div>
-<a class="anchor" id="aae7371d13b426d5da6a290ab00590a17"></a><!-- doxytag: member="Uno_Player::name" ref="aae7371d13b426d5da6a290ab00590a17" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">string <a class="el" href="class_uno___player.html#aae7371d13b426d5da6a290ab00590a17">Uno_Player::name</a></td>
+          <td class="memname">string <a class="el" href="class_uno___player.html#a06af109b4d621efa14ba98e4c9395739">Uno_Player::m_name</a></td>
         </tr>
       </table>
 </div>
@@ -172,12 +421,12 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad890e9b411f90bd5be34fffd9704f122"></a><!-- doxytag: member="Uno_Player::score" ref="ad890e9b411f90bd5be34fffd9704f122" args="" -->
+<a class="anchor" id="a9805f306a500b1898c0a0922d76de444"></a><!-- doxytag: member="Uno_Player::m_score" ref="a9805f306a500b1898c0a0922d76de444" args="" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="class_uno___player.html#ad890e9b411f90bd5be34fffd9704f122">Uno_Player::score</a></td>
+          <td class="memname">unsigned int <a class="el" href="class_uno___player.html#a9805f306a500b1898c0a0922d76de444">Uno_Player::m_score</a></td>
         </tr>
       </table>
 </div>
@@ -213,7 +462,7 @@ Public Attributes</h2></td></tr>
 </div>
 
 
-    <li class="footer">Generated on Sat Oct 15 2011 02:52:40 for UnoAI by
+    <li class="footer">Generated on Sun Oct 16 2011 04:20:24 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>
