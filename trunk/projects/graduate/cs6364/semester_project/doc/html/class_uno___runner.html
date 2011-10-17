@@ -110,8 +110,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr><td colspan="2"><h2><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a485bf9506331363e4b0d6208ee446497">Uno_Runner</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a485bf9506331363e4b0d6208ee446497"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a485bf9506331363e4b0d6208ee446497"></a><!-- doxytag: member="Uno_Runner::Uno_Runner" ref="a485bf9506331363e4b0d6208ee446497" args="()" -->
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a485bf9506331363e4b0d6208ee446497">Uno_Runner</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. Does nothing. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8">setup</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shuffles the deck, all players draw initial hands.  <a href="#ae015517f7d4493ddbaaeacd98be0b9b8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#aa3f43b6ab9042ff74a34ad3fae8a0b11">num_players</a> ()</td></tr>
@@ -138,27 +139,7 @@ Public Member Functions</h2></td></tr>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Runs an Uno game. </p>
 <p>To actually play a game of Uno using the AI, create an object of this type, call <a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8" title="Shuffles the deck, all players draw initial hands.">setup()</a>, then <a class="el" href="class_uno___runner.html#a3f0847989a9868bcd023b41ee5f28d0a" title="Runs the Uno game.">run()</a>. </p>
-</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a485bf9506331363e4b0d6208ee446497"></a><!-- doxytag: member="Uno_Runner::Uno_Runner" ref="a485bf9506331363e4b0d6208ee446497" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Uno_Runner::Uno_Runner </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Default constructor. </p>
-<p>Sets up m_state to have the following: UNO_NUM_PLAYERS with no cards in their hands, no names, no score, and no difficulty level. It is Player 0's turn. One unplayed deck of UNO_DECKS_PER_GAME * UNO_DECK_SIZE cards. One played deck of zero cards. </p>
-
-</div>
-</div>
-<hr/><h2>Member Function Documentation</h2>
+</div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a982f614c5afa8faa57aedc3116f3d237"></a><!-- doxytag: member="Uno_Runner::add_player" ref="a982f614c5afa8faa57aedc3116f3d237" args="(const Uno_Player &amp;p)" -->
 <div class="memitem">
 <div class="memproto">
@@ -412,7 +393,13 @@ false otherwise if the player could not be removed.</dd></dl>
 <dl class="return"><dt><b>Returns:</b></dt><dd>true if the setup executed properly, </dd>
 <dd>
 false otherwise.</dd></dl>
-<p>Sets up m_state to have the following: UNO_NUM_PLAYERS with 7 cards in their hands, no names, no score, and no difficulty level. It is Player 0's turn. One shuffled unplayed deck of UNO_DECKS_PER_GAME * UNO_DECK_SIZE cards. One played deck of zero cards. </p>
+<p>Sets up m_state to have the following: </p>
+<ul>
+<li>UNO_NUM_PLAYERS with 7 cards in their hands, no names, no score, and no difficulty level. </li>
+<li>It is Player 0's turn. </li>
+<li>One shuffled unplayed deck of UNO_DECKS_PER_GAME * UNO_DECK_SIZE cards. </li>
+<li>One played deck of zero cards. </li>
+</ul>
 
 </div>
 </div>
@@ -459,7 +446,7 @@ false otherwise.</dd></dl>
 </div>
 
 
-    <li class="footer">Generated on Sun Oct 16 2011 04:20:24 for UnoAI by
+    <li class="footer">Generated on Mon Oct 17 2011 18:13:35 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

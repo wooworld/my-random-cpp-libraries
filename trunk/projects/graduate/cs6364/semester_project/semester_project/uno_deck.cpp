@@ -61,8 +61,6 @@ void print_deck( deck& d )
     cout << card_name( d[i] ) << " ";
   }
 
-  cout << endl;
-
   return;
 }
 
@@ -72,8 +70,6 @@ void print_deck_values( deck& d )
   {
     cout << d[i] << " ";
   }
-
-  cout << endl;
 
   return;
 }

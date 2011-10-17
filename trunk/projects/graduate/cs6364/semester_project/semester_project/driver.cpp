@@ -76,6 +76,9 @@ int main( int argc, char * argv[] )
   runner.add_player( p1 );
   runner.add_player( p2 );
 
+  // Print out the initial state
+  runner.print_state();
+
   runner.run();
 
   cin.get();

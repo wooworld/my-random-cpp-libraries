@@ -14,13 +14,28 @@ using namespace std;
  * macro function. A call to CARD_NAME[CARD(UNO_GREEN, UNO_ZERO)] will return
  * the name of the green zero card, "G0". Similarly,
  * CARD_NAME[CARD(UNO_NO_COLOR, UNO_WILD_DRAW_FOUR)] will return "WD4".
- * \note The map must be populated with map_uno_names() before this map
+ * \note The map must be populated with map_names() before this map
  * can be effectively used.
  * \note Best used with card_name()
- * \sa void map_names( map& m )
+ * \sa void map_names()
  * \sa string card_name( card c )
  */
-card_dictionary CARD_NAME;
+card_name_dictionary CARD_NAME;
+
+/** 
+ * \brief A map of card types to card weights.
+ * 
+ * The map is arranged such that card weights can be accessed using the CARD
+ * macro function. A call to CARD_WEIGHT[CARD(UNO_GREEN, UNO_ZERO)] will return
+ * the weight of the green zero card, "G0". Similarly,
+ * CARD_WEIGHT[CARD(UNO_NO_COLOR, UNO_WILD_DRAW_FOUR)] will return "WD4".
+ * \note The map must be populated with map_weights() before this map
+ * can be effectively used.
+ * \note Best used with card_weight()
+ * \sa void map_weights()
+ * \sa unsigned char card_weight( card c )
+ */
+card_weight_dictionary CARD_WEIGHT;
 
 void map_names()
 {
@@ -89,4 +104,33 @@ void map_names()
 string card_name( card c )
 {
   return CARD_NAME[c];
+}
+
+void map_weights()
+{
+  CARD_WEIGHT[UNO_ZERO] = 0;
+  CARD_WEIGHT[UNO_ONE] = 1;
+  CARD_WEIGHT[UNO_TWO] = 2;
+  CARD_WEIGHT[UNO_THREE] = 3;
+  CARD_WEIGHT[UNO_FOUR] = 4;
+  CARD_WEIGHT[UNO_FIVE] = 5;
+  CARD_WEIGHT[UNO_SIX] = 6;
+  CARD_WEIGHT[UNO_SEVEN] = 7;
+  CARD_WEIGHT[UNO_EIGHT] = 8;
+  CARD_WEIGHT[UNO_NINE] = 9;
+  CARD_WEIGHT[UNO_SKIP] = 20;
+  CARD_WEIGHT[UNO_REVERSE] = 20;
+  CARD_WEIGHT[UNO_DRAW_TWO] = 20;
+  CARD_WEIGHT[UNO_WILD] = 50;
+  CARD_WEIGHT[UNO_WILD_DRAW_FOUR] = 50;
+
+  return;
+}
+
+unsigned char card_weight( card c )
+{
+  // The card weight depends only on card type, not color. Filter out the color
+  // before querying for the weight.
+
+  return CARD_WEIGHT[CARDTYPE(c)];
 }

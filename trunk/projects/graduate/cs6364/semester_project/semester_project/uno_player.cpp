@@ -71,6 +71,22 @@ card Uno_Player::play_card_by_index( unsigned char i )
   return c;
 }
 
+//unsigned int Uno_Player::take_turn( const Uno_Game_State& s, unsigned int time )
+unsigned int Uno_Player::take_turn()
+{
+  // Print state for player to see
+
+  // Start timer
+
+  // Countdown to player
+
+  // Wait for input from player
+
+  // Player doesn't play within time, randomly choose card 
+
+  return 0;
+}
+
 void Uno_Player::print_hand()
 {
   list<card>::iterator it;

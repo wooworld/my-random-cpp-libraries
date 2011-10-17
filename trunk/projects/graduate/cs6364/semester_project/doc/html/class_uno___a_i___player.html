@@ -126,16 +126,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Identification constructor.  <a href="#ab16352005d98a759d298d05afdaaea9e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#a535884ee15f0d243b43227d941a102c8">Uno_AI_Player</a> (const <a class="el" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a> &amp;h, const string &amp;n, unsigned int s, unsigned int l)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Full value specification constructor.  <a href="#a535884ee15f0d243b43227d941a102c8"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#a3c67651d11a500c8ebac0f155ac4a6c6">take_turn</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes the AI player take his turn.  <a href="#a3c67651d11a500c8ebac0f155ac4a6c6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#a7884d5ed5f3fbbfc2ca7976ce252f333">take_turn</a> (const <a class="el" href="class_uno___game___state.html">Uno_Game_State</a> &amp;s, unsigned int time)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes the AI player take his turn.  <a href="#a7884d5ed5f3fbbfc2ca7976ce252f333"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acfca158f34aca68fab02191035463c1d"></a><!-- doxytag: member="Uno_AI_Player::m_state" ref="acfca158f34aca68fab02191035463c1d" args="" -->
-<a class="el" href="class_uno___game___state.html">Uno_Game_State</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#acfca158f34aca68fab02191035463c1d">m_state</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The current state of the game according to this player. <br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a59968669473342ba3fe0aad108439719"></a><!-- doxytag: member="Uno_AI_Player::m_frontier" ref="a59968669473342ba3fe0aad108439719" args="" -->
-vector&lt; <a class="el" href="class_uno___game___state.html">Uno_Game_State</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#a59968669473342ba3fe0aad108439719">m_frontier</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The set of states the AI considers and scores when think()ing each turn. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#a028b0df8cca96eb10fc87bebf0f48c25">m_level</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's AI difficulty level.  <a href="#a028b0df8cca96eb10fc87bebf0f48c25"></a><br/></td></tr>
 </table>
@@ -240,21 +234,33 @@ vector&lt; <a class="el" href="class_uno___game___state.html">Uno_Game_State</a>
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a3c67651d11a500c8ebac0f155ac4a6c6"></a><!-- doxytag: member="Uno_AI_Player::take_turn" ref="a3c67651d11a500c8ebac0f155ac4a6c6" args="()" -->
+<a class="anchor" id="a7884d5ed5f3fbbfc2ca7976ce252f333"></a><!-- doxytag: member="Uno_AI_Player::take_turn" ref="a7884d5ed5f3fbbfc2ca7976ce252f333" args="(const Uno_Game_State &amp;s, unsigned int time)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Uno_AI_Player::take_turn </td>
+          <td class="memname">unsigned int Uno_AI_Player::take_turn </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="class_uno___game___state.html">Uno_Game_State</a> &amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>time</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>Makes the AI player take his turn. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The index of the card in the player's hand he wishes to play.</dd></dl>
 <p>Taking a turn consists of multiple actions: </p>
 <ul>
 <li>Attempt to play a card from the hand. </li>
@@ -305,7 +311,7 @@ vector&lt; <a class="el" href="class_uno___game___state.html">Uno_Game_State</a>
 </div>
 
 
-    <li class="footer">Generated on Sun Oct 16 2011 04:20:24 for UnoAI by
+    <li class="footer">Generated on Mon Oct 17 2011 18:13:35 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

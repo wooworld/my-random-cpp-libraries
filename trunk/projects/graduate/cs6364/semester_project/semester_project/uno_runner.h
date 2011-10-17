@@ -15,6 +15,8 @@
 
 using namespace std;
 
+#define UNO_TIME_PER_TURN 10 /*!< Maximum number of seconds per turn the AI is allowed to think */
+
 /** 
  * \brief Runs an Uno game. 
  *
@@ -25,15 +27,8 @@ class Uno_Runner
 {
   public:
     /**
-     * \brief Default constructor. 
-     *
-     * Sets up m_state to have the following:
-     * UNO_NUM_PLAYERS with no cards in their hands, no names, no score, and
-     * no difficulty level.
-     * It is Player 0's turn. 
-     * One unplayed deck of UNO_DECKS_PER_GAME * UNO_DECK_SIZE cards.
-     * One played deck of zero cards.
-     */
+     * \brief Default constructor. Does nothing.
+     */ 
     Uno_Runner();
 
     /**
@@ -43,11 +38,11 @@ class Uno_Runner
      * \return false otherwise.
      *
      * Sets up m_state to have the following:
-     * UNO_NUM_PLAYERS with 7 cards in their hands, no names, no score, and
+     * \li UNO_NUM_PLAYERS with 7 cards in their hands, no names, no score, and
      * no difficulty level.
-     * It is Player 0's turn. 
-     * One shuffled unplayed deck of UNO_DECKS_PER_GAME * UNO_DECK_SIZE cards.
-     * One played deck of zero cards.
+     * \li It is Player 0's turn. 
+     * \li One shuffled unplayed deck of UNO_DECKS_PER_GAME * UNO_DECK_SIZE cards.
+     * \li One played deck of zero cards.
      */
     bool setup();
 
@@ -157,6 +152,11 @@ class Uno_Runner
      * \brief Indicates whether the game is ready to run or not.
      */ 
     bool ready_to_play;
+
+    /**
+     * \brief Returns true if a player has won the game. 
+     */
+    bool game_over();
 };
 
 #endif 

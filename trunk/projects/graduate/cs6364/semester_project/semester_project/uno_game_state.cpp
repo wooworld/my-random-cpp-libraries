@@ -7,5 +7,5 @@
 
 using namespace std;
 
-Uno_Game_State::Uno_Game_State() : m_eval_score(0), m_turn(0)
+Uno_Game_State::Uno_Game_State() : m_eval_score(0), m_turn(0), m_turn_count(0)
 {}

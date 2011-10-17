@@ -107,32 +107,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 <span class="keyword">using namespace </span>std;
 <a name="l00015"></a>00015 
-<a name="l00016"></a><a class="code" href="uno__ai__player_8h.html#a94f045080b8292e0497d9ea69650ea13">00016</a> <span class="preprocessor">#define UNO_TIME_PER_TURN 20 </span>
-<a name="l00021"></a><a class="code" href="class_uno___a_i___player.html">00021</a> <span class="preprocessor">class Uno_AI_Player : public Uno_Player</span>
-<a name="l00022"></a>00022 <span class="preprocessor"></span>{
-<a name="l00023"></a>00023   <span class="keyword">public</span>:
-<a name="l00030"></a>00030     <a class="code" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a>();
-<a name="l00031"></a>00031 
-<a name="l00037"></a>00037     <a class="code" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a>( <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> l );
-<a name="l00038"></a>00038 
-<a name="l00044"></a>00044     <a class="code" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a>( <span class="keyword">const</span> <a class="code" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e" title="Type defition for a deck of Uno cards represented by a vector&lt;card&gt;.">hand</a>&amp; h, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> l );
-<a name="l00053"></a>00053     <span class="keywordtype">void</span> take_turn();
-<a name="l00054"></a>00054 
-<a name="l00058"></a><a class="code" href="class_uno___a_i___player.html#acfca158f34aca68fab02191035463c1d">00058</a>     <a class="code" href="class_uno___game___state.html" title="Holds the state of the game.">Uno_Game_State</a> <a class="code" href="class_uno___a_i___player.html#acfca158f34aca68fab02191035463c1d" title="The current state of the game according to this player.">m_state</a>;
-<a name="l00059"></a>00059 
-<a name="l00064"></a><a class="code" href="class_uno___a_i___player.html#a59968669473342ba3fe0aad108439719">00064</a>     vector&lt;Uno_Game_State&gt; <a class="code" href="class_uno___a_i___player.html#a59968669473342ba3fe0aad108439719" title="The set of states the AI considers and scores when think()ing each turn.">m_frontier</a>;
-<a name="l00065"></a>00065 
-<a name="l00073"></a><a class="code" href="class_uno___a_i___player.html#a028b0df8cca96eb10fc87bebf0f48c25">00073</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="class_uno___a_i___player.html#a028b0df8cca96eb10fc87bebf0f48c25" title="The player&#39;s AI difficulty level.">m_level</a>;
+<a name="l00019"></a><a class="code" href="class_uno___a_i___player.html">00019</a> <span class="keyword">class </span><a class="code" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a> : <span class="keyword">public</span> <a class="code" href="class_uno___player.html" title="Models a real player for the game.">Uno_Player</a>
+<a name="l00020"></a>00020 {
+<a name="l00021"></a>00021   <span class="keyword">public</span>:
+<a name="l00028"></a>00028     <a class="code" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a>();
+<a name="l00029"></a>00029 
+<a name="l00035"></a>00035     <a class="code" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a>( <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> l );
+<a name="l00036"></a>00036 
+<a name="l00042"></a>00042     <a class="code" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a>( <span class="keyword">const</span> <a class="code" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e" title="Type defition for a deck of Uno cards represented by a vector&lt;card&gt;.">hand</a>&amp; h, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> l );
+<a name="l00043"></a>00043     
+<a name="l00053"></a>00053     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> take_turn( <span class="keyword">const</span> <a class="code" href="class_uno___game___state.html" title="Holds the state of the game.">Uno_Game_State</a>&amp; s, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> time );
+<a name="l00054"></a>00054     <span class="comment">//unsigned int take_turn();</span>
+<a name="l00055"></a>00055 
+<a name="l00063"></a><a class="code" href="class_uno___a_i___player.html#a028b0df8cca96eb10fc87bebf0f48c25">00063</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> <a class="code" href="class_uno___a_i___player.html#a028b0df8cca96eb10fc87bebf0f48c25" title="The player&#39;s AI difficulty level.">m_level</a>;
+<a name="l00064"></a>00064 
+<a name="l00065"></a>00065   <span class="keyword">private</span>:
+<a name="l00073"></a>00073     <span class="keywordtype">void</span> think();
 <a name="l00074"></a>00074 
-<a name="l00075"></a>00075   <span class="keyword">private</span>:
-<a name="l00083"></a>00083     <span class="keywordtype">void</span> think();
-<a name="l00084"></a>00084 
-<a name="l00091"></a>00091     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> choose_move();
-<a name="l00092"></a>00092 
-<a name="l00099"></a>00099     <span class="keywordtype">void</span> successor( <span class="keyword">const</span> <a class="code" href="class_uno___game___state.html" title="Holds the state of the game.">Uno_Game_State</a>&amp; s );
-<a name="l00100"></a>00100 };
-<a name="l00101"></a>00101 
-<a name="l00102"></a>00102 <span class="preprocessor">#endif</span>
+<a name="l00081"></a>00081     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> choose_move();
+<a name="l00082"></a>00082 
+<a name="l00089"></a>00089     <span class="keywordtype">void</span> successor( <span class="keyword">const</span> <a class="code" href="class_uno___game___state.html" title="Holds the state of the game.">Uno_Game_State</a>&amp; s );
+<a name="l00090"></a>00090 
+<a name="l00094"></a>00094     <span class="keyword">inline</span> <span class="keywordtype">bool</span> goal_test( <span class="keyword">const</span> <a class="code" href="class_uno___game___state.html" title="Holds the state of the game.">Uno_Game_State</a>&amp; s );
+<a name="l00095"></a>00095 
+<a name="l00100"></a>00100     vector&lt;Uno_Game_State&gt; m_frontier;
+<a name="l00101"></a>00101 };
+<a name="l00102"></a>00102 
+<a name="l00103"></a>00103 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
@@ -153,7 +154,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 
-    <li class="footer">Generated on Sun Oct 16 2011 04:20:24 for UnoAI by
+    <li class="footer">Generated on Mon Oct 17 2011 18:13:34 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

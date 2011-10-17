@@ -112,7 +112,8 @@ Inheritance diagram for Uno_Player:</div>
  <div class="center">
   <img src="class_uno___player.png" usemap="#Uno_Player_map" alt=""/>
   <map id="Uno_Player_map" name="Uno_Player_map">
-<area href="class_uno___a_i___player.html" title="An AI player for the game." alt="Uno_AI_Player" shape="rect" coords="0,56,97,80"/>
+<area href="class_uno___a_i___player.html" title="An AI player for the game." alt="Uno_AI_Player" shape="rect" coords="0,56,124,80"/>
+<area href="class_uno___human___player.html" title="An AI player for the game." alt="Uno_Human_Player" shape="rect" coords="134,56,258,80"/>
 </map>
  </div></div>
 
@@ -134,6 +135,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays a card with the given name from the player's hand.  <a href="#a2e94c703cf4f680c4dcbcb1adbb4816b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#abe1a86f4792fa9e703ffeb28e453160f">play_card_by_index</a> (unsigned char i)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays a card at the given index from the player's hand.  <a href="#abe1a86f4792fa9e703ffeb28e453160f"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a31f9f272c9a427ea3b9e8dc7120fadac">take_turn</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes the AI player take his turn.  <a href="#a31f9f272c9a427ea3b9e8dc7120fadac"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a3af4557fcf900bc6357000449ecb5860">print_hand</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints out this player's hand of cards.  <a href="#a3af4557fcf900bc6357000449ecb5860"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a17a542fc645418ee806c79ebe253a62e">print_hand_values</a> ()</td></tr>
@@ -388,6 +391,31 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a31f9f272c9a427ea3b9e8dc7120fadac"></a><!-- doxytag: member="Uno_Player::take_turn" ref="a31f9f272c9a427ea3b9e8dc7120fadac" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int Uno_Player::take_turn </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Makes the AI player take his turn. </p>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The index of the card in the player's hand he wishes to play.</dd></dl>
+<p>Taking a turn consists of multiple actions: </p>
+<ul>
+<li>Attempt to play a card from the hand. </li>
+<li>If no play can be made, draw a card. </li>
+<li>Attempt to play the drawn card. </li>
+</ul>
+
+</div>
+</div>
 <hr/><h2>Member Data Documentation</h2>
 <a class="anchor" id="a9d50084b9fd4b005286ffdaa004f2664"></a><!-- doxytag: member="Uno_Player::m_hand" ref="a9d50084b9fd4b005286ffdaa004f2664" args="" -->
 <div class="memitem">
@@ -462,7 +490,7 @@ Public Attributes</h2></td></tr>
 </div>
 
 
-    <li class="footer">Generated on Sun Oct 16 2011 04:20:24 for UnoAI by
+    <li class="footer">Generated on Mon Oct 17 2011 18:13:35 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>
