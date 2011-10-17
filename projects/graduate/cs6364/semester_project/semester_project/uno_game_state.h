@@ -44,6 +44,11 @@ class Uno_Game_State
     unsigned int m_turn;
 
     /**
+     * \brief The turn count. The number of turns elapsed in the game.
+     */
+    unsigned int m_turn_count;
+
+    /**
      * \brief The unplayed deck of cards for this game.
      *
      * When a player draws a card it comes from the top of this deck.

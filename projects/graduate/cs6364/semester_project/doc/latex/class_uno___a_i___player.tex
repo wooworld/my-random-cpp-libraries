@@ -26,21 +26,11 @@
 \begin{DoxyCompactList}\small\item\em \-Identification constructor. \end{DoxyCompactList}\item 
 \hyperlink{class_uno___a_i___player_a535884ee15f0d243b43227d941a102c8}{\-Uno\-\_\-\-A\-I\-\_\-\-Player} (const \hyperlink{uno__player_8h_acd9523c15e47a87e3740cf5ade73556e}{hand} \&h, const string \&n, unsigned int s, unsigned int l)
 \begin{DoxyCompactList}\small\item\em \-Full value specification constructor. \end{DoxyCompactList}\item 
-void \hyperlink{class_uno___a_i___player_a3c67651d11a500c8ebac0f155ac4a6c6}{take\-\_\-turn} ()
+unsigned int \hyperlink{class_uno___a_i___player_a7884d5ed5f3fbbfc2ca7976ce252f333}{take\-\_\-turn} (const \hyperlink{class_uno___game___state}{\-Uno\-\_\-\-Game\-\_\-\-State} \&s, unsigned int time)
 \begin{DoxyCompactList}\small\item\em \-Makes the \-A\-I player take his turn. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{\-Public \-Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\hypertarget{class_uno___a_i___player_acfca158f34aca68fab02191035463c1d}{
-\hyperlink{class_uno___game___state}{\-Uno\-\_\-\-Game\-\_\-\-State} \hyperlink{class_uno___a_i___player_acfca158f34aca68fab02191035463c1d}{m\-\_\-state}}
-\label{class_uno___a_i___player_acfca158f34aca68fab02191035463c1d}
-
-\begin{DoxyCompactList}\small\item\em \-The current state of the game according to this player. \end{DoxyCompactList}\item 
-\hypertarget{class_uno___a_i___player_a59968669473342ba3fe0aad108439719}{
-vector$<$ \hyperlink{class_uno___game___state}{\-Uno\-\_\-\-Game\-\_\-\-State} $>$ \hyperlink{class_uno___a_i___player_a59968669473342ba3fe0aad108439719}{m\-\_\-frontier}}
-\label{class_uno___a_i___player_a59968669473342ba3fe0aad108439719}
-
-\begin{DoxyCompactList}\small\item\em \-The set of states the \-A\-I considers and scores when think()ing each turn. \end{DoxyCompactList}\item 
 unsigned char \hyperlink{class_uno___a_i___player_a028b0df8cca96eb10fc87bebf0f48c25}{m\-\_\-level}
 \begin{DoxyCompactList}\small\item\em \-The player's \-A\-I difficulty level. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
@@ -96,19 +86,23 @@ unsigned char \hyperlink{class_uno___a_i___player_a028b0df8cca96eb10fc87bebf0f48
 \-Constructs an \hyperlink{class_uno___a_i___player}{\-Uno\-\_\-\-A\-I\-\_\-\-Player} with an with the given hand, name, score, and level. 
 
 \subsection{\-Member \-Function \-Documentation}
-\hypertarget{class_uno___a_i___player_a3c67651d11a500c8ebac0f155ac4a6c6}{
+\hypertarget{class_uno___a_i___player_a7884d5ed5f3fbbfc2ca7976ce252f333}{
 \index{\-Uno\-\_\-\-A\-I\-\_\-\-Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}!take\-\_\-turn@{take\-\_\-turn}}
 \index{take\-\_\-turn@{take\-\_\-turn}!Uno_AI_Player@{\-Uno\-\_\-\-A\-I\-\_\-\-Player}}
-\subsubsection[{take\-\_\-turn}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-A\-I\-\_\-\-Player\-::take\-\_\-turn (
+\subsubsection[{take\-\_\-turn}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int \-Uno\-\_\-\-A\-I\-\_\-\-Player\-::take\-\_\-turn (
 \begin{DoxyParamCaption}
-{}
+\item[{const {\bf \-Uno\-\_\-\-Game\-\_\-\-State} \&}]{s, }
+\item[{unsigned int}]{time}
 \end{DoxyParamCaption}
 )}}
-\label{class_uno___a_i___player_a3c67651d11a500c8ebac0f155ac4a6c6}
+\label{class_uno___a_i___player_a7884d5ed5f3fbbfc2ca7976ce252f333}
 
 
 \-Makes the \-A\-I player take his turn. 
 
+\begin{DoxyReturn}{\-Returns}
+\-The index of the card in the player's hand he wishes to play.
+\end{DoxyReturn}
 \-Taking a turn consists of multiple actions\-: \begin{DoxyItemize}
 \item \-Attempt to play a card from the hand. \item \-If no play can be made, draw a card. \item \-Attempt to play the drawn card. \end{DoxyItemize}
 

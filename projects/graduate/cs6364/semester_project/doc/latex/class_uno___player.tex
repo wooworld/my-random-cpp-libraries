@@ -34,6 +34,8 @@ void \hyperlink{class_uno___player_a5f0d9630e8e143f34c4d63340bac90e0}{draw\-\_\-
 \begin{DoxyCompactList}\small\item\em \-Plays a card with the given name from the player's hand. \end{DoxyCompactList}\item 
 \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card} \hyperlink{class_uno___player_abe1a86f4792fa9e703ffeb28e453160f}{play\-\_\-card\-\_\-by\-\_\-index} (unsigned char i)
 \begin{DoxyCompactList}\small\item\em \-Plays a card at the given index from the player's hand. \end{DoxyCompactList}\item 
+unsigned int \hyperlink{class_uno___player_a31f9f272c9a427ea3b9e8dc7120fadac}{take\-\_\-turn} ()
+\begin{DoxyCompactList}\small\item\em \-Makes the \-A\-I player take his turn. \end{DoxyCompactList}\item 
 void \hyperlink{class_uno___player_a3af4557fcf900bc6357000449ecb5860}{print\-\_\-hand} ()
 \begin{DoxyCompactList}\small\item\em \-Prints out this player's hand of cards. \end{DoxyCompactList}\item 
 void \hyperlink{class_uno___player_a17a542fc645418ee806c79ebe253a62e}{print\-\_\-hand\-\_\-values} ()
@@ -233,6 +235,24 @@ typedef vector$<$card$>$ \hyperlink{uno__deck_8h_ab634a15f4d19d3af113a71241b79c4
 \begin{DoxyNote}{\-Note}
 \-This is a less expensive operation than \hyperlink{class_uno___player_a3af4557fcf900bc6357000449ecb5860}{print\-\_\-hand()} but is still relatively expensive, use sparingly. 
 \end{DoxyNote}
+\hypertarget{class_uno___player_a31f9f272c9a427ea3b9e8dc7120fadac}{
+\index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!take\-\_\-turn@{take\-\_\-turn}}
+\index{take\-\_\-turn@{take\-\_\-turn}!Uno_Player@{\-Uno\-\_\-\-Player}}
+\subsubsection[{take\-\_\-turn}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int \-Uno\-\_\-\-Player\-::take\-\_\-turn (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___player_a31f9f272c9a427ea3b9e8dc7120fadac}
+
+
+\-Makes the \-A\-I player take his turn. 
+
+\begin{DoxyReturn}{\-Returns}
+\-The index of the card in the player's hand he wishes to play.
+\end{DoxyReturn}
+\-Taking a turn consists of multiple actions\-: \begin{DoxyItemize}
+\item \-Attempt to play a card from the hand. \item \-If no play can be made, draw a card. \item \-Attempt to play the drawn card. \end{DoxyItemize}
 
 
 \subsection{\-Member \-Data \-Documentation}

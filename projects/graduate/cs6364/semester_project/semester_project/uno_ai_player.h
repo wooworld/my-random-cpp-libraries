@@ -13,8 +13,6 @@
 
 using namespace std;
 
-#define UNO_TIME_PER_TURN 20 /*!< Maximum number of seconds per turn the AI is allowed to think */
-
 /** 
  * \brief An AI player for the game. 
  */
@@ -42,26 +40,18 @@ class Uno_AI_Player : public Uno_Player
      * Constructs an Uno_AI_Player with an with the given hand, name, score, and level.
      */
     Uno_AI_Player( const hand& h, const string& n, unsigned int s, unsigned int l );
+    
     /**
      * \brief Makes the AI player take his turn.
+     * \return The index of the card in the player's hand he wishes to play.
      *
      * Taking a turn consists of multiple actions:
      * \li Attempt to play a card from the hand.
      * \li If no play can be made, draw a card.
      * \li Attempt to play the drawn card.
      */
-    void take_turn();
-
-    /**
-     * \brief The current state of the game according to this player.
-     */
-    Uno_Game_State m_state;
-
-    /**
-     * \brief The set of states the AI considers and scores when think()ing 
-     * each turn.
-     */
-    vector<Uno_Game_State> m_frontier;
+    unsigned int take_turn( const Uno_Game_State& s, unsigned int time );
+    //unsigned int take_turn();
 
     /**
      * \brief The player's AI difficulty level.
@@ -97,6 +87,17 @@ class Uno_AI_Player : public Uno_Player
      * A successor state is the state that will result from a single move. 
      */
     void successor( const Uno_Game_State& s );
+
+    /**
+     * \brief Returns whether or not a given state is a goal state.
+     */
+    inline bool goal_test( const Uno_Game_State& s );
+
+    /**
+     * \brief The set of states the AI considers and scores when think()ing 
+     * each turn.
+     */
+    vector<Uno_Game_State> m_frontier;
 };
 
 #endif

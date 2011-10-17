@@ -14,31 +14,40 @@
 
 using namespace std;
 
-Uno_Runner::Uno_Runner()
+Uno_Runner::Uno_Runner() {}
+
+bool Uno_Runner::setup()
 {
+  // UNO_NUM_PLAYERS default players
   Uno_Player P;
   for ( int i = 0; i < UNO_NUM_PLAYERS; i++ )
   {
     m_state.m_players.push_back( P );
   }
 
+  // A default unplayed deck
   deck D;
   create_deck( D );
   m_state.m_unplayed = D;
 
+  // An empty played deck
   deck G;
   m_state.m_played = G;  
-}
 
-bool Uno_Runner::setup()
-{
   // Shuffle the deck
   shuffle_deck( m_state.m_unplayed );
 
   // Each player draws UNO_INIT_HAND_SIZE cards, if possible
   for ( unsigned int i = 0; i < m_state.m_players.size(); i++ )
   {
-    
+    // Ensure enough cards in the deck to draw a hand 
+    if ( m_state.m_unplayed.size() < UNO_INIT_HAND_SIZE )
+    {
+      return false;
+    }
+
+    // Draw UNO_INIT_HAND_SIZE cards. 
+    m_state.m_players[i].draw_initial_hand( m_state.m_unplayed );
   }
 
   return true;
@@ -140,6 +149,26 @@ void Uno_Runner::print_unplayed( unsigned char f )
 
 void Uno_Runner::print_state()
 {
+  cout << "Turn: " << m_state.m_turn_count << endl;
+  
+  cout << "<pid, name, score> {cards}" << endl;
+
+  for ( unsigned int i = 0; i < m_state.m_players.size(); i++ )
+  {
+    cout << "<" << i << ", " 
+         << m_state.m_players[i].m_name << ", " 
+         << m_state.m_players[i].m_score << "> = {";
+    m_state.m_players[i].print_hand();
+    cout << "}" << endl;
+  }
+
+  cout << "Played = {";
+  print_played( 0 );
+  cout << "}" << endl;
+
+  cout << "Unplayed = {";
+  print_unplayed( 0 );
+  cout << "}" << endl;
 
   return;
 }
@@ -152,5 +181,35 @@ bool Uno_Runner::check_runability()
 
 void Uno_Runner::run()
 {
+  // Holds the index of the card in the player's hand he wishes to play
+  unsigned int next_play = 0;
+
+  while ( !game_over() )
+  {
+    // Calculate next player
+    m_state.m_turn = (m_state.m_turn + 1) % m_state.m_players.size(); 
+
+    // Set the state for all players
+
+    // Call next player to take their turn
+    next_play = m_state.m_players[m_state.m_turn].take_turn();
+
+    // Perform state check to ensure player didn't make illegal play
+
+
+    // Make the play chosen, if it is legal
+    m_state.m_unplayed.push_back( 
+      m_state.m_players[m_state.m_turn].play_card_by_index( next_play ) 
+      );
+
+    
+  }
+
   return;
+}
+
+bool Uno_Runner::game_over()
+{
+
+  return true;
 }

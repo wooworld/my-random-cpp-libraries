@@ -191,6 +191,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\uno_human_player.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\uno_player.cpp"
 				>
 			</File>
@@ -218,6 +222,10 @@
 			</File>
 			<File
 				RelativePath=".\uno_game_state.h"
+				>
+			</File>
+			<File
+				RelativePath=".\uno_human_player.h"
 				>
 			</File>
 			<File

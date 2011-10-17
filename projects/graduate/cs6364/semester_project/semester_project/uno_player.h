@@ -10,6 +10,7 @@
 #include <list>
 #include "uno_deck.h"
 #include "uno_card.h"
+//#include "uno_game_state.h"
 
 using namespace std;
 
@@ -101,6 +102,18 @@ class Uno_Player
      */
     card play_card_by_index( unsigned char i );
 
+    /**
+     * \brief Makes the AI player take his turn.
+     * \return The index of the card in the player's hand he wishes to play.
+     *
+     * Taking a turn consists of multiple actions:
+     * \li Attempt to play a card from the hand.
+     * \li If no play can be made, draw a card.
+     * \li Attempt to play the drawn card.
+     */
+    //unsigned int take_turn( const Uno_Game_State& s, unsigned int time );
+    unsigned int take_turn();
+
     /** 
      * \brief Prints out this player's hand of cards.
      * \sa typedef vector<card> deck
@@ -139,6 +152,11 @@ class Uno_Player
      * considered the winner. 
      */
     unsigned int m_score;
+
+    /**
+     * \brief The current state of the game according to this player.
+     */
+    //Uno_Game_State m_state;
 };
 
 #endif
