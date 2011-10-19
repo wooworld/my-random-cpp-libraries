@@ -14,8 +14,10 @@ using namespace std;
 #include "uno_deck.h"
 #include "uno_player.h"
 #include "uno_ai_player.h"
+#include "uno_human_player.h"
 #include "uno_runner.h"
-#include "uno_game_state.h"
+#include "uno_gstate.h"
+#include "uno_pstate.h"
 
 /**
  * The entry point for the program.
@@ -24,7 +26,7 @@ int main( int argc, char * argv[] )
 {
   map_names();
 
-  deck d;
+  /*deck d;
 
   cout << "Testing deck creation..." << endl;
   create_deck( d );
@@ -52,7 +54,7 @@ int main( int argc, char * argv[] )
   cout << "Testing drawing an initial hand..." << endl;
   P.draw_initial_hand( d );
   print_deck( d );
-  P.print_hand();
+  P.print_hand();*/
 
 
   cout << "Real code time." << endl;
@@ -60,24 +62,20 @@ int main( int argc, char * argv[] )
   // Create a runner.
   Uno_Runner runner;
 
-  runner.use_default_deck();
+  //runner.use_default_deck();
 
   // Add two AI players.
   Uno_AI_Player p1;
-  p1.m_level = 0;
   p1.m_name = "Gary";
-  p1.m_score = 0;
   
-  Uno_AI_Player p2;
-  p2.m_level = 2;
+  Uno_Human_Player p2;
   p2.m_name = "Dr. Moldovan";
-  p2.m_score = 0;
 
   runner.add_player( p1 );
   runner.add_player( p2 );
 
   // Print out the initial state
-  runner.print_state();
+  //runner.print_state();
 
   runner.run();
 

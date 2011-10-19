@@ -2,38 +2,50 @@ var NAVTREE =
 [
   [ "UnoAI", "index.html", [
     [ "Class List", "annotated.html", [
+      [ "Uno_Action", "class_uno___action.html", null ],
       [ "Uno_AI_Player", "class_uno___a_i___player.html", null ],
-      [ "Uno_Game_State", "class_uno___game___state.html", null ],
+      [ "Uno_GState", "class_uno___g_state.html", null ],
       [ "Uno_Human_Player", "class_uno___human___player.html", null ],
       [ "Uno_Player", "class_uno___player.html", null ],
-      [ "Uno_Runner", "class_uno___runner.html", null ]
+      [ "Uno_PState", "class_uno___p_state.html", null ],
+      [ "Uno_Runner", "class_uno___runner.html", null ],
+      [ "Uno_State", "class_uno___state.html", null ]
     ] ],
     [ "Class Index", "classes.html", null ],
     [ "Class Hierarchy", "hierarchy.html", [
-      [ "Uno_Game_State", "class_uno___game___state.html", null ],
+      [ "Uno_Action", "class_uno___action.html", null ],
       [ "Uno_Player", "class_uno___player.html", [
         [ "Uno_AI_Player", "class_uno___a_i___player.html", null ],
         [ "Uno_Human_Player", "class_uno___human___player.html", null ]
       ] ],
-      [ "Uno_Runner", "class_uno___runner.html", null ]
+      [ "Uno_Runner", "class_uno___runner.html", null ],
+      [ "Uno_State", "class_uno___state.html", [
+        [ "Uno_GState", "class_uno___g_state.html", null ],
+        [ "Uno_PState", "class_uno___p_state.html", null ]
+      ] ]
     ] ],
     [ "Class Members", "functions.html", null ],
     [ "File List", "files.html", [
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/driver.cpp", "driver_8cpp.html", null ],
+      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_action.h", "uno__action_8h.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_ai_player.cpp", "uno__ai__player_8cpp.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_ai_player.h", "uno__ai__player_8h.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_card.cpp", "uno__card_8cpp.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_card.h", "uno__card_8h.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_deck.cpp", "uno__deck_8cpp.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_deck.h", "uno__deck_8h.html", null ],
-      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_game_state.cpp", "uno__game__state_8cpp.html", null ],
-      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_game_state.h", "uno__game__state_8h.html", null ],
+      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_gstate.h", "uno__gstate_8h.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_human_player.cpp", "uno__human__player_8cpp.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_human_player.h", "uno__human__player_8h.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_player.cpp", "uno__player_8cpp.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_player.h", "uno__player_8h.html", null ],
+      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_pstate.h", "uno__pstate_8h.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_runner.cpp", "uno__runner_8cpp.html", null ],
-      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_runner.h", "uno__runner_8h.html", null ]
+      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_runner.h", "uno__runner_8h.html", null ],
+      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_state.h", "uno__state_8h.html", null ]
+    ] ],
+    [ "Examples", "examples.html", [
+      [ "/examples/uno_card_examples.cpp", "_2examples_2uno_card_examples_8cpp-example.html", null ]
     ] ],
     [ "File Members", "globals.html", null ]
   ] ]

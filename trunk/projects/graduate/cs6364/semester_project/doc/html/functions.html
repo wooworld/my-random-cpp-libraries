@@ -53,6 +53,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -89,8 +90,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow4" class="tabs3">
     <ul class="tablist">
       <li><a href="#index_a"><span>a</span></a></li>
-      <li><a href="#index_c"><span>c</span></a></li>
-      <li><a href="#index_d"><span>d</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
       <li><a href="#index_n"><span>n</span></a></li>
       <li><a href="#index_p"><span>p</span></a></li>
@@ -124,29 +123,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </ul>
 
 
-<h3><a class="anchor" id="index_c"></a>- c -</h3><ul>
-<li>check_runability()
-: <a class="el" href="class_uno___runner.html#a876150bbc2a8aeadb3343681fb841c80">Uno_Runner</a>
-</li>
-</ul>
-
-
-<h3><a class="anchor" id="index_d"></a>- d -</h3><ul>
-<li>draw_card()
-: <a class="el" href="class_uno___player.html#ac803ffaaf0efeaa27d3d4993545bee39">Uno_Player</a>
-</li>
-<li>draw_initial_hand()
-: <a class="el" href="class_uno___player.html#a5f0d9630e8e143f34c4d63340bac90e0">Uno_Player</a>
-</li>
-</ul>
-
-
 <h3><a class="anchor" id="index_m"></a>- m -</h3><ul>
-<li>m_eval_score
-: <a class="el" href="class_uno___game___state.html#ad55fa08fbfc6ddf4359194857dbd99fc">Uno_Game_State</a>
+<li>m_act
+: <a class="el" href="class_uno___action.html#a0e38e567ca993649d2513dd81c386677">Uno_Action</a>
+</li>
+<li>m_at_play
+: <a class="el" href="class_uno___state.html#a7c0374eff2c4a4b3eed4b7eebb72a81a">Uno_State</a>
 </li>
 <li>m_hand
-: <a class="el" href="class_uno___player.html#a9d50084b9fd4b005286ffdaa004f2664">Uno_Player</a>
+: <a class="el" href="class_uno___p_state.html#ae83f531e09b87d69dccb49bf44af4e0a">Uno_PState</a>
+</li>
+<li>m_hand_counts
+: <a class="el" href="class_uno___p_state.html#a8e4b3ec3783d8ed58bd761ac6c7be3b6">Uno_PState</a>
+</li>
+<li>m_idx
+: <a class="el" href="class_uno___action.html#a228de2b5b030253562cadd34f21568c4">Uno_Action</a>
 </li>
 <li>m_level
 : <a class="el" href="class_uno___a_i___player.html#a028b0df8cca96eb10fc87bebf0f48c25">Uno_AI_Player</a>
@@ -155,22 +146,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="class_uno___player.html#a06af109b4d621efa14ba98e4c9395739">Uno_Player</a>
 </li>
 <li>m_played
-: <a class="el" href="class_uno___game___state.html#ae274bd2383addaefbc78556c48757c35">Uno_Game_State</a>
+: <a class="el" href="class_uno___state.html#ad46fac2ea86f2fd2249675db49c35b6c">Uno_State</a>
 </li>
 <li>m_players
-: <a class="el" href="class_uno___game___state.html#adff61ccfa1552c4524e781aeee6ed95a">Uno_Game_State</a>
+: <a class="el" href="class_uno___g_state.html#acf0593a856c85059d8bd6bc71ee3165c">Uno_GState</a>
 </li>
 <li>m_score
 : <a class="el" href="class_uno___player.html#a9805f306a500b1898c0a0922d76de444">Uno_Player</a>
 </li>
-<li>m_turn
-: <a class="el" href="class_uno___game___state.html#a85a2ea5d9e50359519aeeef2589fa8cf">Uno_Game_State</a>
+<li>m_time_per_turn
+: <a class="el" href="class_uno___state.html#a95a0eedf042c9c8cf261c3cf9e683f00">Uno_State</a>
 </li>
 <li>m_turn_count
-: <a class="el" href="class_uno___game___state.html#abc3bb6447a74a7bf28c1dfbbfdcd6d55">Uno_Game_State</a>
+: <a class="el" href="class_uno___state.html#adba4113bb99a08f6804eeb348ed3822c">Uno_State</a>
 </li>
 <li>m_unplayed
-: <a class="el" href="class_uno___game___state.html#a7bf61c252c9de176f309b691b4038345">Uno_Game_State</a>
+: <a class="el" href="class_uno___g_state.html#afcc8256ce8ae779aa3e529f33a8818c1">Uno_GState</a>
+</li>
+<li>m_unplayed_count
+: <a class="el" href="class_uno___p_state.html#ab5532c7fefcd10fc39a7a07b627ff5c5">Uno_PState</a>
 </li>
 </ul>
 
@@ -183,18 +177,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_p"></a>- p -</h3><ul>
-<li>play_card_by_index()
-: <a class="el" href="class_uno___player.html#abe1a86f4792fa9e703ffeb28e453160f">Uno_Player</a>
-</li>
-<li>play_card_by_name()
-: <a class="el" href="class_uno___player.html#a2e94c703cf4f680c4dcbcb1adbb4816b">Uno_Player</a>
-</li>
-<li>print_hand()
-: <a class="el" href="class_uno___player.html#a3af4557fcf900bc6357000449ecb5860">Uno_Player</a>
-</li>
-<li>print_hand_values()
-: <a class="el" href="class_uno___player.html#a17a542fc645418ee806c79ebe253a62e">Uno_Player</a>
-</li>
 <li>print_played()
 : <a class="el" href="class_uno___runner.html#a885e7ac58c656e1cb0bc4e49cd494874">Uno_Runner</a>
 </li>
@@ -229,9 +211,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <h3><a class="anchor" id="index_t"></a>- t -</h3><ul>
 <li>take_turn()
-: <a class="el" href="class_uno___a_i___player.html#a7884d5ed5f3fbbfc2ca7976ce252f333">Uno_AI_Player</a>
-, <a class="el" href="class_uno___player.html#a31f9f272c9a427ea3b9e8dc7120fadac">Uno_Player</a>
-, <a class="el" href="class_uno___human___player.html#a7c0db1f85612347a71960813cce68017">Uno_Human_Player</a>
+: <a class="el" href="class_uno___a_i___player.html#a46dd95e2b2ff44fa0b5cc80fb1d66605">Uno_AI_Player</a>
+, <a class="el" href="class_uno___player.html#aa6e4a3177c39ee2572250b2dd4400a43">Uno_Player</a>
+, <a class="el" href="class_uno___human___player.html#a14a73bddb4791cc7406a0e9cfe65979b">Uno_Human_Player</a>
 </li>
 </ul>
 
@@ -240,20 +222,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>Uno_AI_Player()
 : <a class="el" href="class_uno___a_i___player.html#ae977868f52c315663174b5c4943ac9ef">Uno_AI_Player</a>
 </li>
-<li>Uno_Game_State()
-: <a class="el" href="class_uno___game___state.html#a8c17d72f7a46910c00e916e5df76f7f5">Uno_Game_State</a>
-</li>
 <li>Uno_Human_Player()
-: <a class="el" href="class_uno___human___player.html#a7339947e9ae326b26ccd478c2aa23664">Uno_Human_Player</a>
+: <a class="el" href="class_uno___human___player.html#a126f7617c19e1ff7ca5db185b5b47735">Uno_Human_Player</a>
 </li>
 <li>Uno_Player()
 : <a class="el" href="class_uno___player.html#a01b27e59f1de1e13627c2e72e69c65c6">Uno_Player</a>
 </li>
 <li>Uno_Runner()
 : <a class="el" href="class_uno___runner.html#a485bf9506331363e4b0d6208ee446497">Uno_Runner</a>
-</li>
-<li>use_default_deck()
-: <a class="el" href="class_uno___runner.html#aecbd83efd47580d89f7ef9b030572c74">Uno_Runner</a>
 </li>
 </ul>
 </div>
@@ -275,7 +251,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 
-    <li class="footer">Generated on Mon Oct 17 2011 18:13:35 for UnoAI by
+    <li class="footer">Generated on Wed Oct 19 2011 04:59:11 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

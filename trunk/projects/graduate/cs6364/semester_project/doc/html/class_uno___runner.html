@@ -53,6 +53,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -114,31 +115,27 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a485bf9506331363e4b0d6208ee446497">Uno_Runner</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. Does nothing. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8">setup</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Shuffles the deck, all players draw initial hands.  <a href="#ae015517f7d4493ddbaaeacd98be0b9b8"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#aa3f43b6ab9042ff74a34ad3fae8a0b11">num_players</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of players in the game.  <a href="#aa3f43b6ab9042ff74a34ad3fae8a0b11"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets up a game to be played.  <a href="#ae015517f7d4493ddbaaeacd98be0b9b8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a982f614c5afa8faa57aedc3116f3d237">add_player</a> (const <a class="el" href="class_uno___player.html">Uno_Player</a> &amp;p)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds player p to the game if possible.  <a href="#a982f614c5afa8faa57aedc3116f3d237"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#acae1277934b338e4c6edd8d45eea5a3e">remove_player</a> (unsigned char i, unsigned char c=0)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes player i from the game if possible.  <a href="#acae1277934b338e4c6edd8d45eea5a3e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#aa3f43b6ab9042ff74a34ad3fae8a0b11">num_players</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of players in the game.  <a href="#aa3f43b6ab9042ff74a34ad3fae8a0b11"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a2ca7c819e3fc8774853cc5a49333eeb9">set_deck</a> (const <a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;d)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the deck to use for the game.  <a href="#a2ca7c819e3fc8774853cc5a49333eeb9"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#aecbd83efd47580d89f7ef9b030572c74">use_default_deck</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the deck to the default deck.  <a href="#aecbd83efd47580d89f7ef9b030572c74"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a885e7ac58c656e1cb0bc4e49cd494874">print_played</a> (unsigned char f)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints out the played cards to the screen.  <a href="#a885e7ac58c656e1cb0bc4e49cd494874"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints out the stack of played cards to the screen.  <a href="#a885e7ac58c656e1cb0bc4e49cd494874"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a53b830015937722abd8ec515405534f9">print_unplayed</a> (unsigned char f)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints out the unplayed cards to the screen.  <a href="#a53b830015937722abd8ec515405534f9"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints out the stack of unplayed cards to the screen.  <a href="#a53b830015937722abd8ec515405534f9"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a2d16089c5bdf20c1120be067797a349a">print_state</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints out the state of the game. This includes:  <a href="#a2d16089c5bdf20c1120be067797a349a"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a876150bbc2a8aeadb3343681fb841c80">check_runability</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks to see if the game state is legal and can start a game.  <a href="#a876150bbc2a8aeadb3343681fb841c80"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a3f0847989a9868bcd023b41ee5f28d0a">run</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs the Uno game.  <a href="#a3f0847989a9868bcd023b41ee5f28d0a"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Runs an Uno game. </p>
-<p>To actually play a game of Uno using the AI, create an object of this type, call <a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8" title="Shuffles the deck, all players draw initial hands.">setup()</a>, then <a class="el" href="class_uno___runner.html#a3f0847989a9868bcd023b41ee5f28d0a" title="Runs the Uno game.">run()</a>. </p>
+<p>To actually play a game of Uno using the AI, create an object of this type, call <a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8" title="Sets up a game to be played.">setup()</a>, then <a class="el" href="class_uno___runner.html#a3f0847989a9868bcd023b41ee5f28d0a" title="Runs the Uno game.">run()</a>. </p>
 </div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a982f614c5afa8faa57aedc3116f3d237"></a><!-- doxytag: member="Uno_Runner::add_player" ref="a982f614c5afa8faa57aedc3116f3d237" args="(const Uno_Player &amp;p)" -->
 <div class="memitem">
@@ -158,35 +155,18 @@ Public Member Functions</h2></td></tr>
 <p>Adds player p to the game if possible. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">p</td><td>The <a class="el" href="class_uno___player.html" title="Models a real player for the game.">Uno_Player</a> to add to the game. </td></tr>
+    <tr><td class="paramname">p</td><td>The <a class="el" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a> to add to the game. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>true if the player could be added to the game properly. </dd>
-<dd>
-false if the player could not be added to the game.</dd></dl>
+<dl><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>If the player could be added to the game properly. </td></tr>
+    <tr><td class="paramname">false</td><td>If the player could not be added to the game.</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>If <a class="el" href="class_uno___runner.html#aa3f43b6ab9042ff74a34ad3fae8a0b11" title="Returns the number of players in the game.">num_players()</a> + 1 &gt; UNO_MAX_PLAYERS, player p will not be added to the game and this function will return false. </p>
-
-</div>
-</div>
-<a class="anchor" id="a876150bbc2a8aeadb3343681fb841c80"></a><!-- doxytag: member="Uno_Runner::check_runability" ref="a876150bbc2a8aeadb3343681fb841c80" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Uno_Runner::check_runability </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Checks to see if the game state is legal and can start a game. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>true if the game state is OK. </dd>
-<dd>
-false otherwise. </dd></dl>
 
 </div>
 </div>
@@ -225,10 +205,14 @@ false otherwise. </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Prints out the played cards to the screen. </p>
+<p>Prints out the stack of played cards to the screen. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">f</td><td>The format to output the cards in. 0 = Output the names of the cards like R5 for red 5. 1 = Output the values of the cards, like 64 for a green 0. </td></tr>
+    <tr><td class="paramname">f</td><td>The format to output the cards in. <ul>
+<li>0 = Output the names of the cards like R5 for red 5. </li>
+<li>1 = Output the values of the cards, like 64 for a green 0. </li>
+</ul>
+</td></tr>
   </table>
   </dd>
 </dl>
@@ -251,12 +235,12 @@ false otherwise. </dd></dl>
 
 <p>Prints out the state of the game. This includes: </p>
 <ul>
-<li>Each player's name. </li>
-<li>Each player's score. </li>
-<li>Each player's hand. </li>
-<li>Each player's difficulty level (if AI player). </li>
-<li>The played deck of cards. </li>
-<li>The unplayed deck of cards. <dl class="note"><dt><b>Note:</b></dt><dd>This is a very expensive operation, use sparingly! </dd></dl>
+<li>Each player's name, score, level (if AI), and hand. </li>
+<li>The player at play. </li>
+<li>The turn count. </li>
+<li>The amount of time remaining in the turn. </li>
+<li>The count of and the played deck of cards. </li>
+<li>The count of and the unplayed deck of cards. <dl class="note"><dt><b>Note:</b></dt><dd>This is an expensive operation, use sparingly! </dd></dl>
 </li>
 </ul>
 
@@ -277,10 +261,14 @@ false otherwise. </dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Prints out the unplayed cards to the screen. </p>
+<p>Prints out the stack of unplayed cards to the screen. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">f</td><td>The format to output the cards in. 0 = Output the names of the cards like R5 for red 5. 1 = Output the values of the cards, like 64 for a green 0. </td></tr>
+    <tr><td class="paramname">f</td><td>The format to output the cards in. <ul>
+<li>0 = Output the names of the cards like R5 for red 5. </li>
+<li>1 = Output the values of the cards, like 64 for a green 0. </li>
+</ul>
+</td></tr>
   </table>
   </dd>
 </dl>
@@ -317,14 +305,20 @@ false otherwise. </dd></dl>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">i</td><td>is the player to remove from the game. </td></tr>
-    <tr><td class="paramname">c</td><td>is where to place the player's cards. Valid values are: 0 = Place cards back onto bottom of the unplayed deck. 1 = Place cards back onto bottom of the played deck. 2 = Remove cards from the game state completely. The cards vanish into the ether. The default value for c is 0. </td></tr>
+    <tr><td class="paramname">c</td><td>is where to place the player's cards. Valid values are: <ul>
+<li>0 = Place cards back onto bottom of the unplayed deck. </li>
+<li>1 = Place cards back onto bottom of the played deck. </li>
+<li>2 = Remove cards from the game state completely. The cards vanish into the ether. </li>
+</ul>
+</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>true if the player could be removed from the game properly. </dd>
+<dl class="return"><dt><b>Returns:</b></dt><dd>true If the player could be removed from the game properly. </dd>
 <dd>
-false otherwise if the player could not be removed.</dd></dl>
-<p>If <a class="el" href="class_uno___runner.html#aa3f43b6ab9042ff74a34ad3fae8a0b11" title="Returns the number of players in the game.">num_players()</a> - 1 &lt; UNO_MIN_PLAYERS, player p will not be removed from the game and this function will return false. </p>
+false If the player could not be removed.</dd></dl>
+<p>If <a class="el" href="class_uno___runner.html#aa3f43b6ab9042ff74a34ad3fae8a0b11" title="Returns the number of players in the game.">num_players()</a> - 1 &lt; UNO_MIN_PLAYERS, player p will not be removed from the game and this function will return false.</p>
+<p>The default value for c is 0. </p>
 
 </div>
 </div>
@@ -343,9 +337,7 @@ false otherwise if the player could not be removed.</dd></dl>
 <div class="memdoc">
 
 <p>Runs the Uno game. </p>
-<dl class="pre"><dt><b>Precondition:</b></dt><dd><a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8" title="Shuffles the deck, all players draw initial hands.">setup()</a> or equivalent member data population has been executed. </dd>
-<dd>
-<a class="el" href="class_uno___runner.html#a876150bbc2a8aeadb3343681fb841c80" title="Checks to see if the game state is legal and can start a game.">check_runability()</a> returns true. </dd></dl>
+<dl class="pre"><dt><b>Precondition:</b></dt><dd><a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8" title="Sets up a game to be played.">setup()</a> or equivalent member data population has been executed and returns true. </dd></dl>
 
 </div>
 </div>
@@ -367,7 +359,7 @@ false otherwise if the player could not be removed.</dd></dl>
 <p>Sets the deck to use for the game. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">d</td><td>The deck to use for the game. Completely replaces the current deck. </td></tr>
+    <tr><td class="paramname">d</td><td>The deck to use for the game. Replaces the current deck. </td></tr>
   </table>
   </dd>
 </dl>
@@ -388,37 +380,24 @@ false otherwise if the player could not be removed.</dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Shuffles the deck, all players draw initial hands. </p>
-<dl class="pre"><dt><b>Precondition:</b></dt><dd>The default constructor has been called. </dd></dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>true if the setup executed properly, </dd>
-<dd>
-false otherwise.</dd></dl>
-<p>Sets up m_state to have the following: </p>
+<p>Sets up a game to be played. </p>
+<dl><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>If the setup executed properly. </td></tr>
+    <tr><td class="paramname">false</td><td>If the setup encountered an error during execution.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Sets up the game to have: </p>
 <ul>
-<li>UNO_NUM_PLAYERS with 7 cards in their hands, no names, no score, and no difficulty level. </li>
+<li>UNO_NUM_PLAYERS Uno_Players. If players were added using <a class="el" href="class_uno___runner.html#a982f614c5afa8faa57aedc3116f3d237" title="Adds player p to the game if possible.">add_player()</a> previous to calling <a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8" title="Sets up a game to be played.">setup()</a> then Uno_AI_Players are added until there are UNO_NUM_PLAYERS in the game. </li>
+<li>Each <a class="el" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a> has UNO_INIT_HAND_SIZE cards in their hands if the deck used has enough cards. </li>
+<li>The DEFAULT_DECK in use for the unplayed cards unless another deck was specified using <a class="el" href="class_uno___runner.html#a2ca7c819e3fc8774853cc5a49333eeb9" title="Sets the deck to use for the game.">set_deck()</a>. <dl class="note"><dt><b>Note:</b></dt><dd>The unplayed deck is shuffled. </dd></dl>
+</li>
+<li>An empty played stack of cards unless another deck was specified using <a class="el" href="class_uno___runner.html#a2ca7c819e3fc8774853cc5a49333eeb9" title="Sets the deck to use for the game.">set_deck()</a>. </li>
 <li>It is Player 0's turn. </li>
-<li>One shuffled unplayed deck of UNO_DECKS_PER_GAME * UNO_DECK_SIZE cards. </li>
-<li>One played deck of zero cards. </li>
+<li>It is turn 0. </li>
 </ul>
-
-</div>
-</div>
-<a class="anchor" id="aecbd83efd47580d89f7ef9b030572c74"></a><!-- doxytag: member="Uno_Runner::use_default_deck" ref="aecbd83efd47580d89f7ef9b030572c74" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Uno_Runner::use_default_deck </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Sets the deck to the default deck. </p>
-<dl class="note"><dt><b>Note:</b></dt><dd>Clears the played deck. </dd></dl>
 
 </div>
 </div>
@@ -446,7 +425,7 @@ false otherwise.</dd></dl>
 </div>
 
 
-    <li class="footer">Generated on Mon Oct 17 2011 18:13:35 for UnoAI by
+    <li class="footer">Generated on Wed Oct 19 2011 04:59:11 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

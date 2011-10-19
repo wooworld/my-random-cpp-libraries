@@ -53,6 +53,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -107,13 +108,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uno__card_8cpp.html#a07e79d8e9cc0a93f105f6203cfa4403d">map_names</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a user-readable dictionary of names for a card.  <a href="#a07e79d8e9cc0a93f105f6203cfa4403d"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a user-readable dictionary of names for a card.  <a href="#a07e79d8e9cc0a93f105f6203cfa4403d"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uno__card_8cpp.html#a6fc45c14cfbf3fb7529da60c1040d915">card_name</a> (<a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a> c)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the name of an Uno card.  <a href="#a6fc45c14cfbf3fb7529da60c1040d915"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the name of an Uno card.  <a href="#a6fc45c14cfbf3fb7529da60c1040d915"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uno__card_8cpp.html#ab8eab77308199772ca67568adc9621c4">map_weights</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a user-readable dictionary of weights for cards.  <a href="#ab8eab77308199772ca67568adc9621c4"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a user-readable dictionary of weights for cards.  <a href="#ab8eab77308199772ca67568adc9621c4"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uno__card_8cpp.html#a2ad96347628c97a1314ef0fbf80b670c">card_weight</a> (<a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a> c)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the weight of an Uno card.  <a href="#a2ad96347628c97a1314ef0fbf80b670c"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the weight of an Uno card.  <a href="#a2ad96347628c97a1314ef0fbf80b670c"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="var-members"></a>
 Variables</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="uno__card_8h.html#ab0a87a80ff6aee1dcc997c9c1305dc5f">card_name_dictionary</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uno__card_8cpp.html#a9a60ee628eaeb26892b150cd9a900635">CARD_NAME</a></td></tr>
@@ -140,17 +141,21 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Returns the name of an Uno card. </p>
+<p>Gets the name of an Uno card. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">c</td><td>The card to get the name of. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The name of the card. </dd></dl>
-<dl class="see"><dt><b>See also:</b></dt><dd>typedef char <a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83" title="Type definition for a single uno card represented by a char.">card</a></dd></dl>
+<dl><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">string</td><td>The name of the card.</td></tr>
+  </table>
+  </dd>
+</dl>
 <p>The card names will come back something like "R5" for a red five, or "YD2" for a yellow draw two. </p>
-<dl class="note"><dt><b>Note:</b></dt><dd>A reverse card will have a type of "R". So "YR" means a yellow reverse. </dd></dl>
+<dl class="note"><dt><b>Note:</b></dt><dd>A reverse card will have a type of "R". So "YR" means a yellow reverse. This is not to be confused with "R" for the color red. </dd></dl>
 
 </div>
 </div>
@@ -169,23 +174,27 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Returns the weight of an Uno card. </p>
+<p>Gets the weight of an Uno card. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">c</td><td>The card to get the weight of. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The weight of the card. </dd></dl>
-<dl class="see"><dt><b>See also:</b></dt><dd>typedef char <a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83" title="Type definition for a single uno card represented by a char.">card</a> Point values mapped, according to regulation, are: <ul>
-<li>Number cards - Face value points (8 is 8 points) </li>
+<dl><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">unsigned</td><td>char The weight of the card. For a regulation game, the weights are the points a player gets at the end of the game for his opponents having a given card, c, in their hand. Point values mapped according to regulation, are: <ul>
+<li>Number cards - Face value points (0-9 is 0-9 points, respectively) </li>
 <li>Draw Two – 20 Points </li>
 <li>Reverse – 20 Points </li>
 <li>Skip – 20 Points </li>
 <li>Wild – 50 Points </li>
 <li>Wild Draw – 50 Points </li>
 </ul>
-</dd></dl>
+</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -203,13 +212,8 @@ Variables</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Creates a user-readable dictionary of names for a card. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd>typedef char <a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83" title="Type definition for a single uno card represented by a char.">card</a> </dd>
-<dd>
-string <a class="el" href="uno__card_8h.html#a6fc45c14cfbf3fb7529da60c1040d915" title="Returns the name of an Uno card.">card_name( card c )</a></dd></dl>
-<dl class="note"><dt><b>Note:</b></dt><dd>This is a relatively expensive operation, you only need to do it once. </dd>
-<dd>
-A reverse card will have a type of "R". So "YR" means a yellow reverse. </dd></dl>
+<p>Instantiates a user-readable dictionary of names for a card. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>You only need to do this one time. </dd></dl>
 
 </div>
 </div>
@@ -227,20 +231,8 @@ A reverse card will have a type of "R". So "YR" means a yellow reverse. </dd></d
 </div>
 <div class="memdoc">
 
-<p>Creates a user-readable dictionary of weights for cards. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd>typedef char <a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83" title="Type definition for a single uno card represented by a char.">card</a> </dd>
-<dd>
-string <a class="el" href="uno__card_8h.html#a2ad96347628c97a1314ef0fbf80b670c" title="Returns the weight of an Uno card.">card_weight( card c )</a></dd></dl>
-<p>For a regulation game, the weights are the points a player gets at the end of the game for his opponents having card c in their hand. Point values mapped, according to regulation, are: </p>
-<ul>
-<li>Number cards - Face value points (8 is 8 points) </li>
-<li>Draw Two – 20 Points </li>
-<li>Reverse – 20 Points </li>
-<li>Skip – 20 Points </li>
-<li>Wild – 50 Points </li>
-<li>Wild Draw – 50 Points <dl class="note"><dt><b>Note:</b></dt><dd>This is a relatively expensive operation, you only need to do it once. </dd></dl>
-</li>
-</ul>
+<p>Instantiates a user-readable dictionary of weights for cards. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>You only need to do this one time. For a regulation game, the weights are the points a player gets at the end of the game for his opponents having a given card, c, in their hand. </dd></dl>
 
 </div>
 </div>
@@ -257,13 +249,11 @@ string <a class="el" href="uno__card_8h.html#a2ad96347628c97a1314ef0fbf80b670c" 
 <div class="memdoc">
 
 <p>A map of card types to card names. </p>
-<p>The map is arranged such that card names can be accessed using the CARD macro function. A call to CARD_NAME[<a class="el" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD(UNO_GREEN, UNO_ZERO)</a>] will return the name of the green zero card, "G0". Similarly, CARD_NAME[<a class="el" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD(UNO_NO_COLOR, UNO_WILD_DRAW_FOUR)</a>] will return "WD4". </p>
-<dl class="note"><dt><b>Note:</b></dt><dd>The map must be populated with <a class="el" href="uno__card_8cpp.html#a07e79d8e9cc0a93f105f6203cfa4403d" title="Creates a user-readable dictionary of names for a card.">map_names()</a> before this map can be effectively used. </dd>
+<p>The map is arranged such that card names can be accessed using the CARD macro function. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>The map must be populated with <a class="el" href="uno__card_8cpp.html#a07e79d8e9cc0a93f105f6203cfa4403d" title="Instantiates a user-readable dictionary of names for a card.">map_names()</a> before this map can be effectively used. </dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd>void <a class="el" href="uno__card_8cpp.html#a07e79d8e9cc0a93f105f6203cfa4403d" title="Instantiates a user-readable dictionary of names for a card.">map_names()</a> </dd>
 <dd>
-Best used with <a class="el" href="uno__card_8cpp.html#a6fc45c14cfbf3fb7529da60c1040d915" title="Returns the name of an Uno card.">card_name()</a> </dd></dl>
-<dl class="see"><dt><b>See also:</b></dt><dd>void <a class="el" href="uno__card_8cpp.html#a07e79d8e9cc0a93f105f6203cfa4403d" title="Creates a user-readable dictionary of names for a card.">map_names()</a> </dd>
-<dd>
-string <a class="el" href="uno__card_8h.html#a6fc45c14cfbf3fb7529da60c1040d915" title="Returns the name of an Uno card.">card_name( card c )</a> </dd></dl>
+string <a class="el" href="uno__card_8h.html#a6fc45c14cfbf3fb7529da60c1040d915" title="Gets the name of an Uno card.">card_name( card c )</a> </dd></dl>
 
 </div>
 </div>
@@ -279,13 +269,11 @@ string <a class="el" href="uno__card_8h.html#a6fc45c14cfbf3fb7529da60c1040d915" 
 <div class="memdoc">
 
 <p>A map of card types to card weights. </p>
-<p>The map is arranged such that card weights can be accessed using the CARD macro function. A call to CARD_WEIGHT[<a class="el" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD(UNO_GREEN, UNO_ZERO)</a>] will return the weight of the green zero card, "G0". Similarly, CARD_WEIGHT[<a class="el" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD(UNO_NO_COLOR, UNO_WILD_DRAW_FOUR)</a>] will return "WD4". </p>
-<dl class="note"><dt><b>Note:</b></dt><dd>The map must be populated with <a class="el" href="uno__card_8cpp.html#ab8eab77308199772ca67568adc9621c4" title="Creates a user-readable dictionary of weights for cards.">map_weights()</a> before this map can be effectively used. </dd>
+<p>The map is arranged such that card weights can be accessed using the CARD macro function. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>The map must be populated with <a class="el" href="uno__card_8cpp.html#ab8eab77308199772ca67568adc9621c4" title="Instantiates a user-readable dictionary of weights for cards.">map_weights()</a> before this map can be effectively used. </dd></dl>
+<dl class="see"><dt><b>See also:</b></dt><dd>void <a class="el" href="uno__card_8cpp.html#ab8eab77308199772ca67568adc9621c4" title="Instantiates a user-readable dictionary of weights for cards.">map_weights()</a> </dd>
 <dd>
-Best used with <a class="el" href="uno__card_8cpp.html#a2ad96347628c97a1314ef0fbf80b670c" title="Returns the weight of an Uno card.">card_weight()</a> </dd></dl>
-<dl class="see"><dt><b>See also:</b></dt><dd>void <a class="el" href="uno__card_8cpp.html#ab8eab77308199772ca67568adc9621c4" title="Creates a user-readable dictionary of weights for cards.">map_weights()</a> </dd>
-<dd>
-unsigned char <a class="el" href="uno__card_8h.html#a2ad96347628c97a1314ef0fbf80b670c" title="Returns the weight of an Uno card.">card_weight( card c )</a> </dd></dl>
+unsigned char <a class="el" href="uno__card_8h.html#a2ad96347628c97a1314ef0fbf80b670c" title="Gets the weight of an Uno card.">card_weight( card c )</a> </dd></dl>
 
 </div>
 </div>
@@ -309,7 +297,7 @@ unsigned char <a class="el" href="uno__card_8h.html#a2ad96347628c97a1314ef0fbf80
 </div>
 
 
-    <li class="footer">Generated on Mon Oct 17 2011 18:13:34 for UnoAI by
+    <li class="footer">Generated on Wed Oct 19 2011 04:59:10 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

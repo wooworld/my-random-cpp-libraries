@@ -5,7 +5,6 @@
 
 #include "uno_deck.h"
 #include "uno_card.h"
-
 #include <algorithm>
 #include <iostream>
 
@@ -19,22 +18,16 @@ void create_deck( deck& d )
   {
     d.insert( d.end(), DEFAULT_DECK, DEFAULT_DECK + UNO_DECK_SIZE );
   }
-
-  return;
 }
 
 void shuffle_deck( deck& d )
 {
   random_shuffle( d.begin(), d.end() );
-
-  return;
 }
 
 void swap_decks( deck& d, deck& g )
 {
   d.swap( g );
-
-  return;
 }
 
 card take_card( deck& d )
@@ -60,8 +53,6 @@ void print_deck( deck& d )
   {
     cout << card_name( d[i] ) << " ";
   }
-
-  return;
 }
 
 void print_deck_values( deck& d )
@@ -70,6 +61,4 @@ void print_deck_values( deck& d )
   {
     cout << d[i] << " ";
   }
-
-  return;
 }

@@ -4,7 +4,7 @@
 }
 
 
-\-An \-A\-I player for the game.  
+\-A human player for the game.  
 
 
 
@@ -23,15 +23,15 @@
 \hyperlink{class_uno___human___player_a7339947e9ae326b26ccd478c2aa23664}{\-Uno\-\_\-\-Human\-\_\-\-Player} ()
 \begin{DoxyCompactList}\small\item\em \-Default constructor. \end{DoxyCompactList}\item 
 \hyperlink{class_uno___human___player_a126f7617c19e1ff7ca5db185b5b47735}{\-Uno\-\_\-\-Human\-\_\-\-Player} (const string \&n, unsigned int s)
-\begin{DoxyCompactList}\small\item\em \-Identification constructor. \end{DoxyCompactList}\item 
-\hyperlink{class_uno___human___player_a3ee62bf00689e7e4f435c42bfc56b0a6}{\-Uno\-\_\-\-Human\-\_\-\-Player} (const \hyperlink{uno__player_8h_acd9523c15e47a87e3740cf5ade73556e}{hand} \&h, const string \&n, unsigned int s)
 \begin{DoxyCompactList}\small\item\em \-Full value specification constructor. \end{DoxyCompactList}\item 
-unsigned int \hyperlink{class_uno___human___player_a7c0db1f85612347a71960813cce68017}{take\-\_\-turn} (const \hyperlink{class_uno___game___state}{\-Uno\-\_\-\-Game\-\_\-\-State} \&s, unsigned int time)
-\begin{DoxyCompactList}\small\item\em \-Prompts the human player to take his turn. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\hyperlink{class_uno___action}{\-Uno\-\_\-\-Action} \hyperlink{class_uno___human___player_a14a73bddb4791cc7406a0e9cfe65979b}{take\-\_\-turn} (const \hyperlink{class_uno___p_state}{\-Uno\-\_\-\-P\-State} \&s)
+\begin{DoxyCompactList}\small\item\em \-Calls the player to take his turn. \end{DoxyCompactList}\end{DoxyCompactItemize}
 
 
 \subsection{\-Detailed \-Description}
-\-An \-A\-I player for the game. 
+\-A human player for the game. 
+
+\-This class is used to represent a human player for an \-Uno game. 
 
 \subsection{\-Constructor \& \-Destructor \-Documentation}
 \hypertarget{class_uno___human___player_a7339947e9ae326b26ccd478c2aa23664}{
@@ -47,7 +47,7 @@ unsigned int \hyperlink{class_uno___human___player_a7c0db1f85612347a71960813cce6
 
 \-Default constructor. 
 
-\-Constructs an \hyperlink{class_uno___human___player}{\-Uno\-\_\-\-Human\-\_\-\-Player} with an empty hand, a blank name, and zero score. \hypertarget{class_uno___human___player_a126f7617c19e1ff7ca5db185b5b47735}{
+\-Constructs an \hyperlink{class_uno___human___player}{\-Uno\-\_\-\-Human\-\_\-\-Player} with empty and zero values. \hypertarget{class_uno___human___player_a126f7617c19e1ff7ca5db185b5b47735}{
 \index{\-Uno\-\_\-\-Human\-\_\-\-Player@{\-Uno\-\_\-\-Human\-\_\-\-Player}!\-Uno\-\_\-\-Human\-\_\-\-Player@{\-Uno\-\_\-\-Human\-\_\-\-Player}}
 \index{\-Uno\-\_\-\-Human\-\_\-\-Player@{\-Uno\-\_\-\-Human\-\_\-\-Player}!Uno_Human_Player@{\-Uno\-\_\-\-Human\-\_\-\-Player}}
 \subsubsection[{\-Uno\-\_\-\-Human\-\_\-\-Player}]{\setlength{\rightskip}{0pt plus 5cm}\-Uno\-\_\-\-Human\-\_\-\-Player\-::\-Uno\-\_\-\-Human\-\_\-\-Player (
@@ -59,43 +59,45 @@ unsigned int \hyperlink{class_uno___human___player_a7c0db1f85612347a71960813cce6
 \label{class_uno___human___player_a126f7617c19e1ff7ca5db185b5b47735}
 
 
-\-Identification constructor. 
-
-\-Constructs an \hyperlink{class_uno___human___player}{\-Uno\-\_\-\-Human\-\_\-\-Player} with an with the given name, score. \hypertarget{class_uno___human___player_a3ee62bf00689e7e4f435c42bfc56b0a6}{
-\index{\-Uno\-\_\-\-Human\-\_\-\-Player@{\-Uno\-\_\-\-Human\-\_\-\-Player}!\-Uno\-\_\-\-Human\-\_\-\-Player@{\-Uno\-\_\-\-Human\-\_\-\-Player}}
-\index{\-Uno\-\_\-\-Human\-\_\-\-Player@{\-Uno\-\_\-\-Human\-\_\-\-Player}!Uno_Human_Player@{\-Uno\-\_\-\-Human\-\_\-\-Player}}
-\subsubsection[{\-Uno\-\_\-\-Human\-\_\-\-Player}]{\setlength{\rightskip}{0pt plus 5cm}\-Uno\-\_\-\-Human\-\_\-\-Player\-::\-Uno\-\_\-\-Human\-\_\-\-Player (
-\begin{DoxyParamCaption}
-\item[{const {\bf hand} \&}]{h, }
-\item[{const string \&}]{n, }
-\item[{unsigned int}]{s}
-\end{DoxyParamCaption}
-)}}
-\label{class_uno___human___player_a3ee62bf00689e7e4f435c42bfc56b0a6}
-
-
 \-Full value specification constructor. 
 
-\-Constructs an \hyperlink{class_uno___human___player}{\-Uno\-\_\-\-Human\-\_\-\-Player} with an with the given hand, name, and score. 
+\-Constructs an \hyperlink{class_uno___human___player}{\-Uno\-\_\-\-Human\-\_\-\-Player} with the given values. 
+\begin{DoxyParams}{\-Parameters}
+{\em n} & \-The name of the \hyperlink{class_uno___human___player}{\-Uno\-\_\-\-Human\-\_\-\-Player}. \\
+\hline
+{\em s} & \-The score for the \hyperlink{class_uno___human___player}{\-Uno\-\_\-\-Human\-\_\-\-Player}. \\
+\hline
+\end{DoxyParams}
+
 
 \subsection{\-Member \-Function \-Documentation}
-\hypertarget{class_uno___human___player_a7c0db1f85612347a71960813cce68017}{
+\hypertarget{class_uno___human___player_a14a73bddb4791cc7406a0e9cfe65979b}{
 \index{\-Uno\-\_\-\-Human\-\_\-\-Player@{\-Uno\-\_\-\-Human\-\_\-\-Player}!take\-\_\-turn@{take\-\_\-turn}}
 \index{take\-\_\-turn@{take\-\_\-turn}!Uno_Human_Player@{\-Uno\-\_\-\-Human\-\_\-\-Player}}
-\subsubsection[{take\-\_\-turn}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int \-Uno\-\_\-\-Human\-\_\-\-Player\-::take\-\_\-turn (
+\subsubsection[{take\-\_\-turn}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Uno\-\_\-\-Action} \-Uno\-\_\-\-Human\-\_\-\-Player\-::take\-\_\-turn (
 \begin{DoxyParamCaption}
-\item[{const {\bf \-Uno\-\_\-\-Game\-\_\-\-State} \&}]{s, }
-\item[{unsigned int}]{time}
+\item[{const {\bf \-Uno\-\_\-\-P\-State} \&}]{s}
 \end{DoxyParamCaption}
 )}}
-\label{class_uno___human___player_a7c0db1f85612347a71960813cce68017}
+\label{class_uno___human___player_a14a73bddb4791cc7406a0e9cfe65979b}
 
 
-\-Prompts the human player to take his turn. 
+\-Calls the player to take his turn. 
 
-\begin{DoxyReturn}{\-Returns}
-\-The index of the card in the player's hand he wishes to play. 
-\end{DoxyReturn}
+\-This function is invoked by the \hyperlink{class_uno___runner}{\-Uno\-\_\-\-Runner} whenever it is this player's turn in the game. 
+\begin{DoxyParams}{\-Parameters}
+{\em s} & \-The state of the game as visible from this player's perspective. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{\-Return values}
+{\em \hyperlink{class_uno___action}{\-Uno\-\_\-\-Action}} & \-The \hyperlink{class_uno___action}{\-Uno\-\_\-\-Action} the player chooses this turn. \\
+\hline
+\end{DoxyRetVals}
+
+
+\-Reimplemented from \hyperlink{class_uno___player_aa6e4a3177c39ee2572250b2dd4400a43}{\-Uno\-\_\-\-Player}.
+
 
 
 \-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}

@@ -1,6 +1,8 @@
 /*! \file uno_card.h
     \brief Contains macros and function prototypes for an Uno card.
     \sa uno_card.cpp
+
+    \example ../examples/uno_card_examples.cpp
 */
 
 #ifndef UNO_CARD_H
@@ -115,92 +117,82 @@ const unsigned char UNO_TYPE[] = {
 
 /** 
  * \brief Converts an UNO_COLOR and UNO_TYPE to a usable card.
+ *
+ * Takes an Uno color and an uno card type and converts it to a usable card.  
  * \param a An UNO_COLOR. 
  * \param b An UNO_TYPE.
  * \sa typedef char card;
  * \sa UNO_COLOR
  * \sa UNO_TYPE
- *
- * Takes an Uno color and an uno card type and converts it to a usable card. 
+ * 
  * For example:
  *
  * CARD( UNO_RED, UNO_THREE ); designates a Red 3 card.
  *
  * CARD( UNO_COLOR[1], UNO_TYPE[UNO_DRAW_TWO] ); designates a green draw two.
+ *
+ * \note The parameter order may be switched, ie, an UNO_TYPE then an UNO_COLOR
+ * but to work properly you must have one both.
  */
 #define CARD(a, b) ((a)|(b))
 
 /**
  * \brief Gets the type of a card.
- * \param a An Uno card created with CARD()
  *
  * This value is the type of the card, like UNO_ONE or UNO_DRAW_TWO.
+ * \param a An Uno card created with CARD() 
  * \sa UNO_TYPE
  */
 #define CARDTYPE(a) ((a)&(0xF))
 
 /**
  * \brief Gets the color of a card.
- * \param b An Uno card created with CARD()
  *
  * This value is the color of the card, like UNO_BLUE or UNO_RED.
+ * \param b An Uno card created with CARD()
  * \sa UNO_COLOR  
  */
 #define CARDCOLOR(b) ((b)&(0xF0))
 
 /** 
- * \brief Creates a user-readable dictionary of names for a card.
- * \sa typedef char card
- * \sa string card_name( card c )
- *
- * \note This is a relatively expensive operation, you only need to do it once.
- * \note A reverse card will have a type of "R". So "YR" means a yellow reverse.
+ * \brief Instantiates a user-readable dictionary of names for a card. 
+ * \note You only need to do this one time.
  */
 void map_names();
 
 /** 
- * \brief Returns the name of an Uno card.
+ * \brief Gets the name of an Uno card.
  * \param c The card to get the name of.
- * \return The name of the card.
- * \sa typedef char card
+ * \retval string The name of the card.
  *
  * The card names will come back something like "R5" for a red five, or "YD2" 
  * for a yellow draw two.
  * \note A reverse card will have a type of "R". So "YR" means a yellow reverse.
+ * This is not to be confused with "R" for the color red. 
  */
 string card_name( card c );
 
 /** 
- * \brief Creates a user-readable dictionary of weights for cards.
- * \sa typedef char card
- * \sa string card_weight( card c )
- *
+ * \brief Instantiates a user-readable dictionary of weights for cards.
+ * \note You only need to do this one time.
  * For a regulation game, the weights are the points a player gets at the end
- * of the game for his opponents having card c in their hand. 
- * Point values mapped, according to regulation, are:
- * \li Number cards - Face value points (8 is 8 points)
- * \li Draw Two – 20 Points 
- * \li Reverse – 20 Points 
- * \li Skip – 20 Points 
- * \li Wild – 50 Points 
- * \li Wild Draw – 50 Points
- * \note This is a relatively expensive operation, you only need to do it once.
- * 
+ * of the game for his opponents having a given card, c, in their hand. 
  */
 void map_weights();
 
 /** 
- * \brief Returns the weight of an Uno card.
+ * \brief Gets the weight of an Uno card.
  * \param c The card to get the weight of.
- * \return The weight of the card.
- * \sa typedef char card
- * Point values mapped, according to regulation, are:
- * \li Number cards - Face value points (8 is 8 points)
+ * \retval unsigned char The weight of the card.
+ * For a regulation game, the weights are the points a player gets at the end
+ * of the game for his opponents having a given card, c, in their hand. 
+ * Point values mapped according to regulation, are:
+ * \li Number cards - Face value points (0-9 is 0-9 points, respectively)
  * \li Draw Two – 20 Points 
  * \li Reverse – 20 Points 
  * \li Skip – 20 Points 
  * \li Wild – 50 Points 
- * \li Wild Draw – 50 Points
+ * \li Wild Draw – 50 Points 
  */
 unsigned char card_weight( card c );
 
