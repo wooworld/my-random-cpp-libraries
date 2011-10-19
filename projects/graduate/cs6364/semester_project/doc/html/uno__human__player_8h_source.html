@@ -53,6 +53,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -97,30 +98,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="contents">
 <a href="uno__human__player_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
-<a name="l00006"></a>00006 <span class="preprocessor">#ifndef UNO_AI_PLAYER_H</span>
-<a name="l00007"></a>00007 <span class="preprocessor"></span><span class="preprocessor">#define UNO_AI_PLAYER_H</span>
+<a name="l00006"></a>00006 <span class="preprocessor">#ifndef UNO_HUMAN_PLAYER_H</span>
+<a name="l00007"></a>00007 <span class="preprocessor"></span><span class="preprocessor">#define UNO_HUMAN_PLAYER_H</span>
 <a name="l00008"></a>00008 <span class="preprocessor"></span>
-<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;<a class="code" href="uno__deck_8h.html" title="Contains macros and function prototypes for an Uno deck.">uno_deck.h</a>&quot;</span>
-<a name="l00010"></a>00010 <span class="preprocessor">#include &quot;<a class="code" href="uno__card_8h.html" title="Contains macros and function prototypes for an Uno card.">uno_card.h</a>&quot;</span>
-<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;<a class="code" href="uno__player_8h.html" title="Contains the Uno Player class and functionality.">uno_player.h</a>&quot;</span>
-<a name="l00012"></a>00012 <span class="preprocessor">#include &quot;<a class="code" href="uno__game__state_8h.html" title="Contains the state of an Uno game.">uno_game_state.h</a>&quot;</span>
-<a name="l00013"></a>00013 
-<a name="l00014"></a>00014 <span class="keyword">using namespace </span>std;
-<a name="l00015"></a>00015 
-<a name="l00019"></a><a class="code" href="class_uno___human___player.html">00019</a> <span class="keyword">class </span><a class="code" href="class_uno___human___player.html" title="An AI player for the game.">Uno_Human_Player</a> : <span class="keyword">public</span> <a class="code" href="class_uno___player.html" title="Models a real player for the game.">Uno_Player</a>
-<a name="l00020"></a>00020 {
-<a name="l00021"></a>00021   <span class="keyword">public</span>:
-<a name="l00027"></a>00027     <a class="code" href="class_uno___human___player.html" title="An AI player for the game.">Uno_Human_Player</a>();
-<a name="l00028"></a>00028 
-<a name="l00034"></a>00034     <a class="code" href="class_uno___human___player.html" title="An AI player for the game.">Uno_Human_Player</a>( <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s );
-<a name="l00035"></a>00035 
-<a name="l00041"></a>00041     <a class="code" href="class_uno___human___player.html" title="An AI player for the game.">Uno_Human_Player</a>( <span class="keyword">const</span> <a class="code" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e" title="Type defition for a deck of Uno cards represented by a vector&lt;card&gt;.">hand</a>&amp; h, <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s );
-<a name="l00042"></a>00042     
-<a name="l00047"></a>00047     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> take_turn( <span class="keyword">const</span> <a class="code" href="class_uno___game___state.html" title="Holds the state of the game.">Uno_Game_State</a>&amp; s, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> time );
-<a name="l00048"></a>00048     <span class="comment">//unsigned int take_turn();    </span>
-<a name="l00049"></a>00049 };
-<a name="l00050"></a>00050 
-<a name="l00051"></a>00051 <span class="preprocessor">#endif</span>
+<a name="l00009"></a>00009 <span class="preprocessor">#include &quot;<a class="code" href="uno__player_8h.html" title="Contains the functionality for having a default player in the Uno game.">uno_player.h</a>&quot;</span>
+<a name="l00010"></a>00010 <span class="preprocessor">#include &quot;<a class="code" href="uno__pstate_8h.html" title="Contains the player, limited view of the game state.">uno_pstate.h</a>&quot;</span>
+<a name="l00011"></a>00011 <span class="preprocessor">#include &quot;<a class="code" href="uno__action_8h.html" title="Contains the construct for an Uno_Action.">uno_action.h</a>&quot;</span>
+<a name="l00012"></a>00012 
+<a name="l00013"></a>00013 <span class="keyword">using namespace </span>std;
+<a name="l00014"></a>00014 
+<a name="l00020"></a><a class="code" href="class_uno___human___player.html">00020</a> <span class="keyword">class </span><a class="code" href="class_uno___human___player.html" title="A human player for the game.">Uno_Human_Player</a> : <span class="keyword">public</span> <a class="code" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a>
+<a name="l00021"></a>00021 {
+<a name="l00022"></a>00022   <span class="keyword">public</span>:
+<a name="l00028"></a>00028     <a class="code" href="class_uno___human___player.html" title="A human player for the game.">Uno_Human_Player</a>();
+<a name="l00029"></a>00029 
+<a name="l00037"></a>00037     <a class="code" href="class_uno___human___player.html" title="A human player for the game.">Uno_Human_Player</a>( <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s );
+<a name="l00038"></a>00038     
+<a name="l00047"></a>00047     <a class="code" href="class_uno___action.html" title="Contains the construct for an Uno_Action.">Uno_Action</a> take_turn( <span class="keyword">const</span> <a class="code" href="class_uno___p_state.html" title="Contains the player, limited view of the game state.">Uno_PState</a>&amp; s );
+<a name="l00048"></a>00048 };
+<a name="l00049"></a>00049 
+<a name="l00050"></a>00050 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
@@ -141,7 +138,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 
-    <li class="footer">Generated on Mon Oct 17 2011 18:13:34 for UnoAI by
+    <li class="footer">Generated on Wed Oct 19 2011 04:59:10 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

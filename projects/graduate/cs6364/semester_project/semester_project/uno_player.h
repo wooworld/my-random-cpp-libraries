@@ -1,145 +1,61 @@
 /*! \file uno_player.h
-    \brief Contains the Uno Player class and functionality.
+    \brief Contains the functionality for having a default player in the Uno game.
     \sa uno_player.cpp
 */
 
 #ifndef UNO_PLAYER_H
 #define UNO_PLAYER_H
 
-#include <string>
-#include <list>
 #include "uno_deck.h"
 #include "uno_card.h"
-//#include "uno_game_state.h"
+#include "uno_pstate.h"
+#include "uno_action.h"
+#include <string>
+#include <list>
 
 using namespace std;
 
 /** 
- * \brief Type defition for a deck of Uno cards represented by a vector<card>.
+ * \brief Base Uno_Player class.
  *
- * The Uno deck is vector of Uno cards. The deck has functionality modeling
- * use of a real Uno deck. See the other functions for details.
- */
-typedef list<card> hand;
-
-#define UNO_INIT_HAND_SIZE 7    /*!< Initial hand size for an Uno hand. */
-
-/** 
- * \brief Models a real player for the game. 
+ * This class does nothing, use an Uno_AI_Player or an Uno_Human_Player instead.
+ * \sa Uno_AI_Player
+ * \sa Uno_Human_Player
  */
 class Uno_Player
 {
   public:
     /** 
-     * \brief Default constructor. 
-     * 
-     * Constructs an Uno_Player with an empty hand, a blank name, and score and level
-     * of zero.
+     * \brief Default constructor.
+     *
+     * Constructs an Uno_Player with empty and zero values. 
      */
     Uno_Player();
 
     /** 
-     * \brief Identification constructor. 
-     * 
-     * Constructs an Uno_Player with an with the given name, score, and level.
-     */
-    Uno_Player( const string& n, unsigned int s );
-
-    /** 
      * \brief Full value specification constructor. 
      * 
-     * Constructs an Uno_Player with an with the given hand, name, score, and level.
+     * Constructs an Uno_Player with the given values.
+     * \param n The name of the Uno_Player.
+     * \param s The score for the Uno_Player.
      */
-    Uno_Player( const hand& h, const string& n, unsigned int s );
+    Uno_Player( const string& n, unsigned int s );   
 
     /**
-     * \brief Draws a card from the deck and puts it in the player's hand.
-     * \param d The deck to draw a card from.
+     * \brief Calls the player to take his turn. 
      *
-     * Takes the top card from the deck and places it into the player's hand.
-     * The deck's size is decreased by one and the player's hand size is increased
-     * by one. 
+     * This function is invoked by the Uno_Runner whenever it is this player's
+     * turn in the game. 
+     * \param s The state of the game as visible from this player's perspective.
+     * \retval Uno_Action The Uno_Action the player chooses this turn. 
      */
-    void draw_card( deck& d );
-
-    /**
-     * \brief Draws UNO_INIT_HAND_SIZE cards from the deck and puts them in the 
-     * player's hand.
-     * \pre d.size() >= UNO_INIT_HAND_SIZE 
-     * \param d The deck to draw a card from.
-     *
-     * Takes the UNO_INIT_HAND_SIZE cards from the deck and places it into the 
-     * player's hand. The deck's size is decreased by UNO_INIT_HAND_SIZE and the 
-     * player's hand size is increased UNO_INIT_HAND_SIZE. 
-     */
-    void draw_initial_hand( deck& d );
-
-    /**
-     * \brief Plays a card with the given name from the player's hand.
-     * \param c The card to play. To specify this name, use CARD. 
-     * \return The card played. If the specified card, c, does not exist in the 
-     * player's hand, the card CARD(UNO_NO_COLOR, UNO_RESERVED) is returned. 
-     * \sa CARD
-     *
-     * Takes a card specified by c and returns it. The card c is removed from
-     * the player's hand.
-     * 
-     * This version of play_card is much less efficient than the index version.
-     * \sa play_card_by_index( unsigned char i )
-     */
-    card play_card_by_name( card c );
-
-    /**
-     * \brief Plays a card at the given index from the player's hand
-     * \pre 0 <= i < m_hand.size()
-     * \param i The index of the card in the player's hand to play. 
-     * \return The card played.
-     *
-     * Takes a card at index i and returns it. The card at index i is removed
-     * from the player's hand.
-     *
-     * \note This is the preferred version of playing a card, as it is faster. 
-     */
-    card play_card_by_index( unsigned char i );
-
-    /**
-     * \brief Makes the AI player take his turn.
-     * \return The index of the card in the player's hand he wishes to play.
-     *
-     * Taking a turn consists of multiple actions:
-     * \li Attempt to play a card from the hand.
-     * \li If no play can be made, draw a card.
-     * \li Attempt to play the drawn card.
-     */
-    //unsigned int take_turn( const Uno_Game_State& s, unsigned int time );
-    unsigned int take_turn();
-
-    /** 
-     * \brief Prints out this player's hand of cards.
-     * \sa typedef vector<card> deck
-     * \note This is a relatively expensive operation, use sparingly.
-     */
-    void print_hand();
-
-    /** 
-     * \brief Prints out the values of this player's hand of cards.
-     * \sa typedef vector<card> deck
-     * \note This is a less expensive operation than print_hand() but is still
-     * relatively expensive, use sparingly.
-     */
-    void print_hand_values();
-
-    /** 
-     * \brief The player's hand of cards.
-     *
-     * The player's hand of cards is initially 7 cards drawn from a deck.
-     */
-    hand m_hand;
+    Uno_Action take_turn( const Uno_PState& s );    
 
     /**
      * \brief The player's name.
      *
-     * A string representing the player's name. 
+     * A string representing the player's name. This can be just about anything
+     * you want it to be. 
      */
     string m_name;
 
@@ -147,16 +63,10 @@ class Uno_Player
      * \brief The player's score. 
      *
      * Each player attains a number of points at the end of each game. The 
-     * point total for a player is tracked using this.
-     * \note The first player to reach 500 points in a regulation game is
-     * considered the winner. 
+     * point total for a player is tracked using this. The first player to 
+     * reach 500 points in a regulation game is considered the winner. 
      */
     unsigned int m_score;
-
-    /**
-     * \brief The current state of the game according to this player.
-     */
-    //Uno_Game_State m_state;
 };
 
 #endif

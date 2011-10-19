@@ -4,7 +4,7 @@
 }
 
 
-\-Models a real player for the game.  
+\-Base \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player} class.  
 
 
 
@@ -23,28 +23,12 @@
 \hyperlink{class_uno___player_a0447ff92b80be8d98d0052d7d2a868d7}{\-Uno\-\_\-\-Player} ()
 \begin{DoxyCompactList}\small\item\em \-Default constructor. \end{DoxyCompactList}\item 
 \hyperlink{class_uno___player_a01b27e59f1de1e13627c2e72e69c65c6}{\-Uno\-\_\-\-Player} (const string \&n, unsigned int s)
-\begin{DoxyCompactList}\small\item\em \-Identification constructor. \end{DoxyCompactList}\item 
-\hyperlink{class_uno___player_acd18cd073963d561da37018f114ef29b}{\-Uno\-\_\-\-Player} (const \hyperlink{uno__player_8h_acd9523c15e47a87e3740cf5ade73556e}{hand} \&h, const string \&n, unsigned int s)
 \begin{DoxyCompactList}\small\item\em \-Full value specification constructor. \end{DoxyCompactList}\item 
-void \hyperlink{class_uno___player_ac803ffaaf0efeaa27d3d4993545bee39}{draw\-\_\-card} (\hyperlink{uno__deck_8h_ab634a15f4d19d3af113a71241b79c408}{deck} \&d)
-\begin{DoxyCompactList}\small\item\em \-Draws a card from the deck and puts it in the player's hand. \end{DoxyCompactList}\item 
-void \hyperlink{class_uno___player_a5f0d9630e8e143f34c4d63340bac90e0}{draw\-\_\-initial\-\_\-hand} (\hyperlink{uno__deck_8h_ab634a15f4d19d3af113a71241b79c408}{deck} \&d)
-\begin{DoxyCompactList}\small\item\em \-Draws \-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E cards from the deck and puts them in the player's hand. \end{DoxyCompactList}\item 
-\hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card} \hyperlink{class_uno___player_a2e94c703cf4f680c4dcbcb1adbb4816b}{play\-\_\-card\-\_\-by\-\_\-name} (\hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card} c)
-\begin{DoxyCompactList}\small\item\em \-Plays a card with the given name from the player's hand. \end{DoxyCompactList}\item 
-\hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card} \hyperlink{class_uno___player_abe1a86f4792fa9e703ffeb28e453160f}{play\-\_\-card\-\_\-by\-\_\-index} (unsigned char i)
-\begin{DoxyCompactList}\small\item\em \-Plays a card at the given index from the player's hand. \end{DoxyCompactList}\item 
-unsigned int \hyperlink{class_uno___player_a31f9f272c9a427ea3b9e8dc7120fadac}{take\-\_\-turn} ()
-\begin{DoxyCompactList}\small\item\em \-Makes the \-A\-I player take his turn. \end{DoxyCompactList}\item 
-void \hyperlink{class_uno___player_a3af4557fcf900bc6357000449ecb5860}{print\-\_\-hand} ()
-\begin{DoxyCompactList}\small\item\em \-Prints out this player's hand of cards. \end{DoxyCompactList}\item 
-void \hyperlink{class_uno___player_a17a542fc645418ee806c79ebe253a62e}{print\-\_\-hand\-\_\-values} ()
-\begin{DoxyCompactList}\small\item\em \-Prints out the values of this player's hand of cards. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\hyperlink{class_uno___action}{\-Uno\-\_\-\-Action} \hyperlink{class_uno___player_aa6e4a3177c39ee2572250b2dd4400a43}{take\-\_\-turn} (const \hyperlink{class_uno___p_state}{\-Uno\-\_\-\-P\-State} \&s)
+\begin{DoxyCompactList}\small\item\em \-Calls the player to take his turn. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{\-Public \-Attributes}
 \begin{DoxyCompactItemize}
 \item 
-\hyperlink{uno__player_8h_acd9523c15e47a87e3740cf5ade73556e}{hand} \hyperlink{class_uno___player_a9d50084b9fd4b005286ffdaa004f2664}{m\-\_\-hand}
-\begin{DoxyCompactList}\small\item\em \-The player's hand of cards. \end{DoxyCompactList}\item 
 string \hyperlink{class_uno___player_a06af109b4d621efa14ba98e4c9395739}{m\-\_\-name}
 \begin{DoxyCompactList}\small\item\em \-The player's name. \end{DoxyCompactList}\item 
 unsigned int \hyperlink{class_uno___player_a9805f306a500b1898c0a0922d76de444}{m\-\_\-score}
@@ -52,7 +36,14 @@ unsigned int \hyperlink{class_uno___player_a9805f306a500b1898c0a0922d76de444}{m\
 
 
 \subsection{\-Detailed \-Description}
-\-Models a real player for the game. 
+\-Base \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player} class. 
+
+\-This class does nothing, use an \hyperlink{class_uno___a_i___player}{\-Uno\-\_\-\-A\-I\-\_\-\-Player} or an \hyperlink{class_uno___human___player}{\-Uno\-\_\-\-Human\-\_\-\-Player} instead. \begin{DoxySeeAlso}{\-See also}
+\hyperlink{class_uno___a_i___player}{\-Uno\-\_\-\-A\-I\-\_\-\-Player} 
+
+\hyperlink{class_uno___human___player}{\-Uno\-\_\-\-Human\-\_\-\-Player} 
+\end{DoxySeeAlso}
+
 
 \subsection{\-Constructor \& \-Destructor \-Documentation}
 \hypertarget{class_uno___player_a0447ff92b80be8d98d0052d7d2a868d7}{
@@ -68,7 +59,7 @@ unsigned int \hyperlink{class_uno___player_a9805f306a500b1898c0a0922d76de444}{m\
 
 \-Default constructor. 
 
-\-Constructs an \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player} with an empty hand, a blank name, and score and level of zero. \hypertarget{class_uno___player_a01b27e59f1de1e13627c2e72e69c65c6}{
+\-Constructs an \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player} with empty and zero values. \hypertarget{class_uno___player_a01b27e59f1de1e13627c2e72e69c65c6}{
 \index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}}
 \index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!Uno_Player@{\-Uno\-\_\-\-Player}}
 \subsubsection[{\-Uno\-\_\-\-Player}]{\setlength{\rightskip}{0pt plus 5cm}\-Uno\-\_\-\-Player\-::\-Uno\-\_\-\-Player (
@@ -80,192 +71,49 @@ unsigned int \hyperlink{class_uno___player_a9805f306a500b1898c0a0922d76de444}{m\
 \label{class_uno___player_a01b27e59f1de1e13627c2e72e69c65c6}
 
 
-\-Identification constructor. 
-
-\-Constructs an \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player} with an with the given name, score, and level. \hypertarget{class_uno___player_acd18cd073963d561da37018f114ef29b}{
-\index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}}
-\index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!Uno_Player@{\-Uno\-\_\-\-Player}}
-\subsubsection[{\-Uno\-\_\-\-Player}]{\setlength{\rightskip}{0pt plus 5cm}\-Uno\-\_\-\-Player\-::\-Uno\-\_\-\-Player (
-\begin{DoxyParamCaption}
-\item[{const {\bf hand} \&}]{h, }
-\item[{const string \&}]{n, }
-\item[{unsigned int}]{s}
-\end{DoxyParamCaption}
-)}}
-\label{class_uno___player_acd18cd073963d561da37018f114ef29b}
-
-
 \-Full value specification constructor. 
 
-\-Constructs an \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player} with an with the given hand, name, score, and level. 
+\-Constructs an \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player} with the given values. 
+\begin{DoxyParams}{\-Parameters}
+{\em n} & \-The name of the \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player}. \\
+\hline
+{\em s} & \-The score for the \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player}. \\
+\hline
+\end{DoxyParams}
+
 
 \subsection{\-Member \-Function \-Documentation}
-\hypertarget{class_uno___player_ac803ffaaf0efeaa27d3d4993545bee39}{
-\index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!draw\-\_\-card@{draw\-\_\-card}}
-\index{draw\-\_\-card@{draw\-\_\-card}!Uno_Player@{\-Uno\-\_\-\-Player}}
-\subsubsection[{draw\-\_\-card}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Player\-::draw\-\_\-card (
-\begin{DoxyParamCaption}
-\item[{{\bf deck} \&}]{d}
-\end{DoxyParamCaption}
-)}}
-\label{class_uno___player_ac803ffaaf0efeaa27d3d4993545bee39}
-
-
-\-Draws a card from the deck and puts it in the player's hand. 
-
-
-\begin{DoxyParams}{\-Parameters}
-{\em d} & \-The deck to draw a card from.\\
-\hline
-\end{DoxyParams}
-\-Takes the top card from the deck and places it into the player's hand. \-The deck's size is decreased by one and the player's hand size is increased by one. \hypertarget{class_uno___player_a5f0d9630e8e143f34c4d63340bac90e0}{
-\index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!draw\-\_\-initial\-\_\-hand@{draw\-\_\-initial\-\_\-hand}}
-\index{draw\-\_\-initial\-\_\-hand@{draw\-\_\-initial\-\_\-hand}!Uno_Player@{\-Uno\-\_\-\-Player}}
-\subsubsection[{draw\-\_\-initial\-\_\-hand}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Player\-::draw\-\_\-initial\-\_\-hand (
-\begin{DoxyParamCaption}
-\item[{{\bf deck} \&}]{d}
-\end{DoxyParamCaption}
-)}}
-\label{class_uno___player_a5f0d9630e8e143f34c4d63340bac90e0}
-
-
-\-Draws \-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E cards from the deck and puts them in the player's hand. 
-
-\begin{DoxyPrecond}{\-Precondition}
-d.\-size() $>$= \-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E 
-\end{DoxyPrecond}
-
-\begin{DoxyParams}{\-Parameters}
-{\em d} & \-The deck to draw a card from.\\
-\hline
-\end{DoxyParams}
-\-Takes the \-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E cards from the deck and places it into the player's hand. \-The deck's size is decreased by \-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E and the player's hand size is increased \-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E. \hypertarget{class_uno___player_abe1a86f4792fa9e703ffeb28e453160f}{
-\index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!play\-\_\-card\-\_\-by\-\_\-index@{play\-\_\-card\-\_\-by\-\_\-index}}
-\index{play\-\_\-card\-\_\-by\-\_\-index@{play\-\_\-card\-\_\-by\-\_\-index}!Uno_Player@{\-Uno\-\_\-\-Player}}
-\subsubsection[{play\-\_\-card\-\_\-by\-\_\-index}]{\setlength{\rightskip}{0pt plus 5cm}{\bf card} \-Uno\-\_\-\-Player\-::play\-\_\-card\-\_\-by\-\_\-index (
-\begin{DoxyParamCaption}
-\item[{unsigned char}]{i}
-\end{DoxyParamCaption}
-)}}
-\label{class_uno___player_abe1a86f4792fa9e703ffeb28e453160f}
-
-
-\-Plays a card at the given index from the player's hand. 
-
-\begin{DoxyPrecond}{\-Precondition}
-0 $<$= i $<$ m\-\_\-hand.\-size() 
-\end{DoxyPrecond}
-
-\begin{DoxyParams}{\-Parameters}
-{\em i} & \-The index of the card in the player's hand to play. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{\-Returns}
-\-The card played.
-\end{DoxyReturn}
-\-Takes a card at index i and returns it. \-The card at index i is removed from the player's hand.
-
-\begin{DoxyNote}{\-Note}
-\-This is the preferred version of playing a card, as it is faster. 
-\end{DoxyNote}
-\hypertarget{class_uno___player_a2e94c703cf4f680c4dcbcb1adbb4816b}{
-\index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!play\-\_\-card\-\_\-by\-\_\-name@{play\-\_\-card\-\_\-by\-\_\-name}}
-\index{play\-\_\-card\-\_\-by\-\_\-name@{play\-\_\-card\-\_\-by\-\_\-name}!Uno_Player@{\-Uno\-\_\-\-Player}}
-\subsubsection[{play\-\_\-card\-\_\-by\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}{\bf card} \-Uno\-\_\-\-Player\-::play\-\_\-card\-\_\-by\-\_\-name (
-\begin{DoxyParamCaption}
-\item[{{\bf card}}]{c}
-\end{DoxyParamCaption}
-)}}
-\label{class_uno___player_a2e94c703cf4f680c4dcbcb1adbb4816b}
-
-
-\-Plays a card with the given name from the player's hand. 
-
-
-\begin{DoxyParams}{\-Parameters}
-{\em c} & \-The card to play. \-To specify this name, use \-C\-A\-R\-D. \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{\-Returns}
-\-The card played. \-If the specified card, c, does not exist in the player's hand, the card \hyperlink{uno__card_8h_abbc97b38c028c37643c949a6751283b7}{\-C\-A\-R\-D(\-U\-N\-O\-\_\-\-N\-O\-\_\-\-C\-O\-L\-O\-R, U\-N\-O\-\_\-\-R\-E\-S\-E\-R\-V\-E\-D)} is returned. 
-\end{DoxyReturn}
-\begin{DoxySeeAlso}{\-See also}
-\hyperlink{uno__card_8h_abbc97b38c028c37643c949a6751283b7}{\-C\-A\-R\-D}
-\end{DoxySeeAlso}
-\-Takes a card specified by c and returns it. \-The card c is removed from the player's hand.
-
-\-This version of play\-\_\-card is much less efficient than the index version. \begin{DoxySeeAlso}{\-See also}
-\hyperlink{class_uno___player_abe1a86f4792fa9e703ffeb28e453160f}{play\-\_\-card\-\_\-by\-\_\-index( unsigned char i )} 
-\end{DoxySeeAlso}
-\hypertarget{class_uno___player_a3af4557fcf900bc6357000449ecb5860}{
-\index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!print\-\_\-hand@{print\-\_\-hand}}
-\index{print\-\_\-hand@{print\-\_\-hand}!Uno_Player@{\-Uno\-\_\-\-Player}}
-\subsubsection[{print\-\_\-hand}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Player\-::print\-\_\-hand (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}}
-\label{class_uno___player_a3af4557fcf900bc6357000449ecb5860}
-
-
-\-Prints out this player's hand of cards. 
-
-\begin{DoxySeeAlso}{\-See also}
-typedef vector$<$card$>$ \hyperlink{uno__deck_8h_ab634a15f4d19d3af113a71241b79c408}{deck} 
-\end{DoxySeeAlso}
-\begin{DoxyNote}{\-Note}
-\-This is a relatively expensive operation, use sparingly. 
-\end{DoxyNote}
-\hypertarget{class_uno___player_a17a542fc645418ee806c79ebe253a62e}{
-\index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!print\-\_\-hand\-\_\-values@{print\-\_\-hand\-\_\-values}}
-\index{print\-\_\-hand\-\_\-values@{print\-\_\-hand\-\_\-values}!Uno_Player@{\-Uno\-\_\-\-Player}}
-\subsubsection[{print\-\_\-hand\-\_\-values}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Player\-::print\-\_\-hand\-\_\-values (
-\begin{DoxyParamCaption}
-{}
-\end{DoxyParamCaption}
-)}}
-\label{class_uno___player_a17a542fc645418ee806c79ebe253a62e}
-
-
-\-Prints out the values of this player's hand of cards. 
-
-\begin{DoxySeeAlso}{\-See also}
-typedef vector$<$card$>$ \hyperlink{uno__deck_8h_ab634a15f4d19d3af113a71241b79c408}{deck} 
-\end{DoxySeeAlso}
-\begin{DoxyNote}{\-Note}
-\-This is a less expensive operation than \hyperlink{class_uno___player_a3af4557fcf900bc6357000449ecb5860}{print\-\_\-hand()} but is still relatively expensive, use sparingly. 
-\end{DoxyNote}
-\hypertarget{class_uno___player_a31f9f272c9a427ea3b9e8dc7120fadac}{
+\hypertarget{class_uno___player_aa6e4a3177c39ee2572250b2dd4400a43}{
 \index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!take\-\_\-turn@{take\-\_\-turn}}
 \index{take\-\_\-turn@{take\-\_\-turn}!Uno_Player@{\-Uno\-\_\-\-Player}}
-\subsubsection[{take\-\_\-turn}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int \-Uno\-\_\-\-Player\-::take\-\_\-turn (
+\subsubsection[{take\-\_\-turn}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Uno\-\_\-\-Action} \-Uno\-\_\-\-Player\-::take\-\_\-turn (
 \begin{DoxyParamCaption}
-{}
+\item[{const {\bf \-Uno\-\_\-\-P\-State} \&}]{s}
 \end{DoxyParamCaption}
 )}}
-\label{class_uno___player_a31f9f272c9a427ea3b9e8dc7120fadac}
+\label{class_uno___player_aa6e4a3177c39ee2572250b2dd4400a43}
 
 
-\-Makes the \-A\-I player take his turn. 
+\-Calls the player to take his turn. 
 
-\begin{DoxyReturn}{\-Returns}
-\-The index of the card in the player's hand he wishes to play.
-\end{DoxyReturn}
-\-Taking a turn consists of multiple actions\-: \begin{DoxyItemize}
-\item \-Attempt to play a card from the hand. \item \-If no play can be made, draw a card. \item \-Attempt to play the drawn card. \end{DoxyItemize}
+\-This function is invoked by the \hyperlink{class_uno___runner}{\-Uno\-\_\-\-Runner} whenever it is this player's turn in the game. 
+\begin{DoxyParams}{\-Parameters}
+{\em s} & \-The state of the game as visible from this player's perspective. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyRetVals}{\-Return values}
+{\em \hyperlink{class_uno___action}{\-Uno\-\_\-\-Action}} & \-The \hyperlink{class_uno___action}{\-Uno\-\_\-\-Action} the player chooses this turn. \\
+\hline
+\end{DoxyRetVals}
+
+
+\-Reimplemented in \hyperlink{class_uno___a_i___player_a46dd95e2b2ff44fa0b5cc80fb1d66605}{\-Uno\-\_\-\-A\-I\-\_\-\-Player}, and \hyperlink{class_uno___human___player_a14a73bddb4791cc7406a0e9cfe65979b}{\-Uno\-\_\-\-Human\-\_\-\-Player}.
+
 
 
 \subsection{\-Member \-Data \-Documentation}
-\hypertarget{class_uno___player_a9d50084b9fd4b005286ffdaa004f2664}{
-\index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!m\-\_\-hand@{m\-\_\-hand}}
-\index{m\-\_\-hand@{m\-\_\-hand}!Uno_Player@{\-Uno\-\_\-\-Player}}
-\subsubsection[{m\-\_\-hand}]{\setlength{\rightskip}{0pt plus 5cm}{\bf hand} {\bf \-Uno\-\_\-\-Player\-::m\-\_\-hand}}}
-\label{class_uno___player_a9d50084b9fd4b005286ffdaa004f2664}
-
-
-\-The player's hand of cards. 
-
-\-The player's hand of cards is initially 7 cards drawn from a deck. \hypertarget{class_uno___player_a06af109b4d621efa14ba98e4c9395739}{
+\hypertarget{class_uno___player_a06af109b4d621efa14ba98e4c9395739}{
 \index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!m\-\_\-name@{m\-\_\-name}}
 \index{m\-\_\-name@{m\-\_\-name}!Uno_Player@{\-Uno\-\_\-\-Player}}
 \subsubsection[{m\-\_\-name}]{\setlength{\rightskip}{0pt plus 5cm}string {\bf \-Uno\-\_\-\-Player\-::m\-\_\-name}}}
@@ -274,7 +122,7 @@ typedef vector$<$card$>$ \hyperlink{uno__deck_8h_ab634a15f4d19d3af113a71241b79c4
 
 \-The player's name. 
 
-\-A string representing the player's name. \hypertarget{class_uno___player_a9805f306a500b1898c0a0922d76de444}{
+\-A string representing the player's name. \-This can be just about anything you want it to be. \hypertarget{class_uno___player_a9805f306a500b1898c0a0922d76de444}{
 \index{\-Uno\-\_\-\-Player@{\-Uno\-\_\-\-Player}!m\-\_\-score@{m\-\_\-score}}
 \index{m\-\_\-score@{m\-\_\-score}!Uno_Player@{\-Uno\-\_\-\-Player}}
 \subsubsection[{m\-\_\-score}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int {\bf \-Uno\-\_\-\-Player\-::m\-\_\-score}}}
@@ -283,10 +131,7 @@ typedef vector$<$card$>$ \hyperlink{uno__deck_8h_ab634a15f4d19d3af113a71241b79c4
 
 \-The player's score. 
 
-\-Each player attains a number of points at the end of each game. \-The point total for a player is tracked using this. \begin{DoxyNote}{\-Note}
-\-The first player to reach 500 points in a regulation game is considered the winner. 
-\end{DoxyNote}
-
+\-Each player attains a number of points at the end of each game. \-The point total for a player is tracked using this. \-The first player to reach 500 points in a regulation game is considered the winner. 
 
 \-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
 \item 

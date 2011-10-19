@@ -187,10 +187,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\uno_game_state.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\uno_human_player.cpp"
 				>
 			</File>
@@ -209,6 +205,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\uno_action.h"
+				>
+			</File>
+			<File
 				RelativePath=".\uno_ai_player.h"
 				>
 			</File>
@@ -221,7 +221,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\uno_game_state.h"
+				RelativePath=".\uno_gstate.h"
 				>
 			</File>
 			<File
@@ -233,7 +233,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\uno_pstate.h"
+				>
+			</File>
+			<File
 				RelativePath=".\uno_runner.h"
+				>
+			</File>
+			<File
+				RelativePath=".\uno_state.h"
 				>
 			</File>
 		</Filter>

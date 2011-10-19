@@ -1,20 +1,21 @@
 /*! \file uno_human_player.h
-    \brief Contains the Uno Human Player class and functionality.
+    \brief Contains the functionality for having a human player in the Uno game.
     \sa uno_human_player.cpp
 */
 
-#ifndef UNO_AI_PLAYER_H
-#define UNO_AI_PLAYER_H
+#ifndef UNO_HUMAN_PLAYER_H
+#define UNO_HUMAN_PLAYER_H
 
-#include "uno_deck.h"
-#include "uno_card.h"
 #include "uno_player.h"
-#include "uno_game_state.h"
+#include "uno_pstate.h"
+#include "uno_action.h"
 
 using namespace std;
 
 /** 
- * \brief An AI player for the game. 
+ * \brief A human player for the game. 
+ *
+ * This class is used to represent a human player for an Uno game. 
  */
 class Uno_Human_Player : public Uno_Player
 {
@@ -22,30 +23,28 @@ class Uno_Human_Player : public Uno_Player
     /** 
      * \brief Default constructor. 
      * 
-     * Constructs an Uno_Human_Player with an empty hand, a blank name, and zero score.
+     * Constructs an Uno_Human_Player with empty and zero values.
      */
     Uno_Human_Player();
 
     /** 
-     * \brief Identification constructor.  
+     * \brief Full value specification constructor. 
      *
-     * Constructs an Uno_Human_Player with an with the given name, score.
+     * Constructs an Uno_Human_Player with the given values.
+     * \param n The name of the Uno_Human_Player.
+     * \param s The score for the Uno_Human_Player.
      */
     Uno_Human_Player( const string& n, unsigned int s );
-
-    /** 
-     * \brief Full value specification constructor. 
-     * 
-     * Constructs an Uno_Human_Player with an with the given hand, name, and score.
-     */
-    Uno_Human_Player( const hand& h, const string& n, unsigned int s );
     
     /**
-     * \brief Prompts the human player to take his turn
-     * \return The index of the card in the player's hand he wishes to play.
+     * \brief Calls the player to take his turn. 
+     *
+     * This function is invoked by the Uno_Runner whenever it is this player's
+     * turn in the game. 
+     * \param s The state of the game as visible from this player's perspective.
+     * \retval Uno_Action The Uno_Action the player chooses this turn. 
      */
-    unsigned int take_turn( const Uno_Game_State& s, unsigned int time );
-    //unsigned int take_turn();    
+    Uno_Action take_turn( const Uno_PState& s );
 };
 
 #endif

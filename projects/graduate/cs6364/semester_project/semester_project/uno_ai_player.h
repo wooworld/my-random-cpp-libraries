@@ -1,20 +1,21 @@
 /*! \file uno_ai_player.h
-    \brief Contains the Uno AI Player class and functionality.
+    \brief Contains the functionality for having a computer player in the Uno game.
     \sa uno_ai_player.cpp
 */
 
 #ifndef UNO_AI_PLAYER_H
 #define UNO_AI_PLAYER_H
 
-#include "uno_deck.h"
-#include "uno_card.h"
 #include "uno_player.h"
-#include "uno_game_state.h"
+#include "uno_pstate.h"
+#include "uno_action.h"
 
 using namespace std;
 
 /** 
  * \brief An AI player for the game. 
+ *
+ * This class is used to represent a computer player for an Uno game. 
  */
 class Uno_AI_Player : public Uno_Player
 {
@@ -22,36 +23,29 @@ class Uno_AI_Player : public Uno_Player
     /** 
      * \brief Default constructor. 
      * 
-     * Constructs an Uno_AI_Player with an empty hand, a blank name, and score and level
-     * of zero.
+     * Constructs an Uno_AI_Player with empty and zero values. 
      */
     Uno_AI_Player();
 
     /** 
-     * \brief Identification constructor. 
+     * \brief Full value specification constructor. 
      * 
-     * Constructs an Uno_AI_Player with an with the given name, score, and level.
+     * Constructs an Uno_AI_Player with the given values.
+     * \param n The name of the Uno_AI_Player.
+     * \param s The score for the Uno_AI_Player.
+     * \param l The difficulty level for the Uno_AI_Player.
      */
     Uno_AI_Player( const string& n, unsigned int s, unsigned int l );
 
-    /** 
-     * \brief Full value specification constructor. 
-     * 
-     * Constructs an Uno_AI_Player with an with the given hand, name, score, and level.
-     */
-    Uno_AI_Player( const hand& h, const string& n, unsigned int s, unsigned int l );
-    
     /**
-     * \brief Makes the AI player take his turn.
-     * \return The index of the card in the player's hand he wishes to play.
+     * \brief Calls the player to take his turn. 
      *
-     * Taking a turn consists of multiple actions:
-     * \li Attempt to play a card from the hand.
-     * \li If no play can be made, draw a card.
-     * \li Attempt to play the drawn card.
+     * This function is invoked by the Uno_Runner whenever it is this player's
+     * turn in the game. 
+     * \param s The state of the game as visible from this player's perspective.
+     * \retval Uno_Action The Uno_Action the player chooses this turn. 
      */
-    unsigned int take_turn( const Uno_Game_State& s, unsigned int time );
-    //unsigned int take_turn();
+    Uno_Action take_turn( const Uno_PState& s );
 
     /**
      * \brief The player's AI difficulty level.
@@ -64,40 +58,48 @@ class Uno_AI_Player : public Uno_Player
 
   private:
     /**
-     * \brief Makes the AI player think about which move to make.
+     * \brief The Uno_AI_Player thinks about which Action to take. 
      *
      * This function is the brains of the AI. The AI will think() each turn
-     * until it finds a suitable move or until time runs out.
+     * until it finds a suitable move or until time runs out. 
      * \sa UNO_TIME_PER_TURN
      */
     void think();
 
     /** 
-     * \brief Returns which card the AI player wishes to play.
-     * \return The index of the card in the AI player's hand he wishes to play.
+     * \brief Returns the best move found by think().
+     * \retval Uno_Action The Uno_Action the player chooses this turn.
      * \note It is not necessary, but the AI player should think() before
      * choosing a move.
      */
-    unsigned int choose_move();
+    Uno_Action choose_action();
 
     /**
-     * \brief Generates plausible successor states for the given state s
+     * \brief Generates legal/plausible successor states from s.
      * \param s The state to generate successor states for.
-     * 
-     * A successor state is the state that will result from a single move. 
+     * \note The results of this action will be stored in m_frontier. 
      */
-    void successor( const Uno_Game_State& s );
+    void successor( const Uno_PState& s );
 
     /**
-     * \brief Returns whether or not a given state is a goal state.
+     * \brief Determines if a given state is a goal state.
+     * \param s The state to determine if it is a goal state.
+     * \retval true If the state is a goal state for this player.
+     * \retval false If the state is not a goal state for this player. 
      */
-    inline bool goal_test( const Uno_Game_State& s );
+    bool goal_test( const Uno_PState& s );
 
     /**
-     * \brief The set of states the AI considers and scores when think()ing 
-     * each turn.
+     * \brief The set of states the AI considers considers per turn.
      */
-    vector<Uno_Game_State> m_frontier;
+    vector<Uno_PState> m_frontier;
+
+    /**
+     * \brief The best action found so far by the AI. 
+     *
+     * This will be returned as the chosen action at the end of each turn.
+     */
+    Uno_Action m_best_action;
 };
 
 #endif

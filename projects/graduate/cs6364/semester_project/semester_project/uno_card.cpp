@@ -11,12 +11,9 @@ using namespace std;
  * \brief A map of card types to card names.
  * 
  * The map is arranged such that card names can be accessed using the CARD
- * macro function. A call to CARD_NAME[CARD(UNO_GREEN, UNO_ZERO)] will return
- * the name of the green zero card, "G0". Similarly,
- * CARD_NAME[CARD(UNO_NO_COLOR, UNO_WILD_DRAW_FOUR)] will return "WD4".
+ * macro function. 
  * \note The map must be populated with map_names() before this map
  * can be effectively used.
- * \note Best used with card_name()
  * \sa void map_names()
  * \sa string card_name( card c )
  */
@@ -26,12 +23,9 @@ card_name_dictionary CARD_NAME;
  * \brief A map of card types to card weights.
  * 
  * The map is arranged such that card weights can be accessed using the CARD
- * macro function. A call to CARD_WEIGHT[CARD(UNO_GREEN, UNO_ZERO)] will return
- * the weight of the green zero card, "G0". Similarly,
- * CARD_WEIGHT[CARD(UNO_NO_COLOR, UNO_WILD_DRAW_FOUR)] will return "WD4".
+ * macro function. 
  * \note The map must be populated with map_weights() before this map
  * can be effectively used.
- * \note Best used with card_weight()
  * \sa void map_weights()
  * \sa unsigned char card_weight( card c )
  */

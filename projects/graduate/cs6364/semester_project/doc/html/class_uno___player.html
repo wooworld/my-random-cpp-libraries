@@ -53,6 +53,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -102,7 +103,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <div class="contents">
 <!-- doxytag: class="Uno_Player" -->
-<p>Models a real player for the game.  
+<p>Base <a class="el" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a> class.  
  <a href="class_uno___player.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="uno__player_8h_source.html">uno_player.h</a>&gt;</code></p>
@@ -113,7 +114,7 @@ Inheritance diagram for Uno_Player:</div>
   <img src="class_uno___player.png" usemap="#Uno_Player_map" alt=""/>
   <map id="Uno_Player_map" name="Uno_Player_map">
 <area href="class_uno___a_i___player.html" title="An AI player for the game." alt="Uno_AI_Player" shape="rect" coords="0,56,124,80"/>
-<area href="class_uno___human___player.html" title="An AI player for the game." alt="Uno_Human_Player" shape="rect" coords="134,56,258,80"/>
+<area href="class_uno___human___player.html" title="A human player for the game." alt="Uno_Human_Player" shape="rect" coords="134,56,258,80"/>
 </map>
  </div></div>
 
@@ -124,34 +125,22 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a0447ff92b80be8d98d0052d7d2a868d7">Uno_Player</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a0447ff92b80be8d98d0052d7d2a868d7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a01b27e59f1de1e13627c2e72e69c65c6">Uno_Player</a> (const string &amp;n, unsigned int s)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Identification constructor.  <a href="#a01b27e59f1de1e13627c2e72e69c65c6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#acd18cd073963d561da37018f114ef29b">Uno_Player</a> (const <a class="el" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a> &amp;h, const string &amp;n, unsigned int s)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Full value specification constructor.  <a href="#acd18cd073963d561da37018f114ef29b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#ac803ffaaf0efeaa27d3d4993545bee39">draw_card</a> (<a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;d)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws a card from the deck and puts it in the player's hand.  <a href="#ac803ffaaf0efeaa27d3d4993545bee39"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a5f0d9630e8e143f34c4d63340bac90e0">draw_initial_hand</a> (<a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;d)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Draws UNO_INIT_HAND_SIZE cards from the deck and puts them in the player's hand.  <a href="#a5f0d9630e8e143f34c4d63340bac90e0"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a2e94c703cf4f680c4dcbcb1adbb4816b">play_card_by_name</a> (<a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a> c)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays a card with the given name from the player's hand.  <a href="#a2e94c703cf4f680c4dcbcb1adbb4816b"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#abe1a86f4792fa9e703ffeb28e453160f">play_card_by_index</a> (unsigned char i)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Plays a card at the given index from the player's hand.  <a href="#abe1a86f4792fa9e703ffeb28e453160f"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a31f9f272c9a427ea3b9e8dc7120fadac">take_turn</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes the AI player take his turn.  <a href="#a31f9f272c9a427ea3b9e8dc7120fadac"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a3af4557fcf900bc6357000449ecb5860">print_hand</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints out this player's hand of cards.  <a href="#a3af4557fcf900bc6357000449ecb5860"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a17a542fc645418ee806c79ebe253a62e">print_hand_values</a> ()</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints out the values of this player's hand of cards.  <a href="#a17a542fc645418ee806c79ebe253a62e"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Full value specification constructor.  <a href="#a01b27e59f1de1e13627c2e72e69c65c6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_uno___action.html">Uno_Action</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#aa6e4a3177c39ee2572250b2dd4400a43">take_turn</a> (const <a class="el" href="class_uno___p_state.html">Uno_PState</a> &amp;s)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the player to take his turn.  <a href="#aa6e4a3177c39ee2572250b2dd4400a43"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a9d50084b9fd4b005286ffdaa004f2664">m_hand</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's hand of cards.  <a href="#a9d50084b9fd4b005286ffdaa004f2664"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a06af109b4d621efa14ba98e4c9395739">m_name</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's name.  <a href="#a06af109b4d621efa14ba98e4c9395739"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a9805f306a500b1898c0a0922d76de444">m_score</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's score.  <a href="#a9805f306a500b1898c0a0922d76de444"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
-<div class="textblock"><p>Models a real player for the game. </p>
+<div class="textblock"><p>Base <a class="el" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a> class. </p>
+<p>This class does nothing, use an <a class="el" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a> or an <a class="el" href="class_uno___human___player.html" title="A human player for the game.">Uno_Human_Player</a> instead. </p>
+<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a> </dd>
+<dd>
+<a class="el" href="class_uno___human___player.html" title="A human player for the game.">Uno_Human_Player</a> </dd></dl>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a0447ff92b80be8d98d0052d7d2a868d7"></a><!-- doxytag: member="Uno_Player::Uno_Player" ref="a0447ff92b80be8d98d0052d7d2a868d7" args="()" -->
 <div class="memitem">
@@ -168,7 +157,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Constructs an <a class="el" href="class_uno___player.html" title="Models a real player for the game.">Uno_Player</a> with an empty hand, a blank name, and score and level of zero. </p>
+<p>Constructs an <a class="el" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a> with empty and zero values. </p>
 
 </div>
 </div>
@@ -197,242 +186,54 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Identification constructor. </p>
-<p>Constructs an <a class="el" href="class_uno___player.html" title="Models a real player for the game.">Uno_Player</a> with an with the given name, score, and level. </p>
-
-</div>
-</div>
-<a class="anchor" id="acd18cd073963d561da37018f114ef29b"></a><!-- doxytag: member="Uno_Player::Uno_Player" ref="acd18cd073963d561da37018f114ef29b" args="(const hand &amp;h, const string &amp;n, unsigned int s)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Uno_Player::Uno_Player </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a> &amp;&#160;</td>
-          <td class="paramname"><em>h</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>s</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
 <p>Full value specification constructor. </p>
-<p>Constructs an <a class="el" href="class_uno___player.html" title="Models a real player for the game.">Uno_Player</a> with an with the given hand, name, score, and level. </p>
+<p>Constructs an <a class="el" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a> with the given values. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n</td><td>The name of the <a class="el" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a>. </td></tr>
+    <tr><td class="paramname">s</td><td>The score for the <a class="el" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="ac803ffaaf0efeaa27d3d4993545bee39"></a><!-- doxytag: member="Uno_Player::draw_card" ref="ac803ffaaf0efeaa27d3d4993545bee39" args="(deck &amp;d)" -->
+<a class="anchor" id="aa6e4a3177c39ee2572250b2dd4400a43"></a><!-- doxytag: member="Uno_Player::take_turn" ref="aa6e4a3177c39ee2572250b2dd4400a43" args="(const Uno_PState &amp;s)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Uno_Player::draw_card </td>
+          <td class="memname"><a class="el" href="class_uno___action.html">Uno_Action</a> Uno_Player::take_turn </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;&#160;</td>
-          <td class="paramname"><em>d</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="class_uno___p_state.html">Uno_PState</a> &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Draws a card from the deck and puts it in the player's hand. </p>
+<p>Calls the player to take his turn. </p>
+<p>This function is invoked by the <a class="el" href="class_uno___runner.html" title="Runs an Uno game.">Uno_Runner</a> whenever it is this player's turn in the game. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">d</td><td>The deck to draw a card from.</td></tr>
+    <tr><td class="paramname">s</td><td>The state of the game as visible from this player's perspective. </td></tr>
   </table>
   </dd>
 </dl>
-<p>Takes the top card from the deck and places it into the player's hand. The deck's size is decreased by one and the player's hand size is increased by one. </p>
-
-</div>
-</div>
-<a class="anchor" id="a5f0d9630e8e143f34c4d63340bac90e0"></a><!-- doxytag: member="Uno_Player::draw_initial_hand" ref="a5f0d9630e8e143f34c4d63340bac90e0" args="(deck &amp;d)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Uno_Player::draw_initial_hand </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;&#160;</td>
-          <td class="paramname"><em>d</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Draws UNO_INIT_HAND_SIZE cards from the deck and puts them in the player's hand. </p>
-<dl class="pre"><dt><b>Precondition:</b></dt><dd>d.size() &gt;= UNO_INIT_HAND_SIZE </dd></dl>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">d</td><td>The deck to draw a card from.</td></tr>
+<dl><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="class_uno___action.html" title="Contains the construct for an Uno_Action.">Uno_Action</a></td><td>The <a class="el" href="class_uno___action.html" title="Contains the construct for an Uno_Action.">Uno_Action</a> the player chooses this turn. </td></tr>
   </table>
   </dd>
 </dl>
-<p>Takes the UNO_INIT_HAND_SIZE cards from the deck and places it into the player's hand. The deck's size is decreased by UNO_INIT_HAND_SIZE and the player's hand size is increased UNO_INIT_HAND_SIZE. </p>
 
-</div>
-</div>
-<a class="anchor" id="abe1a86f4792fa9e703ffeb28e453160f"></a><!-- doxytag: member="Uno_Player::play_card_by_index" ref="abe1a86f4792fa9e703ffeb28e453160f" args="(unsigned char i)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a> Uno_Player::play_card_by_index </td>
-          <td>(</td>
-          <td class="paramtype">unsigned char&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Plays a card at the given index from the player's hand. </p>
-<dl class="pre"><dt><b>Precondition:</b></dt><dd>0 &lt;= i &lt; m_hand.size() </dd></dl>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">i</td><td>The index of the card in the player's hand to play. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The card played.</dd></dl>
-<p>Takes a card at index i and returns it. The card at index i is removed from the player's hand.</p>
-<dl class="note"><dt><b>Note:</b></dt><dd>This is the preferred version of playing a card, as it is faster. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a2e94c703cf4f680c4dcbcb1adbb4816b"></a><!-- doxytag: member="Uno_Player::play_card_by_name" ref="a2e94c703cf4f680c4dcbcb1adbb4816b" args="(card c)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a> Uno_Player::play_card_by_name </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">card</a>&#160;</td>
-          <td class="paramname"><em>c</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Plays a card with the given name from the player's hand. </p>
-<dl><dt><b>Parameters:</b></dt><dd>
-  <table class="params">
-    <tr><td class="paramname">c</td><td>The card to play. To specify this name, use CARD. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The card played. If the specified card, c, does not exist in the player's hand, the card <a class="el" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD(UNO_NO_COLOR, UNO_RESERVED)</a> is returned. </dd></dl>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD</a></dd></dl>
-<p>Takes a card specified by c and returns it. The card c is removed from the player's hand.</p>
-<p>This version of play_card is much less efficient than the index version. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="class_uno___player.html#abe1a86f4792fa9e703ffeb28e453160f" title="Plays a card at the given index from the player&#39;s hand.">play_card_by_index( unsigned char i )</a> </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a3af4557fcf900bc6357000449ecb5860"></a><!-- doxytag: member="Uno_Player::print_hand" ref="a3af4557fcf900bc6357000449ecb5860" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Uno_Player::print_hand </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Prints out this player's hand of cards. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd>typedef vector&lt;card&gt; <a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408" title="Type defition for a deck of Uno cards represented by a vector&lt;card&gt;.">deck</a> </dd></dl>
-<dl class="note"><dt><b>Note:</b></dt><dd>This is a relatively expensive operation, use sparingly. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a17a542fc645418ee806c79ebe253a62e"></a><!-- doxytag: member="Uno_Player::print_hand_values" ref="a17a542fc645418ee806c79ebe253a62e" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Uno_Player::print_hand_values </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Prints out the values of this player's hand of cards. </p>
-<dl class="see"><dt><b>See also:</b></dt><dd>typedef vector&lt;card&gt; <a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408" title="Type defition for a deck of Uno cards represented by a vector&lt;card&gt;.">deck</a> </dd></dl>
-<dl class="note"><dt><b>Note:</b></dt><dd>This is a less expensive operation than <a class="el" href="class_uno___player.html#a3af4557fcf900bc6357000449ecb5860" title="Prints out this player&#39;s hand of cards.">print_hand()</a> but is still relatively expensive, use sparingly. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a31f9f272c9a427ea3b9e8dc7120fadac"></a><!-- doxytag: member="Uno_Player::take_turn" ref="a31f9f272c9a427ea3b9e8dc7120fadac" args="()" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int Uno_Player::take_turn </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Makes the AI player take his turn. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The index of the card in the player's hand he wishes to play.</dd></dl>
-<p>Taking a turn consists of multiple actions: </p>
-<ul>
-<li>Attempt to play a card from the hand. </li>
-<li>If no play can be made, draw a card. </li>
-<li>Attempt to play the drawn card. </li>
-</ul>
+<p>Reimplemented in <a class="el" href="class_uno___a_i___player.html#a46dd95e2b2ff44fa0b5cc80fb1d66605">Uno_AI_Player</a>, and <a class="el" href="class_uno___human___player.html#a14a73bddb4791cc7406a0e9cfe65979b">Uno_Human_Player</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a9d50084b9fd4b005286ffdaa004f2664"></a><!-- doxytag: member="Uno_Player::m_hand" ref="a9d50084b9fd4b005286ffdaa004f2664" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a> <a class="el" href="class_uno___player.html#a9d50084b9fd4b005286ffdaa004f2664">Uno_Player::m_hand</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The player's hand of cards. </p>
-<p>The player's hand of cards is initially 7 cards drawn from a deck. </p>
-
-</div>
-</div>
 <a class="anchor" id="a06af109b4d621efa14ba98e4c9395739"></a><!-- doxytag: member="Uno_Player::m_name" ref="a06af109b4d621efa14ba98e4c9395739" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -445,7 +246,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 
 <p>The player's name. </p>
-<p>A string representing the player's name. </p>
+<p>A string representing the player's name. This can be just about anything you want it to be. </p>
 
 </div>
 </div>
@@ -461,8 +262,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 
 <p>The player's score. </p>
-<p>Each player attains a number of points at the end of each game. The point total for a player is tracked using this. </p>
-<dl class="note"><dt><b>Note:</b></dt><dd>The first player to reach 500 points in a regulation game is considered the winner. </dd></dl>
+<p>Each player attains a number of points at the end of each game. The point total for a player is tracked using this. The first player to reach 500 points in a regulation game is considered the winner. </p>
 
 </div>
 </div>
@@ -490,7 +290,7 @@ Public Attributes</h2></td></tr>
 </div>
 
 
-    <li class="footer">Generated on Mon Oct 17 2011 18:13:35 for UnoAI by
+    <li class="footer">Generated on Wed Oct 19 2011 04:59:11 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

@@ -53,6 +53,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
+      <li><a href="examples.html"><span>Examples</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
         <span class="left">
@@ -112,7 +113,7 @@ Inheritance diagram for Uno_AI_Player:</div>
  <div class="center">
   <img src="class_uno___a_i___player.png" usemap="#Uno_AI_Player_map" alt=""/>
   <map id="Uno_AI_Player_map" name="Uno_AI_Player_map">
-<area href="class_uno___player.html" title="Models a real player for the game." alt="Uno_Player" shape="rect" coords="0,0,97,24"/>
+<area href="class_uno___player.html" title="Base Uno_Player class." alt="Uno_Player" shape="rect" coords="0,0,97,24"/>
 </map>
  </div></div>
 
@@ -123,11 +124,9 @@ Public Member Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#ae977868f52c315663174b5c4943ac9ef">Uno_AI_Player</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#ae977868f52c315663174b5c4943ac9ef"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#ab16352005d98a759d298d05afdaaea9e">Uno_AI_Player</a> (const string &amp;n, unsigned int s, unsigned int l)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Identification constructor.  <a href="#ab16352005d98a759d298d05afdaaea9e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#a535884ee15f0d243b43227d941a102c8">Uno_AI_Player</a> (const <a class="el" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a> &amp;h, const string &amp;n, unsigned int s, unsigned int l)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Full value specification constructor.  <a href="#a535884ee15f0d243b43227d941a102c8"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#a7884d5ed5f3fbbfc2ca7976ce252f333">take_turn</a> (const <a class="el" href="class_uno___game___state.html">Uno_Game_State</a> &amp;s, unsigned int time)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes the AI player take his turn.  <a href="#a7884d5ed5f3fbbfc2ca7976ce252f333"></a><br/></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Full value specification constructor.  <a href="#ab16352005d98a759d298d05afdaaea9e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_uno___action.html">Uno_Action</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#a46dd95e2b2ff44fa0b5cc80fb1d66605">take_turn</a> (const <a class="el" href="class_uno___p_state.html">Uno_PState</a> &amp;s)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the player to take his turn.  <a href="#a46dd95e2b2ff44fa0b5cc80fb1d66605"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___a_i___player.html#a028b0df8cca96eb10fc87bebf0f48c25">m_level</a></td></tr>
@@ -135,6 +134,7 @@ Public Attributes</h2></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>An AI player for the game. </p>
+<p>This class is used to represent a computer player for an Uno game. </p>
 </div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="ae977868f52c315663174b5c4943ac9ef"></a><!-- doxytag: member="Uno_AI_Player::Uno_AI_Player" ref="ae977868f52c315663174b5c4943ac9ef" args="()" -->
 <div class="memitem">
@@ -151,7 +151,7 @@ Public Attributes</h2></td></tr>
 <div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Constructs an <a class="el" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a> with an empty hand, a blank name, and score and level of zero. </p>
+<p>Constructs an <a class="el" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a> with empty and zero values. </p>
 
 </div>
 </div>
@@ -186,87 +186,51 @@ Public Attributes</h2></td></tr>
 </div>
 <div class="memdoc">
 
-<p>Identification constructor. </p>
-<p>Constructs an <a class="el" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a> with an with the given name, score, and level. </p>
-
-</div>
-</div>
-<a class="anchor" id="a535884ee15f0d243b43227d941a102c8"></a><!-- doxytag: member="Uno_AI_Player::Uno_AI_Player" ref="a535884ee15f0d243b43227d941a102c8" args="(const hand &amp;h, const string &amp;n, unsigned int s, unsigned int l)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Uno_AI_Player::Uno_AI_Player </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="uno__player_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a> &amp;&#160;</td>
-          <td class="paramname"><em>h</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const string &amp;&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>l</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
 <p>Full value specification constructor. </p>
-<p>Constructs an <a class="el" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a> with an with the given hand, name, score, and level. </p>
+<p>Constructs an <a class="el" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a> with the given values. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">n</td><td>The name of the <a class="el" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a>. </td></tr>
+    <tr><td class="paramname">s</td><td>The score for the <a class="el" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a>. </td></tr>
+    <tr><td class="paramname">l</td><td>The difficulty level for the <a class="el" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="a7884d5ed5f3fbbfc2ca7976ce252f333"></a><!-- doxytag: member="Uno_AI_Player::take_turn" ref="a7884d5ed5f3fbbfc2ca7976ce252f333" args="(const Uno_Game_State &amp;s, unsigned int time)" -->
+<a class="anchor" id="a46dd95e2b2ff44fa0b5cc80fb1d66605"></a><!-- doxytag: member="Uno_AI_Player::take_turn" ref="a46dd95e2b2ff44fa0b5cc80fb1d66605" args="(const Uno_PState &amp;s)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int Uno_AI_Player::take_turn </td>
+          <td class="memname"><a class="el" href="class_uno___action.html">Uno_Action</a> Uno_AI_Player::take_turn </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="class_uno___game___state.html">Uno_Game_State</a> &amp;&#160;</td>
-          <td class="paramname"><em>s</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">const <a class="el" href="class_uno___p_state.html">Uno_PState</a> &amp;&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>time</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
-<p>Makes the AI player take his turn. </p>
-<dl class="return"><dt><b>Returns:</b></dt><dd>The index of the card in the player's hand he wishes to play.</dd></dl>
-<p>Taking a turn consists of multiple actions: </p>
-<ul>
-<li>Attempt to play a card from the hand. </li>
-<li>If no play can be made, draw a card. </li>
-<li>Attempt to play the drawn card. </li>
-</ul>
+<p>Calls the player to take his turn. </p>
+<p>This function is invoked by the <a class="el" href="class_uno___runner.html" title="Runs an Uno game.">Uno_Runner</a> whenever it is this player's turn in the game. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>The state of the game as visible from this player's perspective. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl><dt><b>Return values:</b></dt><dd>
+  <table class="retval">
+    <tr><td class="paramname"><a class="el" href="class_uno___action.html" title="Contains the construct for an Uno_Action.">Uno_Action</a></td><td>The <a class="el" href="class_uno___action.html" title="Contains the construct for an Uno_Action.">Uno_Action</a> the player chooses this turn. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_uno___player.html#aa6e4a3177c39ee2572250b2dd4400a43">Uno_Player</a>.</p>
 
 </div>
 </div>
@@ -311,7 +275,7 @@ Public Attributes</h2></td></tr>
 </div>
 
 
-    <li class="footer">Generated on Mon Oct 17 2011 18:13:35 for UnoAI by
+    <li class="footer">Generated on Wed Oct 19 2011 04:59:11 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

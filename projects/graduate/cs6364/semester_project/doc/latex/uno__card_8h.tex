@@ -77,13 +77,13 @@ typedef map$<$ \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card},
 \begin{DoxyCompactItemize}
 \item 
 void \hyperlink{uno__card_8h_a07e79d8e9cc0a93f105f6203cfa4403d}{map\-\_\-names} ()
-\begin{DoxyCompactList}\small\item\em \-Creates a user-\/readable dictionary of names for a card. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em \-Instantiates a user-\/readable dictionary of names for a card. \end{DoxyCompactList}\item 
 string \hyperlink{uno__card_8h_a6fc45c14cfbf3fb7529da60c1040d915}{card\-\_\-name} (\hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card} c)
-\begin{DoxyCompactList}\small\item\em \-Returns the name of an \-Uno card. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em \-Gets the name of an \-Uno card. \end{DoxyCompactList}\item 
 void \hyperlink{uno__card_8h_ab8eab77308199772ca67568adc9621c4}{map\-\_\-weights} ()
-\begin{DoxyCompactList}\small\item\em \-Creates a user-\/readable dictionary of weights for cards. \end{DoxyCompactList}\item 
+\begin{DoxyCompactList}\small\item\em \-Instantiates a user-\/readable dictionary of weights for cards. \end{DoxyCompactList}\item 
 unsigned char \hyperlink{uno__card_8h_a2ad96347628c97a1314ef0fbf80b670c}{card\-\_\-weight} (\hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card} c)
-\begin{DoxyCompactList}\small\item\em \-Returns the weight of an \-Uno card. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em \-Gets the weight of an \-Uno card. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{\-Variables}
 \begin{DoxyCompactItemize}
 \item 
@@ -114,7 +114,7 @@ const unsigned char \hyperlink{uno__card_8h_ae87add2e7f9b2e27888a668c252cbf4a}{\
 
 \-Converts an \-U\-N\-O\-\_\-\-C\-O\-L\-O\-R and \-U\-N\-O\-\_\-\-T\-Y\-P\-E to a usable card. 
 
-
+\-Takes an \-Uno color and an uno card type and converts it to a usable card. 
 \begin{DoxyParams}{\-Parameters}
 {\em a} & \-An \-U\-N\-O\-\_\-\-C\-O\-L\-O\-R. \\
 \hline
@@ -128,11 +128,16 @@ typedef char \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card};
 
 \hyperlink{uno__card_8h_ae87add2e7f9b2e27888a668c252cbf4a}{\-U\-N\-O\-\_\-\-T\-Y\-P\-E}
 \end{DoxySeeAlso}
-\-Takes an \-Uno color and an uno card type and converts it to a usable card. \-For example\-:
+\-For example\-:
 
 \hyperlink{uno__card_8h_abbc97b38c028c37643c949a6751283b7}{\-C\-A\-R\-D( U\-N\-O\-\_\-\-R\-E\-D, U\-N\-O\-\_\-\-T\-H\-R\-E\-E )}; designates a \-Red 3 card.
 
-\hyperlink{uno__card_8h_abbc97b38c028c37643c949a6751283b7}{\-C\-A\-R\-D( U\-N\-O\-\_\-\-C\-O\-L\-O\-R\mbox{[}1\mbox{]}, U\-N\-O\-\_\-\-T\-Y\-P\-E\mbox{[}\-U\-N\-O\-\_\-\-D\-R\-A\-W\-\_\-\-T\-W\-O\mbox{]} )}; designates a green draw two. \hypertarget{uno__card_8h_a79e38c7f9fd8fa052ce7079040a0399e}{
+\hyperlink{uno__card_8h_abbc97b38c028c37643c949a6751283b7}{\-C\-A\-R\-D( U\-N\-O\-\_\-\-C\-O\-L\-O\-R\mbox{[}1\mbox{]}, U\-N\-O\-\_\-\-T\-Y\-P\-E\mbox{[}\-U\-N\-O\-\_\-\-D\-R\-A\-W\-\_\-\-T\-W\-O\mbox{]} )}; designates a green draw two.
+
+\begin{DoxyNote}{\-Note}
+\-The parameter order may be switched, ie, an \-U\-N\-O\-\_\-\-T\-Y\-P\-E then an \-U\-N\-O\-\_\-\-C\-O\-L\-O\-R but to work properly you must have one both. 
+\end{DoxyNote}
+\hypertarget{uno__card_8h_a79e38c7f9fd8fa052ce7079040a0399e}{
 \index{uno\-\_\-card.\-h@{uno\-\_\-card.\-h}!\-C\-A\-R\-D\-C\-O\-L\-O\-R@{\-C\-A\-R\-D\-C\-O\-L\-O\-R}}
 \index{\-C\-A\-R\-D\-C\-O\-L\-O\-R@{\-C\-A\-R\-D\-C\-O\-L\-O\-R}!uno_card.h@{uno\-\_\-card.\-h}}
 \subsubsection[{\-C\-A\-R\-D\-C\-O\-L\-O\-R}]{\setlength{\rightskip}{0pt plus 5cm}\#define \-C\-A\-R\-D\-C\-O\-L\-O\-R(
@@ -145,12 +150,12 @@ typedef char \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card};
 
 \-Gets the color of a card. 
 
-
+\-This value is the color of the card, like \-U\-N\-O\-\_\-\-B\-L\-U\-E or \-U\-N\-O\-\_\-\-R\-E\-D. 
 \begin{DoxyParams}{\-Parameters}
-{\em b} & \-An \-Uno card created with \hyperlink{uno__card_8h_abbc97b38c028c37643c949a6751283b7}{\-C\-A\-R\-D()}\\
+{\em b} & \-An \-Uno card created with \hyperlink{uno__card_8h_abbc97b38c028c37643c949a6751283b7}{\-C\-A\-R\-D()} \\
 \hline
 \end{DoxyParams}
-\-This value is the color of the card, like \-U\-N\-O\-\_\-\-B\-L\-U\-E or \-U\-N\-O\-\_\-\-R\-E\-D. \begin{DoxySeeAlso}{\-See also}
+\begin{DoxySeeAlso}{\-See also}
 \hyperlink{uno__card_8h_a00aef750eebff0ef54e545d5fd92898a}{\-U\-N\-O\-\_\-\-C\-O\-L\-O\-R} 
 \end{DoxySeeAlso}
 \hypertarget{uno__card_8h_a8a07ae6d34bdcc681ec52c41151b3904}{
@@ -166,12 +171,12 @@ typedef char \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card};
 
 \-Gets the type of a card. 
 
-
+\-This value is the type of the card, like \-U\-N\-O\-\_\-\-O\-N\-E or \-U\-N\-O\-\_\-\-D\-R\-A\-W\-\_\-\-T\-W\-O. 
 \begin{DoxyParams}{\-Parameters}
-{\em a} & \-An \-Uno card created with \hyperlink{uno__card_8h_abbc97b38c028c37643c949a6751283b7}{\-C\-A\-R\-D()}\\
+{\em a} & \-An \-Uno card created with \hyperlink{uno__card_8h_abbc97b38c028c37643c949a6751283b7}{\-C\-A\-R\-D()} \\
 \hline
 \end{DoxyParams}
-\-This value is the type of the card, like \-U\-N\-O\-\_\-\-O\-N\-E or \-U\-N\-O\-\_\-\-D\-R\-A\-W\-\_\-\-T\-W\-O. \begin{DoxySeeAlso}{\-See also}
+\begin{DoxySeeAlso}{\-See also}
 \hyperlink{uno__card_8h_ae87add2e7f9b2e27888a668c252cbf4a}{\-U\-N\-O\-\_\-\-T\-Y\-P\-E} 
 \end{DoxySeeAlso}
 \hypertarget{uno__card_8h_ac37a417f4388c0e820cace649c1ab73d}{
@@ -350,21 +355,20 @@ typedef char \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card};
 \label{uno__card_8h_a6fc45c14cfbf3fb7529da60c1040d915}
 
 
-\-Returns the name of an \-Uno card. 
+\-Gets the name of an \-Uno card. 
 
 
 \begin{DoxyParams}{\-Parameters}
 {\em c} & \-The card to get the name of. \\
 \hline
 \end{DoxyParams}
-\begin{DoxyReturn}{\-Returns}
-\-The name of the card. 
-\end{DoxyReturn}
-\begin{DoxySeeAlso}{\-See also}
-typedef char \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card}
-\end{DoxySeeAlso}
+
+\begin{DoxyRetVals}{\-Return values}
+{\em string} & \-The name of the card.\\
+\hline
+\end{DoxyRetVals}
 \-The card names will come back something like \char`\"{}\-R5\char`\"{} for a red five, or \char`\"{}\-Y\-D2\char`\"{} for a yellow draw two. \begin{DoxyNote}{\-Note}
-\-A reverse card will have a type of \char`\"{}\-R\char`\"{}. \-So \char`\"{}\-Y\-R\char`\"{} means a yellow reverse. 
+\-A reverse card will have a type of \char`\"{}\-R\char`\"{}. \-So \char`\"{}\-Y\-R\char`\"{} means a yellow reverse. \-This is not to be confused with \char`\"{}\-R\char`\"{} for the color red. 
 \end{DoxyNote}
 \hypertarget{uno__card_8h_a2ad96347628c97a1314ef0fbf80b670c}{
 \index{uno\-\_\-card.\-h@{uno\-\_\-card.\-h}!card\-\_\-weight@{card\-\_\-weight}}
@@ -377,21 +381,20 @@ typedef char \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card}
 \label{uno__card_8h_a2ad96347628c97a1314ef0fbf80b670c}
 
 
-\-Returns the weight of an \-Uno card. 
+\-Gets the weight of an \-Uno card. 
 
 
 \begin{DoxyParams}{\-Parameters}
 {\em c} & \-The card to get the weight of. \\
 \hline
 \end{DoxyParams}
-\begin{DoxyReturn}{\-Returns}
-\-The weight of the card. 
-\end{DoxyReturn}
-\begin{DoxySeeAlso}{\-See also}
-typedef char \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card} \-Point values mapped, according to regulation, are\-: \begin{DoxyItemize}
-\item \-Number cards -\/ \-Face value points (8 is 8 points) \item \-Draw \-Two – 20 \-Points \item \-Reverse – 20 \-Points \item \-Skip – 20 \-Points \item \-Wild – 50 \-Points \item \-Wild \-Draw – 50 \-Points \end{DoxyItemize}
 
-\end{DoxySeeAlso}
+\begin{DoxyRetVals}{\-Return values}
+{\em unsigned} & char \-The weight of the card. \-For a regulation game, the weights are the points a player gets at the end of the game for his opponents having a given card, c, in their hand. \-Point values mapped according to regulation, are\-: \begin{DoxyItemize}
+\item \-Number cards -\/ \-Face value points (0-\/9 is 0-\/9 points, respectively) \item \-Draw \-Two – 20 \-Points \item \-Reverse – 20 \-Points \item \-Skip – 20 \-Points \item \-Wild – 50 \-Points \item \-Wild \-Draw – 50 \-Points \end{DoxyItemize}
+\\
+\hline
+\end{DoxyRetVals}
 \hypertarget{uno__card_8h_a07e79d8e9cc0a93f105f6203cfa4403d}{
 \index{uno\-\_\-card.\-h@{uno\-\_\-card.\-h}!map\-\_\-names@{map\-\_\-names}}
 \index{map\-\_\-names@{map\-\_\-names}!uno_card.h@{uno\-\_\-card.\-h}}
@@ -403,17 +406,10 @@ typedef char \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card} \-
 \label{uno__card_8h_a07e79d8e9cc0a93f105f6203cfa4403d}
 
 
-\-Creates a user-\/readable dictionary of names for a card. 
+\-Instantiates a user-\/readable dictionary of names for a card. 
 
-\begin{DoxySeeAlso}{\-See also}
-typedef char \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card} 
-
-string \hyperlink{uno__card_8h_a6fc45c14cfbf3fb7529da60c1040d915}{card\-\_\-name( card c )}
-\end{DoxySeeAlso}
 \begin{DoxyNote}{\-Note}
-\-This is a relatively expensive operation, you only need to do it once. 
-
-\-A reverse card will have a type of \char`\"{}\-R\char`\"{}. \-So \char`\"{}\-Y\-R\char`\"{} means a yellow reverse. 
+\-You only need to do this one time. 
 \end{DoxyNote}
 \hypertarget{uno__card_8h_ab8eab77308199772ca67568adc9621c4}{
 \index{uno\-\_\-card.\-h@{uno\-\_\-card.\-h}!map\-\_\-weights@{map\-\_\-weights}}
@@ -426,18 +422,11 @@ string \hyperlink{uno__card_8h_a6fc45c14cfbf3fb7529da60c1040d915}{card\-\_\-name
 \label{uno__card_8h_ab8eab77308199772ca67568adc9621c4}
 
 
-\-Creates a user-\/readable dictionary of weights for cards. 
+\-Instantiates a user-\/readable dictionary of weights for cards. 
 
-\begin{DoxySeeAlso}{\-See also}
-typedef char \hyperlink{uno__card_8h_ab16a632e2e3f1f154cce75648902eb83}{card} 
-
-string \hyperlink{uno__card_8h_a2ad96347628c97a1314ef0fbf80b670c}{card\-\_\-weight( card c )}
-\end{DoxySeeAlso}
-\-For a regulation game, the weights are the points a player gets at the end of the game for his opponents having card c in their hand. \-Point values mapped, according to regulation, are\-: \begin{DoxyItemize}
-\item \-Number cards -\/ \-Face value points (8 is 8 points) \item \-Draw \-Two – 20 \-Points \item \-Reverse – 20 \-Points \item \-Skip – 20 \-Points \item \-Wild – 50 \-Points \item \-Wild \-Draw – 50 \-Points \begin{DoxyNote}{\-Note}
-\-This is a relatively expensive operation, you only need to do it once. 
+\begin{DoxyNote}{\-Note}
+\-You only need to do this one time. \-For a regulation game, the weights are the points a player gets at the end of the game for his opponents having a given card, c, in their hand. 
 \end{DoxyNote}
-\end{DoxyItemize}
 
 
 \subsection{\-Variable \-Documentation}
