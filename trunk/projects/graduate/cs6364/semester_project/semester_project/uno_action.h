@@ -16,7 +16,8 @@ class Uno_Action
     /**
      * \brief Default constructor. Does nothing. 
      */
-    //Uno_Action();
+    Uno_Action() : m_act(0), m_idx(0)
+    {}
 
     /**
      * \brief Number representing an action in Uno that a player can take 

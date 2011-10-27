@@ -8,12 +8,6 @@
 
 using namespace std;
 
-Uno_Human_Player::Uno_Human_Player()
-{
-  m_name = "";
-  m_score = 0;
-}
-
 Uno_Human_Player::Uno_Human_Player( const string& n, unsigned int s )
 {
   m_name = n;

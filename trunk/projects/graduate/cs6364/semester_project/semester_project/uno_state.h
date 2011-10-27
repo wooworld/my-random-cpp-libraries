@@ -7,6 +7,7 @@
 #define UNO_STATE_H
 
 #include "uno_deck.h"
+#include <string>
 
 using namespace std;
 
@@ -31,7 +32,8 @@ class Uno_State
      *
      * Constructs an Uno_State with empty and zero values.
      */
-    //Uno_State();
+    Uno_State() : m_at_play(0), m_turn_count(0), m_time_per_turn(0)
+    {}
 
     /**
      * \brief The ID of the player whose turn it is. 
@@ -54,7 +56,12 @@ class Uno_State
      * \brief The number of second allotted to a player to choose their move
      * for a turn.
      */
-    unsigned int m_time_per_turn;
+    double m_time_per_turn;
+
+    /**
+     * \brief A multipurpose message used by the server and the player.
+     */
+    string m_msg;
 };
 
 #endif

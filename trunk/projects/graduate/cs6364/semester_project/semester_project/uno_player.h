@@ -30,7 +30,8 @@ class Uno_Player
      *
      * Constructs an Uno_Player with empty and zero values. 
      */
-    Uno_Player();
+    Uno_Player() : m_name(""), m_score(0)
+    {}
 
     /** 
      * \brief Full value specification constructor. 

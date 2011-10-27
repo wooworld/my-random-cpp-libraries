@@ -92,10 +92,16 @@ class Uno_Runner
     unsigned int num_players();    
 
     /**
-     * \brief Sets the deck to use for the game.
-     * \param d The deck to use for the game. Replaces the current deck.
+     * \brief Sets the unplayed deck to use for the game.
+     * \param d The unplayed deck to use for the game. Replaces the current deck.
      */
-    void set_deck( const deck& d );
+    void set_unplayed_deck( const deck& d );
+
+    /**
+     * \brief Sets the played deck to use for the game.
+     * \param d The played deck to use for the game. Replaces the current deck.
+     */
+    void set_played_deck( const deck& d );
 
     /**
      * \brief Prints out the stack of played cards to the screen.
@@ -142,11 +148,33 @@ class Uno_Runner
     bool game_over();
 
     /**
+     * \brief Constructs the player's view of the current state for sending to
+     * the player each turn.
+     * \param repeat True if a player is repeating his turn for some reason.
+     * \param repeat False if the player at play this turn is different from last 
+     * turn.
+     *
+     * Constructs the player's state from the server's full game state. The
+     * constructed state is stored in m_pstate. 
+     */
+    void construct_player_state( bool repeat );
+
+    /**
      * \brief Checks to see if the game state is legal and can start a game.
-     * \return true if the game state is OK. 
-     * \return false otherwise.
+     * \retval true if the game state is OK. 
+     * \retval false otherwise.
      */
     bool check_validity();
+
+    /**
+     * \brief Checks the action for a player is a legal action. 
+     * \param s The full state of the game.
+     * \param a The action desired by the player.
+     * \param p The index of the player who is making the action. 
+     * \retval true if the Action is legal. 
+     * \retval false otherwise.
+     */
+    bool check_action( const Uno_GState& s, const Uno_Action& a );
 
     /**
      * \brief Prints the limited view game state for the current player's turn. 
@@ -154,6 +182,27 @@ class Uno_Runner
      * Prints out only the view of the game from the current player's perspective.
      */
     void print_turn();
+
+    /**
+     * \brief Player i draws a card from the deck.
+     *
+     * Player i draws a card from the deck, d. The player takes the top card
+     * and places it into their hand. 
+     * \param i The index of the player who will draw a card.
+     * \param d The deck for the player to draw a card from.
+     */
+    void draw_card( unsigned int i, deck& d );
+
+    /**
+     * \brief Returns the card at index i in the current player's hand.
+     *
+     * Takes the card at index i in the current player's hand and returns it.
+     * The card is removed from the player's hand and thus the size of this 
+     * player's hand is reduced by 1.
+     * \param i The index of the card in the player's hand to play.
+     * \return The card the player is playing.
+     */
+    card play_card( unsigned char i );
 
     /**
      * \brief The full state of the game. The server has all of the information.

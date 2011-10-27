@@ -142,6 +142,8 @@ const <a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">c
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Contains macros and function prototypes for an Uno deck. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="uno__deck_8cpp.html" title="Contains function definitions for an Uno deck.">uno_deck.cpp</a> </dd></dl>
+
+<p>Definition in file <a class="el" href="uno__deck_8h_source.html">uno_deck.h</a>.</p>
 </div><hr/><h2>Define Documentation</h2>
 <a class="anchor" id="ae69cb08e55300eb6b6eac165e7110147"></a><!-- doxytag: member="uno_deck.h::UNO_DECK_SIZE" ref="ae69cb08e55300eb6b6eac165e7110147" args="" -->
 <div class="memitem">
@@ -154,6 +156,8 @@ const <a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">c
 </div>
 <div class="memdoc">
 <p>Standard size of an Uno deck. </p>
+
+<p>Definition at line <a class="el" href="uno__deck_8h_source.html#l00020">20</a> of file <a class="el" href="uno__deck_8h_source.html">uno_deck.h</a>.</p>
 
 </div>
 </div>
@@ -168,6 +172,8 @@ const <a class="el" href="uno__card_8h.html#ab16a632e2e3f1f154cce75648902eb83">c
 </div>
 <div class="memdoc">
 <p>The number of Uno decks to use per game. </p>
+
+<p>Definition at line <a class="el" href="uno__deck_8h_source.html#l00019">19</a> of file <a class="el" href="uno__deck_8h_source.html">uno_deck.h</a>.</p>
 
 </div>
 </div>
@@ -204,6 +210,8 @@ The deck is NOT shuffled. </dd></dl>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="uno__deck_8h.html#a85619441322755c424d2d9c5d3e7f0f7" title="Shuffles (randomly rearranges) the cards in a deck.">shuffle_deck( deck&amp; d)</a></dd></dl>
 <p>UNO_DECKS_PER_GAME directly influences the created deck. If this number is greater than 1, the created deck will have UNO_DECKS_PER_GAME regulation decks worth of cards in it. For example, if UNO_DECKS_PER_GAME = 2, then the created deck will have two standard decks worth of cards in it (for a total of 216 cards). </p>
 
+<p>Definition at line <a class="el" href="uno__deck_8cpp_source.html#l00013">13</a> of file <a class="el" href="uno__deck_8cpp_source.html">uno_deck.cpp</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="ad741fe470984f47266f2178b8fba0366"></a><!-- doxytag: member="uno_deck.h::print_deck" ref="ad741fe470984f47266f2178b8fba0366" args="(deck &amp;d)" -->
@@ -229,6 +237,8 @@ The deck is NOT shuffled. </dd></dl>
   </dd>
 </dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>This is a relatively expensive operation, use sparingly. </dd></dl>
+
+<p>Definition at line <a class="el" href="uno__deck_8cpp_source.html#l00050">50</a> of file <a class="el" href="uno__deck_8cpp_source.html">uno_deck.cpp</a>.</p>
 
 </div>
 </div>
@@ -256,6 +266,8 @@ The deck is NOT shuffled. </dd></dl>
 </dl>
 <dl class="note"><dt><b>Note:</b></dt><dd>This is less expensive than printing the names of each card, but is still relatively expenive, use sparingly. </dd></dl>
 
+<p>Definition at line <a class="el" href="uno__deck_8cpp_source.html#l00058">58</a> of file <a class="el" href="uno__deck_8cpp_source.html">uno_deck.cpp</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a85619441322755c424d2d9c5d3e7f0f7"></a><!-- doxytag: member="uno_deck.h::shuffle_deck" ref="a85619441322755c424d2d9c5d3e7f0f7" args="(deck &amp;d)" -->
@@ -280,6 +292,8 @@ The deck is NOT shuffled. </dd></dl>
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="uno__deck_8cpp_source.html#l00023">23</a> of file <a class="el" href="uno__deck_8cpp_source.html">uno_deck.cpp</a>.</p>
 
 </div>
 </div>
@@ -317,6 +331,8 @@ The deck is NOT shuffled. </dd></dl>
   </dd>
 </dl>
 
+<p>Definition at line <a class="el" href="uno__deck_8cpp_source.html#l00028">28</a> of file <a class="el" href="uno__deck_8cpp_source.html">uno_deck.cpp</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a3f71c71338e329255eb2a52f3129ac83"></a><!-- doxytag: member="uno_deck.h::take_card" ref="a3f71c71338e329255eb2a52f3129ac83" args="(deck &amp;d)" -->
@@ -350,6 +366,8 @@ The deck is NOT shuffled. </dd></dl>
 </dl>
 <p>Taking a card removes a card from the top of the deck and thus reduces the size of the deck by one. </p>
 
+<p>Definition at line <a class="el" href="uno__deck_8cpp_source.html#l00033">33</a> of file <a class="el" href="uno__deck_8cpp_source.html">uno_deck.cpp</a>.</p>
+
 </div>
 </div>
 </div>
@@ -372,7 +390,7 @@ The deck is NOT shuffled. </dd></dl>
 </div>
 
 
-    <li class="footer">Generated on Wed Oct 19 2011 04:59:10 for UnoAI by
+    <li class="footer">Generated on Wed Oct 26 2011 00:19:46 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

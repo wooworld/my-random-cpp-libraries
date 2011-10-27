@@ -27,8 +27,10 @@ bool \hyperlink{class_uno___runner_acae1277934b338e4c6edd8d45eea5a3e}{remove\-\_
 \begin{DoxyCompactList}\small\item\em \-Removes player i from the game if possible. \end{DoxyCompactList}\item 
 unsigned int \hyperlink{class_uno___runner_aa3f43b6ab9042ff74a34ad3fae8a0b11}{num\-\_\-players} ()
 \begin{DoxyCompactList}\small\item\em \-Returns the number of players in the game. \end{DoxyCompactList}\item 
-void \hyperlink{class_uno___runner_a2ca7c819e3fc8774853cc5a49333eeb9}{set\-\_\-deck} (const \hyperlink{uno__deck_8h_ab634a15f4d19d3af113a71241b79c408}{deck} \&d)
-\begin{DoxyCompactList}\small\item\em \-Sets the deck to use for the game. \end{DoxyCompactList}\item 
+void \hyperlink{class_uno___runner_a79c386fc295240e53b20c1270f31ab41}{set\-\_\-unplayed\-\_\-deck} (const \hyperlink{uno__deck_8h_ab634a15f4d19d3af113a71241b79c408}{deck} \&d)
+\begin{DoxyCompactList}\small\item\em \-Sets the unplayed deck to use for the game. \end{DoxyCompactList}\item 
+void \hyperlink{class_uno___runner_ac98c68091701dcf1deeaad7a5168dec8}{set\-\_\-played\-\_\-deck} (const \hyperlink{uno__deck_8h_ab634a15f4d19d3af113a71241b79c408}{deck} \&d)
+\begin{DoxyCompactList}\small\item\em \-Sets the played deck to use for the game. \end{DoxyCompactList}\item 
 void \hyperlink{class_uno___runner_a885e7ac58c656e1cb0bc4e49cd494874}{print\-\_\-played} (unsigned char f)
 \begin{DoxyCompactList}\small\item\em \-Prints out the stack of played cards to the screen. \end{DoxyCompactList}\item 
 void \hyperlink{class_uno___runner_a53b830015937722abd8ec515405534f9}{print\-\_\-unplayed} (unsigned char f)
@@ -193,22 +195,40 @@ false \-If the player could not be removed.
 \begin{DoxyPrecond}{\-Precondition}
 \hyperlink{class_uno___runner_ae015517f7d4493ddbaaeacd98be0b9b8}{setup()} or equivalent member data population has been executed and returns true. 
 \end{DoxyPrecond}
-\hypertarget{class_uno___runner_a2ca7c819e3fc8774853cc5a49333eeb9}{
-\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!set\-\_\-deck@{set\-\_\-deck}}
-\index{set\-\_\-deck@{set\-\_\-deck}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
-\subsubsection[{set\-\_\-deck}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Runner\-::set\-\_\-deck (
+\hypertarget{class_uno___runner_ac98c68091701dcf1deeaad7a5168dec8}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!set\-\_\-played\-\_\-deck@{set\-\_\-played\-\_\-deck}}
+\index{set\-\_\-played\-\_\-deck@{set\-\_\-played\-\_\-deck}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{set\-\_\-played\-\_\-deck}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Runner\-::set\-\_\-played\-\_\-deck (
 \begin{DoxyParamCaption}
 \item[{const {\bf deck} \&}]{d}
 \end{DoxyParamCaption}
 )}}
-\label{class_uno___runner_a2ca7c819e3fc8774853cc5a49333eeb9}
+\label{class_uno___runner_ac98c68091701dcf1deeaad7a5168dec8}
 
 
-\-Sets the deck to use for the game. 
+\-Sets the played deck to use for the game. 
 
 
 \begin{DoxyParams}{\-Parameters}
-{\em d} & \-The deck to use for the game. \-Replaces the current deck. \\
+{\em d} & \-The played deck to use for the game. \-Replaces the current deck. \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_uno___runner_a79c386fc295240e53b20c1270f31ab41}{
+\index{\-Uno\-\_\-\-Runner@{\-Uno\-\_\-\-Runner}!set\-\_\-unplayed\-\_\-deck@{set\-\_\-unplayed\-\_\-deck}}
+\index{set\-\_\-unplayed\-\_\-deck@{set\-\_\-unplayed\-\_\-deck}!Uno_Runner@{\-Uno\-\_\-\-Runner}}
+\subsubsection[{set\-\_\-unplayed\-\_\-deck}]{\setlength{\rightskip}{0pt plus 5cm}void \-Uno\-\_\-\-Runner\-::set\-\_\-unplayed\-\_\-deck (
+\begin{DoxyParamCaption}
+\item[{const {\bf deck} \&}]{d}
+\end{DoxyParamCaption}
+)}}
+\label{class_uno___runner_a79c386fc295240e53b20c1270f31ab41}
+
+
+\-Sets the unplayed deck to use for the game. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em d} & \-The unplayed deck to use for the game. \-Replaces the current deck. \\
 \hline
 \end{DoxyParams}
 \hypertarget{class_uno___runner_ae015517f7d4493ddbaaeacd98be0b9b8}{
@@ -232,10 +252,10 @@ false \-If the player could not be removed.
 \hline
 \end{DoxyRetVals}
 \-Sets up the game to have\-: \begin{DoxyItemize}
-\item \-U\-N\-O\-\_\-\-N\-U\-M\-\_\-\-P\-L\-A\-Y\-E\-R\-S \-Uno\-\_\-\-Players. \-If players were added using \hyperlink{class_uno___runner_a982f614c5afa8faa57aedc3116f3d237}{add\-\_\-player()} previous to calling \hyperlink{class_uno___runner_ae015517f7d4493ddbaaeacd98be0b9b8}{setup()} then \-Uno\-\_\-\-A\-I\-\_\-\-Players are added until there are \-U\-N\-O\-\_\-\-N\-U\-M\-\_\-\-P\-L\-A\-Y\-E\-R\-S in the game. \item \-Each \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player} has \-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E cards in their hands if the deck used has enough cards. \item \-The \-D\-E\-F\-A\-U\-L\-T\-\_\-\-D\-E\-C\-K in use for the unplayed cards unless another deck was specified using \hyperlink{class_uno___runner_a2ca7c819e3fc8774853cc5a49333eeb9}{set\-\_\-deck()}. \begin{DoxyNote}{\-Note}
+\item \-U\-N\-O\-\_\-\-N\-U\-M\-\_\-\-P\-L\-A\-Y\-E\-R\-S \-Uno\-\_\-\-Players. \-If players were added using \hyperlink{class_uno___runner_a982f614c5afa8faa57aedc3116f3d237}{add\-\_\-player()} previous to calling \hyperlink{class_uno___runner_ae015517f7d4493ddbaaeacd98be0b9b8}{setup()} then \-Uno\-\_\-\-A\-I\-\_\-\-Players are added until there are \-U\-N\-O\-\_\-\-N\-U\-M\-\_\-\-P\-L\-A\-Y\-E\-R\-S in the game. \item \-Each \hyperlink{class_uno___player}{\-Uno\-\_\-\-Player} has \-U\-N\-O\-\_\-\-I\-N\-I\-T\-\_\-\-H\-A\-N\-D\-\_\-\-S\-I\-Z\-E cards in their hands if the deck used has enough cards. \item \-The \-D\-E\-F\-A\-U\-L\-T\-\_\-\-D\-E\-C\-K in use for the unplayed cards unless another deck was specified using set\-\_\-deck(). \begin{DoxyNote}{\-Note}
 \-The unplayed deck is shuffled. 
 \end{DoxyNote}
-\item \-An empty played stack of cards unless another deck was specified using \hyperlink{class_uno___runner_a2ca7c819e3fc8774853cc5a49333eeb9}{set\-\_\-deck()}. \item \-It is \-Player 0's turn. \item \-It is turn 0. \end{DoxyItemize}
+\item \-An empty played stack of cards unless another deck was specified using set\-\_\-deck(). \item \-It is \-Player 0's turn. \item \-It is turn 0. \end{DoxyItemize}
 
 
 \-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}

@@ -6,8 +6,8 @@
 #include "uno_deck.h"
 #include "uno_card.h"
 #include "uno_player.h"
-//#include "uno_human_player.h"
-//#include "uno_ai_player.h"
+#include "uno_ai_player.h"
+#include "uno_human_player.h"
 #include "uno_gstate.h"
 #include "uno_pstate.h"
 #include "uno_action.h"
@@ -24,72 +24,78 @@ Uno_Runner::Uno_Runner()
 
 bool Uno_Runner::setup()
 {
-  /*map_names();
-
+  // Map the names and weights of all cards
+  map_names();
   map_weights();
 
-  // Add the list of players to the game if players weren't already added
-  // using add_player()
-  if ( m_players.empty() )
+  // Add players to the game until we have enough players
+  while ( num_players() < UNO_MIN_PLAYERS )
   {
-    m_players = P;
+    Uno_AI_Player AI;
+    AI.m_name = "player";
+    add_player( AI );
   }
 
-  // Hand counts for each player
-  m_state.m_hand_counts.resize( m_players.size(), 0 );
-
-  // A default unplayed deck
-  deck D;
-  create_deck( D );
-  m_state.m_unplayed = D;
-
-  // An empty played deck
-  deck G;
-  m_state.m_played = G;  
-
-  // Shuffle the deck
-  shuffle_deck( m_state.m_unplayed );
-
-  // Each player draws UNO_INIT_HAND_SIZE cards, if possible
-  for ( unsigned int i = 0; i < m_players.size(); i++ )
+  // Set the unplayed deck to default unless another was already specified
+  if ( m_gstate.m_unplayed.empty() )
   {
-    // Ensure enough cards in the deck to draw a hand 
-    if ( m_state.m_unplayed.size() < UNO_INIT_HAND_SIZE )
+    deck D;
+    create_deck( D );
+    shuffle_deck( D );
+    set_unplayed_deck( D );
+  }
+
+  // Set the played deck to use unless another was already specified
+  if ( m_gstate.m_played.empty() )
+  {
+    deck G;
+    set_played_deck( G );
+  }
+
+  m_gstate.m_hands.resize( num_players() );
+
+  // Each player must draw UNO_INIT_HAND_SIZE cards
+  if ( m_gstate.m_unplayed.size() < (num_players() * (unsigned int)UNO_INIT_HAND_SIZE) )
+  {
+    cout << "Insufficient card quantity in unplayed deck to support this" 
+      << "many players." << endl;
+    return false;
+  }
+
+  // Add cards to the players' hands
+  else
+  {
+    for ( unsigned int i = 0; i < num_players(); i++ )
     {
-      return false;
+      for ( unsigned int j = 0; j < (unsigned int)UNO_INIT_HAND_SIZE; j++ )
+      {
+        draw_card( i, m_gstate.m_unplayed );
+      }
     }
-  
-    // In case the players passed in already had cards in their hands (cheaters!)
-    m_players[i].m_hand.clear();
-
-    // Draw UNO_INIT_HAND_SIZE cards. 
-    m_players[i].draw_initial_hand( m_state.m_unplayed );
-    m_state.m_hand_counts[i] = UNO_INIT_HAND_SIZE;
   }
 
-  m_state.m_turn = 0;
-  m_state.m_turn_count = 0;
-  m_state.m_eval_score = 0;
-  */
+  m_gstate.m_at_play = 0;
+  m_gstate.m_turn_count = 0;
+  m_gstate.m_time_per_turn = UNO_TIME_PER_TURN;
 
   return true;
 }
 
 bool Uno_Runner::add_player( const Uno_Player& p )
 {
-  /*if ( m_players.size() + 1 > UNO_MAX_PLAYERS )
+  if ( num_players() + 1 > UNO_MAX_PLAYERS )
   {
     return false;
   }
 
-  m_players.push_back( p );*/
+  m_gstate.m_players.push_back( p );
 
   return true;
 }
 
 bool Uno_Runner::remove_player( unsigned char i, unsigned char c )
 {
-  /*if ( m_players.size() - 1 < UNO_MIN_PLAYERS )
+  if ( num_players() - 1 < UNO_MIN_PLAYERS )
   {
     return false;
   }
@@ -98,141 +104,276 @@ bool Uno_Runner::remove_player( unsigned char i, unsigned char c )
   //0 = Place cards back onto bottom of the unplayed deck.
   if ( c == 0 )
   {
-    m_state.m_unplayed.insert( m_state.m_unplayed.begin(),
-      m_players[i].m_hand.begin(), 
-      m_players[i].m_hand.end()
+    m_gstate.m_unplayed.insert( m_gstate.m_unplayed.begin(),
+      m_gstate.m_hands[i].begin(),
+      m_gstate.m_hands[i].end()
       );
   }
 
   // 1 = Place cards back onto bottom of the played deck.
   else if ( c == 1 )
   {
-    m_state.m_unplayed.insert( m_state.m_played.begin(),
-      m_players[i].m_hand.begin(), 
-      m_players[i].m_hand.end()
+    m_gstate.m_played.insert( m_gstate.m_played.begin(),
+      m_gstate.m_hands[i].begin(),
+      m_gstate.m_hands[i].end()
       );
   }
 
   // 2 = Remove cards from the game state completely. Aka do nothing.
 
   // Remove player from the game. 
-  m_players.erase( m_players.begin() + i );*/
+  m_gstate.m_players.erase( m_gstate.m_players.begin() + i );
 
   return true;
 }
 
 unsigned int Uno_Runner::num_players()
 {
-  //return m_players.size();
-  return 0;
+  return m_gstate.m_players.size();
 }
 
-void Uno_Runner::set_deck( const deck &d )
+void Uno_Runner::set_unplayed_deck( const deck &d )
 {
-  //m_state.m_unplayed = d;
+  m_gstate.m_unplayed = d;
+}
+
+void Uno_Runner::set_played_deck( const deck &d )
+{
+  m_gstate.m_played = d;
 }
 
 void Uno_Runner::print_played( unsigned char f )
 {
-  /*if ( f == 0 )
+  if ( f == 0 )
   {
-    print_deck( m_state.m_played );
+    print_deck( m_gstate.m_played );
   }
 
   else if ( f == 1 )
   {
-    print_deck_values( m_state.m_played );
-  }*/
+    print_deck_values( m_gstate.m_played );
+  }
 }
 
 void Uno_Runner::print_unplayed( unsigned char f )
 {
-  /*
   if ( f == 0 )
   {
-    print_deck( m_state.m_unplayed );
+    print_deck( m_gstate.m_unplayed );
   }
 
   else if ( f == 1 )
   {
-    print_deck_values( m_state.m_unplayed );
-  }*/
+    print_deck_values( m_gstate.m_unplayed );
+  }
 }
 
 void Uno_Runner::print_state()
 {
-  /*cout << "Turn: " << m_state.m_turn_count << endl;
+  cout << "Turn: " << m_gstate.m_turn_count << endl;
+  cout << "At play: " << m_gstate.m_at_play << endl;
+  cout << "Time left: " << m_gstate.m_time_per_turn << endl;
   
-  cout << "<pid, name, score> {cards}" << endl;
-
-  for ( unsigned int i = 0; i < m_players.size(); i++ )
+  // Print out the player statuses
+  for ( unsigned int i = 0; i < num_players(); i++ )
   {
     cout << "<" << i << ", " 
-         << m_players[i].m_name << ", " 
-         << m_players[i].m_score << "> = {";
-    m_players[i].print_hand();
-    cout << "}" << endl;
+      << m_gstate.m_players[i].m_name << ", "
+      << m_gstate.m_players[i].m_score << ", {";
+
+    list<card>::iterator it;
+    for ( it = m_gstate.m_hands[i].begin(); it != m_gstate.m_hands[i].end(); ++it )
+    {
+      cout << card_name( *it ) << " ";
+    }
+    cout << "}>" << endl;
   }
 
-  cout << "Played = {";
-  print_played( 0 );
+  cout << "  Played: ";
+  print_deck( m_gstate.m_played );
+  cout << "[" << m_gstate.m_played.size() << "] " << endl;
+
+  cout << "Unplayed: ";
+  print_deck( m_gstate.m_unplayed );
+  cout << "[" << m_gstate.m_unplayed.size() << "] " << endl;
+}
+
+void Uno_Runner::print_turn()
+{
+  cout << "============================" << endl;
+  cout << "Turn: " << m_pstate.m_turn_count << endl;
+  cout << "At play: " << m_pstate.m_at_play << endl;
+  cout << "Time left: " << m_pstate.m_time_per_turn << endl;
+  
+  // Print out the player statuses
+  for ( unsigned int i = 0; i < num_players(); i++ )
+  {
+    cout << "<" << i << ", " 
+      << m_gstate.m_players[i].m_name << ", "
+      << m_gstate.m_players[i].m_score << ", {["
+      << m_pstate.m_hand_counts[i] << "]}>" << endl;
+  }
+  
+  cout << "Your hand: {";
+  list<card>::iterator it;
+  for ( it = m_pstate.m_hand.begin(); it != m_pstate.m_hand.end(); ++it )
+  {
+    cout << card_name( *it ) << " ";
+  }
   cout << "}" << endl;
 
-  cout << "Unplayed = {";
-  print_unplayed( 0 );
-  cout << "}" << endl;*/
+  cout << "  Played: ";
+  print_deck( m_pstate.m_played );
+  cout << "[" << m_pstate.m_played.size() << "] " << endl;
+
+  cout << "Unplayed: ";
+  cout << "[" << m_pstate.m_unplayed_count << "] " << endl;
 }
 
 void Uno_Runner::run()
 {
-  /*setup( m_players );
-
-  // Holds the index of the card in the player's hand he wishes to play
-  unsigned int next_play_by_index = 0;
-
-  hand player_hand;
-
   srand( time(NULL) );
 
   cout << "Beginning playing a game of Uno! Good luck players!" << endl;
-  cout << "  (Secretly I'm rooting for " << m_players[rand()%m_players.size()].m_name 
+  cout << "  (Secretly I'm rooting for " 
+    << m_gstate.m_players[rand()%num_players()].m_name 
     << " to win!)" << endl;
+  
+  // Track the amount of time a player takes per turn
+  clock_t p_turn_start;
+  clock_t p_turn_end;
+  double time_taken = 0;
 
-  while ( !game_over() )
+  // Tracks whether the previous player's action was illegal or not
+  bool turn_again = false;  
+
+  while (true)
   {
-    // Calculate next player
-    m_state.m_turn = (m_state.m_turn + 1) % m_players.size(); 
-    m_state.m_turn_count++;
+    // Increment turn counter
+    m_gstate.m_turn_count++;
 
-    // Show the next player the information they need to see to play
+    // Update the amount of time available in m_pstate if the last player's 
+    // action was invalid
+    if ( turn_again )
+    {
+      m_pstate.m_time_per_turn -= time_taken;
+      m_pstate.m_msg = "Your previous action was illegal. Try again.";
+    }
+    
+    cout << "Constructing player state" << endl;
+    construct_player_state( turn_again );
+
+    cout << "Asking player for their move" << endl;
     print_turn();
+    p_turn_start = clock();
+    m_action = m_gstate.m_players[m_gstate.m_at_play].take_turn( m_pstate );
+    p_turn_end = clock();
 
-    // Call next player to take their turn
-    next_play_by_index = m_players[m_state.m_turn].take_turn( 
-      m_state, 
-      m_state.m_turn,
-      UNO_TIME_PER_TURN 
-      );
+    time_taken = (double)(p_turn_end - p_turn_end)/(double)CLOCKS_PER_SEC;
 
-    // Perform state check to ensure player didn't make illegal play
+    cout << "Time elapsed for turn: " << time_taken << " seconds." << endl;
 
-    m_state.m_played.push_back( 
-      m_players[m_state.m_turn].play_card_by_index( next_play_by_index ) 
-      );
-    // Update card counts
-    m_state.m_hand_counts[m_state.m_turn] = m_players[m_state.m_turn].m_hand.size();
+    cout << "Checking player action for validity" << endl;
+    if ( !check_action( m_gstate, m_action ) )
+    {
+      turn_again = true;
+      continue;
+    }
 
-    // Update the count for this player's hand in the state
+    // Player draws a card from their deck and adds to hand
+    if ( m_action.m_act == 0 )
+    {
+      draw_card( m_gstate.m_at_play, m_gstate.m_unplayed );
+
+      // If the deck then runs out of cards, shuffle the played cards into it
+      if ( m_gstate.m_unplayed.empty() )
+      {
+        swap_decks( m_gstate.m_unplayed, m_gstate.m_played );
+
+        shuffle_deck( m_gstate.m_unplayed );
+      }
+
+      // Do not increment player at play, call same player again 
+    }
+
+    // Player plays a card from their hand
+    else if ( m_action.m_act == 1 )
+    {
+      // Make player play card
+      m_gstate.m_played.push_back( play_card( m_action.m_idx ) );
+
+      // Increment player at play
+      m_gstate.m_at_play++;
+    }
+
+    // Player surrenders (quits).
+    else if ( m_action.m_act == 2 )
+    {
+      // Place removed player's cards on the bottom of the played deck
+      remove_player( m_gstate.m_at_play, 1 );
+
+      // Do not increment player at play 
+      // By deleting this player, every other player shifts down one ID
+      // so by not incrementing the next player is automatically picked up
+    }
+
+    // Player passes the turn 
+    else if ( m_action.m_act == 3 )
+    {
+      m_gstate.m_at_play++;
+    }
+
+    // Something has gone wrong
+    else
+    {
+      cout << "Something has gone wrong. The player's action is entirely invalid."
+        << endl;
+
+      break;
+    }
+
+    if ( game_over() )
+    {
+      break;      
+    }
+
+    // Calculate the index of the next player
+    else
+    {
+      m_gstate.m_at_play = m_gstate.m_at_play % m_gstate.m_players.size();
+    }
+
+    // Record this turn's state
+    m_history.push_back( m_gstate );
   }
 
-  // Figure out which player caused the game to end
+  cout << "The game is over!" << endl;
+}
 
-  // Calculate that player's score
+void Uno_Runner::construct_player_state( bool repeat )
+{
+  if ( !repeat )
+  {
+    m_pstate.m_at_play = m_gstate.m_at_play;
+    
+    m_pstate.m_hand = m_gstate.m_hands[m_gstate.m_at_play];
+    
+    m_pstate.m_hand_counts.resize( m_gstate.m_hands.size() );
+    for ( unsigned int i = 0; i < num_players(); i++ )
+    {
+      m_pstate.m_hand_counts[i] = m_gstate.m_hands[i].size();  
+    }
+    
+    m_pstate.m_msg = m_gstate.m_msg;
 
-  unsigned int winning_player = 0;
-  unsigned int points_won = 0;
-  cout << "The game is over! Player " << winning_player << " wins!" << endl;
-  cout << "Their score increases by " << points_won << " points!" << endl;*/
+    m_pstate.m_played = m_gstate.m_played;
+
+    m_pstate.m_time_per_turn = m_gstate.m_time_per_turn;
+
+    m_pstate.m_turn_count = m_gstate.m_turn_count;
+
+    m_pstate.m_unplayed_count = m_gstate.m_unplayed.size();
+  }
 }
 
 bool Uno_Runner::check_validity()
@@ -241,101 +382,53 @@ bool Uno_Runner::check_validity()
   return true;  
 }
 
-
-
-void Uno_Runner::print_turn()
+bool Uno_Runner::check_action( const Uno_GState& s, const Uno_Action& a )
 {
-  /*cout << "Turn: " << m_state.m_turn_count 
-    << "; Time Limit: " << UNO_TIME_PER_TURN << endl;
-  
-  cout << "<pid, name, score, {hand}>" << endl;
-  cout << "<" << m_state.m_turn 
-       << ", " << m_players[i].m_name
-       << ", " << m_players[i].m_score
-       << ">" << endl;
-
-  for ( unsigned int i = 0; i < m_players.size(); i++ )
-  {
-    // Print out "<pid, name, score, {"
-    cout << "<" << i << ", " 
-         << m_players[i].m_name << ", " 
-         << m_players[i].m_score << ", {";
-  
-    // Print out cards in player's hand if it's this player's turn
-    if ( i == m_state.m_turn )
-    {
-      m_players[i].print_hand();
-    }
-
-    // Else print out a bunch of blank cards!
-    else
-    {
-      for ( unsigned int j = 0; j < m_players[i].m_hand.size(); j++ )
-      {
-        cout << "[X] ";
-      }
-    }
-    
-    cout << "}>" << endl;    
-  }
-
-  // Print out the unplayed deck
-  cout << "Unplayed: [" << m_state.m_unplayed.size() << "]" << endl;
-  if ( !m_state.m_played.empty() )
-  {
-    cout << "  Played: [" << card_name( m_state.m_played.back() ) << "]" << endl;
-  }
-  
-  else
-  {
-    cout << "  Played: [X]" << endl;
-  }
-  
-
-  // Print state for player to see
-
-  // Start timer
-
-  // Countdown to player
-
-  // Wait for input from player
-
-  // Player doesn't play within time, randomly choose card */
+  // Check validity of action given the current state
+  return true;
 }
 
 bool Uno_Runner::game_over()
 {
-  /*for ( unsigned int i = 0; i < m_players.size(); i++ )
+  if ( num_players() <= 1 )
   {
-    if ( m_players[i].m_hand.size() == 0 )
+    return true;
+  }
+
+  for ( unsigned int i = 0; i < num_players(); i++ )
+  {
+    if ( m_gstate.m_hands[i].empty() )
     {
       return true;
     }
   }
 
-  return false;*/
+  return false;
 
-  return true;
+  //return true;
+}
+
+void Uno_Runner::draw_card( unsigned int i, deck &d )
+{
+  m_gstate.m_hands[i].push_back( take_card( d ) );
+}
+
+card Uno_Runner::play_card( unsigned char i )
+{
+  list<card>::iterator it = m_gstate.m_hands[m_gstate.m_at_play].begin();
+
+  // The +1 is because the iterator for m_hand.begin() points prior to index
+  // 0. Thus if i = 0, we desire to play the 0th card, and so we must add
+  // one to the index.
+  advance (it, i+1);
+
+  card c = *it;
+  m_gstate.m_hands[m_gstate.m_at_play].erase( it );
+
+  return c;
 }
 
 /*
-void Uno_Player::draw_card( deck &d )
-{
-  m_hand.push_back( take_card( d ) );
-
-  return;
-}
-
-void Uno_Player::draw_initial_hand( deck &d )
-{
-  for ( int i = 0; i < UNO_INIT_HAND_SIZE; i++ )
-  {
-    m_hand.push_back( take_card( d ) );
-  }
-
-  return;
-}
-
 card Uno_Player::play_card_by_name( card c )
 {
   list<card>::iterator it;
@@ -352,21 +445,4 @@ card Uno_Player::play_card_by_name( card c )
   }
 
   return CARD(UNO_NO_COLOR, UNO_RESERVED);
-}
-
-card Uno_Player::play_card_by_index( unsigned char i )
-{
-  list<card>::iterator it = m_hand.begin();
-
-  // The +1 is because the iterator for m_hand.begin() points prior to index
-  // 0. Thus if i = 0, we desire to play the 0th card, and so we must add
-  // one to the index.
-  advance (it, i+1);
-
-  card c = *it;
-  m_hand.erase( it );
-
-  return c;
 }*/
-
-

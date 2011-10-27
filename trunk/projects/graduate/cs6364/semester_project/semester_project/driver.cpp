@@ -56,13 +56,10 @@ int main( int argc, char * argv[] )
   print_deck( d );
   P.print_hand();*/
 
-
   cout << "Real code time." << endl;
   
   // Create a runner.
   Uno_Runner runner;
-
-  //runner.use_default_deck();
 
   // Add two AI players.
   Uno_AI_Player p1;
@@ -74,8 +71,9 @@ int main( int argc, char * argv[] )
   runner.add_player( p1 );
   runner.add_player( p2 );
 
-  // Print out the initial state
-  //runner.print_state();
+  runner.setup();
+
+  runner.print_state();
 
   runner.run();
 
