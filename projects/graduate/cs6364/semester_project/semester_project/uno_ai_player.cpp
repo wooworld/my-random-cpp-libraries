@@ -9,13 +9,6 @@
 
 using namespace std;
 
-Uno_AI_Player::Uno_AI_Player()
-{
-  m_name = "";
-  m_score = 0;
-  m_level = 0;
-}
-
 Uno_AI_Player::Uno_AI_Player( const string& n, unsigned int s, unsigned int l )
 {
   m_name = n;

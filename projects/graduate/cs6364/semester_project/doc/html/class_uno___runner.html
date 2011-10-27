@@ -122,8 +122,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes player i from the game if possible.  <a href="#acae1277934b338e4c6edd8d45eea5a3e"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#aa3f43b6ab9042ff74a34ad3fae8a0b11">num_players</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of players in the game.  <a href="#aa3f43b6ab9042ff74a34ad3fae8a0b11"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a2ca7c819e3fc8774853cc5a49333eeb9">set_deck</a> (const <a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;d)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the deck to use for the game.  <a href="#a2ca7c819e3fc8774853cc5a49333eeb9"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a79c386fc295240e53b20c1270f31ab41">set_unplayed_deck</a> (const <a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;d)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the unplayed deck to use for the game.  <a href="#a79c386fc295240e53b20c1270f31ab41"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#ac98c68091701dcf1deeaad7a5168dec8">set_played_deck</a> (const <a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;d)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the played deck to use for the game.  <a href="#ac98c68091701dcf1deeaad7a5168dec8"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a885e7ac58c656e1cb0bc4e49cd494874">print_played</a> (unsigned char f)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints out the stack of played cards to the screen.  <a href="#a885e7ac58c656e1cb0bc4e49cd494874"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___runner.html#a53b830015937722abd8ec515405534f9">print_unplayed</a> (unsigned char f)</td></tr>
@@ -136,6 +138,8 @@ Public Member Functions</h2></td></tr>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Runs an Uno game. </p>
 <p>To actually play a game of Uno using the AI, create an object of this type, call <a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8" title="Sets up a game to be played.">setup()</a>, then <a class="el" href="class_uno___runner.html#a3f0847989a9868bcd023b41ee5f28d0a" title="Runs the Uno game.">run()</a>. </p>
+
+<p>Definition at line <a class="el" href="uno__runner_8h_source.html#l00027">27</a> of file <a class="el" href="uno__runner_8h_source.html">uno_runner.h</a>.</p>
 </div><hr/><h2>Member Function Documentation</h2>
 <a class="anchor" id="a982f614c5afa8faa57aedc3116f3d237"></a><!-- doxytag: member="Uno_Runner::add_player" ref="a982f614c5afa8faa57aedc3116f3d237" args="(const Uno_Player &amp;p)" -->
 <div class="memitem">
@@ -168,6 +172,8 @@ Public Member Functions</h2></td></tr>
 </dl>
 <p>If <a class="el" href="class_uno___runner.html#aa3f43b6ab9042ff74a34ad3fae8a0b11" title="Returns the number of players in the game.">num_players()</a> + 1 &gt; UNO_MAX_PLAYERS, player p will not be added to the game and this function will return false. </p>
 
+<p>Definition at line <a class="el" href="uno__runner_8cpp_source.html#l00084">84</a> of file <a class="el" href="uno__runner_8cpp_source.html">uno_runner.cpp</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="aa3f43b6ab9042ff74a34ad3fae8a0b11"></a><!-- doxytag: member="Uno_Runner::num_players" ref="aa3f43b6ab9042ff74a34ad3fae8a0b11" args="()" -->
@@ -187,6 +193,8 @@ Public Member Functions</h2></td></tr>
 <p>Returns the number of players in the game. </p>
 <dl class="return"><dt><b>Returns:</b></dt><dd>The number of players in the game.</dd></dl>
 <p>This value is, by default, UNO_NUM_PLAYERS though players can be added or removed via <a class="el" href="class_uno___runner.html#a982f614c5afa8faa57aedc3116f3d237" title="Adds player p to the game if possible.">add_player()</a> and <a class="el" href="class_uno___runner.html#acae1277934b338e4c6edd8d45eea5a3e" title="Removes player i from the game if possible.">remove_player()</a>. </p>
+
+<p>Definition at line <a class="el" href="uno__runner_8cpp_source.html#l00130">130</a> of file <a class="el" href="uno__runner_8cpp_source.html">uno_runner.cpp</a>.</p>
 
 </div>
 </div>
@@ -217,6 +225,8 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
+<p>Definition at line <a class="el" href="uno__runner_8cpp_source.html#l00145">145</a> of file <a class="el" href="uno__runner_8cpp_source.html">uno_runner.cpp</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a2d16089c5bdf20c1120be067797a349a"></a><!-- doxytag: member="Uno_Runner::print_state" ref="a2d16089c5bdf20c1120be067797a349a" args="()" -->
@@ -243,6 +253,8 @@ Public Member Functions</h2></td></tr>
 <li>The count of and the unplayed deck of cards. <dl class="note"><dt><b>Note:</b></dt><dd>This is an expensive operation, use sparingly! </dd></dl>
 </li>
 </ul>
+
+<p>Definition at line <a class="el" href="uno__runner_8cpp_source.html#l00171">171</a> of file <a class="el" href="uno__runner_8cpp_source.html">uno_runner.cpp</a>.</p>
 
 </div>
 </div>
@@ -272,6 +284,8 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="uno__runner_8cpp_source.html#l00158">158</a> of file <a class="el" href="uno__runner_8cpp_source.html">uno_runner.cpp</a>.</p>
 
 </div>
 </div>
@@ -320,6 +334,8 @@ false If the player could not be removed.</dd></dl>
 <p>If <a class="el" href="class_uno___runner.html#aa3f43b6ab9042ff74a34ad3fae8a0b11" title="Returns the number of players in the game.">num_players()</a> - 1 &lt; UNO_MIN_PLAYERS, player p will not be removed from the game and this function will return false.</p>
 <p>The default value for c is 0. </p>
 
+<p>Definition at line <a class="el" href="uno__runner_8cpp_source.html#l00096">96</a> of file <a class="el" href="uno__runner_8cpp_source.html">uno_runner.cpp</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a3f0847989a9868bcd023b41ee5f28d0a"></a><!-- doxytag: member="Uno_Runner::run" ref="a3f0847989a9868bcd023b41ee5f28d0a" args="()" -->
@@ -339,14 +355,16 @@ false If the player could not be removed.</dd></dl>
 <p>Runs the Uno game. </p>
 <dl class="pre"><dt><b>Precondition:</b></dt><dd><a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8" title="Sets up a game to be played.">setup()</a> or equivalent member data population has been executed and returns true. </dd></dl>
 
+<p>Definition at line <a class="el" href="uno__runner_8cpp_source.html#l00233">233</a> of file <a class="el" href="uno__runner_8cpp_source.html">uno_runner.cpp</a>.</p>
+
 </div>
 </div>
-<a class="anchor" id="a2ca7c819e3fc8774853cc5a49333eeb9"></a><!-- doxytag: member="Uno_Runner::set_deck" ref="a2ca7c819e3fc8774853cc5a49333eeb9" args="(const deck &amp;d)" -->
+<a class="anchor" id="ac98c68091701dcf1deeaad7a5168dec8"></a><!-- doxytag: member="Uno_Runner::set_played_deck" ref="ac98c68091701dcf1deeaad7a5168dec8" args="(const deck &amp;d)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void Uno_Runner::set_deck </td>
+          <td class="memname">void Uno_Runner::set_played_deck </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;&#160;</td>
           <td class="paramname"><em>d</em></td><td>)</td>
@@ -356,13 +374,42 @@ false If the player could not be removed.</dd></dl>
 </div>
 <div class="memdoc">
 
-<p>Sets the deck to use for the game. </p>
+<p>Sets the played deck to use for the game. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
-    <tr><td class="paramname">d</td><td>The deck to use for the game. Replaces the current deck. </td></tr>
+    <tr><td class="paramname">d</td><td>The played deck to use for the game. Replaces the current deck. </td></tr>
   </table>
   </dd>
 </dl>
+
+<p>Definition at line <a class="el" href="uno__runner_8cpp_source.html#l00140">140</a> of file <a class="el" href="uno__runner_8cpp_source.html">uno_runner.cpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a79c386fc295240e53b20c1270f31ab41"></a><!-- doxytag: member="Uno_Runner::set_unplayed_deck" ref="a79c386fc295240e53b20c1270f31ab41" args="(const deck &amp;d)" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Uno_Runner::set_unplayed_deck </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a> &amp;&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Sets the unplayed deck to use for the game. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">d</td><td>The unplayed deck to use for the game. Replaces the current deck. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Definition at line <a class="el" href="uno__runner_8cpp_source.html#l00135">135</a> of file <a class="el" href="uno__runner_8cpp_source.html">uno_runner.cpp</a>.</p>
 
 </div>
 </div>
@@ -392,18 +439,20 @@ false If the player could not be removed.</dd></dl>
 <ul>
 <li>UNO_NUM_PLAYERS Uno_Players. If players were added using <a class="el" href="class_uno___runner.html#a982f614c5afa8faa57aedc3116f3d237" title="Adds player p to the game if possible.">add_player()</a> previous to calling <a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8" title="Sets up a game to be played.">setup()</a> then Uno_AI_Players are added until there are UNO_NUM_PLAYERS in the game. </li>
 <li>Each <a class="el" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a> has UNO_INIT_HAND_SIZE cards in their hands if the deck used has enough cards. </li>
-<li>The DEFAULT_DECK in use for the unplayed cards unless another deck was specified using <a class="el" href="class_uno___runner.html#a2ca7c819e3fc8774853cc5a49333eeb9" title="Sets the deck to use for the game.">set_deck()</a>. <dl class="note"><dt><b>Note:</b></dt><dd>The unplayed deck is shuffled. </dd></dl>
+<li>The DEFAULT_DECK in use for the unplayed cards unless another deck was specified using set_deck(). <dl class="note"><dt><b>Note:</b></dt><dd>The unplayed deck is shuffled. </dd></dl>
 </li>
-<li>An empty played stack of cards unless another deck was specified using <a class="el" href="class_uno___runner.html#a2ca7c819e3fc8774853cc5a49333eeb9" title="Sets the deck to use for the game.">set_deck()</a>. </li>
+<li>An empty played stack of cards unless another deck was specified using set_deck(). </li>
 <li>It is Player 0's turn. </li>
 <li>It is turn 0. </li>
 </ul>
+
+<p>Definition at line <a class="el" href="uno__runner_8cpp_source.html#l00025">25</a> of file <a class="el" href="uno__runner_8cpp_source.html">uno_runner.cpp</a>.</p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/<a class="el" href="uno__runner_8h_source.html">uno_runner.h</a></li>
-<li>C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/<a class="el" href="uno__runner_8cpp.html">uno_runner.cpp</a></li>
+<li>C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/<a class="el" href="uno__runner_8cpp_source.html">uno_runner.cpp</a></li>
 </ul>
 </div>
 </div>
@@ -425,7 +474,7 @@ false If the player could not be removed.</dd></dl>
 </div>
 
 
-    <li class="footer">Generated on Wed Oct 19 2011 04:59:11 for UnoAI by
+    <li class="footer">Generated on Wed Oct 26 2011 00:19:47 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

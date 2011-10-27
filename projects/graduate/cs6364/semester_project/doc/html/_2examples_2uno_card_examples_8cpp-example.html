@@ -91,7 +91,35 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">/examples/uno_card_examples.cpp</div>  </div>
 </div>
 <div class="contents">
-<div class="fragment"><pre class="fragment"></pre></div> </div>
+<div class="fragment"><pre class="fragment"><span class="preprocessor">#include &quot;<a class="code" href="uno__card_8h.html" title="Contains macros and function prototypes for an Uno card.">uno_card.h</a>&quot;</span>
+<span class="preprocessor">#include &lt;iostream&gt;</span>
+
+<span class="keywordtype">int</span> <a name="a0"></a><a class="code" href="driver_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>( <span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> * argv[] ) 
+{
+  <a name="a1"></a><a class="code" href="uno__card_8cpp.html#a07e79d8e9cc0a93f105f6203cfa4403d" title="Instantiates a user-readable dictionary of names for a card.">map_names</a>();
+  <a name="a2"></a><a class="code" href="uno__card_8cpp.html#ab8eab77308199772ca67568adc9621c4" title="Instantiates a user-readable dictionary of weights for cards.">map_weights</a>();
+  
+  <span class="comment">// Numeric value for a green zero.</span>
+  cout &lt;&lt; <a name="a3"></a><a class="code" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD</a>( <a name="a4"></a><a class="code" href="uno__card_8h.html#a6102cc30a024abdfcf954c61b1c3b57d">UNO_GREEN</a>, <a name="a5"></a><a class="code" href="uno__card_8h.html#a3d5e93f83626a8d0a96bca87356a9687">UNO_ZERO</a> ) &lt;&lt; endl;
+  
+  <span class="comment">// The name of a green zero.</span>
+  cout &lt;&lt; <a name="a6"></a><a class="code" href="uno__card_8cpp.html#a9a60ee628eaeb26892b150cd9a900635" title="A map of card types to card names.">CARD_NAME</a>[<a class="code" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD</a>( <a class="code" href="uno__card_8h.html#a6102cc30a024abdfcf954c61b1c3b57d">UNO_GREEN</a>, <a class="code" href="uno__card_8h.html#a3d5e93f83626a8d0a96bca87356a9687">UNO_ZERO</a> )] &lt;&lt; endl;
+  
+  <span class="comment">// The weight of a green zero.</span>
+  cout &lt;&lt; <a name="a7"></a><a class="code" href="uno__card_8cpp.html#add681af275b3f7bd9364c58e2459b60b" title="A map of card types to card weights.">CARD_WEIGHT</a>[<a class="code" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD</a>( <a class="code" href="uno__card_8h.html#a6102cc30a024abdfcf954c61b1c3b57d">UNO_GREEN</a>, <a class="code" href="uno__card_8h.html#a3d5e93f83626a8d0a96bca87356a9687">UNO_ZERO</a> )] &lt;&lt; endl;
+  
+  <span class="keywordflow">if</span> ( <a name="a8"></a><a class="code" href="uno__card_8h.html#a79e38c7f9fd8fa052ce7079040a0399e" title="Gets the color of a card.">CARDCOLOR</a>( <a class="code" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD</a>( <a class="code" href="uno__card_8h.html#a6102cc30a024abdfcf954c61b1c3b57d">UNO_GREEN</a>, <a class="code" href="uno__card_8h.html#a3d5e93f83626a8d0a96bca87356a9687">UNO_ZERO</a> ) ) == <a class="code" href="uno__card_8h.html#a6102cc30a024abdfcf954c61b1c3b57d">UNO_GREEN</a> )
+  {
+    cout &lt;&lt; <span class="stringliteral">&quot;The card is green.&quot;</span> &lt;&lt; endl;
+  }
+  
+  <span class="keywordflow">if</span> ( <a name="a9"></a><a class="code" href="uno__card_8h.html#a8a07ae6d34bdcc681ec52c41151b3904" title="Gets the type of a card.">CARDTYPE</a>( <a class="code" href="uno__card_8h.html#abbc97b38c028c37643c949a6751283b7" title="Converts an UNO_COLOR and UNO_TYPE to a usable card.">CARD</a>( <a class="code" href="uno__card_8h.html#a6102cc30a024abdfcf954c61b1c3b57d">UNO_GREEN</a>, <a class="code" href="uno__card_8h.html#a3d5e93f83626a8d0a96bca87356a9687">UNO_ZERO</a> ) ) == <a class="code" href="uno__card_8h.html#a3d5e93f83626a8d0a96bca87356a9687">UNO_ZERO</a> )
+  {
+    cout &lt;&lt; <span class="stringliteral">&quot;The card is a zero.&quot;</span> &lt;&lt; endl;
+  }
+  
+}
+</pre></div> </div>
 </div>
 </div>
   <div id="nav-path" class="navpath">
@@ -111,7 +139,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 
-    <li class="footer">Generated on Wed Oct 19 2011 04:59:10 for UnoAI by
+    <li class="footer">Generated on Wed Oct 26 2011 00:19:46 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

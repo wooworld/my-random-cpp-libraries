@@ -25,7 +25,7 @@ class Uno_Human_Player : public Uno_Player
      * 
      * Constructs an Uno_Human_Player with empty and zero values.
      */
-    Uno_Human_Player();
+    Uno_Human_Player(){}
 
     /** 
      * \brief Full value specification constructor. 

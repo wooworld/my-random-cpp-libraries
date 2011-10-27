@@ -25,7 +25,8 @@ class Uno_AI_Player : public Uno_Player
      * 
      * Constructs an Uno_AI_Player with empty and zero values. 
      */
-    Uno_AI_Player();
+    Uno_AI_Player() : m_level(0)
+    {}
 
     /** 
      * \brief Full value specification constructor. 

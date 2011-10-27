@@ -40,7 +40,8 @@ class Uno_PState : public Uno_State
      *
      * Constructs an Uno_PState with empty and zero values.
      */
-    //Uno_PState();
+    Uno_PState() : m_unplayed_count(0)
+    {}
 
     /**
      * \brief Counts of cards in all players' hands. 

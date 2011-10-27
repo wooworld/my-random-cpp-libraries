@@ -96,6 +96,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">Uno_State Class Reference</div>  </div>
@@ -119,18 +120,26 @@ Inheritance diagram for Uno_State:</div>
 
 <p><a href="class_uno___state-members.html">List of all members.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___state.html#a9c349d9df19daaee8353dde4e8b3575c">Uno_State</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a9c349d9df19daaee8353dde4e8b3575c"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___state.html#a7c0374eff2c4a4b3eed4b7eebb72a81a">m_at_play</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a7c0374eff2c4a4b3eed4b7eebb72a81a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c0374eff2c4a4b3eed4b7eebb72a81a"></a><!-- doxytag: member="Uno_State::m_at_play" ref="a7c0374eff2c4a4b3eed4b7eebb72a81a" args="" -->
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___state.html#a7c0374eff2c4a4b3eed4b7eebb72a81a">m_at_play</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the player whose turn it is. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adba4113bb99a08f6804eeb348ed3822c"></a><!-- doxytag: member="Uno_State::m_turn_count" ref="adba4113bb99a08f6804eeb348ed3822c" args="" -->
 unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___state.html#adba4113bb99a08f6804eeb348ed3822c">m_turn_count</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of turns elapsed since the game began. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="uno__deck_8h.html#ab634a15f4d19d3af113a71241b79c408">deck</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___state.html#ad46fac2ea86f2fd2249675db49c35b6c">m_played</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The played deck of cards for this game.  <a href="#ad46fac2ea86f2fd2249675db49c35b6c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a95a0eedf042c9c8cf261c3cf9e683f00"></a><!-- doxytag: member="Uno_State::m_time_per_turn" ref="a95a0eedf042c9c8cf261c3cf9e683f00" args="" -->
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___state.html#a95a0eedf042c9c8cf261c3cf9e683f00">m_time_per_turn</a></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a80b2bee84fda6bdd9c37bc2309c81608"></a><!-- doxytag: member="Uno_State::m_time_per_turn" ref="a80b2bee84fda6bdd9c37bc2309c81608" args="" -->
+double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___state.html#a80b2bee84fda6bdd9c37bc2309c81608">m_time_per_turn</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of second allotted to a player to choose their move for a turn. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab345f325e023d89b0c7c3f8bf3a629da"></a><!-- doxytag: member="Uno_State::m_msg" ref="ab345f325e023d89b0c7c3f8bf3a629da" args="" -->
+string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___state.html#ab345f325e023d89b0c7c3f8bf3a629da">m_msg</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A multipurpose message used by the server and the player. <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Contains the basic elements of a state common to the server and players. </p>
@@ -141,23 +150,31 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <li>Played deck of cards. </li>
 <li>Time allowance per turn. </li>
 </ul>
-</div><hr/><h2>Member Data Documentation</h2>
-<a class="anchor" id="a7c0374eff2c4a4b3eed4b7eebb72a81a"></a><!-- doxytag: member="Uno_State::m_at_play" ref="a7c0374eff2c4a4b3eed4b7eebb72a81a" args="" -->
+
+<p>Definition at line <a class="el" href="uno__state_8h_source.html#l00027">27</a> of file <a class="el" href="uno__state_8h_source.html">uno_state.h</a>.</p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a9c349d9df19daaee8353dde4e8b3575c"></a><!-- doxytag: member="Uno_State::Uno_State" ref="a9c349d9df19daaee8353dde4e8b3575c" args="()" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">unsigned int <a class="el" href="class_uno___state.html#a7c0374eff2c4a4b3eed4b7eebb72a81a">Uno_State::m_at_play</a></td>
+          <td class="memname">Uno_State::Uno_State </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
         </tr>
       </table>
 </div>
 <div class="memdoc">
 
 <p>Default constructor. </p>
-<p>Constructs an <a class="el" href="class_uno___state.html" title="Contains the basic elements of a state common to the server and players.">Uno_State</a> with empty and zero values. The ID of the player whose turn it is. </p>
+<p>Constructs an <a class="el" href="class_uno___state.html" title="Contains the basic elements of a state common to the server and players.">Uno_State</a> with empty and zero values. </p>
+
+<p>Definition at line <a class="el" href="uno__state_8h_source.html#l00035">35</a> of file <a class="el" href="uno__state_8h_source.html">uno_state.h</a>.</p>
 
 </div>
 </div>
+<hr/><h2>Member Data Documentation</h2>
 <a class="anchor" id="ad46fac2ea86f2fd2249675db49c35b6c"></a><!-- doxytag: member="Uno_State::m_played" ref="ad46fac2ea86f2fd2249675db49c35b6c" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -171,6 +188,8 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 <p>The played deck of cards for this game. </p>
 <p>This is the face-up stack of cards players put cards into from their hands. </p>
+
+<p>Definition at line <a class="el" href="uno__state_8h_source.html#l00053">53</a> of file <a class="el" href="uno__state_8h_source.html">uno_state.h</a>.</p>
 
 </div>
 </div>
@@ -197,7 +216,7 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div>
 
 
-    <li class="footer">Generated on Wed Oct 19 2011 04:59:11 for UnoAI by
+    <li class="footer">Generated on Wed Oct 26 2011 00:19:47 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

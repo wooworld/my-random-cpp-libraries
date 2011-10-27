@@ -96,6 +96,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a>  </div>
   <div class="headertitle">
 <div class="title">Uno_PState Class Reference</div>  </div>
@@ -118,10 +119,15 @@ Inheritance diagram for Uno_PState:</div>
 
 <p><a href="class_uno___p_state-members.html">List of all members.</a></p>
 <table class="memberdecls">
+<tr><td colspan="2"><h2><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___p_state.html#aafaaf283df233adbb7d3cac2eaf9199d">Uno_PState</a> ()</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#aafaaf283df233adbb7d3cac2eaf9199d"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___p_state.html#a8e4b3ec3783d8ed58bd761ac6c7be3b6">m_hand_counts</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a8e4b3ec3783d8ed58bd761ac6c7be3b6"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e4b3ec3783d8ed58bd761ac6c7be3b6"></a><!-- doxytag: member="Uno_PState::m_hand_counts" ref="a8e4b3ec3783d8ed58bd761ac6c7be3b6" args="" -->
+vector&lt; unsigned int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___p_state.html#a8e4b3ec3783d8ed58bd761ac6c7be3b6">m_hand_counts</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Counts of cards in all players' hands. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="uno__pstate_8h.html#acd9523c15e47a87e3740cf5ade73556e">hand</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___p_state.html#ae83f531e09b87d69dccb49bf44af4e0a">m_hand</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The player's hand of cards.  <a href="#ae83f531e09b87d69dccb49bf44af4e0a"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___p_state.html#ab5532c7fefcd10fc39a7a07b627ff5c5">m_unplayed_count</a></td></tr>
@@ -139,7 +145,31 @@ Public Attributes</h2></td></tr>
 <li>Played deck of cards. </li>
 <li>Time allowance per turn. </li>
 </ul>
-</div><hr/><h2>Member Data Documentation</h2>
+
+<p>Definition at line <a class="el" href="uno__pstate_8h_source.html#l00035">35</a> of file <a class="el" href="uno__pstate_8h_source.html">uno_pstate.h</a>.</p>
+</div><hr/><h2>Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="aafaaf283df233adbb7d3cac2eaf9199d"></a><!-- doxytag: member="Uno_PState::Uno_PState" ref="aafaaf283df233adbb7d3cac2eaf9199d" args="()" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Uno_PState::Uno_PState </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Default constructor. </p>
+<p>Constructs an <a class="el" href="class_uno___p_state.html" title="Contains the player, limited view of the game state.">Uno_PState</a> with empty and zero values. </p>
+
+<p>Definition at line <a class="el" href="uno__pstate_8h_source.html#l00043">43</a> of file <a class="el" href="uno__pstate_8h_source.html">uno_pstate.h</a>.</p>
+
+</div>
+</div>
+<hr/><h2>Member Data Documentation</h2>
 <a class="anchor" id="ae83f531e09b87d69dccb49bf44af4e0a"></a><!-- doxytag: member="Uno_PState::m_hand" ref="ae83f531e09b87d69dccb49bf44af4e0a" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -154,21 +184,7 @@ Public Attributes</h2></td></tr>
 <p>The player's hand of cards. </p>
 <p>The player's hand of cards is initially 7 cards drawn from a deck. </p>
 
-</div>
-</div>
-<a class="anchor" id="a8e4b3ec3783d8ed58bd761ac6c7be3b6"></a><!-- doxytag: member="Uno_PState::m_hand_counts" ref="a8e4b3ec3783d8ed58bd761ac6c7be3b6" args="" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">vector&lt;unsigned int&gt; <a class="el" href="class_uno___p_state.html#a8e4b3ec3783d8ed58bd761ac6c7be3b6">Uno_PState::m_hand_counts</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>Default constructor. </p>
-<p>Constructs an <a class="el" href="class_uno___p_state.html" title="Contains the player, limited view of the game state.">Uno_PState</a> with empty and zero values. Counts of cards in all players' hands. </p>
+<p>Definition at line <a class="el" href="uno__pstate_8h_source.html#l00056">56</a> of file <a class="el" href="uno__pstate_8h_source.html">uno_pstate.h</a>.</p>
 
 </div>
 </div>
@@ -185,6 +201,8 @@ Public Attributes</h2></td></tr>
 
 <p>The count of the cards in the unplayed deck. </p>
 <p>This is the count of the face-down stack of cards players draw from when they cannot play a card from their hand. </p>
+
+<p>Definition at line <a class="el" href="uno__pstate_8h_source.html#l00064">64</a> of file <a class="el" href="uno__pstate_8h_source.html">uno_pstate.h</a>.</p>
 
 </div>
 </div>
@@ -211,7 +229,7 @@ Public Attributes</h2></td></tr>
 </div>
 
 
-    <li class="footer">Generated on Wed Oct 19 2011 04:59:11 for UnoAI by
+    <li class="footer">Generated on Wed Oct 26 2011 00:19:47 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

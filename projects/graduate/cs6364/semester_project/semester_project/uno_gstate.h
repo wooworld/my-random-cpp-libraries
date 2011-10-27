@@ -28,16 +28,14 @@ class Uno_GState : public Uno_State
 {
   public:
     /**
-     * \brief Default constructor.
-     *
-     * Constructs an Uno_GState with empty and zero values.
-     */
-    //Uno_GState();
-
-    /**
      * \brief The list of players currently in the game. 
      */
     vector<Uno_Player> m_players;
+
+    /**
+     * \brief The list of hands for players currently in the game. 
+     */
+    vector<list<card> > m_hands;
 
     /**
      * \brief The unplayed deck of cards for this game.

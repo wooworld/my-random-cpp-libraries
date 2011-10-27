@@ -104,7 +104,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Contains function definitions for an Uno deck.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="uno__card_8h_source.html">uno_card.h</a>&quot;</code><br/>
-</div><table class="memberdecls">
+</div>
+<p><a href="uno__card_8cpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
 <tr><td colspan="2"><h2><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uno__card_8cpp.html#a07e79d8e9cc0a93f105f6203cfa4403d">map_names</a> ()</td></tr>
@@ -125,6 +127,8 @@ Variables</h2></td></tr>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Contains function definitions for an Uno deck. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="uno__card_8h.html" title="Contains macros and function prototypes for an Uno card.">uno_card.h</a> </dd></dl>
+
+<p>Definition in file <a class="el" href="uno__card_8cpp_source.html">uno_card.cpp</a>.</p>
 </div><hr/><h2>Function Documentation</h2>
 <a class="anchor" id="a6fc45c14cfbf3fb7529da60c1040d915"></a><!-- doxytag: member="uno_card.cpp::card_name" ref="a6fc45c14cfbf3fb7529da60c1040d915" args="(card c)" -->
 <div class="memitem">
@@ -156,6 +160,8 @@ Variables</h2></td></tr>
 </dl>
 <p>The card names will come back something like "R5" for a red five, or "YD2" for a yellow draw two. </p>
 <dl class="note"><dt><b>Note:</b></dt><dd>A reverse card will have a type of "R". So "YR" means a yellow reverse. This is not to be confused with "R" for the color red. </dd></dl>
+
+<p>Definition at line <a class="el" href="uno__card_8cpp_source.html#l00098">98</a> of file <a class="el" href="uno__card_8cpp_source.html">uno_card.cpp</a>.</p>
 
 </div>
 </div>
@@ -196,6 +202,8 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
+<p>Definition at line <a class="el" href="uno__card_8cpp_source.html#l00124">124</a> of file <a class="el" href="uno__card_8cpp_source.html">uno_card.cpp</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a07e79d8e9cc0a93f105f6203cfa4403d"></a><!-- doxytag: member="uno_card.cpp::map_names" ref="a07e79d8e9cc0a93f105f6203cfa4403d" args="()" -->
@@ -214,6 +222,9 @@ Variables</h2></td></tr>
 
 <p>Instantiates a user-readable dictionary of names for a card. </p>
 <dl class="note"><dt><b>Note:</b></dt><dd>You only need to do this one time. </dd></dl>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="_2examples_2uno_card_examples_8cpp-example.html#a1">/examples/uno_card_examples.cpp</a>.</dd>
+</dl>
+<p>Definition at line <a class="el" href="uno__card_8cpp_source.html#l00034">34</a> of file <a class="el" href="uno__card_8cpp_source.html">uno_card.cpp</a>.</p>
 
 </div>
 </div>
@@ -233,6 +244,9 @@ Variables</h2></td></tr>
 
 <p>Instantiates a user-readable dictionary of weights for cards. </p>
 <dl class="note"><dt><b>Note:</b></dt><dd>You only need to do this one time. For a regulation game, the weights are the points a player gets at the end of the game for his opponents having a given card, c, in their hand. </dd></dl>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="_2examples_2uno_card_examples_8cpp-example.html#a2">/examples/uno_card_examples.cpp</a>.</dd>
+</dl>
+<p>Definition at line <a class="el" href="uno__card_8cpp_source.html#l00103">103</a> of file <a class="el" href="uno__card_8cpp_source.html">uno_card.cpp</a>.</p>
 
 </div>
 </div>
@@ -254,6 +268,9 @@ Variables</h2></td></tr>
 <dl class="see"><dt><b>See also:</b></dt><dd>void <a class="el" href="uno__card_8cpp.html#a07e79d8e9cc0a93f105f6203cfa4403d" title="Instantiates a user-readable dictionary of names for a card.">map_names()</a> </dd>
 <dd>
 string <a class="el" href="uno__card_8h.html#a6fc45c14cfbf3fb7529da60c1040d915" title="Gets the name of an Uno card.">card_name( card c )</a> </dd></dl>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="_2examples_2uno_card_examples_8cpp-example.html#a6">/examples/uno_card_examples.cpp</a>.</dd>
+</dl>
+<p>Definition at line <a class="el" href="uno__card_8cpp_source.html#l00020">20</a> of file <a class="el" href="uno__card_8cpp_source.html">uno_card.cpp</a>.</p>
 
 </div>
 </div>
@@ -274,6 +291,9 @@ string <a class="el" href="uno__card_8h.html#a6fc45c14cfbf3fb7529da60c1040d915" 
 <dl class="see"><dt><b>See also:</b></dt><dd>void <a class="el" href="uno__card_8cpp.html#ab8eab77308199772ca67568adc9621c4" title="Instantiates a user-readable dictionary of weights for cards.">map_weights()</a> </dd>
 <dd>
 unsigned char <a class="el" href="uno__card_8h.html#a2ad96347628c97a1314ef0fbf80b670c" title="Gets the weight of an Uno card.">card_weight( card c )</a> </dd></dl>
+<dl><dt><b>Examples: </b></dt><dd><a class="el" href="_2examples_2uno_card_examples_8cpp-example.html#a7">/examples/uno_card_examples.cpp</a>.</dd>
+</dl>
+<p>Definition at line <a class="el" href="uno__card_8cpp_source.html#l00032">32</a> of file <a class="el" href="uno__card_8cpp_source.html">uno_card.cpp</a>.</p>
 
 </div>
 </div>
@@ -297,7 +317,7 @@ unsigned char <a class="el" href="uno__card_8h.html#a2ad96347628c97a1314ef0fbf80
 </div>
 
 
-    <li class="footer">Generated on Wed Oct 19 2011 04:59:10 for UnoAI by
+    <li class="footer">Generated on Wed Oct 26 2011 00:19:46 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>
