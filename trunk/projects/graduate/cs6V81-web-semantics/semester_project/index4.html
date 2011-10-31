@@ -1,0 +1,124 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    
+    <title>CS6V81 Semantic Web Project</title>
+  </head>
+  
+  <!-- Google Maps API Key -->
+  <script src="http://maps.google.com/maps?file=api&v=2&key=ABQIAAAAD0qlpMDIvnvezwed-ZL9tBQwH0hfZ_hMkwZkmTeIFGi2I_yWqxSTnxCDWeowfqGzTP5B2PQSHZI0zg" type="text/javascript">
+  </script>
+  
+  <!-- Google Visualization API Map Include -->
+  <script type="text/javascript" src="http://www.google.com/jsapi">
+  </script>
+  
+  <!-- Google Visualization API Map Generator -->
+  <script type="text/javascript">
+    // Load the Google Visualization API with the map package
+    google.load( 'visualization', '1', {'packages': ['map'] } );
+    google.setOnLoadCallback( drawVisualization );
+    
+    var query;     // The query for the data sets
+    var chart;     // The Google LineChart object
+    var chartData; // The formatted table of data for the chart
+    
+    // Function called immediately after the visualization package loads
+    function drawVisualization()
+    {
+      createQuery();
+      
+      // Execute the query and call formatChartData on the results when finished
+      query.send( formatResults );
+    }
+    
+    // Creates the query to the data sets
+    function createQuery()
+    {
+      // SPARQL endpoint used to query the data sets
+      var SPARQLProxy = 'http://data-gov.tw.rpi.edu/sparql';
+
+      // SPARQL query location
+      var SPARQLQueryLoc = 'http://dl.dropbox.com/u/47561249/query4.sparql';      
+
+      var SPARQLQueryURL = SPARQLProxy +
+                           '?query-option=uri&output=gvds&query-uri=' +
+                           encodeURIComponent( SPARQLQueryLoc );
+                           
+      query = new google.visualization.Query( SPARQLQueryURL );
+      query.setQuery('');
+    }
+    
+    // Formats the data 
+    function formatResults( response )
+    {
+      if ( response.isError() )
+      {
+        alert( "Error in query: " + response.getMessage() + " " +
+               response.getDetailedMessage()
+             );
+        return;
+      }
+
+      var chartPreData = response.getDataTable();
+      if ( chartPreData == null )
+      {
+        alert( "No results in query." );
+        return;
+      }
+      
+      var lat;
+      var lon;
+      var loc;
+      var mag;
+      var numRows = chartPreData.getNumberOfRows();
+      var vals = new Array(); // The row to be added to the chartData
+      
+      chartData = new google.visualization.DataTable();
+      chartData.addColumn( 'number', 'lat' );
+      chartData.addColumn( 'number', 'lon' );
+      chartData.addColumn( 'string', 'loc' );
+    
+      for ( var i = 0; i < numRows; i++ )
+      {
+        lon = chartPreData.getValue( i, 0 );
+        lat = chartPreData.getValue( i, 1 );
+        mag = chartPreData.getValue( i, 2 );
+        loc = chartPreData.getValue( i, 3 );
+        
+        vals[0] = lon;
+        vals[1] = lat;
+        vals[2] = mag + " @ " + loc;
+        
+        chartData.addRow( vals );
+      }
+      
+      // This call must be made here or else it is out of scope and causes errors
+      drawChart();
+    }
+    
+    // Draws the chart to the web page
+    function drawChart()
+    {    
+      chart = new google.visualization.Map(
+        document.getElementById( 'chart_canvas' ) );
+      
+      //Customizing map
+      var options = {};
+      options['region'] = 'US';
+      options['dataMode'] = 'regions';
+      options['width'] = 1280;
+      options['height'] = 720;
+      options['colors'] = [0xFFFFFF,0x00FF00,0x00CC00,0x00AA00,0x008800,0x006600];
+      options['showTip'] = true;
+      
+      chart.draw( chartData, options );
+    }    
+  </script>
+  
+  <body>
+    <div id="chart_canvas" style="width: 1280px; height: 720px">
+      Loading...
+    </div>
+  </body>
+</html>
