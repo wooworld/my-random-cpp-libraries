@@ -1,0 +1,9 @@
+PREFIX  dgp32: <http://data-gov.tw.rpi.edu/vocab/p/32/>
+SELECT  ?region ?magnitude 
+WHERE { 
+  graph ?g{
+  	?s dgp32:magnitude ?magnitude ;
+       dgp32:region ?region .
+  }
+} 
+LIMIT 1000
