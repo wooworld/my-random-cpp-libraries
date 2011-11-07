@@ -1,0 +1,303 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    
+    <title>CS6V81 Semantic Web Project</title>
+  </head>
+  
+  <!-- Google Maps API Key -->
+  <script src="http://maps.google.com/maps?file=api&v=2&key=ABQIAAAAD0qlpMDIvnvezwed-ZL9tBQwH0hfZ_hMkwZkmTeIFGi2I_yWqxSTnxCDWeowfqGzTP5B2PQSHZI0zg" type="text/javascript">
+  </script>
+  
+  <!-- Google Visualization API Map Include -->
+  <script type="text/javascript" src="http://www.google.com/jsapi">
+  </script>
+  
+  <!-- Google Visualization API Map Generator -->
+  <script type="text/javascript">
+    // Load the Google Visualization API with the map package
+    google.load( 'visualization', '1', {'packages': ['corechart', 'map'] } );
+    google.setOnLoadCallback( drawVisualization );
+    
+    var query;     // The query for the data sets
+    var filter = ''; // The filter for the query
+    var map;       // The Google Map object
+    var mapData;   // The formatted table of data for the map
+    var chart;     // The Google LineChart object
+    var chartData; // The formatted table of data for the chart
+    var preData;   // The unformatted return of results from the query
+    
+    
+    
+    // Function called immediately after the visualization package loads
+    function drawVisualization()
+    {
+      createQuery();
+      
+      // Execute the query and call formatChartData on the results when finished
+      query.send( formatResults );
+    }
+    
+    // Creates the query to the data sets
+    function createQuery()
+    {
+      // SPARQL endpoint used to query the data sets
+      var SPARQLProxy = 'http://data-gov.tw.rpi.edu/sparql';
+      
+      // SPARQL query to send
+      var SPARQLQuery = 
+      'PREFIX dgp32: <http://data-gov.tw.rpi.edu/vocab/p/32/> SELECT  ?lat ?lon ?magnitude ?region WHERE { graph ?g{ ?s dgp32:magnitude ?magnitude ; dgp32:region ?region ; dgp32:lat ?lat ; dgp32:lon ?lon .';
+      if ( filter != '' && filter != null )
+      {
+        SPARQLQuery += 'FILTER(regex(?region,\"' + filter + '\"))'
+      }
+      SPARQLQuery += ' } } LIMIT 1000';
+      
+      // The full URL for the query
+      var SPARQLQueryURL = SPARQLProxy +
+                           '?output=gvds&query=' +
+                           encodeURIComponent( SPARQLQuery );
+                           
+      query = new google.visualization.Query( SPARQLQueryURL );
+      query.setQuery('');
+    }
+    
+    // Formats the data 
+    function formatResults( response )
+    {
+      if ( response.isError() )
+      {
+        alert( "Error in query: " + response.getMessage() + " " +
+               response.getDetailedMessage()
+             );
+        return;
+      }
+
+      preData = response.getDataTable();
+      if ( preData == null )
+      {
+        alert( "No results in query." );
+        return;
+      }
+      
+      formatChartData();
+      
+      formatMapData();
+
+      drawChart();
+      
+      drawMap();
+      
+      setOptions();
+    }
+    
+    // Format the raw data for the line chart
+    function formatChartData()
+    {
+      var loc;
+      var mag;
+      var numRows = preData.getNumberOfRows();
+      var myMap = new Object(); // <location>, <frequency> map
+      var vals = new Array();
+      
+      chartData = new google.visualization.DataTable();
+      chartData.addColumn( 'string', 'loc' );
+      chartData.addColumn( 'number', 'frequency' );
+    
+      // Initialize the map and count the number of earthquakes for each location
+      for ( var i = 0; i < numRows; i++ )
+      {
+        loc = preData.getValue( i, 3 );
+        
+        if ( typeof(myMap[loc]) == 'undefined' )
+        {
+          myMap[loc] = 0;
+        }
+        
+        myMap[loc]++;
+      }
+    
+      // Now put the names and counts into the actual chart data
+      for ( key in myMap )
+      {
+        vals[0] = key;
+        vals[1] = myMap[key];
+        
+        chartData.addRow( vals );
+      }
+    }
+    
+    // Format the raw data for the map
+    function formatMapData()
+    {
+      var lat;
+      var lon;
+      var loc;
+      var mag;
+      var numRows = preData.getNumberOfRows();
+      var vals = new Array(); // The row to be added to the mapData
+      
+      mapData = new google.visualization.DataTable();
+      mapData.addColumn( 'number', 'lat' );
+      mapData.addColumn( 'number', 'lon' );
+      mapData.addColumn( 'string', 'loc' );
+    
+      for ( var i = 0; i < numRows; i++ )
+      {
+        lon = preData.getValue( i, 0 );
+        lat = preData.getValue( i, 1 );
+        mag = preData.getValue( i, 2 );
+        loc = preData.getValue( i, 3 );
+        
+        vals[0] = lon;
+        vals[1] = lat;
+        vals[2] = mag + " @ " + loc;
+        
+        mapData.addRow( vals );
+      }
+    }
+    
+    // Draws the chart to the web page
+    function drawChart()
+    {    
+      chart = new google.visualization.LineChart(
+        document.getElementById( 'chart_canvas' ) );
+      
+      //Customizing chart
+      var options = {};
+      options['width'] = 800;
+      options['height'] = 400;
+      options['title'] = 'Frequency of Earthquakes by Region';
+      
+      chart.draw( chartData, options );
+    }    
+    
+    // Draws the map to the web page
+    function drawMap()
+    {    
+      map = new google.visualization.Map(
+        document.getElementById( 'map_canvas' ) );
+      
+      //Customizing map
+      var options = {};
+      options['region'] = 'US';
+      options['dataMode'] = 'regions';
+      options['width'] = 800;
+      options['height'] = 400;
+      options['colors'] = [0xFFFFFF,0x00FF00,0x00CC00,0x00AA00,0x008800,0x006600];
+      options['showTip'] = true;
+      
+      map.draw( mapData, options );
+    }
+    
+    // Populates the dropdown boxes with options for the user to select.
+    // The options are distinct so there aren't copies of Arkansas fifteen times.
+    function setOptions()
+    {
+      var numRows = preData.getNumberOfRows();  
+
+      // The list of options from the dropdown boxes on the page
+      var item1List = document.item1_form.item1_select; 
+      var item2List = document.item2_form.item2_select; 
+      
+      // Clear the current list of options
+      item1List.options.length = 0;
+      item2List.options.length = 0;
+    
+      var loc;
+      
+      // Holds the names of earthquake locations
+      var item1ListArray = new Array();
+    
+      // Only add an item to the array if it's not already in there.
+      // Eliminates duplication.
+      for ( var i = 0; i < numRows; i++ )
+      {
+        loc = preData.getValue( i, 3 );
+        
+        if ( typeof(item1ListArray[loc]) == 'undefined' )
+        {
+          // With our query, when we get back the data, we need to have the URI
+          // for each item saved. We'll set that as the 0 here.
+          // The key value "corn" will be displayed to the user, but the
+          // URI to corn at data-gov/327#corn or whatever will be stored hidden
+          // from them
+          item1ListArray[loc] = i;
+        }
+      }
+    
+      // Add an item to the end of item1List with <loc, index, not default, not selected>
+      for ( key in item1ListArray )
+      {              
+        item1List.options[item1List.options.length] = new Option( key, item1ListArray[key], false, false );
+        item2List.options[item2List.options.length] = new Option( key, item1ListArray[key], false, false );
+      }
+    }
+    
+    // Updates the graph and other things when the user changes the selection
+    // in the dropdown selections
+    function onChangeItem( index )
+    {
+      var item1List = document.item1_form.item1_select;
+      var item2List = document.item2_form.item2_select;
+      
+      filter = item1List.options[index].text;      
+      
+      //alert( item1List.options[index].text + " " + item1List.options[index].value );
+      
+      createQuery();
+      
+      query.send( formatResults );      
+    }    
+  </script>
+  
+  <body>
+    <!-- By putting these different items into table cells, we can use CSS to 
+    alter the style of the tables so they're more visually appealing -->
+    <table>
+      <tr>
+        <th>Select Item 1</th>
+        <th>Select Item 2</th>
+      </tr>
+      <tr>
+        <td>
+          <form name="item1_form" id="item1_form">
+            Item 1:
+            <select name="item1_select" id="item1_select" onChange="onChangeItem(this.selectedIndex)">
+              <option>Loading item 1 list...</option>
+            </select>
+          </form>          
+        </td>
+        <td>
+          <form name="item2_form" id="item2_form">
+            Item 2:
+            <select name="item2_select" id="item2_select" onChange="onChangeItem(this.selectedIndex)">
+              <option>Loading item 2 list...</option>
+            </select>
+          </form>          
+        </td>
+      </tr>
+    </table>
+    
+    <table>
+      <tr>
+        <th><h1>Frequency of Earthquakes by Region</h1></th>
+      </tr>
+      <tr>        
+        <div id="map_canvas" style="width: 800px; height: 400px">
+          Loading map...
+        </div>
+      </tr>
+      <tr>
+        <div id="chart_canvas" style="width: 800px; height: 400px">
+          Loading line chart...
+        </div>
+      </tr>
+    </table>
+    
+    <div id="test_canvas" style="width: 800px; height: 400px">
+      Test cavas...
+    </div>
+    
+  </body>
+</html>
