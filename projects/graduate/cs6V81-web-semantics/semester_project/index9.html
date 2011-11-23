@@ -1,0 +1,895 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+    <!-- Style sheet for document -->
+    <style type="text/css">
+      /* General container formatting */
+      body
+      {
+        text-align:left;
+        background-color:#6A7A9C;
+        font-family:Arial, Helvetica, sans-serif;
+        font-size:11pt;
+        color:#FFFFFF;
+      }      
+      table
+      {
+        width:100%;
+        caption-side:top;
+      }
+      a
+      {
+        color:#FFFFFF;
+      }
+      fieldset
+      {
+        padding:1px;
+      }
+      
+      .rounded
+      {
+        -moz-border-radius:15px;
+        -webkit-border-radius:15px;
+        -khtml-border-radius:15px;
+        border-radius:15px;
+      }      
+      .shadow
+      {
+        -moz-box-shadow: 4px 4px 4px #484848;
+        -webkit-box-shadow: 4px 4px 4px #484848;
+        box-shadow: 4px 4px 4px #484848;
+      }
+      
+      /* Specific container formatting */
+      .normalDiv
+      {
+        margin-left:auto;
+        margin-right:auto;
+        width:850px;
+        text-align:left;
+        background-color:#4476EB;
+        padding:5px;
+      }
+      .headerDiv
+      {
+        height:70px;
+        border:1px solid black;
+        text-align:center;      
+      }
+      .headerTable
+      {
+        height:100%;
+        width:100%;
+        vertical-align:middle;
+        text-align:center;
+      }
+      .bodyDiv
+      {
+        border:1px solid black;
+        text-align:left;
+      }
+      .footerDiv
+      {
+        border:1px solid black;
+        text-align:center;
+      }
+      .chartDiv
+      {
+        width:625px;
+        height:325px;
+        border:1px solid white;
+        padding:0px;
+      }
+      .chartTitleDiv
+      {
+        width:625px;
+        border:1px solid white;
+        padding:0px;
+        text-align:center;
+      }
+      .debugDiv
+      {
+        width:625px;
+        height:325px;
+        border:1px solid red;
+        text-align:left;
+        font-family:"Courier New", Courier, monospace;
+        font-size:10pt;
+        padding:0px;
+      }
+      .instructions
+      {
+        width:200px;
+        vertical-align:top;
+        text-align:left;
+      }
+
+      /* Font sizes, typefaces, and colors */
+      .titleFont
+      {
+        font-family:Arial, Helvetica, sans-serif;
+        font-size:22pt;
+      }
+      .footerFont
+      {
+        font-family:Arial, Helvetica, sans-serif;
+        font-size:10pt;
+      }
+      .n
+      {
+        font-family:Arial, Helvetica, sans-serif;
+        font-size:11pt;
+      }
+      h3
+      {
+        font-size:16pt;
+        font-style:700;
+        text-align:center;
+      }   
+      .sectionHeader
+      {
+        font-size:16pt;
+        font-style:700;
+        text-align:center;
+      }
+    </style>
+
+    <title>CS6V81 Semantic Web Project</title>
+  </head>
+
+  <!-- Google Visualization API Map Include -->
+  <script type="text/javascript" src="http://www.google.com/jsapi">
+  </script>
+
+  <!-- Google Visualization API Map Generator -->
+  <script type="text/javascript">
+    google.load( 'visualization', '1', {'packages': ['annotatedtimeline'] } );
+    google.setOnLoadCallback( initializeMe );
+
+    // Query variables for use when creating a query
+    var query; 
+    var _CPI_AREAS  = 1;   
+    var _CPI_ITEMS  = 2;
+    var _CPI_DATA   = 3;
+    var _LAUS_AREAS = 4;
+    var _LAUS_ITEMS = 5;
+    var _LAUS_DATA  = 6
+    var datagovProxy = 'http://data-gov.tw.rpi.edu/sparql';
+    var CPI_CHART = 1;
+    var LAUS_CHART = 2;
+    var QUERY_SUCCESS = 0;
+    var querySuccessColor = "#FFFFFF";
+    var QUERY_EMPTY = 1;
+    var queryEmptyResultsColor = "#000000";
+    var QUERY_ERROR = 2;
+    var queryErrorColor = "#FF0000";
+    
+    // Store the dropdown list items
+    var CPI_areas = new Object();
+    var CPI_items = new Object();    
+    var LAUS_areas = new Object();
+    var LAUS_items = new Object();
+    
+    // The series IDs for the specific series shown on each chart
+    var CPI_seriesID = ''; 
+    var LAUS_seriesID = '';
+    
+    var preData;      // Raw results of the query
+    var chart1;       // Upper chart
+    var chart1Data;   // Formatted, pretty data for chart1
+    var chart2;       // Lower chart
+    var chart2Data;   // Formatted, pretty data for chart2
+
+    function initializeMe()
+    {
+      CPI_getAreas();
+      CPI_getItems();
+      LAUS_getAreas();
+      LAUS_getItems();
+    }
+    
+    function CPI_getAreas()
+    {
+      createQuery( _CPI_AREAS );      
+      query.send( CPI_storeAreas );
+    }
+    
+    function CPI_storeAreas( response )
+    {
+      if ( response.isError() )
+      { 
+        setQueryColor( CPI_CHART, QUERY_ERROR );
+        return;
+      }
+
+      preData = response.getDataTable();
+      if ( preData == null || preData.getNumberOfRows() == 0)
+      {
+        setQueryColor( CPI_CHART, QUERY_EMPTY );
+        return;
+      }
+    
+      var numRows = preData.getNumberOfRows();
+    
+      for ( var i = 0; i < numRows; i++ )
+      {
+        CPI_areas[preData.getValue(i, 0)] = preData.getValue(i, 1);
+      }
+      
+      CPI_populateAreaSelect();
+    }
+    
+    function CPI_populateAreaSelect()
+    {
+      var numRows = preData.getNumberOfRows()
+      
+      var areaList = document.cpi_area_form.cpi_area_select;
+      areaList.options.length = 0;
+      
+      areaList.options[areaList.options.length] = new Option( "Select an area...", -1, false, false );
+      
+      for ( key in CPI_areas )
+      {
+        areaList.options[areaList.options.length] = new Option( CPI_areas[key], key, false, false );
+      }
+      
+      setQueryColor( CPI_CHART, QUERY_SUCCESS );
+    }
+    
+    function CPI_getSelectedAreaText()
+    {
+      return document.cpi_area_form.cpi_area_select.options[document.cpi_area_form.cpi_area_select.selectedIndex].text;
+    }
+    
+    function CPI_getSelectedAreaValue()
+    {
+      return document.cpi_area_form.cpi_area_select.options[document.cpi_area_form.cpi_area_select.selectedIndex].value;
+    }
+
+    function CPI_getItems()
+    {
+      createQuery( _CPI_ITEMS );      
+      query.send( CPI_storeItems );
+    }
+    
+    function CPI_storeItems( response )
+    {
+      if ( response.isError() )
+      {
+        setQueryColor( CPI_CHART, QUERY_ERROR );
+        return;
+      }
+
+      preData = response.getDataTable();
+      if ( preData == null || preData.getNumberOfRows() == 0 )
+      {
+        setQueryColor( CPI_CHART, QUERY_EMPTY );
+        return;
+      }
+    
+      var numRows = preData.getNumberOfRows();
+    
+      for ( var i = 0; i < numRows; i++ )
+      {
+        CPI_items[preData.getValue(i, 0)] = preData.getValue(i, 1);
+      }
+      
+      CPI_populateItemSelect();
+    }
+    
+    function CPI_populateItemSelect()
+    {
+      var numRows = preData.getNumberOfRows()
+      
+      var itemList = document.cpi_item_form.cpi_item_select;
+      itemList.options.length = 0;
+      
+      itemList.options[itemList.options.length] = new Option( "Select an item...", -1, false, false );
+      
+      for ( key in CPI_items )
+      {
+        itemList.options[itemList.options.length] = new Option( CPI_items[key], key, false, false );
+      }
+      
+      setQueryColor( CPI_CHART, QUERY_SUCCESS );
+    }
+    
+    function CPI_getSelectedItemText()
+    {
+      return document.cpi_item_form.cpi_item_select.options[document.cpi_item_form.cpi_item_select.selectedIndex].text;
+    }
+    
+    function CPI_getSelectedItemValue()
+    {
+      return document.cpi_item_form.cpi_item_select.options[document.cpi_item_form.cpi_item_select.selectedIndex].value;
+    }
+
+    function LAUS_getAreas()
+    {
+      createQuery( _LAUS_AREAS );      
+      query.send( LAUS_storeAreas );
+    }
+    
+    function LAUS_storeAreas( response )
+    {
+      if ( response.isError() )
+      { 
+        setQueryColor( LAUS_CHART, QUERY_ERROR );
+        return;
+      }
+
+      preData = response.getDataTable();
+      if ( preData == null || preData.getNumberOfRows() == 0)
+      {
+        setQueryColor( LAUS_CHART, QUERY_EMPTY );
+        return;
+      }
+    
+      var numRows = preData.getNumberOfRows();
+    
+      for ( var i = 0; i < numRows; i++ )
+      {        
+        LAUS_areas[preData.getValue(i, 1)] = preData.getValue(i, 2);
+      }
+      
+      LAUS_populateAreaSelect();
+    }
+    
+    function LAUS_populateAreaSelect()
+    {
+      var numRows = preData.getNumberOfRows()
+      
+      var areaList = document.laus_area_form.laus_area_select;
+      areaList.options.length = 0;
+      
+      areaList.options[areaList.options.length] = new Option( "Select an area...", -1, false, false );
+      
+      for ( key in LAUS_areas )
+      {
+        areaList.options[areaList.options.length] = new Option( LAUS_areas[key], key, false, false );
+      }
+      
+      setQueryColor( LAUS_CHART, QUERY_SUCCESS );
+    }
+    
+    function LAUS_getSelectedAreaText()
+    {
+      return document.laus_area_form.laus_area_select.options[document.laus_area_form.laus_area_select.selectedIndex].text;
+    }
+    
+    function LAUS_getSelectedAreaValue()
+    {
+      return document.laus_area_form.laus_area_select.options[document.laus_area_form.laus_area_select.selectedIndex].value;
+    }
+    
+    function LAUS_getItems()
+    {
+      createQuery( _LAUS_ITEMS );      
+      query.send( LAUS_storeItems );
+    }
+    
+    function LAUS_storeItems( response )
+    {
+      if ( response.isError() )
+      {
+        setQueryColor( LAUS_CHART, QUERY_ERROR );
+        return;
+      }
+
+      preData = response.getDataTable();
+      if ( preData == null || preData.getNumberOfRows() == 0 )
+      {
+        setQueryColor( LAUS_CHART, QUERY_EMPTY );
+        return;
+      }
+    
+      var numRows = preData.getNumberOfRows();
+    
+      for ( var i = 0; i < numRows; i++ )
+      {
+        LAUS_items[preData.getValue(i, 0)] = preData.getValue(i, 1);
+      }
+      
+      LAUS_populateItemSelect();
+    }
+    
+    function LAUS_populateItemSelect()
+    {
+      var numRows = preData.getNumberOfRows()
+      
+      var itemList = document.laus_item_form.laus_item_select;
+      itemList.options.length = 0;
+      
+      itemList.options[itemList.options.length] = new Option( "Select a measurement...", -1, false, false );
+      
+      for ( key in LAUS_items )
+      {
+        itemList.options[itemList.options.length] = new Option( LAUS_items[key], key, false, false );
+      }
+      
+      setQueryColor( LAUS_CHART, QUERY_SUCCESS );      
+    }
+    
+    function LAUS_getSelectedItemText()
+    {
+      return document.laus_item_form.laus_item_select.options[document.laus_item_form.laus_item_select.selectedIndex].text;
+    }
+    
+    function LAUS_getSelectedItemValue()
+    {
+      return document.laus_item_form.laus_item_select.options[document.laus_item_form.laus_item_select.selectedIndex].value;
+    }
+    
+    // Constructs the query to be used
+    function createQuery( queryType )
+    {
+      if ( queryType == _CPI_AREAS )
+      {
+        query = new google.visualization.Query(
+          datagovProxy + '?query-option=uri&output=gvds&query-uri=' +
+          encodeURIComponent( 'http://dl.dropbox.com/u/47561249/cpi_areas.sparql' )
+        );      
+      }
+      
+      else if ( queryType == _CPI_ITEMS )
+      {
+        query = new google.visualization.Query(
+          datagovProxy + '?query-option=uri&output=gvds&query-uri=' +
+          encodeURIComponent( 'http://dl.dropbox.com/u/47561249/cpi_items.sparql' )
+        );      
+      }
+      
+      else if ( queryType == _CPI_DATA )
+      {
+        queryString = "PREFIX dgv316: <http://data-gov.tw.rpi.edu/vocab/p/316/> SELECT DISTINCT ?y ?m ?v WHERE { ?s dgv316:series_id \"" + CPI_seriesID + "\" . ?s dgv316:year ?y . ?s dgv316:period ?m . ?s dgv316:value ?v .}";
+        
+        query = new google.visualization.Query(
+          datagovProxy + '?output=gvds&query=' + 
+          encodeURIComponent( queryString )
+        );
+      }
+      
+      else if ( queryType == _LAUS_AREAS )
+      {
+        query = new google.visualization.Query(
+          datagovProxy + '?query-option=uri&output=gvds&query-uri=' +
+          encodeURIComponent( 'http://dl.dropbox.com/u/47561249/laus_areas.sparql' )
+        );      
+      }
+      
+      else if ( queryType == _LAUS_ITEMS )
+      {
+        query = new google.visualization.Query(
+          datagovProxy + '?query-option=uri&output=gvds&query-uri=' +
+          encodeURIComponent( 'http://dl.dropbox.com/u/47561249/laus_items.sparql' )
+        );      
+      }
+      
+      else if ( queryType == _LAUS_DATA )
+      {
+        queryString = "PREFIX dgv316: <http://data-gov.tw.rpi.edu/vocab/p/316/> SELECT DISTINCT ?y ?m ?v WHERE { ?s dgv316:series_id \"" + LAUS_seriesID + "\" . ?s dgv316:year ?y . ?s dgv316:period ?m . ?s dgv316:value ?v . }";
+                
+        query = new google.visualization.Query(
+          datagovProxy + '?output=gvds&query=' + 
+          encodeURIComponent( queryString )
+        );        
+      }
+      
+      else
+      {
+        setQueryColor( CPI_CHART, QUERY_ERROR );
+        setQueryColor( LAUS_CHART, QUERY_ERROR );
+        return;
+      }
+    }
+    
+    function onChangeCPISelection()
+    {
+      // Only make a query for new data if the series ID is valid
+      if ( CPI_constructSeriesID() == true )
+      {
+        createQuery( _CPI_DATA );
+        query.send( CPI_updateVisualizations );
+      }        
+    }    
+    
+    function onChangeLAUSSelection()
+    {
+      // Only make a query for new data if the series ID is valid
+      if ( LAUS_constructSeriesID() == true )
+      {
+        createQuery( _LAUS_DATA );
+        query.send( LAUS_updateVisualizations );
+      }    
+    }
+    
+    function CPI_constructSeriesID()
+    {
+      var surveyAbbrev = "CU";
+      var seasonCode   = "U";
+      var periodCode   = "R";    
+      var areaCode = CPI_getSelectedAreaValue();
+      var itemCode = CPI_getSelectedItemValue();
+      
+      while ( areaCode.length < 4 )
+      {
+        areaCode = "0" + areaCode;
+      } 
+      
+      CPI_seriesID = surveyAbbrev + seasonCode + periodCode + areaCode + itemCode;
+      
+      if ( areaCode == -1 || itemCode == -1 )
+      {
+        setQueryColor( CPI_CHART, QUERY_EMPTY );
+        return false;
+      }     
+      
+      return true;
+    }
+        
+    function CPI_updateVisualizations( response )
+    {
+      if ( response.isError() )
+      {
+        setQueryColor( CPI_CHART, QUERY_ERROR );
+        return;
+      }
+
+      preData = response.getDataTable();
+      if ( preData == null || preData.getNumberOfRows() == 0 )
+      {
+        setQueryColor( CPI_CHART, QUERY_EMPTY );
+        return;
+      }
+      
+      chart1Data = new google.visualization.DataTable();
+      chart1Data.addColumn( 'date', 'Date' );
+      chart1Data.addColumn( 'number', CPI_getSelectedItemText() + " CPI" );
+      
+      var vals = new Array();
+      var numRows = preData.getNumberOfRows();
+      
+      for ( var i = 0; i < numRows; i++ )
+      {
+        var month = preData.getValue(i, 1);
+        if ( month == "M13" )
+        {
+          continue;
+        }
+        
+        else
+        {        
+          vals[0] = new Date( preData.getValue(i, 0), preData.getValue(i, 1).substring(1) , 1);
+          vals[1] = preData.getValue(i, 2);
+        }
+        
+        chart1Data.addRow( vals );
+      }
+      
+      drawChart1();
+    }
+        
+    function drawChart1()
+    {
+      var options = {};
+      setChart1Title( CPI_getSelectedItemText() + " in " + CPI_getSelectedAreaText() );
+      options['colors'] = new Array("#FF0000");
+      options['displayDateBarSeparator'] = true;
+      options['min'] = 95;
+      
+      chart1 = new google.visualization.AnnotatedTimeLine(
+        document.getElementById( "chart1_canvas" ) );
+        
+      chart1.draw( chart1Data, options );
+      
+      setQueryColor( CPI_CHART, QUERY_SUCCESS );
+    }
+    
+    function LAUS_constructSeriesID()
+    {
+      var surveyAbbrev = "LA";
+      var seasonCode   = "U";
+      var areaCode = LAUS_getSelectedAreaValue();
+      var itemCode = LAUS_getSelectedItemValue();
+      
+      while ( itemCode.length <= 1 )
+      {
+        itemCode = "0" + itemCode;
+      } 
+      
+      LAUS_seriesID = surveyAbbrev + seasonCode + areaCode + itemCode;
+      
+      if ( areaCode == -1 || itemCode == -1 )
+      {
+        setQueryColor( LAUS_CHART, QUERY_EMPTY );
+        return false;
+      }
+      
+      return true;
+    }
+    
+    function LAUS_updateVisualizations( response )
+    {
+      if ( response.isError() )
+      {
+        setQueryColor( LAUS_CHART, QUERY_ERROR );
+        return;
+      }
+
+      preData = response.getDataTable();
+      if ( preData == null || preData.getNumberOfRows() == 0 )
+      {
+        setQueryColor( LAUS_CHART, QUERY_EMPTY );
+        return;
+      }
+      
+      chart2Data = new google.visualization.DataTable();
+      chart2Data.addColumn( 'date', 'Date' );
+      chart2Data.addColumn( 'number', LAUS_getSelectedItemText() );
+      
+      var vals = new Array();
+      var numRows = preData.getNumberOfRows();
+      
+      for ( var i = 0; i < numRows; i++ )
+      {
+        var month = preData.getValue(i, 1);
+        if ( month == "M13" )
+        {
+          continue;
+        }
+        
+        else
+        {        
+          vals[0] = new Date( preData.getValue(i, 0), preData.getValue(i, 1).substring(1) , 1);
+          vals[1] = preData.getValue(i, 2);
+        }
+        
+        chart2Data.addRow( vals );
+      }
+      
+      drawChart2();
+    }
+    
+    function drawChart2()
+    {
+      var options = {};
+      setChart2Title( LAUS_getSelectedItemText() + " in " + LAUS_getSelectedAreaText() );
+      options['colors'] = new Array("#FF0000");
+      options['displayDateBarSeparator'] = true;
+      options['min'] = 95;
+      
+      chart2 = new google.visualization.AnnotatedTimeLine(
+        document.getElementById( "chart2_canvas" ) );
+        
+      chart2.draw( chart2Data, options );
+      
+      setQueryColor( LAUS_CHART, QUERY_SUCCESS );
+    }
+    
+    function setChart1Title( msg )
+    {
+      document.getElementById( 'chart1_title_canvas' ).innerHTML = "<b>"+ msg + "</b>";
+    }
+    
+    function setChart2Title( msg )
+    {
+      document.getElementById( 'chart2_title_canvas' ).innerHTML = "<b>" + msg + "</b>";
+    }
+    
+    function setQueryColor( chartNum, state )
+    {
+      if ( chartNum == CPI_CHART )
+      {
+        if ( state == QUERY_SUCCESS )
+        {
+          setCPIQueryResponseColor( querySuccessColor );
+        }
+        
+        else if ( state == QUERY_EMPTY )
+        {
+          setCPIQueryResponseColor( queryEmptyResultsColor );
+        }
+        
+        else if ( state == QUERY_ERROR )
+        {
+          setCPIQueryResponseColor( queryErrorColor );
+        }
+        
+        else 
+        {
+          setCPIQueryResponseColor( queryErrorColor );
+        }
+      }
+    
+      if ( chartNum == LAUS_CHART )
+      {
+        if ( state == QUERY_SUCCESS )
+        {
+          setLAUSQueryResponseColor( querySuccessColor );
+        }
+        
+        else if ( state == QUERY_EMPTY )
+        {
+          setLAUSQueryResponseColor( queryEmptyResultsColor );
+        }
+        
+        else if ( state == QUERY_ERROR )
+        {
+          setLAUSQueryResponseColor( queryErrorColor );
+        }
+        
+        else 
+        {
+          setLAUSQueryResponseColor( queryErrorColor );
+        }
+      }
+    }
+    
+    function setLAUSQueryResponseColor( color )
+    {
+      document.getElementById( "laus_field" ).style.border = "1px solid " + color;
+    }
+    
+    function setCPIQueryResponseColor( color )
+    {
+      document.getElementById( "cpi_field" ).style.border = "1px solid " + color;
+    }
+    
+    function addDebugMessage( msg )
+    {
+      var debugMessage = document.getElementById( 'debug_canvas' ).innerHTML;      
+      debugMessage = debugMessage + "<br />" + msg;
+      document.getElementById( 'debug_canvas' ).innerHTML = debugMessage;
+    }    
+  </script>
+
+  <body>
+    <noscript>This page requires JavaScript be enabled to function properly. Enable JavaScript if you wish to use this page. </noscript>
+    
+    <!-- The header for the page -->
+    <div class="normalDiv headerDiv shadow rounded">
+      <table class="headerTable">
+        <tr>
+          <td style="vertical-align:middle">
+            <font class="titleFont">Consumer Price Index and Employment Statistics</font>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    
+    <!-- The main body component -->
+    <div class="normalDiv bodyDiv shadow rounded">
+      <table>
+        <tr>
+          <td class="instructions">
+            <h3>Data Selection Instructions</h3>
+            Click and change the selection of the dropdown boxes to change the data shown in the graphs.
+            <br /><a href="#details">See below for more information.</a>
+            <br /><br />
+            <fieldset id="cpi_field">
+              <legend>Consumer Price Index</legend>
+              <form name="cpi_area_form" id="cpi_area_form">
+                <center>
+                  Select Area/Region:<br />
+                  <select style="width:200px" name="cpi_area_select" id="cpi_area_select" onChange="onChangeCPISelection()">
+                    <option>Loading area/region list...</option>
+                  </select>
+                </center>                
+              </form>
+              <form name="cpi_item_form" id="cpi_item_form">
+                <center>
+                  Select Item Category:<br />
+                  <select style="width:200px" name="cpi_item_select" id="cpi_item_select" onChange="onChangeCPISelection()">
+                    <option>Loading item list...</option>
+                  </select>
+                </center>
+              </form>
+            </fieldset>
+            <br />
+            <fieldset id="laus_field">
+              <legend>Unemployment Statistics</legend>
+              <form name="laus_area_form" id="laus_area_form">
+                <center>
+                  Select Area/Region:<br />
+                  <select style="width:200px" name="laus_area_select" id="laus_area_select" onChange="onChangeLAUSSelection()">
+                    <option>Loading area/region list...</option>
+                  </select>
+                </center>                
+              </form>
+              <form name="laus_item_form" id="laus_item_form">
+                <center>
+                  Select Item Category:<br />
+                  <select style="width:200px" name="laus_item_select" id="laus_item_select" onChange="onChangeLAUSSelection()">
+                    <option>Loading item list...</option>
+                  </select>
+                </center>
+              </form>
+            </fieldset>   
+
+            <font style="color:#FFFFFF">White = Query OK</font><br />
+            <font style="color:#000000">Black = No Results</font><br />
+            <font style="color:#FF0000">Red = Query Error</font><br />
+            
+          </td>          
+          <td>
+            <div class="chartTitleDiv" id="chart1_title_canvas">
+              <b>Consumer Price Index</b>
+            </div>
+            <div class="chartDiv" id="chart1_canvas" style="width:625px; height:325px">
+              <center>Select an area/region and an item to view CPI data.</center>
+            </div>
+            <br />
+            <div class="chartTitleDiv" id="chart2_title_canvas">
+              <b>Unemployment Statistics</b>
+            </div>
+            <div class="chartDiv" id="chart2_canvas" style="width:625px; height:325px">
+              <center>Select an area/region and a measurement to view employment data.</center>
+            </div>
+            <!--<br />
+            <div class="debugDiv" id="debug_canvas">
+              &lt;No debug info...&gt;
+            </div>-->
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    
+    <!-- Additional details, sources, and relevant data queries for the page -->
+    <div class="normalDiv bodyDiv shadow rounded">
+      <a name="details"><h3>Details</h3></a>
+      <hr />
+        Consumer Price Index (CPI) is the representative price of an item or collection of items.
+        The graphs show the percent change in the price of the item over time. Also talk about Unemployment :(.
+      <a name="sources"><h3>Sources</h3></a>
+      <hr />
+      Sources from data-gov, logd, google visualization, etc.
+      <br />
+      Except we have no sources from logd because logd's data is all sorts of messed up.
+      <a name="relqueries"><h3>Relevant Queries</h3></a>
+      <hr />
+      <ul>
+        <li><a href="http://dl.dropbox.com/u/47561249/cpi_areas.sparql">Query for CPI Areas/Regions</a></li>
+        <ul>
+          <li>This query returns a list of the names and codes for each area in the CPI database.</li>
+        </ul>
+        <li><a href="http://dl.dropbox.com/u/47561249/cpi_items.sparql">Query for CPI Items</a></li>
+        <ul>
+          <li>This query returns a list of the names and codes for each item in the CPI database.</li>
+        </ul>
+        <li><a href="http://dl.dropbox.com/u/47561249/laus_data.sparql">Query for CPI Data for graph.</a></li>
+        <ul>
+          <li>This query returns the dates and values at those dates for the corresponding area and items.</li>
+          <li>Note: [CPI_seriesID] is a variable constructed within the JS and use for this query.</li>
+        </ul>
+        <li><a href="http://dl.dropbox.com/u/47561249/laus_areas.sparql">Query for LAUS Areas/Regions</a></li>
+        <ul>
+          <li>This query returns a list of the names and codes for each area in the LAUS database.</li>
+        </ul>
+        <li><a href="http://dl.dropbox.com/u/47561249/laus_items.sparql">Query for LAUS Items</a></li>
+        <ul>
+          <li>This query returns a list of the names and codes for each item in the LAUS database.</li>
+        </ul>
+        <li><a href="http://dl.dropbox.com/u/47561249/laus_data.sparql">Query for LAUS Data for graph.</a></li>
+        <ul>
+          <li>This query returns the dates and values at those dates for the corresponding area and items.</li>
+          <li>Note: [LAUS_seriesID] is a variable constructed within the JS and use for this query.</li>
+        </ul>
+      </ul>
+      
+    </div>    
+    <br />
+    
+    <!-- The footer for the page -->
+    <div class="normalDiv footerDiv shadow rounded">
+      <font class="footerFont">
+        -Group Members-<br />
+        Jeff Smith | Gary Steelman<br />
+        CS6V81 - Semantic Web, 2011, Dr. Steven Seida
+      </font>
+    </div>
+
+  </body>
+</html>
