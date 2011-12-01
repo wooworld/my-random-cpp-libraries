@@ -126,8 +126,8 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#a0447ff92b80be8d98d0052d7d2a868d7"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a01b27e59f1de1e13627c2e72e69c65c6">Uno_Player</a> (const string &amp;n, unsigned int s)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Full value specification constructor.  <a href="#a01b27e59f1de1e13627c2e72e69c65c6"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_uno___action.html">Uno_Action</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#aa6e4a3177c39ee2572250b2dd4400a43">take_turn</a> (const <a class="el" href="class_uno___p_state.html">Uno_PState</a> &amp;s)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the player to take his turn.  <a href="#aa6e4a3177c39ee2572250b2dd4400a43"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="class_uno___action.html">Uno_Action</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a3339e41a76d08a55bd62cf800cab8daa">take_turn</a> (const <a class="el" href="class_uno___p_state.html">Uno_PState</a> &amp;s)=0</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the player to take his turn.  <a href="#a3339e41a76d08a55bd62cf800cab8daa"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_uno___player.html#a06af109b4d621efa14ba98e4c9395739">m_name</a></td></tr>
@@ -200,12 +200,12 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="uno__player_8cpp_source.html#l00014">14</a> of file <a class="el" href="uno__player_8cpp_source.html">uno_player.cpp</a>.</p>
+<p>Definition at line <a class="el" href="uno__player_8cpp_source.html#l00012">12</a> of file <a class="el" href="uno__player_8cpp_source.html">uno_player.cpp</a>.</p>
 
 </div>
 </div>
 <hr/><h2>Member Function Documentation</h2>
-<a class="anchor" id="aa6e4a3177c39ee2572250b2dd4400a43"></a><!-- doxytag: member="Uno_Player::take_turn" ref="aa6e4a3177c39ee2572250b2dd4400a43" args="(const Uno_PState &amp;s)" -->
+<a class="anchor" id="a3339e41a76d08a55bd62cf800cab8daa"></a><!-- doxytag: member="Uno_Player::take_turn" ref="a3339e41a76d08a55bd62cf800cab8daa" args="(const Uno_PState &amp;s)=0" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -214,7 +214,7 @@ Public Attributes</h2></td></tr>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="class_uno___p_state.html">Uno_PState</a> &amp;&#160;</td>
           <td class="paramname"><em>s</em></td><td>)</td>
-          <td></td>
+          <td><code> [pure virtual]</code></td>
         </tr>
       </table>
 </div>
@@ -235,9 +235,9 @@ Public Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="class_uno___a_i___player.html#a46dd95e2b2ff44fa0b5cc80fb1d66605">Uno_AI_Player</a>, and <a class="el" href="class_uno___human___player.html#a14a73bddb4791cc7406a0e9cfe65979b">Uno_Human_Player</a>.</p>
+<p>Implemented in <a class="el" href="class_uno___a_i___player.html#a46dd95e2b2ff44fa0b5cc80fb1d66605">Uno_AI_Player</a>, and <a class="el" href="class_uno___human___player.html#a14a73bddb4791cc7406a0e9cfe65979b">Uno_Human_Player</a>.</p>
 
-<p>Definition at line <a class="el" href="uno__player_8cpp_source.html#l00018">18</a> of file <a class="el" href="uno__player_8cpp_source.html">uno_player.cpp</a>.</p>
+<p>Definition at line <a class="el" href="uno__player_8cpp_source.html#l00016">16</a> of file <a class="el" href="uno__player_8cpp_source.html">uno_player.cpp</a>.</p>
 
 </div>
 </div>
@@ -302,7 +302,7 @@ Public Attributes</h2></td></tr>
 </div>
 
 
-    <li class="footer">Generated on Wed Oct 26 2011 00:19:47 for UnoAI by
+    <li class="footer">Generated on Thu Dec 1 2011 01:08:54 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

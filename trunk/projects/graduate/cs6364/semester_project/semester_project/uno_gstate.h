@@ -30,12 +30,12 @@ class Uno_GState : public Uno_State
     /**
      * \brief The list of players currently in the game. 
      */
-    vector<Uno_Player> m_players;
+    vector<Uno_Player*> m_players;
 
     /**
      * \brief The list of hands for players currently in the game. 
      */
-    vector<list<card> > m_hands;
+    vector<vector<card> > m_hands;
 
     /**
      * \brief The unplayed deck of cards for this game.

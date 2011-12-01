@@ -18,6 +18,9 @@ Uno_AI_Player::Uno_AI_Player( const string& n, unsigned int s, unsigned int l )
 
 Uno_Action Uno_AI_Player::take_turn( const Uno_PState& s )
 {
+  cout << "Uno_AI_Player take_turn()" << endl;
+  cin.get();
+
   think();
 
   return choose_action();

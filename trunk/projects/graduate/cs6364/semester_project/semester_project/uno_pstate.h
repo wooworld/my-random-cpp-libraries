@@ -16,7 +16,7 @@ using namespace std;
 /** 
  * \brief Type definition for a hand of Uno cards. 
  */
-typedef list<card> hand;
+typedef vector<card> hand;
 
 #define UNO_INIT_HAND_SIZE 7    /*!< Initial hand size for an Uno hand. */
 

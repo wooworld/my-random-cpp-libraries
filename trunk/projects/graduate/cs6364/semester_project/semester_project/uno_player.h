@@ -50,7 +50,7 @@ class Uno_Player
      * \param s The state of the game as visible from this player's perspective.
      * \retval Uno_Action The Uno_Action the player chooses this turn. 
      */
-    Uno_Action take_turn( const Uno_PState& s );    
+    virtual Uno_Action take_turn( const Uno_PState& s ) = 0;    
 
     /**
      * \brief The player's name.

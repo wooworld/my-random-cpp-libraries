@@ -100,22 +100,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="uno__player_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 
 <a name="l00006"></a>00006 <span class="preprocessor">#include &quot;<a class="code" href="uno__player_8h.html" title="Contains the functionality for having a default player in the Uno game.">uno_player.h</a>&quot;</span>
 <a name="l00007"></a>00007 <span class="preprocessor">#include &quot;<a class="code" href="uno__action_8h.html" title="Contains the construct for an Uno_Action.">uno_action.h</a>&quot;</span>
-<a name="l00008"></a>00008 
-<a name="l00009"></a>00009 <span class="keyword">using namespace </span>std;
-<a name="l00010"></a>00010 
-<a name="l00011"></a>00011 <span class="comment">/*Uno_Player::Uno_Player() : m_name(&quot;&quot;), m_score(0)</span>
-<a name="l00012"></a>00012 <span class="comment">{}*/</span>
-<a name="l00013"></a>00013 
-<a name="l00014"></a><a class="code" href="class_uno___player.html#a01b27e59f1de1e13627c2e72e69c65c6">00014</a> <a class="code" href="class_uno___player.html#a0447ff92b80be8d98d0052d7d2a868d7" title="Default constructor.">Uno_Player::Uno_Player</a>( <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s ) :
-<a name="l00015"></a>00015 m_name(n), m_score(s)
-<a name="l00016"></a>00016 {}
-<a name="l00017"></a>00017 
-<a name="l00018"></a><a class="code" href="class_uno___player.html#aa6e4a3177c39ee2572250b2dd4400a43">00018</a> <a class="code" href="class_uno___action.html" title="Contains the construct for an Uno_Action.">Uno_Action</a> <a class="code" href="class_uno___player.html#aa6e4a3177c39ee2572250b2dd4400a43" title="Calls the player to take his turn.">Uno_Player::take_turn</a>( <span class="keyword">const</span> <a class="code" href="class_uno___p_state.html" title="Contains the player, limited view of the game state.">Uno_PState</a>&amp; s )
-<a name="l00019"></a>00019 {
-<a name="l00020"></a>00020   <a class="code" href="class_uno___action.html" title="Contains the construct for an Uno_Action.">Uno_Action</a> a;
-<a name="l00021"></a>00021   <span class="keywordflow">return</span> a;
-<a name="l00022"></a>00022 }
-<a name="l00023"></a>00023 
+<a name="l00008"></a>00008 <span class="preprocessor">#include &lt;iostream&gt;</span>
+<a name="l00009"></a>00009 
+<a name="l00010"></a>00010 <span class="keyword">using namespace </span>std;
+<a name="l00011"></a>00011 
+<a name="l00012"></a><a class="code" href="class_uno___player.html#a01b27e59f1de1e13627c2e72e69c65c6">00012</a> <a class="code" href="class_uno___player.html#a0447ff92b80be8d98d0052d7d2a868d7" title="Default constructor.">Uno_Player::Uno_Player</a>( <span class="keyword">const</span> <span class="keywordtype">string</span>&amp; n, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> s ) :
+<a name="l00013"></a>00013 m_name(n), m_score(s)
+<a name="l00014"></a>00014 {}
+<a name="l00015"></a>00015 
+<a name="l00016"></a><a class="code" href="class_uno___player.html#a3339e41a76d08a55bd62cf800cab8daa">00016</a> <a class="code" href="class_uno___action.html" title="Contains the construct for an Uno_Action.">Uno_Action</a> <a class="code" href="class_uno___player.html#a3339e41a76d08a55bd62cf800cab8daa" title="Calls the player to take his turn.">Uno_Player::take_turn</a>( <span class="keyword">const</span> <a class="code" href="class_uno___p_state.html" title="Contains the player, limited view of the game state.">Uno_PState</a>&amp; s )
+<a name="l00017"></a>00017 {
+<a name="l00018"></a>00018   <a class="code" href="class_uno___action.html" title="Contains the construct for an Uno_Action.">Uno_Action</a> a;
+<a name="l00019"></a>00019 
+<a name="l00020"></a>00020   cout &lt;&lt; <span class="stringliteral">&quot;Uno_Player take_turn()&quot;</span> &lt;&lt; endl;
+<a name="l00021"></a>00021   cin.get();
+<a name="l00022"></a>00022 
+<a name="l00023"></a>00023   <span class="keywordflow">return</span> a;
+<a name="l00024"></a>00024 }
+<a name="l00025"></a>00025 
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
@@ -136,7 +138,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 
-    <li class="footer">Generated on Wed Oct 26 2011 00:19:46 for UnoAI by
+    <li class="footer">Generated on Thu Dec 1 2011 01:08:53 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>
