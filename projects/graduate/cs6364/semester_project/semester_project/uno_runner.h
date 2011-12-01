@@ -53,6 +53,15 @@ class Uno_Runner
     bool setup();
 
     /**
+     * \brief Shuts down the game.
+     * \retval true If the shut down executed properly.
+     * \retval false If the shut down encountered an error during execution.
+     *
+     * Deallocates memory for the game and then exits.
+     */
+    bool shut_down();
+
+    /**
      * \brief Adds player p to the game if possible.
      * \param p The Uno_Player to add to the game.
      * \retval true If the player could be added to the game properly.
@@ -61,7 +70,7 @@ class Uno_Runner
      * If num_players() + 1 > UNO_MAX_PLAYERS, player p will not be added to 
      * the game and this function will return false. 
      */ 
-    bool add_player( const Uno_Player& p );
+    bool add_player( Uno_Player * p );
 
     /**
      * \brief Removes player i from the game if possible.
@@ -133,6 +142,11 @@ class Uno_Runner
     void print_state();
 
     /**
+     * \brief Prints instructions on how to play the game.
+     */
+    void print_help();
+
+    /**
      * \brief Runs the Uno game. 
      * \pre setup() or equivalent member data population has been executed and
      * returns true.
@@ -184,14 +198,23 @@ class Uno_Runner
     void print_turn();
 
     /**
+     * \brief Prints the options a player has for his actions during a turn.
+     *
+     * Prints out the possible actions for a player during his turn.
+     */
+    void print_options();
+
+    /**
      * \brief Player i draws a card from the deck.
      *
      * Player i draws a card from the deck, d. The player takes the top card
      * and places it into their hand. 
      * \param i The index of the player who will draw a card.
      * \param d The deck for the player to draw a card from.
+     * \retval true if a card was able to be drawn.
+     * \retval false otherwise.
      */
-    void draw_card( unsigned int i, deck& d );
+    bool draw_card( unsigned int i, deck& d );
 
     /**
      * \brief Returns the card at index i in the current player's hand.
@@ -200,9 +223,19 @@ class Uno_Runner
      * The card is removed from the player's hand and thus the size of this 
      * player's hand is reduced by 1.
      * \param i The index of the card in the player's hand to play.
-     * \return The card the player is playing.
+     * \return card The card from the player's hand that is played. 
      */
     card play_card( unsigned char i );
+
+    /**
+     * \brief Discards a card from the top of a deck to the top of another deck.
+     *
+     * \param d The deck to discard the top card of.
+     * \param g The deck to place the discarded card onto.
+     * \retval true If a card could be discarded.
+     * \retval false Otherwise.
+     */ 
+    bool discard_card( deck& d, deck& g );
 
     /**
      * \brief The full state of the game. The server has all of the information.
