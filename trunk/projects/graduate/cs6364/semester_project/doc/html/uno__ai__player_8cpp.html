@@ -93,6 +93,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </script>
 <div id="doc-content">
 <div class="header">
+  <div class="summary">
+<a href="#define-members">Defines</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_ai_player.cpp File Reference</div>  </div>
 </div>
@@ -101,16 +104,47 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Contains the Uno AI Player class and functionality.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="uno__ai__player_8h_source.html">uno_ai_player.h</a>&quot;</code><br/>
-<code>#include &quot;<a class="el" href="uno__action_8h_source.html">uno_action.h</a>&quot;</code><br/>
+<code>#include &lt;algorithm&gt;</code><br/>
 <code>#include &lt;iostream&gt;</code><br/>
+<code>#include &lt;ctime&gt;</code><br/>
 </div>
 <p><a href="uno__ai__player_8cpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr><td colspan="2"><h2><a name="define-members"></a>
+Defines</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uno__ai__player_8cpp.html#a94f045080b8292e0497d9ea69650ea13">UNO_TIME_PER_TURN</a></td></tr>
+<tr><td colspan="2"><h2><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a187b797b1f9cdadccdffa80aed68c440"></a><!-- doxytag: member="uno_ai_player.cpp::wait" ref="a187b797b1f9cdadccdffa80aed68c440" args="(int seconds)" -->
+void&#160;</td><td class="memItemRight" valign="bottom"><b>wait</b> (int seconds)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ba8a61e6dd784dac94f225bd5482829"></a><!-- doxytag: member="uno_ai_player.cpp::target_comp" ref="a9ba8a61e6dd784dac94f225bd5482829" args="(const std::pair&lt; unsigned int, unsigned int &gt; &amp;lhs, const std::pair&lt; unsigned int, unsigned int &gt; &amp;rhs)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>target_comp</b> (const std::pair&lt; unsigned int, unsigned int &gt; &amp;lhs, const std::pair&lt; unsigned int, unsigned int &gt; &amp;rhs)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afcae15f588b8799fef447bcfeade8089"></a><!-- doxytag: member="uno_ai_player.cpp::color_comp" ref="afcae15f588b8799fef447bcfeade8089" args="(const std::pair&lt; unsigned int, unsigned int &gt; &amp;lhs, const std::pair&lt; unsigned int, unsigned int &gt; &amp;rhs)" -->
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>color_comp</b> (const std::pair&lt; unsigned int, unsigned int &gt; &amp;lhs, const std::pair&lt; unsigned int, unsigned int &gt; &amp;rhs)</td></tr>
+</table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><p>Contains the Uno AI Player class and functionality. </p>
 <dl class="see"><dt><b>See also:</b></dt><dd><a class="el" href="uno__ai__player_8h.html" title="Contains the functionality for having a computer player in the Uno game.">uno_ai_player.h</a> </dd></dl>
 
 <p>Definition in file <a class="el" href="uno__ai__player_8cpp_source.html">uno_ai_player.cpp</a>.</p>
-</div></div>
+</div><hr/><h2>Define Documentation</h2>
+<a class="anchor" id="a94f045080b8292e0497d9ea69650ea13"></a><!-- doxytag: member="uno_ai_player.cpp::UNO_TIME_PER_TURN" ref="a94f045080b8292e0497d9ea69650ea13" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UNO_TIME_PER_TURN</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+<p>Maximum number of seconds per turn the AI is allowed to think </p>
+
+<p>Definition at line <a class="el" href="uno__ai__player_8cpp_source.html#l00013">13</a> of file <a class="el" href="uno__ai__player_8cpp_source.html">uno_ai_player.cpp</a>.</p>
+
+</div>
+</div>
+</div>
 </div>
   <div id="nav-path" class="navpath">
     <ul>
@@ -120,7 +154,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -130,7 +164,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 
-    <li class="footer">Generated on Thu Dec 1 2011 01:08:54 for UnoAI by
+    <li class="footer">Generated on Sat Feb 4 2012 02:35:20 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

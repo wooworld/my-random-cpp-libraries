@@ -115,23 +115,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00027"></a>00027   <span class="comment">// Create a runner.</span>
 <a name="l00028"></a>00028   <a class="code" href="class_uno___runner.html" title="Runs an Uno game.">Uno_Runner</a> runner;
 <a name="l00029"></a>00029 
-<a name="l00030"></a>00030   <span class="comment">// Add two players.</span>
-<a name="l00031"></a>00031   <a class="code" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a> *p1 = <span class="keyword">new</span> <a class="code" href="class_uno___human___player.html" title="A human player for the game.">Uno_Human_Player</a>( <span class="stringliteral">&quot;Gary&quot;</span>, 0 );  
-<a name="l00032"></a>00032   <a class="code" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a> *p2 = <span class="keyword">new</span> <a class="code" href="class_uno___human___player.html" title="A human player for the game.">Uno_Human_Player</a>( <span class="stringliteral">&quot;Dr. Moldovan&quot;</span>, 0 );
-<a name="l00033"></a>00033   runner.<a class="code" href="class_uno___runner.html#ac03ac9d2009f12427d3b01e806b6a311" title="Adds player p to the game if possible.">add_player</a>( p1 );
-<a name="l00034"></a>00034   runner.<a class="code" href="class_uno___runner.html#ac03ac9d2009f12427d3b01e806b6a311" title="Adds player p to the game if possible.">add_player</a>( p2 );
-<a name="l00035"></a>00035 
-<a name="l00036"></a>00036   runner.<a class="code" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8" title="Sets up a game to be played.">setup</a>();
+<a name="l00030"></a>00030   runner.<a class="code" href="class_uno___runner.html#a2e2a4cbfa7c6f0d0c02cd8f7ad781829" title="Sets the number of difficulty levels for an AI player.">set_difficulty_levels</a>( 3 );
+<a name="l00031"></a>00031 
+<a name="l00032"></a>00032   <span class="comment">// Add two players.</span>
+<a name="l00033"></a>00033   <a class="code" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a> *p1 = <span class="keyword">new</span> <a class="code" href="class_uno___human___player.html" title="A human player for the game.">Uno_Human_Player</a>( <span class="stringliteral">&quot;Gary&quot;</span>, 0 );  
+<a name="l00034"></a>00034   <a class="code" href="class_uno___player.html" title="Base Uno_Player class.">Uno_Player</a> *p2 = <span class="keyword">new</span> <a class="code" href="class_uno___a_i___player.html" title="An AI player for the game.">Uno_AI_Player</a>( <span class="stringliteral">&quot;Dr. Moldovan&quot;</span>, 0, 3 );
+<a name="l00035"></a>00035   runner.<a class="code" href="class_uno___runner.html#ac03ac9d2009f12427d3b01e806b6a311" title="Adds player p to the game if possible.">add_player</a>( p1 );
+<a name="l00036"></a>00036   runner.<a class="code" href="class_uno___runner.html#ac03ac9d2009f12427d3b01e806b6a311" title="Adds player p to the game if possible.">add_player</a>( p2 );
 <a name="l00037"></a>00037 
-<a name="l00038"></a>00038   cout &lt;&lt; <span class="stringliteral">&quot;===The initial game state===&quot;</span> &lt;&lt; endl;
-<a name="l00039"></a>00039   runner.<a class="code" href="class_uno___runner.html#a2d16089c5bdf20c1120be067797a349a" title="Prints out the state of the game. This includes:">print_state</a>();
-<a name="l00040"></a>00040 
-<a name="l00041"></a>00041   runner.<a class="code" href="class_uno___runner.html#a3f0847989a9868bcd023b41ee5f28d0a" title="Runs the Uno game.">run</a>();
+<a name="l00038"></a>00038   runner.<a class="code" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8" title="Sets up a game to be played.">setup</a>();
+<a name="l00039"></a>00039 
+<a name="l00040"></a>00040   cout &lt;&lt; <span class="stringliteral">&quot;===The initial game state===&quot;</span> &lt;&lt; endl;
+<a name="l00041"></a>00041   runner.<a class="code" href="class_uno___runner.html#a2d16089c5bdf20c1120be067797a349a" title="Prints out the state of the game. This includes:">print_state</a>();
 <a name="l00042"></a>00042 
-<a name="l00043"></a>00043   cin.get();
+<a name="l00043"></a>00043   runner.<a class="code" href="class_uno___runner.html#a3f0847989a9868bcd023b41ee5f28d0a" title="Runs the Uno game.">run</a>();
 <a name="l00044"></a>00044 
-<a name="l00045"></a>00045   <span class="keywordflow">return</span> 0;
-<a name="l00046"></a>00046 }
+<a name="l00045"></a>00045   <span class="comment">// cin.get();</span>
+<a name="l00046"></a>00046 
+<a name="l00047"></a>00047   <span class="keywordflow">return</span> 0;
+<a name="l00048"></a>00048 }
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
@@ -142,7 +144,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -152,7 +154,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 
-    <li class="footer">Generated on Thu Dec 1 2011 01:08:53 for UnoAI by
+    <li class="footer">Generated on Sat Feb 4 2012 02:35:20 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

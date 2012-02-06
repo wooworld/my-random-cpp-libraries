@@ -30,7 +30,7 @@ class Uno_Player
      *
      * Constructs an Uno_Player with empty and zero values. 
      */
-    Uno_Player() : m_name(""), m_score(0)
+    Uno_Player() : m_name(""), m_score(0), m_id(0)
     {}
 
     /** 
@@ -68,6 +68,11 @@ class Uno_Player
      * reach 500 points in a regulation game is considered the winner. 
      */
     unsigned int m_score;
+
+    /**
+     * \brief The player's unique ID number, as it changes per game
+     */
+    unsigned int m_id;
 };
 
 #endif

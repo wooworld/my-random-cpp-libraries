@@ -101,6 +101,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 This is the complete list of members for <a class="el" href="class_uno___runner.html">Uno_Runner</a>, including all inherited members.<table>
   <tr class="memlist"><td><a class="el" href="class_uno___runner.html#ac03ac9d2009f12427d3b01e806b6a311">add_player</a>(Uno_Player *p)</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_uno___runner.html#ae1a73b87b7ab4de19a0df39a2c58729d">get_difficulty_levels</a>()</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_uno___runner.html#aa3f43b6ab9042ff74a34ad3fae8a0b11">num_players</a>()</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_uno___runner.html#aa9600906c614fedc5396384c400b08da">print_help</a>()</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_uno___runner.html#a885e7ac58c656e1cb0bc4e49cd494874">print_played</a>(unsigned char f)</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
@@ -108,10 +109,10 @@ This is the complete list of members for <a class="el" href="class_uno___runner.
   <tr class="memlist"><td><a class="el" href="class_uno___runner.html#a53b830015937722abd8ec515405534f9">print_unplayed</a>(unsigned char f)</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_uno___runner.html#acae1277934b338e4c6edd8d45eea5a3e">remove_player</a>(unsigned char i, unsigned char c=0)</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_uno___runner.html#a3f0847989a9868bcd023b41ee5f28d0a">run</a>()</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
+  <tr class="memlist"><td><a class="el" href="class_uno___runner.html#a2e2a4cbfa7c6f0d0c02cd8f7ad781829">set_difficulty_levels</a>(unsigned int l)</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td><code> [inline]</code></td></tr>
   <tr class="memlist"><td><a class="el" href="class_uno___runner.html#ac98c68091701dcf1deeaad7a5168dec8">set_played_deck</a>(const deck &amp;d)</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_uno___runner.html#a79c386fc295240e53b20c1270f31ab41">set_unplayed_deck</a>(const deck &amp;d)</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_uno___runner.html#ae015517f7d4493ddbaaeacd98be0b9b8">setup</a>()</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
-  <tr class="memlist"><td><a class="el" href="class_uno___runner.html#ab7e2da1ce9da9943669646064d0527f9">shut_down</a>()</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
   <tr class="memlist"><td><a class="el" href="class_uno___runner.html#a485bf9506331363e4b0d6208ee446497">Uno_Runner</a>()</td><td><a class="el" href="class_uno___runner.html">Uno_Runner</a></td><td></td></tr>
 </table></div>
 </div>
@@ -122,7 +123,7 @@ This is the complete list of members for <a class="el" href="class_uno___runner.
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -132,7 +133,7 @@ This is the complete list of members for <a class="el" href="class_uno___runner.
 </div>
 
 
-    <li class="footer">Generated on Thu Dec 1 2011 01:08:54 for UnoAI by
+    <li class="footer">Generated on Sat Feb 4 2012 02:35:20 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

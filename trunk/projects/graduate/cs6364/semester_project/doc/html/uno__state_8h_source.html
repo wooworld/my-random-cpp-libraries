@@ -112,7 +112,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00027"></a><a class="code" href="class_uno___state.html">00027</a> <span class="preprocessor">class Uno_State</span>
 <a name="l00028"></a>00028 <span class="preprocessor"></span>{
 <a name="l00029"></a>00029   <span class="keyword">public</span>:
-<a name="l00035"></a><a class="code" href="class_uno___state.html#a9c349d9df19daaee8353dde4e8b3575c">00035</a>     <a class="code" href="class_uno___state.html" title="Contains the basic elements of a state common to the server and players.">Uno_State</a>() : m_at_play(0), m_turn_count(0), m_time_per_turn(0)
+<a name="l00035"></a><a class="code" href="class_uno___state.html#a9c349d9df19daaee8353dde4e8b3575c">00035</a>     <a class="code" href="class_uno___state.html" title="Contains the basic elements of a state common to the server and players.">Uno_State</a>() : m_at_play(0), m_turn_count(0), m_time_per_turn(0), m_msg(<span class="stringliteral">&quot;&quot;</span>), m_forward(true), m_ai_difficulty_levels(0)
 <a name="l00036"></a>00036     {}
 <a name="l00037"></a>00037 
 <a name="l00041"></a><a class="code" href="class_uno___state.html#a7c0374eff2c4a4b3eed4b7eebb72a81a">00041</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_uno___state.html#a7c0374eff2c4a4b3eed4b7eebb72a81a" title="The ID of the player whose turn it is.">m_at_play</a>;
@@ -124,9 +124,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a name="l00059"></a><a class="code" href="class_uno___state.html#a80b2bee84fda6bdd9c37bc2309c81608">00059</a>     <span class="keywordtype">double</span> <a class="code" href="class_uno___state.html#a80b2bee84fda6bdd9c37bc2309c81608" title="The number of second allotted to a player to choose their move for a turn.">m_time_per_turn</a>;
 <a name="l00060"></a>00060 
 <a name="l00064"></a><a class="code" href="class_uno___state.html#ab345f325e023d89b0c7c3f8bf3a629da">00064</a>     <span class="keywordtype">string</span> <a class="code" href="class_uno___state.html#ab345f325e023d89b0c7c3f8bf3a629da" title="A multipurpose message used by the server and the player.">m_msg</a>;
-<a name="l00065"></a>00065 };
-<a name="l00066"></a>00066 
-<a name="l00067"></a>00067 <span class="preprocessor">#endif</span>
+<a name="l00065"></a>00065 
+<a name="l00069"></a><a class="code" href="class_uno___state.html#afe29e72e0b4229766da2c94eec7a6517">00069</a>     <span class="keywordtype">bool</span> <a class="code" href="class_uno___state.html#afe29e72e0b4229766da2c94eec7a6517" title="The order players take turns in; true is ascending, false is descending.">m_forward</a>;
+<a name="l00070"></a>00070 
+<a name="l00074"></a><a class="code" href="class_uno___state.html#a545a182289af00956421146a6655e4b7">00074</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> <a class="code" href="class_uno___state.html#a545a182289af00956421146a6655e4b7" title="The number of difficulty levels for AI players.">m_ai_difficulty_levels</a>;
+<a name="l00075"></a>00075 };
+<a name="l00076"></a>00076 
+<a name="l00077"></a>00077 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
@@ -137,7 +141,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -147,7 +151,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 
-    <li class="footer">Generated on Thu Dec 1 2011 01:08:54 for UnoAI by
+    <li class="footer">Generated on Sat Feb 4 2012 02:35:20 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

@@ -1,0 +1,470 @@
+/*! \file uno_ai_player.cpp
+    \brief Contains the Uno AI Player class and functionality.
+    \sa uno_ai_player.h
+*/
+
+#include "uno_ai_player.h"
+#include <algorithm>
+#include <iostream>
+#include <ctime>
+
+using namespace std;
+
+#define UNO_TIME_PER_TURN 10 /*!< Maximum number of seconds per turn the AI is allowed to think */
+
+void wait( int seconds )
+{
+  clock_t endwait;
+  endwait = clock () + seconds * CLOCKS_PER_SEC ;
+  while (clock() < endwait) {}
+}
+
+Uno_AI_Player::Uno_AI_Player( const string& n, unsigned int s, unsigned int l )
+{
+  m_name = n;
+  m_score = s;
+  m_level = l;
+}
+
+Uno_Action Uno_AI_Player::take_turn( const Uno_PState& s )
+{
+  // Start the timer. This assumes that the AI will always return a valid action
+  // and never be called to repeat a turn. 
+  m_time_left = (double)UNO_TIME_PER_TURN - (double)(s.m_ai_difficulty_levels - m_level) * ((double)UNO_TIME_PER_TURN / (double)s.m_ai_difficulty_levels);
+
+  cout << "Taking " << m_time_left << " to think this turn" << endl;
+
+  // Convert the PState into a search node
+  Uno_AI_Search_Node sn;
+  sn.m_state = s;
+
+  // Initialize the frontier
+  m_frontier.clear();
+  m_frontier.push_back( sn );
+
+  // Expand the frontier, look into the future, find a good state
+  think();
+
+  // Fetch the best action
+  choose_action();
+
+  // Return the action that results in the best far-future state
+  return m_best_action;
+}
+
+void Uno_AI_Player::think()
+{  
+  // Create a local, sorted copy of the default deck for set union-ing later
+  create_deck( m_sorted_default_deck );
+  sort( m_sorted_default_deck.begin(), m_sorted_default_deck.end() );
+
+  // vector of succcessors for a given state
+  vector<Uno_AI_Search_Node> successors;
+
+  while ( m_time_left > 0 )
+  {
+    m_timer.startTimer();    
+
+    successor( m_frontier.front(), successors );
+
+    // Insert the successors into the frontier
+    for ( unsigned int i = 0; i < successors.size(); i++ )
+    {
+      if ( goal_test( successors[i] ) )
+      {
+        m_best_action = successors[i].m_actions.front();
+        return;
+      }
+      
+      cout << "Storing a node of size " << sizeof( successors[i] ) << " in the frontier." << endl;
+      
+      // if the size of the frontier is > 50,000, only push nodes who are better
+      
+      push_frontier_node( successors[i] );
+    }
+
+    pop_frontier_node();
+
+    // If no successors were generated for this state...do what?
+
+    wait( 1 );
+
+    // Decrease time left by the amount used to search this ply
+    m_timer.stopTimer();    
+    m_time_left -= m_timer.getElapsedTime();
+    cout << "Time left for this turn " << m_time_left << endl;
+  }
+}
+
+void Uno_AI_Player::choose_action()
+{
+  if ( !m_frontier.empty() && !m_frontier.front().m_actions.empty() )
+  {
+    m_best_action = m_frontier.front().m_actions.front();
+  }
+
+  else
+  {
+    m_best_action.m_act = UNO_ACTION_PASS;
+  }  
+}
+
+void Uno_AI_Player::successor( const Uno_AI_Search_Node& s, vector<Uno_AI_Search_Node>& suc )
+{  
+  // the node to add to the frontier!
+  Uno_AI_Search_Node to_add;
+
+  // If the AI is at play this turn
+  if ( s.m_state.m_at_play == m_id )
+  {
+    // Copy the played deck for us to use for set difference
+    deck played_deck_copy( s.m_state.m_played );
+    sort( played_deck_copy.begin(), played_deck_copy.end() );
+
+    deck drawable( m_sorted_default_deck.size(), 0 );
+    deck::iterator drawable_it;
+
+    drawable_it = set_symmetric_difference( 
+      m_sorted_default_deck.begin(), 
+      m_sorted_default_deck.end(), 
+      played_deck_copy.begin(), 
+      played_deck_copy.end(), 
+      drawable.begin() 
+      );
+
+    cout << "Size of unplayed deck: " << int(drawable_it - drawable.begin()) << endl;
+    print_deck( drawable );
+
+    suc.clear();  
+
+    // Determine if we can make any actions with this node, if not, pass.
+    if ( drawable.empty() && !can_play_any(s) )
+    {
+      to_add = s;
+      populate_successor_node_pass( to_add );
+      suc.push_back( to_add );
+      return;
+    }
+
+    // Add successor node as if drawing any single card from drawable cards
+    // TODO improvements for not generating the same state twice?!
+    //for ( deck::iterator it = drawable.begin(); it != drawable_it; ++it )
+    for ( deck::iterator it = drawable.begin(); (it != drawable.end()) && (*it != 0); ++it )
+    {
+      to_add = s;
+      populate_successor_node_draw( to_add, *it );
+      suc.push_back( to_add );
+      drawable.pop_back();
+    }
+    
+    // Add successor node for playing any single card from the hand
+    for ( unsigned int i = 0; i < s.m_state.m_hand.size(); i++ )
+    {
+      if ( can_play_selected( s, i ) )
+      {
+        to_add = s;
+        card c = to_add.m_state.m_hand[i];
+
+        // Special case of having to add 4 different colors of cards to the fronier
+        if ( CARDTYPE( c ) == UNO_WILD || CARDTYPE( c ) == UNO_WILD_DRAW_FOUR )
+        {
+          to_add = s;
+          populate_successor_node_play( to_add, i, 'r' );
+          suc.push_back( to_add );
+          to_add = s;
+          populate_successor_node_play( to_add, i, 'g' );
+          suc.push_back( to_add );
+          to_add = s;
+          populate_successor_node_play( to_add, i, 'b' );
+          suc.push_back( to_add );
+          to_add = s;
+          populate_successor_node_play( to_add, i, 'y' );
+          suc.push_back( to_add );
+        }
+
+        // Just a normal card, add only one successor node
+        else
+        {
+          to_add = s;
+          populate_successor_node_play( to_add, i, 0 );
+          suc.push_back( to_add );
+        }        
+      }
+    }
+  }
+
+  // Another player is at play this turn TODO
+  else
+  {
+
+  }
+}
+
+void Uno_AI_Player::populate_successor_node_pass( Uno_AI_Search_Node& s )
+{
+  advance_players( s, 1 );
+}
+
+void Uno_AI_Player::populate_successor_node_draw( Uno_AI_Search_Node& s, card d )
+{
+  // Add card to hand from unplayed, set action, and evaluate new state
+  s.m_state.m_hand.push_back( d );
+  s.m_state.m_hand_counts[m_id]++;
+  if ( s.m_state.m_unplayed_count == 0 )
+  {
+    s.m_state.m_unplayed_count = s.m_state.m_played.size();
+    s.m_state.m_unplayed_count--;
+    s.m_state.m_played.clear();
+  }
+  //advance_players( s, 0 );
+}
+
+void Uno_AI_Player::populate_successor_node_play( Uno_AI_Search_Node& s, unsigned int idx, char color )
+{
+  unsigned int players_to_advance = 1;
+  unsigned int cards_to_draw = 0;
+  unsigned int num_players = s.m_state.m_hand_counts.size();
+
+  card c = s.m_state.m_hand[idx];
+
+ // Handle special effects for special cards
+  if ( CARDTYPE( c ) == UNO_REVERSE )
+  {
+    s.m_state.m_forward = !s.m_state.m_forward;
+    if ( num_players == 2)
+    {
+      players_to_advance = 0;
+    }
+  }
+
+  if ( CARDTYPE( c ) == UNO_SKIP )
+  {
+    players_to_advance = 2;
+  }
+
+  if ( CARDTYPE( c ) == UNO_DRAW_TWO )
+  {
+    cards_to_draw = 2;
+    players_to_advance = 2;
+  }
+
+  if ( CARDTYPE( c ) == UNO_WILD_DRAW_FOUR )
+  {
+    cards_to_draw = 4;
+    players_to_advance = 2;
+  }
+
+  if ( CARDTYPE( c ) == UNO_WILD_DRAW_FOUR || CARDTYPE( c ) == UNO_WILD )
+  {
+    char new_color = 0;
+    if ( color == 'r' )
+    {
+      new_color = (unsigned int)UNO_RED;
+    }
+
+    else if ( color == 'b' )
+    {
+      new_color = (unsigned int)UNO_BLUE;
+    }
+
+    else if ( color == 'g' )
+    {
+      new_color = (unsigned int)UNO_GREEN;
+    }
+
+    else if ( color == 'y' )
+    {
+      new_color = (unsigned int)UNO_YELLOW;
+    }
+
+    c = CARD( CARDTYPE( c ), new_color );
+  }   
+
+  // If the previous card on the top of the deck is a wild, clean its color
+  if ( !s.m_state.m_played.empty() )
+  {
+    card d = s.m_state.m_played.back();
+    if ( CARDTYPE( d ) == UNO_WILD || CARDTYPE( d ) == UNO_WILD_DRAW_FOUR )
+    {
+      s.m_state.m_played[s.m_state.m_played.size() - 1] = CARD( UNO_NO_COLOR, CARDTYPE( d ) );
+    }
+  }
+
+  s.m_state.m_played.push_back( c );
+  advance_players( s, players_to_advance );
+  force_draw_cards( s, cards_to_draw );
+}    
+
+void Uno_AI_Player::advance_players( Uno_AI_Search_Node &s, unsigned int p )
+{
+  unsigned int curr_player = s.m_state.m_at_play;
+  unsigned int num_players = s.m_state.m_hand_counts.size();
+
+  // Calculate the next player
+  // Normal, forward play, wrap around to lower # players if necessary
+  if ( s.m_state.m_forward )
+  {
+    curr_player += p;
+    curr_player = curr_player % num_players;
+  }
+  
+  // Reversed, backward play, wrap around to higher # players if necessary
+  else
+  {
+    curr_player -= p;
+    if ( curr_player < 0 )
+    {
+      curr_player += num_players;
+    }
+  }   
+
+  s.m_state.m_at_play = curr_player;
+}
+
+void Uno_AI_Player::force_draw_cards( Uno_AI_Search_Node &s, unsigned int c )
+{
+  unsigned int curr_player = s.m_state.m_at_play;
+  unsigned int num_players = s.m_state.m_hand_counts.size();
+
+  // Player played a WD4 or D2 card, make someone draw!
+  if ( c != 0 )
+  {
+    int player_to_draw = curr_player;
+
+    // Calculate the player who has to draw cards!
+    if ( s.m_state.m_forward )
+    {
+      player_to_draw++;
+      player_to_draw = player_to_draw % num_players;
+    }
+
+    else
+    {
+      player_to_draw--;
+      if ( player_to_draw < 0 )
+      {
+        player_to_draw += num_players;
+      }
+    }
+
+    for ( unsigned int i = 0; i < c; i++ )
+    {
+      s.m_state.m_hand_counts[player_to_draw]++;
+      if ( s.m_state.m_unplayed_count == 0 )
+      {
+        s.m_state.m_unplayed_count = s.m_state.m_played.size();
+        s.m_state.m_unplayed_count--;
+        s.m_state.m_played.clear();
+      }
+    }
+  }    
+}
+
+float Uno_AI_Player::state_eval( const Uno_AI_Search_Node& s )
+{
+  unsigned int num_cards = s.m_state.m_hand.size();
+
+  // calculate the target queue based on card numbers in hands.
+  vector<unsigned int> target_queue;
+  construct_target_queue( s, target_queue );
+
+
+  // consider number of cards in people's hands : target people with lower counts
+
+  // consider weight of your cards : get rid of higher weight cards first
+
+  // don't rely on 0s or wilds, there's less of them
+
+  // consider last few plays by opponents?
+
+  return 1.0;
+}
+
+void Uno_AI_Player::push_frontier_node( const Uno_AI_Search_Node& s )
+{
+  m_frontier.push_back( s );
+  push_heap( m_frontier.begin(), m_frontier.end() );
+}
+
+Uno_AI_Search_Node Uno_AI_Player::pop_frontier_node()
+{
+  if ( !m_frontier.empty() )
+  {
+    Uno_AI_Search_Node s = m_frontier.front();
+    pop_heap( m_frontier.begin(), m_frontier.end() );
+    m_frontier.pop_back();
+    return s;
+  } 
+}
+
+bool Uno_AI_Player::can_play_selected( const Uno_AI_Search_Node& s, unsigned int i )
+{
+  if ( s.m_state.m_played.empty() )
+  {
+    return true;
+  }
+
+  card p_card = s.m_state.m_hand[i];
+  card d_card = s.m_state.m_played.back();
+
+  // If the color or type of the card to play matches
+  if ( (CARDCOLOR( p_card ) == CARDCOLOR( d_card )) 
+    || (CARDTYPE( p_card ) == CARDTYPE( d_card )) 
+    || (CARDTYPE( p_card ) == UNO_WILD)
+    || (CARDTYPE( p_card ) == UNO_WILD_DRAW_FOUR)
+    )
+  {
+    return true;
+  }
+
+  return false;
+}
+
+bool Uno_AI_Player::can_play_any( const Uno_AI_Search_Node& s ) 
+{
+  for ( unsigned int i = 0; i < s.m_state.m_hand.size(); i++ )
+  {
+    if ( can_play_selected( s, i ) )
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool Uno_AI_Player::goal_test( const Uno_AI_Search_Node &s )
+{
+  if ( s.m_state.m_hand.size() == 0 )
+  {
+    return true;
+  }
+
+  return false;
+}
+
+// DOESN'T QUITE WORK LOL
+// TODO
+void Uno_AI_Player::construct_target_queue( const Uno_AI_Search_Node& s, vector<unsigned int>& q )
+{
+  // Resize to the number of players
+  q.resize( s.m_state.m_hand_counts.size() );
+
+  for ( unsigned int i = 0; i < q.size(); i++ )
+  {
+    unsigned int min_hand_count = s.m_state.m_hand_counts[i];
+    unsigned int min_player = i;
+
+    for ( unsigned int j = (i+1); j < q.size(); j++ )
+    {
+      if ( s.m_state.m_hand_counts[j] < min_hand_count )
+      {
+        min_hand_count = s.m_state.m_hand_counts[j];
+        min_player = j;
+      }
+    }
+
+    q[i] = min_player;
+  }
+}
+

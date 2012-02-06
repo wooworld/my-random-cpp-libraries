@@ -20,14 +20,27 @@ Uno_Action Uno_Human_Player::take_turn( const Uno_PState& s )
 {
   Uno_Action action;
 
+  unsigned int p_action = 0;
   cout << "Your action? ";
-  cin >> action.m_act;
+  cin >> p_action;
+
+  action.m_act = ((p_action < (unsigned int)UNO_ACTION_NONE) ? p_action : (unsigned int)UNO_ACTION_NONE);
 
   // If the user chooses to play a card from their hand
-  if ( action.m_act == 1 )
+  if ( action.m_act == UNO_ACTION_PLAY )
   {
     cout << "Play which card? ";
     cin >> action.m_idx;
+
+    if ( action.m_idx <= (s.m_hand.size()-1) )
+    {
+      card c = s.m_hand[action.m_idx];
+      if ( CARDTYPE( c ) == UNO_WILD || CARDTYPE( c ) == UNO_WILD_DRAW_FOUR )
+      {
+        cout << "Change to which color? (ex: r/b/g/y) ";
+        cin >> action.m_color;
+      }
+    }
   }
 
   return action;

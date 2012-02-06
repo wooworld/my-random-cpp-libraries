@@ -17,9 +17,6 @@ Uno_Action Uno_Player::take_turn( const Uno_PState& s )
 {
   Uno_Action a;
 
-  cout << "Uno_Player take_turn()" << endl;
-  cin.get();
-
   return a;
 }
 
