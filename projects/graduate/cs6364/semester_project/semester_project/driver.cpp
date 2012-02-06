@@ -1,6 +1,6 @@
 /*! \file driver.cpp
     \author Gary Steelman
-    \date 10/11/2011
+    \date 12/5/2011
     \brief The driver for the AI to play the card game Uno.
   
     This is a that models a player for playing the card game Uno. The AI doesn't
@@ -27,9 +27,11 @@ int main( int argc, char * argv[] )
   // Create a runner.
   Uno_Runner runner;
 
+  runner.set_difficulty_levels( 3 );
+
   // Add two players.
   Uno_Player *p1 = new Uno_Human_Player( "Gary", 0 );  
-  Uno_Player *p2 = new Uno_Human_Player( "Dr. Moldovan", 0 );
+  Uno_Player *p2 = new Uno_AI_Player( "Dr. Moldovan", 0, 3 );
   runner.add_player( p1 );
   runner.add_player( p2 );
 
@@ -40,7 +42,7 @@ int main( int argc, char * argv[] )
 
   runner.run();
 
-  cin.get();
+  // cin.get();
 
   return 0;
 }

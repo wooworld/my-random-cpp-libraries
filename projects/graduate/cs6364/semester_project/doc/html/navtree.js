@@ -2,8 +2,11 @@ var NAVTREE =
 [
   [ "UnoAI", "index.html", [
     [ "Class List", "annotated.html", [
+      [ "CStopWatch", "class_c_stop_watch.html", null ],
+      [ "stop_watch", "structstop__watch.html", null ],
       [ "Uno_Action", "class_uno___action.html", null ],
       [ "Uno_AI_Player", "class_uno___a_i___player.html", null ],
+      [ "Uno_AI_Search_Node", "class_uno___a_i___search___node.html", null ],
       [ "Uno_GState", "class_uno___g_state.html", null ],
       [ "Uno_Human_Player", "class_uno___human___player.html", null ],
       [ "Uno_Player", "class_uno___player.html", null ],
@@ -13,7 +16,10 @@ var NAVTREE =
     ] ],
     [ "Class Index", "classes.html", null ],
     [ "Class Hierarchy", "hierarchy.html", [
+      [ "CStopWatch", "class_c_stop_watch.html", null ],
+      [ "stop_watch", "structstop__watch.html", null ],
       [ "Uno_Action", "class_uno___action.html", null ],
+      [ "Uno_AI_Search_Node", "class_uno___a_i___search___node.html", null ],
       [ "Uno_Player", "class_uno___player.html", [
         [ "Uno_AI_Player", "class_uno___a_i___player.html", null ],
         [ "Uno_Human_Player", "class_uno___human___player.html", null ]
@@ -27,9 +33,12 @@ var NAVTREE =
     [ "Class Members", "functions.html", null ],
     [ "File List", "files.html", [
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/driver.cpp", "driver_8cpp.html", null ],
+      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/hr_timer.cpp", "hr__timer_8cpp.html", null ],
+      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/hr_timer.h", "hr__timer_8h.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_action.h", "uno__action_8h.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_ai_player.cpp", "uno__ai__player_8cpp.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_ai_player.h", "uno__ai__player_8h.html", null ],
+      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_ai_search_node.h", "uno__ai__search__node_8h.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_card.cpp", "uno__card_8cpp.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_card.h", "uno__card_8h.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6364/semester_project/semester_project/uno_deck.cpp", "uno__deck_8cpp.html", null ],

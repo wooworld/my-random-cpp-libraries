@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\hr_timer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\uno_ai_player.cpp"
 				>
 			</File>
@@ -205,11 +209,19 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\hr_timer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\uno_action.h"
 				>
 			</File>
 			<File
 				RelativePath=".\uno_ai_player.h"
+				>
+			</File>
+			<File
+				RelativePath=".\uno_ai_search_node.h"
 				>
 			</File>
 			<File

@@ -50,16 +50,7 @@ class Uno_Runner
      * \li It is Player 0's turn.
      * \li It is turn 0.
      */
-    bool setup();
-
-    /**
-     * \brief Shuts down the game.
-     * \retval true If the shut down executed properly.
-     * \retval false If the shut down encountered an error during execution.
-     *
-     * Deallocates memory for the game and then exits.
-     */
-    bool shut_down();
+    bool setup();    
 
     /**
      * \brief Adds player p to the game if possible.
@@ -153,6 +144,30 @@ class Uno_Runner
      */
     void run();
 
+    /**
+     * \brief Sets the number of difficulty levels for an AI player.
+     *
+     * The difficulty levels range from 0 to this number. A higher number means
+     * that there will be more possible difficulty levels for an AI so you can
+     * get finer granularity with its intelligence.
+     *
+     * \param l The number of difficulty levels.
+     */
+    void set_difficulty_levels( unsigned int l ) 
+    {
+      m_gstate.m_ai_difficulty_levels = l;
+    }
+
+    /** 
+     * \brief Gets the number of difficulty levels for an AI player.
+     * \return unsigned int The number of difficulty levels for an AI player. 
+     * \sa set_difficulty_levels()
+     */
+    unsigned int get_difficulty_levels()
+    {
+      return m_gstate.m_ai_difficulty_levels;
+    }
+
   private:
     /**
      * \brief Returns true if a player has won the game. 
@@ -182,6 +197,11 @@ class Uno_Runner
 
     /**
      * \brief Checks the action for a player is a legal action. 
+     *
+     * Checks if the action being performed by player at play is legal.
+     * This will also output error messages to the user 
+     * \pre Uno_Action a is being performed by player number s.m_at_play.
+
      * \param s The full state of the game.
      * \param a The action desired by the player.
      * \param p The index of the player who is making the action. 
@@ -189,6 +209,39 @@ class Uno_Runner
      * \retval false otherwise.
      */
     bool check_action( const Uno_GState& s, const Uno_Action& a );
+
+    /**
+     * \brief Checks if the player at play can play the card they selected
+     * for their action this turn.
+     * \pre a is an action for playing a card and includes the index of the
+     *  card to play from the player's hand. 
+     * \pre s contains a played deck with at least one card on it.
+     * \param s The full state of the game.
+     * \param a The action desired by the player.
+     * \retval true If the player at play can play the card in a.
+     * \retval false Otherwise.
+     */
+    bool can_play_selected( const Uno_GState& s, const Uno_Action& a );
+
+    /**
+     * \brief Checks if the player at play can play any cards in his hand this turn.
+     * \param s The full game state.
+     * \retval true If the player at play can play any cards in his hand this turn.
+     * \retval false Otherwise.
+     */
+    bool can_do_something( const Uno_GState& s );
+
+    /**
+     * \brief Checks if the current player can draw a card this turn.
+     * 
+     * Checks to see if there is a card in either the unplayed OR played deck
+     * that the player at play can draw this turn. This function does not
+     * state which deck can be drawn from, just that a deck CAN be drawn from.
+     * \param s The full game state.
+     * \retval true If the player at play can draw a card this turn.
+     * \retval false Otherwise.
+     */
+    bool can_draw( const Uno_GState& s );
 
     /**
      * \brief Prints the limited view game state for the current player's turn. 
@@ -236,6 +289,15 @@ class Uno_Runner
      * \retval false Otherwise.
      */ 
     bool discard_card( deck& d, deck& g );
+
+    /**
+     * \brief Shuts down the game.
+     * \retval true If the shut down executed properly.
+     * \retval false If the shut down encountered an error during execution.
+     *
+     * Deallocates memory for the game and then exits.
+     */
+    bool shut_down();
 
     /**
      * \brief The full state of the game. The server has all of the information.

@@ -106,8 +106,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>m_act
 : <a class="el" href="class_uno___action.html#a0e38e567ca993649d2513dd81c386677">Uno_Action</a>
 </li>
+<li>m_actions
+: <a class="el" href="class_uno___a_i___search___node.html#a2391ea3bbf5f298381a10e5b44900471">Uno_AI_Search_Node</a>
+</li>
+<li>m_ai_difficulty_levels
+: <a class="el" href="class_uno___state.html#a545a182289af00956421146a6655e4b7">Uno_State</a>
+</li>
 <li>m_at_play
 : <a class="el" href="class_uno___state.html#a7c0374eff2c4a4b3eed4b7eebb72a81a">Uno_State</a>
+</li>
+<li>m_color
+: <a class="el" href="class_uno___action.html#abc595ac0b50bd42c319dfd4207b25901">Uno_Action</a>
+</li>
+<li>m_forward
+: <a class="el" href="class_uno___state.html#afe29e72e0b4229766da2c94eec7a6517">Uno_State</a>
 </li>
 <li>m_hand
 : <a class="el" href="class_uno___p_state.html#ae83f531e09b87d69dccb49bf44af4e0a">Uno_PState</a>
@@ -117,6 +129,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>m_hands
 : <a class="el" href="class_uno___g_state.html#a0b2182b2172f7c14f979c405cf460ada">Uno_GState</a>
+</li>
+<li>m_id
+: <a class="el" href="class_uno___player.html#ab66eaf8652c34bf4ebe1859319026ef8">Uno_Player</a>
 </li>
 <li>m_idx
 : <a class="el" href="class_uno___action.html#a228de2b5b030253562cadd34f21568c4">Uno_Action</a>
@@ -138,6 +153,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </li>
 <li>m_score
 : <a class="el" href="class_uno___player.html#a9805f306a500b1898c0a0922d76de444">Uno_Player</a>
+, <a class="el" href="class_uno___a_i___search___node.html#a244fb2cf543629f74b0274672794cbb9">Uno_AI_Search_Node</a>
+</li>
+<li>m_state
+: <a class="el" href="class_uno___a_i___search___node.html#a9fb6c709ddba1b4d70d2da07813eef0a">Uno_AI_Search_Node</a>
 </li>
 <li>m_time_per_turn
 : <a class="el" href="class_uno___state.html#a80b2bee84fda6bdd9c37bc2309c81608">Uno_State</a>
@@ -161,7 +180,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Defines</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Defines</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -171,7 +190,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 
-    <li class="footer">Generated on Thu Dec 1 2011 01:08:54 for UnoAI by
+    <li class="footer">Generated on Sat Feb 4 2012 02:35:20 for UnoAI by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

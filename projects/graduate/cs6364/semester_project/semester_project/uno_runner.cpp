@@ -14,6 +14,7 @@
 #include "uno_runner.h"
 
 #include <ctime>
+#include <locale>
 #include <algorithm>
 #include <iostream>
 #include <sstream>
@@ -58,18 +59,20 @@ bool Uno_Runner::setup()
   m_gstate.m_hands.resize( num_players() );
 
   // Each player must draw UNO_INIT_HAND_SIZE cards
-  if ( m_gstate.m_unplayed.size() < (num_players() * (unsigned int)UNO_INIT_HAND_SIZE) )
+  if ( m_gstate.m_unplayed.size() < (num_players() * (unsigned int)UNO_INIT_HAND_SIZE) + 1 )
   {
     cout << "Insufficient card quantity in unplayed deck to support this " 
       << "many players." << endl;
     return false;
   }
 
-  // Add cards to the players' hands
+  // Add cards to the players' hands and assign their IDs
   else
   {
     for ( unsigned int i = 0; i < num_players(); i++ )
     {
+      m_gstate.m_players[i]->m_id = i;
+
       for ( unsigned int j = 0; j < (unsigned int)UNO_INIT_HAND_SIZE; j++ )
       {
         if ( !draw_card( i, m_gstate.m_unplayed ) )
@@ -82,12 +85,15 @@ bool Uno_Runner::setup()
     }
   }
 
+  // Put the first card down to play off of
   discard_card( m_gstate.m_unplayed, m_gstate.m_played );
 
   m_gstate.m_at_play = 0;
   m_gstate.m_turn_count = 0;
   m_gstate.m_time_per_turn = UNO_TIME_PER_TURN;
   m_gstate.m_msg = "";
+  m_gstate.m_forward = true;
+  m_gstate.m_ai_difficulty_levels = 3;
 
   return true;
 }
@@ -101,8 +107,6 @@ bool Uno_Runner::shut_down()
   }
 
   return true;
-
-  // All other memory will deallocate properly
 }
 
 bool Uno_Runner::add_player( Uno_Player * p )
@@ -214,11 +218,11 @@ void Uno_Runner::print_state()
   }
 
   cout << "  Played: ";
-  print_deck( m_gstate.m_played );
+  print_played( 0 );
   cout << "[" << m_gstate.m_played.size() << "] " << endl;
 
   cout << "Unplayed: ";
-  print_deck( m_gstate.m_unplayed );
+  print_unplayed( 0 );
   cout << "[" << m_gstate.m_unplayed.size() << "] " << endl;
 }
 
@@ -227,7 +231,8 @@ void Uno_Runner::print_turn()
   cout << "================================================================================" << endl;
   cout << "Turn #: " << m_pstate.m_turn_count << "  |  ";
   cout << "At play: " << m_gstate.m_players[m_gstate.m_at_play]->m_name << "  |  ";
-  cout << "Time left: " << m_pstate.m_time_per_turn << " seconds" << endl;
+  cout << "Time left: " << m_pstate.m_time_per_turn << " seconds" << "  |  ";
+  cout << "Game direction: " << (m_pstate.m_forward ? "ASC" : "DESC") << endl;
   
   // Print out the player statuses
   for ( unsigned int i = 0; i < num_players(); i++ )
@@ -246,7 +251,7 @@ void Uno_Runner::print_turn()
   cout << "}" << endl;
 
   cout << "  Played: ";
-  print_deck( m_pstate.m_played );
+  print_played( 0 );
   cout << "[" << m_pstate.m_played.size() << "] " << endl;
 
   cout << "Unplayed: ";
@@ -256,11 +261,11 @@ void Uno_Runner::print_turn()
 void Uno_Runner::print_options()
 {
   cout << "You can take the following actions this turn: " << endl;
-  cout << "  0 = Draw a card from the deck." << endl;
-  cout << "  1 = Play a card from your hand." << endl;
-  cout << "  2 = Surrender (quit) out of the game." << endl;
-  cout << "  3 = Pass your turn (do nothing)." << endl;
-  cout << "  4 = Help." << endl;
+  cout << "  " << (unsigned int)UNO_ACTION_DRAW << " = Draw a card from the deck." << endl;
+  cout << "  " << (unsigned int)UNO_ACTION_PLAY << " = Play a card from your hand." << endl;
+  cout << "  " << (unsigned int)UNO_ACTION_PASS << " = Pass your turn (do nothing." << endl;
+  cout << "  " << (unsigned int)UNO_ACTION_QUIT << " = Surrender (quit) out of the game." << endl;
+  cout << "  " << (unsigned int)UNO_ACTION_HELP << " = Instructions and help." << endl;
 }
 
 void Uno_Runner::print_help()
@@ -292,108 +297,162 @@ void Uno_Runner::run()
   cout << "  (Secretly I'm rooting for " 
     << m_gstate.m_players[rand()%num_players()]->m_name 
     << " to win!)" << endl;
-  
-  // Track the amount of time a player takes per turn
-  clock_t p_turn_start;
-  clock_t p_turn_end;
-  double time_taken = 0;
 
-  // Tracks whether the previous player's action was illegal or not
-  bool turn_again = false;  
+  // Tracks whether a player is repeating his turn due to an invalid action
+  // in the previous turn
+  bool retry_turn = false; 
 
-  while (true)
+  // The number of players to advance for the next turn (changes with skips, 
+  // draw twos, or wild draw fours)
+  int players_to_advance = 0;
+  int next_to_draw = 0;
+
+  // The number of cards the player next turn will be forced to draw (changes
+  // with draw twos or wild draw fours)
+  unsigned int cards_to_draw = 0;
+
+  while ( true )
   {
-    // If a player is taking his turn again, decrease amount of time left
-    if ( turn_again )
-    {
-      m_pstate.m_time_per_turn -= time_taken;
-      //m_pstate.m_msg = "Your previous action was illegal. Try again.";
-    }
-
-    // Otherwise mark as the beginning of next turn.
-    else
+    // If player is not repeating action increment turn counter
+    if ( !retry_turn )
     {
       m_gstate.m_turn_count++;
     }
-    
-    construct_player_state( turn_again );
 
+    // Construct the state and also print out the current turn to the user
+    construct_player_state( retry_turn );
     print_turn();
-
     print_options();
 
-    p_turn_start = clock();
+    // Call player to take his turn
     m_action = m_gstate.m_players[m_gstate.m_at_play]->take_turn( m_pstate );
-    p_turn_end = clock();
-    time_taken = (p_turn_end - p_turn_end)/CLOCKS_PER_SEC;
-
-    cout << "Time elapsed for turn: " << time_taken << " seconds." << endl;
 
     if ( !check_action( m_gstate, m_action ) )
     {
-      turn_again = true;
+      retry_turn = true;
       continue;
     }
 
-    else
-    {
-      turn_again = false;
-    }
+    retry_turn = false;
+    players_to_advance = 1;
+    cards_to_draw = 0;
 
-    // Player draws a card from the deck and adds to hand
-    if ( m_action.m_act == 0 )
+    if ( m_action.m_act == UNO_ACTION_DRAW )
     {
-      draw_card( m_gstate.m_at_play, m_gstate.m_unplayed );
+      // cout << "Drawing a card..." << endl;
 
-      // If the deck then runs out of cards, shuffle the played cards into it
+      // If no cards exist in the unplayed deck, shuffle the unplayed into it
+      // and then try to draw. Afterward, if the played deck is still empty
+      // attempt to put a card on top of it so we can play off of it
       if ( m_gstate.m_unplayed.empty() )
       {
         swap_decks( m_gstate.m_unplayed, m_gstate.m_played );
-
-        shuffle_deck( m_gstate.m_unplayed );
+        shuffle_deck( m_gstate.m_unplayed );        
       }
 
-      // Do not increment player at play, call same player again 
+      draw_card( m_gstate.m_at_play, m_gstate.m_unplayed );
+      players_to_advance = 0;
+
+      if ( m_gstate.m_played.empty() )
+      {
+        discard_card( m_gstate.m_unplayed, m_gstate.m_played );      
+      }
     }
 
-    // Player plays a card from their hand
-    else if ( m_action.m_act == 1 )
+    else if ( m_action.m_act == UNO_ACTION_PLAY )
     {
-      // Make player play card
-      m_gstate.m_played.push_back( play_card( m_action.m_idx ) );
+      // cout << "playing a card" << endl;
+      // Play the card
+      card c = play_card( m_action.m_idx );
 
-      // Increment player at play
-      m_gstate.m_at_play++;
+      // Handle special effects for special cards
+      if ( CARDTYPE( c ) == UNO_REVERSE )
+      {
+        m_gstate.m_forward = !m_gstate.m_forward;
+        if ( num_players() == 2)
+        {
+          players_to_advance = 0;
+        }
+      }
+
+      if ( CARDTYPE( c ) == UNO_SKIP )
+      {
+        players_to_advance = 2;
+      }
+
+      if ( CARDTYPE( c ) == UNO_DRAW_TWO )
+      {
+        cards_to_draw = 2;
+        players_to_advance = 2;
+      }
+
+      if ( CARDTYPE( c ) == UNO_WILD_DRAW_FOUR )
+      {
+        cards_to_draw = 4;
+        players_to_advance = 2;
+      }
+
+      if ( CARDTYPE( c ) == UNO_WILD_DRAW_FOUR || CARDTYPE( c ) == UNO_WILD )
+      {
+        char new_color = 0;
+        m_action.m_color = tolower( m_action.m_color );
+        if ( m_action.m_color == 'r' )
+        {
+          new_color = (unsigned int)UNO_RED;
+        }
+
+        else if ( m_action.m_color == 'b' )
+        {
+          new_color = (unsigned int)UNO_BLUE;
+        }
+
+        else if ( m_action.m_color == 'g' )
+        {
+          new_color = (unsigned int)UNO_GREEN;
+        }
+
+        else if ( m_action.m_color == 'y' )
+        {
+          new_color = (unsigned int)UNO_YELLOW;
+        }
+
+        c = CARD( CARDTYPE( c ), new_color );
+      } 
+
+      // If the previous card on the top of the deck is a wild, clean its color
+      if ( !m_gstate.m_played.empty() )
+      {
+        card d = m_gstate.m_played.back();
+        if ( CARDTYPE( d ) == UNO_WILD || CARDTYPE( d ) == UNO_WILD_DRAW_FOUR )
+        {
+          m_gstate.m_played[m_gstate.m_played.size() - 1] = CARD( UNO_NO_COLOR, CARDTYPE( d ) );
+        }
+      }
+
+      // Push new card onto top of deck. Wild cards have color after indicating 
+      // what the color was changed to.
+      m_gstate.m_played.push_back( c );
     }
 
-    // Player surrenders (quits).
-    else if ( m_action.m_act == 2 )
+    else if ( m_action.m_act == UNO_ACTION_QUIT )
     {
       // Place removed player's cards on the bottom of the played deck
       remove_player( m_gstate.m_at_play, 1 );
-
-      // Do not increment player at play 
-      // By deleting this player, every other player shifts down one ID
-      // so by not incrementing the next player is automatically picked up
     }
 
-    // Player passes the turn 
-    else if ( m_action.m_act == 3 )
+    else if ( m_action.m_act == UNO_ACTION_PASS )
     {
-      m_gstate.m_at_play++;
+      // Nothing...
     }
 
-    else if ( m_action.m_act == 4 )
+    else if ( m_action.m_act == UNO_ACTION_HELP )
     {
       print_help();
     }
 
-    // Something has gone wrong
-    else
+    else if ( m_action.m_act == UNO_ACTION_NONE )
     {
-      cout << "Something has gone wrong. The player's action is entirely invalid."
-        << endl;
-
+      cout << "Elected no action, something broke, ending game." << endl;
       break;
     }
 
@@ -402,11 +461,65 @@ void Uno_Runner::run()
       break;      
     }
 
-    // Calculate the index of the next player
+    int curr_player = m_gstate.m_at_play;
+
+    // Player played a WD4 or D2 card, make someone draw!
+    if ( cards_to_draw != 0 )
+    {
+      int player_to_draw = curr_player;
+
+      // Calculate the player who has to draw cards!
+      if ( m_gstate.m_forward )
+      {
+        player_to_draw++;
+        player_to_draw = player_to_draw % num_players();
+      }
+
+      else
+      {
+        player_to_draw--;
+        if ( player_to_draw < 0 )
+        {
+          player_to_draw += num_players();
+        }
+      }
+
+      for ( unsigned int i = 0; i < cards_to_draw; i++ )
+      {
+        if ( m_gstate.m_unplayed.empty() )
+        {
+          swap_decks( m_gstate.m_unplayed, m_gstate.m_played );
+          shuffle_deck( m_gstate.m_unplayed );          
+        }
+
+        draw_card( player_to_draw, m_gstate.m_unplayed );
+
+        if ( m_gstate.m_played.empty() )
+        {
+          discard_card( m_gstate.m_unplayed, m_gstate.m_played );      
+        }
+      }
+    }    
+
+    // Calculate the next player
+    // Normal, forward play, wrap around to lower # players if necessary
+    if ( m_gstate.m_forward )
+    {
+      curr_player += players_to_advance;
+      curr_player = curr_player % num_players();
+    }
+    
+    // Reversed, backward play, wrap around to higher # players if necessary
     else
     {
-      m_gstate.m_at_play = m_gstate.m_at_play % m_gstate.m_players.size();
-    }
+      curr_player -= players_to_advance;
+      if ( curr_player < 0 )
+      {
+        curr_player += num_players();
+      }
+    }   
+
+    m_gstate.m_at_play = curr_player;
 
     // Record this turn's state
     m_history.push_back( m_gstate );
@@ -423,24 +536,19 @@ void Uno_Runner::construct_player_state( bool repeat )
   if ( !repeat )
   {
     m_pstate.m_at_play = m_gstate.m_at_play;
-    
-    m_pstate.m_hand = m_gstate.m_hands[m_gstate.m_at_play];
-    
+    m_pstate.m_forward = m_gstate.m_forward;    
+    m_pstate.m_hand = m_gstate.m_hands[m_gstate.m_at_play];    
     m_pstate.m_hand_counts.resize( m_gstate.m_hands.size() );
     for ( unsigned int i = 0; i < num_players(); i++ )
     {
       m_pstate.m_hand_counts[i] = m_gstate.m_hands[i].size();  
-    }
-    
+    }    
     m_pstate.m_msg = m_gstate.m_msg;
-
     m_pstate.m_played = m_gstate.m_played;
-
     m_pstate.m_time_per_turn = m_gstate.m_time_per_turn;
-
     m_pstate.m_turn_count = m_gstate.m_turn_count;
-
     m_pstate.m_unplayed_count = m_gstate.m_unplayed.size();
+    m_pstate.m_ai_difficulty_levels = m_gstate.m_ai_difficulty_levels;
   }
 }
 
@@ -452,84 +560,96 @@ bool Uno_Runner::check_validity()
 
 bool Uno_Runner::check_action( const Uno_GState& s, const Uno_Action& a )
 {
-  // Action is drawing a card
-  if ( a.m_act == 0 )
-  {
-    // If either deck has a card to draw from, the player can draw a card
-    if ( s.m_unplayed.empty() && s.m_played.empty() )
-    {
-      cout << "There are no cards for you to draw. Play a card or pass your turn." 
-        << endl;
-      return false;
-    }
+  bool action_ok = false;
 
-    return true;
+  if ( a.m_act == UNO_ACTION_DRAW )
+  {
+    action_ok = can_draw( s );
+    if ( !action_ok )
+    {
+      cout << "There are no cards for you to draw. Play a card or pass your turn." << endl;
+    }
   }
 
-  // Action is playing a card
-  else if ( a.m_act == 1 )
+  else if ( a.m_act == UNO_ACTION_PLAY )
   {
-    if ( a.m_idx > (s.m_hands[s.m_at_play].size()-1) )
+    action_ok = can_play_selected( s, a );
+    if ( !action_ok )
     {
-      cout << "You don't have that many cards in your hand." << endl;
-      return false;
+      cout << "You cannot play that card." << endl;      
     }
-    // Player's card he wants to play
-    card p_card = s.m_hands[s.m_at_play][a.m_idx];
-    card d_card = s.m_played.back();
+  }
 
-    // If the color or type of the card to play matches
-    if ( ( CARDCOLOR( p_card ) == CARDCOLOR( d_card ) ) 
-      || ( CARDTYPE( p_card ) == CARDTYPE( d_card ) ) 
-      || ( CARDTYPE( p_card ) == UNO_WILD ) 
-      || ( CARDTYPE( p_card ) == UNO_WILD_DRAW_FOUR )
-      )
+  else if ( a.m_act == UNO_ACTION_PASS )
+  {
+    action_ok = !can_do_something( s );
+    if ( !action_ok )
     {
-      return true;
+      cout << "You can still play a card or draw." << endl;
     }
+  }
 
-    cout << "You cannot play that card." << endl;
+  else if ( a.m_act == UNO_ACTION_QUIT || a.m_act == UNO_ACTION_HELP )
+  {
+    action_ok = true;
+  }
+
+  else if ( a.m_act == UNO_ACTION_NONE )
+  {
+    action_ok = false;
+  }
+
+  return action_ok;
+}
+
+bool Uno_Runner::can_play_selected( const Uno_GState& s, const Uno_Action& a )
+{
+  // Trying to play a card that's not in their hand
+  if ( a.m_idx > (s.m_hands[s.m_at_play].size()-1) )
+  {
     return false;
   }
 
-  // Action is quit or asking for help, perfectly fine
-  else if ( a.m_act == 2 || a.m_act == 4 )
+  if ( s.m_played.empty() )
   {
     return true;
   }
 
-  // Action is pass
-  else if ( a.m_act == 3 )
+  card p_card = s.m_hands[s.m_at_play][a.m_idx];
+  card d_card = s.m_played.back();
+
+  // If the color or type of the card to play matches
+  if ( ( CARDCOLOR( p_card ) == CARDCOLOR( d_card ) ) 
+    || ( CARDTYPE( p_card ) == CARDTYPE( d_card ) ) 
+    )
   {
-    card d_card = s.m_played.back();
-    card p_card = 0;
+    return true;
+  }
 
-    // Check all the cards in the player's hand for validity of playing
-    for ( unsigned int i = 0; i < s.m_hands[s.m_at_play].size(); i++ )
-    {
-      p_card = s.m_hands[s.m_at_play][i];
-      if ( ( CARDCOLOR( p_card ) == CARDCOLOR( d_card ) ) 
-        || ( CARDTYPE( p_card ) == CARDTYPE( d_card ) ) 
-        || ( CARDTYPE( p_card ) == UNO_WILD ) 
-        || ( CARDTYPE( p_card ) == UNO_WILD_DRAW_FOUR )
-        )
-      {
-        // Player can draw a card, but they are trying to pass the turn, disallow
-        cout << "You still have a card you can play." << endl;
-        return false;
-      }
-    }
-
-    if ( !s.m_unplayed.empty() || !s.m_played.empty() )
-    {
-      cout << "You can still draw a card." << endl;
-      return false;
-    }
-    
+  char c = tolower(a.m_color);
+  // If the type of card to be played is a wild, ensure color choice is ok
+  if ( (CARDTYPE( p_card ) == UNO_WILD || CARDTYPE( p_card ) == UNO_WILD_DRAW_FOUR) 
+    && (c == 'r' || c == 'b' || c == 'g' || c == 'y') )
+  {
     return true;
   }
 
   return false;
+}
+
+bool Uno_Runner::can_do_something( const Uno_GState& s )
+{
+  if ( can_draw( s ) || !s.m_hands[s.m_at_play].empty() )
+  {
+    return true;
+  }
+
+  return false;
+}
+
+bool Uno_Runner::can_draw( const Uno_GState& s )
+{
+  return ( !s.m_played.empty() || !s.m_unplayed.empty() );
 }
 
 bool Uno_Runner::game_over()

@@ -32,7 +32,7 @@ class Uno_State
      *
      * Constructs an Uno_State with empty and zero values.
      */
-    Uno_State() : m_at_play(0), m_turn_count(0), m_time_per_turn(0)
+    Uno_State() : m_at_play(0), m_turn_count(0), m_time_per_turn(0), m_msg(""), m_forward(true), m_ai_difficulty_levels(0)
     {}
 
     /**
@@ -62,6 +62,16 @@ class Uno_State
      * \brief A multipurpose message used by the server and the player.
      */
     string m_msg;
+
+    /**
+     * \brief The order players take turns in; true is ascending, false is descending
+     */
+    bool m_forward;
+
+    /**
+     * \brief The number of difficulty levels for AI players
+     */
+    unsigned int m_ai_difficulty_levels;
 };
 
 #endif
