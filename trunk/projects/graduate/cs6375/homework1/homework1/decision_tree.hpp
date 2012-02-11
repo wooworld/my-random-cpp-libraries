@@ -5,6 +5,8 @@
 #include <map>
 #include <algorithm>
 #include <cmath>
+#include <ctime>
+#include <cstdlib>
 #include "dataset.h"
 #include "dnode.h"
 #include "d_tree_heuristic.h"
@@ -25,7 +27,6 @@ DecisionTree<T>::~DecisionTree()
   delete m_root;
 }
 
-// TODO FIX
 template <class T>
 void DecisionTree<T>::f_deleteTree( DNode<T>* root )
 {
@@ -47,6 +48,58 @@ void DecisionTree<T>::f_deleteTree( DNode<T>* root )
   }
 
   root->m_branches.clear();
+}
+
+template <class T>
+DecisionTree<T>& DecisionTree<T>::operator=( const DecisionTree<T>& rhs )
+{
+  if ( this != &rhs )
+  {
+    copy( &rhs );
+  }
+
+  return *this;
+}
+
+template <class T>
+void DecisionTree<T>::copy( const DecisionTree<T>* rhs )
+{
+  // Clear the contents of this tree.
+  clear();
+
+  if ( rhs->m_root != NULL )
+  {
+    m_root = new DNode<T>( NULL );
+    f_copyTree( m_root, rhs->m_root );
+
+    m_size = rhs->m_size;
+    m_num_leaves = rhs->m_num_leaves;
+
+    // Not a deep copy since heuristic is not a member of tree
+    m_heuristic = rhs->m_heuristic;
+  }  
+}
+
+// assumes lhs has no chilluns and has had its parent set
+template <class T>
+void DecisionTree<T>::f_copyTree( DNode<T>* lhs, DNode<T>* rhs )
+{  
+  if ( isLeaf( rhs ) )
+  {
+    convertToLeaf( lhs, rhs->m_branches[0].second );
+  }
+
+  else
+  {
+    lhs->m_branchAttr = rhs->m_branchAttr;
+    lhs->m_label = rhs->m_label;
+
+    for ( unsigned int i = 0; i < rhs->m_branches.size(); i++ )
+    {            
+      DNode<T>* newChild = addBranch( lhs, rhs->m_branches[i].second );
+      f_copyTree( newChild, rhs->m_branches[i].first );
+    }
+  }  
 }
 
 template <class T>
@@ -120,63 +173,44 @@ void DecisionTree<T>::f_ID3( const DataSet<T>& data,
                             const vector<unsigned int>& attrAvail,
                             DNode<T>* root )
 {
-  /* root has previously been created as a DNode<T>* and been given a parent.
-   So we just need to populate its label, attributes available, and its children. */
-
   /* Base cases */
-  // All feature vectors are positive.
-  cout << "Pure POS?" << endl;
   if ( data.pure( target, data.POS ) )
   {
-    cout << "  Pure POS!" << endl;
     convertToLeaf( root, data.POS );
     return;
   }
 
-  cout << "Pure NEG?" << endl;
-  // All feature vectors are negative.
   if ( data.pure( target, data.NEG ) )
   {
-    cout << "  Pure NEG!" << endl;
     convertToLeaf( root, data.NEG );
     return;
   }
 
-  cout << "Available attributes > 0?" << endl;
-  // No additional attributes to choose to branch on.
   if ( attrAvail.empty() )
   {
-    cout << "  No attributes!" << endl;
     convertToLeaf( root, data.getMostCommonValue( target ) );
     return;
   }
 
-  cout << "Making children..." << endl;
   /* Data for this node requires child generation. */
-  // Choose next attribute to branch on, store in label.
-  root->m_label = m_heuristic->evaluate( data, target, attrAvail );
-  cout << "  Branching attribute = " << root->m_label << endl;
+  root->m_branchAttr = m_heuristic->evaluate( data, target, attrAvail );
+  root->m_label = data.m_n[root->m_branchAttr];
 
   // Get possible attribute values for chosen branch attribute.
   vector<T> uniqueAttrVals;
-  data.getUniqueValues( root->m_label, uniqueAttrVals );
-  cout << "  Number of values for branch = " << uniqueAttrVals.size() << endl;
+  data.getUniqueValues( root->m_branchAttr, uniqueAttrVals );
 
   // Create child as branch for each possible value.
   for ( unsigned int i = 0; i < uniqueAttrVals.size(); i++ )
   {
     // Add a branch from root to a new, emptpy child, branching on 
     // the possible value i for the chosen attribute.
-    DNode<T>* newChild = addBranch( root, uniqueAttrVals[i] );
-    cout << "    Created child branching on value = " << uniqueAttrVals[i] << endl;
-
-    m_size++;
+    DNode<T>* newChild = addBranch( root, uniqueAttrVals[i] );    
 
     // Populate new node as either leaf or child.
     DataSet<T> dataMatch;
-    data.getMatchingVectors( dataMatch, root->m_label, uniqueAttrVals[i] );
+    data.getMatchingVectors( dataMatch, root->m_branchAttr, uniqueAttrVals[i] );
     dataMatch.copyHeaders( data );
-    cout << "    Size of partitioned data = " << dataMatch.m_d.size() << endl;
 
     if ( dataMatch.m_d.empty() )
     {
@@ -188,19 +222,192 @@ void DecisionTree<T>::f_ID3( const DataSet<T>& data,
 
     else
     {
-      // More data matching the chosen attribute. Populate child.
-      // Remove chosen attribute from available attributes.
+      // Populate child. Remove chosen attribute from available attributes.
       vector<unsigned int> updatedAttrAvail( attrAvail );
       vector<unsigned int>::iterator it;
       for ( it = updatedAttrAvail.begin(); it != updatedAttrAvail.end(); ++it )
       {
-        if ( *it == root->m_label )
+        if ( *it == root->m_branchAttr )
         {
           updatedAttrAvail.erase( it );
         }
         break;
-      }      
+      } 
+
       f_ID3( dataMatch, target, updatedAttrAvail, newChild );
+    }
+  }
+}
+
+template <class T>
+void DecisionTree<T>::prune( const DataSet<T>& trainingData, 
+                            const DataSet<T>& validationData,
+                            unsigned int target,
+                            unsigned int numTrees,
+                            unsigned int K )
+{
+  if ( m_root == NULL || isLeaf( m_root ) )
+  {
+    return;
+  }
+
+  else
+  {
+    DecisionTree<T> bestTree;
+    bestTree = *this;
+
+    // Build different candidate trees.
+    for ( unsigned int i = 1; i < numTrees; i++ )
+    {
+      DecisionTree<T> candidateTree;
+      candidateTree = *this;
+
+      srand( time(NULL));
+      
+      unsigned int M = rand() % K + 1;
+      if ( M > candidateTree.m_size ) 
+      {
+        M = candidateTree.m_size;
+      }
+
+      // Prune candidate tree M times. 
+      for ( unsigned int j = 1; j < M; j++ ) 
+      {
+        chooseAndPrune( candidateTree, candidateTree.m_root, trainingData, target, 0 );
+      }
+      
+      // See if pruned tree is more accurate.
+      float candidateAccuracy = candidateTree.test( validationData, target );
+      float bestAccuracy = bestTree.test( validationData, target );
+
+      if ( candidateAccuracy > bestAccuracy )
+      {
+        bestTree = candidateTree;
+      }
+    }
+
+    // This tree is the best tree found via pruning.
+    *this = bestTree;
+  }
+}
+
+template <class T>
+void DecisionTree<T>::chooseAndPrune( DecisionTree<T>& tree,
+                                     DNode<T>* root,
+                                     const DataSet<T>& data, 
+                                     unsigned int target,
+                                     unsigned int depth )
+{
+  if ( root == NULL )
+  {
+    return;
+  }
+
+  srand( time(NULL) );
+  unsigned int childChoice = rand() % (root->m_branches.size());
+  DNode<T> * child = root->m_branches[childChoice].first;
+
+  // 2nd to bottom level, auto-prune.
+  if ( isLeaf( child ) )
+  {
+    f_prune( tree, root );
+
+    T value = data.getMostCommonValue( target );
+    convertToLeaf( root, value );
+  }
+
+  else
+  {
+    
+    unsigned int cutoff = depth*depth;
+    unsigned int roll = rand() % 100;
+    
+    // If below the cutoff, prune subtree from tree
+    if ( roll <= cutoff )
+    {
+      f_prune( tree, root );
+      T value = data.getMostCommonValue( target );
+      convertToLeaf( root, value );
+    }
+
+    else
+    {
+      DataSet<T> subset;
+      subset.copyHeaders( data );
+      subset.POS = data.POS;
+      subset.NEG = data.NEG;
+      data.getMatchingVectors( subset, target, root->m_branches[childChoice].second );
+      chooseAndPrune( tree, child, subset, target, depth+1 );
+    }
+  }
+}
+
+// prune tree rooted at root and replace with data's value
+template <class T>
+void DecisionTree<T>::f_prune( DecisionTree<T>& tree, DNode<T>* root )
+{
+  if ( root == NULL || isLeaf( root ) )
+  {
+    return;
+  }
+
+  // Depth-first search to bottom-left of the tree
+  for ( unsigned int i = 0; i < root->m_branches.size(); i++ )
+  {
+    f_prune( tree, root->m_branches[i].first );
+  }
+
+  // Delete this node's children
+  for ( unsigned int i = 0; i < root->m_branches.size(); i++ )
+  {
+    delete root->m_branches[i].first;
+    tree.m_size--;
+  }
+
+  root->m_branches.clear();
+}
+
+
+template <class T>
+float DecisionTree<T>::test( const DataSet<T>& data, unsigned int target )
+{
+  if ( m_root == NULL )
+  {
+    return 0.0f;
+  }
+
+  unsigned int correctClassifications = 0;
+
+  for ( unsigned int i = 0; i < data.m_d.size(); i++ )
+  {
+    if ( classify( data.m_d[i], m_root ) == data.m_d[i][target] )
+    {
+      correctClassifications++;
+    }
+  }
+
+  return static_cast<float>(correctClassifications) / static_cast<float>(data.m_d.size());
+}
+
+template <class T>
+T DecisionTree<T>::classify( const vector<T>& v, DNode<T>* root )
+{
+  // Child node. Return classification.
+  if ( isLeaf( root ) )
+  {
+    return root->m_branches[0].second;
+  }
+
+  else
+  {
+    for ( unsigned int i = 0; i < root->m_branches.size(); i++ )
+    {
+      // If v's value at this node's branching attribute is that of
+      // the i'th branch, descend to that node.
+      if ( v[root->m_branchAttr] == root->m_branches[i].second )
+      {
+        return classify( v, root->m_branches[i].first );
+      }
     }
   }
 }
@@ -249,7 +456,7 @@ void DecisionTree<T>::print()
     return;
   }
 
-  cout << "Tree generated using " << m_heuristic->m_label << endl;
+  cout << "\nTree generated using " << m_heuristic->m_label << ":" << endl;
 
   f_print( m_root, 0 );  
 }
@@ -269,11 +476,9 @@ void DecisionTree<T>::f_print( DNode<T>* root, unsigned int depth )
     for ( unsigned int i = 0; i < root->m_branches.size(); i++ )
     {
       cout << endl;
-      //cout << repeat( "| ", depth ) << nameLookup( ptr->label ) << " = " << ptr->c[i].second << " : ";
       cout << repeat( "| ", depth ) << root->m_label << " = " 
         << root->m_branches[i].second << " : ";
       f_print( root->m_branches[i].first, depth+1 );
-      //cout << endl;
     }      
   }
 }
@@ -291,10 +496,10 @@ string repeat( string s, unsigned int n )
 template <class T>
 DNode<T>* DecisionTree<T>::addBranch( DNode<T>* parent )
 {
-  // Create a new branch containing a new node with this node as parent.
-  pair<DNode<T>*, unsigned int> newBranch( new DNode<T>( parent, 0 ), 0 );
+  m_size++;
 
-  // Push the new branch onto the parent's branches.
+  // Create a new branch containing a new node with this node as parent.
+  pair<DNode<T>*, T> newBranch( new DNode<T>( parent, 0 ), (T)0 );
   parent->m_branches.push_back( newBranch );
 
   return newBranch.first;
@@ -303,10 +508,10 @@ DNode<T>* DecisionTree<T>::addBranch( DNode<T>* parent )
 template <class T>
 DNode<T>* DecisionTree<T>::addBranch( DNode<T>* parent, T attrBranch )
 {
-  // Create a new branch containing a new node with this node as parent.
-  pair<DNode<T>*, unsigned int> newBranch( new DNode<T>( parent, 0 ), attrBranch );
+  m_size++;
 
-  // Push the new branch onto the parent's branches.
+  // Create a new branch containing a new node with this node as parent.
+  pair<DNode<T>*, T> newBranch( new DNode<T>( parent, 0 ), attrBranch );
   parent->m_branches.push_back( newBranch );
 
   return newBranch.first;
@@ -315,10 +520,10 @@ DNode<T>* DecisionTree<T>::addBranch( DNode<T>* parent, T attrBranch )
 template <class T>
 DNode<T>* DecisionTree<T>::addBranch( DNode<T>* parent, DNode<T>* child )
 {
-  // Create a new branch containing the child node.
-  pair<DNode<T>*, unsigned int> newBranch( child, 0 );
+  m_size++;
 
-  // Push the new branch onto the parent's branches.
+  // Create a new branch containing the child node.
+  pair<DNode<T>*, T> newBranch( child, 0 );
   parent->m_branches.push_back( newBranch );
 
   return child;
@@ -327,13 +532,13 @@ DNode<T>* DecisionTree<T>::addBranch( DNode<T>* parent, DNode<T>* child )
 template <class T>
 void DecisionTree<T>::convertToLeaf( DNode<T>* node, T value )
 {
-  node->m_label = -1;
+  m_num_leaves++;
+
+  node->m_branchAttr = -1;
+  node->m_label = "leaf";
 
   pair<DNode<T>*, T> newBranch( NULL, value );
-
   node->m_branches.push_back( newBranch );
-
-  return;
 }
 
 template <class T>
@@ -344,9 +549,7 @@ bool DecisionTree<T>::isLeaf( DNode<T>* node )
     return false;
   }
 
-  else if ( (node->m_label == -1)
-    && (node->m_branches.size() == 1)
-    && (node->m_branches[0].first == NULL) )
+  else if ( node->m_branchAttr == -1 )
   {
     return true;
   }

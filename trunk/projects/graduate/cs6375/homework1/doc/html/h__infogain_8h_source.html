@@ -95,80 +95,79 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6375/homework1/homework1/h_infogain.h</div>  </div>
 </div>
 <div class="contents">
-<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#pragma once</span>
-<a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#include &lt;vector&gt;</span>
-<a name="l00003"></a>00003 <span class="preprocessor">#include &lt;cmath&gt;</span>
-<a name="l00004"></a>00004 <span class="preprocessor">#include &quot;dataset.h&quot;</span>
-<a name="l00005"></a>00005 
-<a name="l00006"></a>00006 <span class="keyword">using namespace </span>std;
-<a name="l00007"></a>00007 
-<a name="l00011"></a>00011 <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;
-<a name="l00012"></a><a class="code" href="classh___info_gain.html">00012</a> <span class="keyword">class </span><a class="code" href="classh___info_gain.html" title="The Information Gain heuristic for a decision tree.">h_InfoGain</a> : <span class="keyword">public</span> <a class="code" href="class_d_tree_heuristic.html" title="Interface for a decision tree heuristic.">DTreeHeuristic</a>&lt;T&gt;
-<a name="l00013"></a>00013 {
-<a name="l00014"></a>00014   <span class="keyword">public</span>:
-<a name="l00015"></a>00015 
-<a name="l00019"></a><a class="code" href="classh___info_gain.html#a4b2ec63e264bcddb6acd50168ea4e14d">00019</a>     <a class="code" href="classh___info_gain.html" title="The Information Gain heuristic for a decision tree.">h_InfoGain</a>()
-<a name="l00020"></a>00020     { 
-<a name="l00021"></a>00021       m_label = <span class="stringliteral">&quot;Information Gain&quot;</span>;
-<a name="l00022"></a>00022     }
-<a name="l00023"></a>00023 
-<a name="l00036"></a><a class="code" href="classh___info_gain.html#ac6842c73fa10e58c0cb7a137139f4553">00036</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> evaluate( <span class="keyword">const</span> <a class="code" href="class_data_set.html" title="A table of data.">DataSet&lt;T&gt;</a>&amp; data, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> target, <span class="keyword">const</span> vector&lt;unsigned int&gt;&amp; attrAvail )
-<a name="l00037"></a>00037     {
-<a name="l00038"></a>00038       <span class="keywordflow">if</span> ( attrAvail.empty() )
-<a name="l00039"></a>00039       {
-<a name="l00040"></a>00040         <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(-1);
-<a name="l00041"></a>00041       }
-<a name="l00042"></a>00042       
-<a name="l00043"></a>00043       <span class="comment">// For each of the available attributes, calculate the gain.</span>
-<a name="l00044"></a>00044       <span class="comment">// Maintain current maximum gain and which attribute resulted in it.</span>
-<a name="l00045"></a>00045       <span class="keywordtype">float</span> maxGain = 0;
-<a name="l00046"></a>00046       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bestAttrIdx = 0;
-<a name="l00047"></a>00047 
-<a name="l00048"></a>00048       <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; attrAvail.size(); i++ )
-<a name="l00049"></a>00049       { 
-<a name="l00050"></a>00050         <span class="comment">//float infoGain = </span>
-<a name="l00051"></a>00051           <span class="comment">//data.entropy( target )</span>
-<a name="l00052"></a>00052                                        <span class="comment">/* Entropy of whole DataSet */</span>
-<a name="l00053"></a>00053           <span class="comment">//- entropyReduction( data, attrAvail[i] );</span>
-<a name="l00054"></a>00054                                        <span class="comment">/* Entropy of subset wrt attribute i */</span>
-<a name="l00055"></a>00055         <span class="keywordtype">float</span> dataEntropy = data.<a class="code" href="class_data_set.html#a23405081e7a02c68f250640c33a972d5" title="Calculates the entropy of this DataSet.">entropy</a>( target );
-<a name="l00056"></a>00056         <span class="keywordtype">float</span> dataEntropyReduction = entropyReduction( data, attrAvail[i] );
-<a name="l00057"></a>00057         <span class="keywordtype">float</span> infoGain = dataEntropy - dataEntropyReduction;
-<a name="l00058"></a>00058 
-<a name="l00059"></a>00059         <span class="comment">// Maintain maximums.</span>
-<a name="l00060"></a>00060         <span class="keywordflow">if</span> ( infoGain &gt; maxGain )
-<a name="l00061"></a>00061         {
-<a name="l00062"></a>00062           maxGain = infoGain;
-<a name="l00063"></a>00063           bestAttrIdx = i;
-<a name="l00064"></a>00064         }
-<a name="l00065"></a>00065       }  
-<a name="l00066"></a>00066 
-<a name="l00067"></a>00067       <span class="keywordflow">return</span> attrAvail[bestAttrIdx];
-<a name="l00068"></a>00068     }
-<a name="l00069"></a>00069 
-<a name="l00070"></a>00070     <span class="keywordtype">float</span> entropyReduction( <span class="keyword">const</span> <a class="code" href="class_data_set.html" title="A table of data.">DataSet&lt;T&gt;</a>&amp; data, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> attr )
-<a name="l00071"></a>00071     {
-<a name="l00072"></a>00072       <span class="comment">// Second term in Gain equation.</span>
-<a name="l00073"></a>00073       <span class="keywordtype">float</span> entropyReduction = 0;
-<a name="l00074"></a>00074 
-<a name="l00075"></a>00075       vector&lt;T&gt; attrUniqueValues;
-<a name="l00076"></a>00076       data.<a class="code" href="class_data_set.html#afc6f9969aa1bd51ae0f8aad088371d51" title="Stores unique values for attribute attr from this DataSet in values.">getUniqueValues</a>( attr, attrUniqueValues );
-<a name="l00077"></a>00077 
-<a name="l00078"></a>00078       <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; attrUniqueValues.size(); i ++ )
-<a name="l00079"></a>00079       {
-<a name="l00080"></a>00080         <a class="code" href="class_data_set.html" title="A table of data.">DataSet&lt;T&gt;</a> partitionedData;
-<a name="l00081"></a>00081         data.<a class="code" href="class_data_set.html#ab2fb9507437faf9a8ba8326f251a5730" title="Stores feature vectors with values for attribute attr equaling match.">getMatchingVectors</a>( partitionedData, attr, attrUniqueValues[i] );
-<a name="l00082"></a>00082 
-<a name="l00083"></a>00083         entropyReduction += 
-<a name="l00084"></a>00084           (   <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(partitionedData.<a class="code" href="class_data_set.html#a1e77c8af7ead1e481c7585fa23b3cdb3" title="The data for the table stored as a 2D vector.">m_d</a>.size()) 
-<a name="l00085"></a>00085             / static_cast&lt;float&gt;(data.<a class="code" href="class_data_set.html#a1e77c8af7ead1e481c7585fa23b3cdb3" title="The data for the table stored as a 2D vector.">m_d</a>.size()) 
-<a name="l00086"></a>00086             * partitionedData.<a class="code" href="class_data_set.html#a23405081e7a02c68f250640c33a972d5" title="Calculates the entropy of this DataSet.">entropy</a>( i ) 
-<a name="l00087"></a>00087           );
-<a name="l00088"></a>00088       }
+<div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="preprocessor">#ifndef H_INFOGAIN</span>
+<a name="l00002"></a>00002 <span class="preprocessor"></span><span class="preprocessor">#define H_INFOGAIN</span>
+<a name="l00003"></a>00003 <span class="preprocessor"></span>
+<a name="l00004"></a>00004 <span class="preprocessor">#include &lt;vector&gt;</span>
+<a name="l00005"></a>00005 <span class="preprocessor">#include &quot;dataset.h&quot;</span>
+<a name="l00006"></a>00006 
+<a name="l00007"></a>00007 <span class="keyword">using namespace </span>std;
+<a name="l00008"></a>00008 
+<a name="l00012"></a>00012 <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;
+<a name="l00013"></a><a class="code" href="classh___info_gain.html">00013</a> <span class="keyword">class </span><a class="code" href="classh___info_gain.html" title="The Information Gain heuristic for a decision tree.">h_InfoGain</a> : <span class="keyword">public</span> <a class="code" href="class_d_tree_heuristic.html" title="Interface for a decision tree heuristic.">DTreeHeuristic</a>&lt;T&gt;
+<a name="l00014"></a>00014 {
+<a name="l00015"></a>00015   <span class="keyword">public</span>:
+<a name="l00016"></a>00016 
+<a name="l00020"></a><a class="code" href="classh___info_gain.html#a4b2ec63e264bcddb6acd50168ea4e14d">00020</a>     <a class="code" href="classh___info_gain.html" title="The Information Gain heuristic for a decision tree.">h_InfoGain</a>()
+<a name="l00021"></a>00021     { 
+<a name="l00022"></a>00022       m_label = <span class="stringliteral">&quot;Information Gain&quot;</span>;
+<a name="l00023"></a>00023     }
+<a name="l00024"></a>00024 
+<a name="l00037"></a><a class="code" href="classh___info_gain.html#ac6842c73fa10e58c0cb7a137139f4553">00037</a>     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> evaluate( <span class="keyword">const</span> <a class="code" href="class_data_set.html" title="A table of data.">DataSet&lt;T&gt;</a>&amp; data, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> target, <span class="keyword">const</span> vector&lt;unsigned int&gt;&amp; attrAvail )
+<a name="l00038"></a>00038     {
+<a name="l00039"></a>00039       <span class="keywordflow">if</span> ( attrAvail.empty() )
+<a name="l00040"></a>00040       {
+<a name="l00041"></a>00041         <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span><span class="keywordtype">unsigned</span> <span class="keywordtype">int</span><span class="keyword">&gt;</span>(-1);
+<a name="l00042"></a>00042       }
+<a name="l00043"></a>00043       
+<a name="l00044"></a>00044       <span class="comment">// For each of the available attributes, calculate the gain.</span>
+<a name="l00045"></a>00045       <span class="comment">// Maintain maximum gain and which attribute resulted in it.</span>
+<a name="l00046"></a>00046       <span class="keywordtype">float</span> maxGain = 0;
+<a name="l00047"></a>00047       <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> bestAttrIdx = 0;
+<a name="l00048"></a>00048 
+<a name="l00049"></a>00049       <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; attrAvail.size(); i++ )
+<a name="l00050"></a>00050       { 
+<a name="l00051"></a>00051         <span class="keywordtype">float</span> infoGain = gain( data, target, attrAvail[i] );
+<a name="l00052"></a>00052 
+<a name="l00053"></a>00053         <span class="keywordflow">if</span> ( infoGain &gt; maxGain )
+<a name="l00054"></a>00054         {
+<a name="l00055"></a>00055           maxGain = infoGain;
+<a name="l00056"></a>00056           bestAttrIdx = i;
+<a name="l00057"></a>00057         }
+<a name="l00058"></a>00058       }  
+<a name="l00059"></a>00059 
+<a name="l00060"></a>00060       <span class="keywordflow">return</span> attrAvail[bestAttrIdx];
+<a name="l00061"></a>00061     }
+<a name="l00062"></a>00062 
+<a name="l00071"></a><a class="code" href="classh___info_gain.html#a50ebf32c73f076de8c9aacc0cfb6eda4">00071</a>     <span class="keywordtype">float</span> gain( <span class="keyword">const</span> <a class="code" href="class_data_set.html" title="A table of data.">DataSet&lt;T&gt;</a>&amp; data, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> target, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> attr )
+<a name="l00072"></a>00072     {
+<a name="l00073"></a>00073       <span class="keywordflow">return</span> data.<a class="code" href="class_data_set.html#a23405081e7a02c68f250640c33a972d5" title="Calculates the entropy of this DataSet.">entropy</a>( target ) - entropyReduction( data, attr );
+<a name="l00074"></a>00074     }
+<a name="l00075"></a>00075 
+<a name="l00083"></a><a class="code" href="classh___info_gain.html#ae6295b44435c1a850ba642f1bb1f1a94">00083</a>     <span class="keywordtype">float</span> entropyReduction( <span class="keyword">const</span> <a class="code" href="class_data_set.html" title="A table of data.">DataSet&lt;T&gt;</a>&amp; data, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> attr )
+<a name="l00084"></a>00084     {
+<a name="l00085"></a>00085       <span class="keywordtype">float</span> entropyReduction = 0;
+<a name="l00086"></a>00086 
+<a name="l00087"></a>00087       vector&lt;T&gt; attrUniqueValues;
+<a name="l00088"></a>00088       data.<a class="code" href="class_data_set.html#afc6f9969aa1bd51ae0f8aad088371d51" title="Stores unique values for attribute attr from this DataSet in values.">getUniqueValues</a>( attr, attrUniqueValues );
 <a name="l00089"></a>00089 
-<a name="l00090"></a>00090       <span class="keywordflow">return</span> entropyReduction;
-<a name="l00091"></a>00091     }
-<a name="l00092"></a>00092 };
+<a name="l00090"></a>00090       <span class="keywordflow">for</span> ( <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> i = 0; i &lt; attrUniqueValues.size(); i ++ )
+<a name="l00091"></a>00091       {
+<a name="l00092"></a>00092         <a class="code" href="class_data_set.html" title="A table of data.">DataSet&lt;T&gt;</a> partitionedData;
+<a name="l00093"></a>00093         data.<a class="code" href="class_data_set.html#ab2fb9507437faf9a8ba8326f251a5730" title="Stores feature vectors with values for attribute attr equaling match.">getMatchingVectors</a>( partitionedData, attr, attrUniqueValues[i] );
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095         entropyReduction += 
+<a name="l00096"></a>00096           (   <span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(partitionedData.<a class="code" href="class_data_set.html#a1e77c8af7ead1e481c7585fa23b3cdb3" title="The data for the table stored as a 2D vector.">m_d</a>.size()) 
+<a name="l00097"></a>00097             / static_cast&lt;float&gt;(data.<a class="code" href="class_data_set.html#a1e77c8af7ead1e481c7585fa23b3cdb3" title="The data for the table stored as a 2D vector.">m_d</a>.size()) 
+<a name="l00098"></a>00098             * partitionedData.<a class="code" href="class_data_set.html#a23405081e7a02c68f250640c33a972d5" title="Calculates the entropy of this DataSet.">entropy</a>( attr ) 
+<a name="l00099"></a>00099           );
+<a name="l00100"></a>00100       }
+<a name="l00101"></a>00101 
+<a name="l00102"></a>00102       <span class="keywordflow">return</span> entropyReduction;
+<a name="l00103"></a>00103     }
+<a name="l00104"></a>00104 };
+<a name="l00105"></a>00105 
+<a name="l00106"></a>00106 <span class="preprocessor">#endif</span>
 </pre></div></div>
 </div>
   <div id="nav-path" class="navpath">
@@ -189,7 +188,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 
 
-    <li class="footer">Generated on Sat Feb 4 2012 22:56:26 for Decision Tree by
+    <li class="footer">Generated on Fri Feb 10 2012 20:52:00 for Decision Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

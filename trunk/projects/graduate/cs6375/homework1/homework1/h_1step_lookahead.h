@@ -1,6 +1,7 @@
-#pragma once
+#ifndef H_1STEP_LOOKAHEAD
+#define H_1STEP_LOOKAHEAD
+
 #include <vector>
-#include <cmath>
 #include "dataset.h"
 
 using namespace std;
@@ -59,18 +60,17 @@ class h_1StepLookAhead : public DTreeHeuristic<T>
         T targetMajValNEG = setNEG.getMostCommonValue( target );
         T targetMajValPOS = setPOS.getMostCommonValue( target );
 
-        for ( unsigned int i = 0; i < setNEG.m_d.size(); i++ )
+        for ( unsigned int j = 0; j < setNEG.m_d.size(); j++ )
         {
-          if ( setNEG.m_d[i][target] != targetMajValNEG )
+          if ( setNEG.m_d[j][target] != targetMajValNEG )
           {
             errors++;
           }
         }
 
-        //unsigned int numErrorsFromPOS = 0;
-        for ( unsigned int i = 0; i < setPOS.m_d.size(); i++ )
+        for ( unsigned int j = 0; j < setPOS.m_d.size(); j++ )
         {
-          if ( setPOS.m_d[i][target] != targetMajValPOS )
+          if ( setPOS.m_d[j][target] != targetMajValPOS )
           {
             errors++;
           }
@@ -86,3 +86,5 @@ class h_1StepLookAhead : public DTreeHeuristic<T>
       return attrAvail[bestAttrIdx];
     }
 };
+
+#endif

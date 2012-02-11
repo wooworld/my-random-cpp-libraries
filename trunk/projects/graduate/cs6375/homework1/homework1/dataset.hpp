@@ -190,13 +190,6 @@ T DataSet<T>::getMostCommonValue( unsigned int attr ) const
   }
 
   return maxElem;
-
-  /*if ( !valueCounts.empty() )
-  {
-    return max_element( valueCounts.begin(), 
-                        valueCounts.end(), 
-                        TCountsComparator )->second;
-  }*/
 }
 
 template <class T>
@@ -292,4 +285,28 @@ float DataSet<T>::entropy( unsigned int attr ) const
   }
 
   return sum;
+}
+
+template <class T>
+float DataSet<T>::varianceImpurity( unsigned int target ) const
+{
+  unsigned int countPOS = 0;
+  unsigned int countNEG = 0;
+
+  for ( unsigned int i = 0; i < m_d.size(); i++ )
+  {
+    // Increment the number of appearances in counts for attribute attr in the
+    // ith feature vector
+    if ( m_d[i][target] == POS )
+    {
+      countPOS++;
+    }
+
+    else if ( m_d[i][target] == NEG )
+    {
+      countNEG++;
+    }
+  }
+
+  return ( countPOS * countNEG / (m_d.size() * m_d.size()) );
 }

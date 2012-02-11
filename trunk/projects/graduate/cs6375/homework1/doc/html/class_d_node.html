@@ -116,14 +116,18 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_node.html#a8f313be78f5f3fe15e4ccf8e8b87441e">DNode</a> (<a class="el" href="class_d_node.html">DNode</a>&lt; T &gt; *parent)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor specifying a parent node.  <a href="#a8f313be78f5f3fe15e4ccf8e8b87441e"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_node.html#aac876b0e9e74bfea189b210906c46508">DNode</a> (<a class="el" href="class_d_node.html">DNode</a>&lt; T &gt; *parent, unsigned int label)</td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor specifying a parent node and label.  <a href="#aac876b0e9e74bfea189b210906c46508"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_node.html#afaf34c2b5f43adc3c91c60fb4e64faee">DNode</a> (<a class="el" href="class_d_node.html">DNode</a>&lt; T &gt; *parent, unsigned int branch)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor specifying a parent node, label, and branching attribute.  <a href="#afaf34c2b5f43adc3c91c60fb4e64faee"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_node.html#a9b378546f314cde1e9230ee63fbbb14c">m_label</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The label for this node. Corresponds directly to the attribute (column number) in the <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a> this node was generated from.  <a href="#a9b378546f314cde1e9230ee63fbbb14c"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_d_node.html">DNode</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_node.html#ae5aa2e2423bc86e6881e95674ee71c76">m_parent</a></td></tr>
-<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">vector of possible values for the attribute label (above) at the time this node was generated.  <a href="#ae5aa2e2423bc86e6881e95674ee71c76"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_node.html#a616640a28b92241bb85e9f185f77c304">m_branchAttr</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The index of the attribute this node. Corresponds directly to the attribute (column number) in the <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a> this node was generated from.  <a href="#a616640a28b92241bb85e9f185f77c304"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a51f67e10bee50611516fe8729941d16c"></a><!-- doxytag: member="DNode::m_label" ref="a51f67e10bee50611516fe8729941d16c" args="" -->
+string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_node.html#a51f67e10bee50611516fe8729941d16c">m_label</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The human readable label for the attribute this node branched on. <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae5aa2e2423bc86e6881e95674ee71c76"></a><!-- doxytag: member="DNode::m_parent" ref="ae5aa2e2423bc86e6881e95674ee71c76" args="" -->
+<a class="el" href="class_d_node.html">DNode</a>&lt; T &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_node.html#ae5aa2e2423bc86e6881e95674ee71c76">m_parent</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A pointer to this node's parent node. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">vector&lt; pair&lt; <a class="el" href="class_d_node.html">DNode</a>&lt; T &gt; *, T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_d_node.html#a4e981b3bfa6549c520ec8f3a86243f34">m_branches</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A vector of 2-tuples containing pointers to children and branching values.  <a href="#a4e981b3bfa6549c520ec8f3a86243f34"></a><br/></td></tr>
 </table>
@@ -160,7 +164,7 @@ template&lt;class T&gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="aac876b0e9e74bfea189b210906c46508"></a><!-- doxytag: member="DNode::DNode" ref="aac876b0e9e74bfea189b210906c46508" args="(DNode&lt; T &gt; *parent, unsigned int label)" -->
+<a class="anchor" id="afaf34c2b5f43adc3c91c60fb4e64faee"></a><!-- doxytag: member="DNode::DNode" ref="afaf34c2b5f43adc3c91c60fb4e64faee" args="(DNode&lt; T &gt; *parent, unsigned int branch)" -->
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -176,7 +180,7 @@ template&lt;class T&gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>label</em>&#160;</td>
+          <td class="paramname"><em>branch</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -187,11 +191,11 @@ template&lt;class T&gt; </div>
 </div>
 <div class="memdoc">
 
-<p>Constructor specifying a parent node and label. </p>
+<p>Constructor specifying a parent node, label, and branching attribute. </p>
 <dl><dt><b>Parameters:</b></dt><dd>
   <table class="params">
     <tr><td class="paramname">parent</td><td>-- A pointer to the parent <a class="el" href="class_d_node.html" title="A node to use in the decision tree.">DNode</a>. Must be of same data type. </td></tr>
-    <tr><td class="paramname">label</td><td>-- The label to assign to this node. </td></tr>
+    <tr><td class="paramname">branch</td><td>-- The attribute index this node was branched on. </td></tr>
   </table>
   </dd>
 </dl>
@@ -199,6 +203,24 @@ template&lt;class T&gt; </div>
 </div>
 </div>
 <hr/><h2>Member Data Documentation</h2>
+<a class="anchor" id="a616640a28b92241bb85e9f185f77c304"></a><!-- doxytag: member="DNode::m_branchAttr" ref="a616640a28b92241bb85e9f185f77c304" args="" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned int <a class="el" href="class_d_node.html">DNode</a>&lt; T &gt;::<a class="el" href="class_d_node.html#a616640a28b92241bb85e9f185f77c304">m_branchAttr</a></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>The index of the attribute this node. Corresponds directly to the attribute (column number) in the <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a> this node was generated from. </p>
+<dl class="note"><dt><b>Note:</b></dt><dd>A label of -1 implies this is a leaf node. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a4e981b3bfa6549c520ec8f3a86243f34"></a><!-- doxytag: member="DNode::m_branches" ref="a4e981b3bfa6549c520ec8f3a86243f34" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -213,44 +235,7 @@ template&lt;class T&gt; </div>
 <div class="memdoc">
 
 <p>A vector of 2-tuples containing pointers to children and branching values. </p>
-<p>Each index of this vector contains a 2-tuple in the form of a &lt;DNode&lt;T&gt;*, unsigned int&gt; std::pair.</p>
-<p>The first element of each pair is a pointer to a child node of this node. The second element of each pair is the index in m_attrAvail (above) for which this child was branched on. </p>
-
-</div>
-</div>
-<a class="anchor" id="a9b378546f314cde1e9230ee63fbbb14c"></a><!-- doxytag: member="DNode::m_label" ref="a9b378546f314cde1e9230ee63fbbb14c" args="" -->
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned int <a class="el" href="class_d_node.html">DNode</a>&lt; T &gt;::<a class="el" href="class_d_node.html#a9b378546f314cde1e9230ee63fbbb14c">m_label</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>The label for this node. Corresponds directly to the attribute (column number) in the <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a> this node was generated from. </p>
-<dl class="note"><dt><b>Note:</b></dt><dd>A label of -1 implies this is a leaf node. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ae5aa2e2423bc86e6881e95674ee71c76"></a><!-- doxytag: member="DNode::m_parent" ref="ae5aa2e2423bc86e6881e95674ee71c76" args="" -->
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_d_node.html">DNode</a>&lt;T&gt;* <a class="el" href="class_d_node.html">DNode</a>&lt; T &gt;::<a class="el" href="class_d_node.html#ae5aa2e2423bc86e6881e95674ee71c76">m_parent</a></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>vector of possible values for the attribute label (above) at the time this node was generated. </p>
-<dl class="note"><dt><b>Note:</b></dt><dd>An available vector of size 1 implies this is a leaf node. The value contained in av[0] is the value of the leaf node. A pointer to this node's parent node. </dd></dl>
+<p>The first element of each pair is a pointer to a child node of this node. The second element of each pair is the attribute value for which attribute m_label was branched on for this child. </p>
 
 </div>
 </div>
@@ -277,7 +262,7 @@ template&lt;class T&gt; </div>
 </div>
 
 
-    <li class="footer">Generated on Sat Feb 4 2012 22:56:26 for Decision Tree by
+    <li class="footer">Generated on Fri Feb 10 2012 20:52:01 for Decision Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

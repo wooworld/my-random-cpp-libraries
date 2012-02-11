@@ -1,4 +1,6 @@
-#pragma once
+#ifndef H_TREE_HEURISTIC
+#define H_TREE_HEURISTIC 
+
 #include <vector>
 #include "dataset.h"
 
@@ -31,3 +33,5 @@ class DTreeHeuristic
      */
     string m_label;
 };
+
+#endif

@@ -1,6 +1,7 @@
-#pragma once
+#ifndef H_INFOGAIN
+#define H_INFOGAIN
+
 #include <vector>
-#include <cmath>
 #include "dataset.h"
 
 using namespace std;
@@ -41,22 +42,14 @@ class h_InfoGain : public DTreeHeuristic<T>
       }
       
       // For each of the available attributes, calculate the gain.
-      // Maintain current maximum gain and which attribute resulted in it.
+      // Maintain maximum gain and which attribute resulted in it.
       float maxGain = 0;
       unsigned int bestAttrIdx = 0;
 
       for ( unsigned int i = 0; i < attrAvail.size(); i++ )
       { 
-        // float infoGain = 
-          // data.entropy( target )
-                                       /* Entropy of whole DataSet */
-          // - entropyReduction( data, attrAvail[i] );
-                                       /* Entropy of subset wrt attribute i */
-        float dataEntropy = data.entropy( target );
-        float dataEntropyReduction = entropyReduction( data, attrAvail[i] );
-        float infoGain = dataEntropy - dataEntropyReduction;
+        float infoGain = gain( data, target, attrAvail[i] );
 
-        // Maintain maximums.
         if ( infoGain > maxGain )
         {
           maxGain = infoGain;
@@ -67,9 +60,28 @@ class h_InfoGain : public DTreeHeuristic<T>
       return attrAvail[bestAttrIdx];
     }
 
+    /**
+     * \brief Evaluate the gain of an attribute in data.
+     * \pre target is in [0, data.m_d.size()).
+     * \param data -- The DataSet to look in.
+     * \param target -- The target attribute in data.
+     * \param attr -- The attribute to calculate the gain for. 
+     * \return The information gain by choosing to branch on attr.
+     */
+    float gain( const DataSet<T>& data, unsigned int target, unsigned int attr )
+    {
+      return data.entropy( target ) - entropyReduction( data, attr );
+    }
+
+    /**
+     * \brief Calculates the reduction in entropy by choosing attribute attr.
+     * \pre attr is in [0, data.m_d.size()).
+     * \param data -- The DataSet to look in.
+     * \param attr -- The attribute to calculate reduction for.
+     * \return The reduciton in entropy expected by choosing attribute attr.
+     */
     float entropyReduction( const DataSet<T>& data, unsigned int attr )
     {
-      // Second term in Gain equation.
       float entropyReduction = 0;
 
       vector<T> attrUniqueValues;
@@ -90,3 +102,5 @@ class h_InfoGain : public DTreeHeuristic<T>
       return entropyReduction;
     }
 };
+
+#endif

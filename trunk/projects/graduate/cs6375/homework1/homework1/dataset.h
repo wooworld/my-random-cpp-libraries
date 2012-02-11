@@ -1,4 +1,6 @@
-#pragma once
+#ifndef H_DATASET
+#define H_DATASET
+
 #include <vector>
 #include <map>
 
@@ -33,13 +35,21 @@ class DataSet
     void print();
 
     /**
-     * \brief Copies contents from one DataSet to another.
-     * \param 
+     * \brief Copies contents from rhs into this DataSet.
+     * \param rhs -- Right hand side of the equation.
      */
     DataSet<T>& operator=( const DataSet<T>& rhs );
 
+    /**
+     * \brief Copies the data table from rhs into this DataSet.
+     * \param rhs -- DataSet to copy from. 
+     */
     void copyData( const DataSet<T>& rhs );
 
+    /**
+     * \brief Copies the headers from rhs into this DataSet.
+     * \param rhs -- DataSet to copy from.
+     */
     void copyHeaders( const DataSet<T>& rhs );
 
     /**
@@ -99,6 +109,13 @@ class DataSet
     float entropy( unsigned int attr ) const;
 
     /**
+     * \brief Calculates the variance of the impurity of this DataSet.
+     * \pre attr is in [0, m_d.size()).
+     * \return The Variance Impurity of the DataSet with respect to the class.
+     */
+    float varianceImpurity( unsigned int target ) const;
+
+    /**
      * \brief The data for the table stored as a 2D vector.
      *
      * This data can be considered in row-major or column-major form depending
@@ -126,3 +143,5 @@ class DataSet
 };
 
 #include "dataset.hpp"
+
+#endif
