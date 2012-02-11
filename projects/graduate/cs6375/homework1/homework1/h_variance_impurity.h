@@ -1,6 +1,7 @@
-#pragma once
+#ifndef H_VARIANCE_IMPURITY
+#define H_VARIANCE_IMPURITY
+
 #include <vector>
-#include <cmath>
 #include "dataset.h"
 
 using namespace std;
@@ -9,14 +10,14 @@ using namespace std;
  * \brief The Variance Impurity heuristic for a decision tree.
  */
 template <class T>
-class h_varianceImpurity : public DTreeHeuristic<T>
+class h_VarianceImpurity : public DTreeHeuristic<T>
 {
   public:
 
     /**
      * \brief The default constructor.
      */
-    h_varianceImpurity()
+    h_VarianceImpurity()
     { 
       m_label = "Variance Impurity";
     }
@@ -41,22 +42,14 @@ class h_varianceImpurity : public DTreeHeuristic<T>
       }
       
       // For each of the available attributes, calculate the gain.
-      // Maintain current maximum gain and which attribute resulted in it.
+      // Maintain maximum gain and which attribute resulted in it.
       float maxGain = 0;
       unsigned int bestAttrIdx = 0;
 
       for ( unsigned int i = 0; i < attrAvail.size(); i++ )
       { 
-        // float infoGain = 
-          // data.entropy( target )
-                                       /* Entropy of whole DataSet */
-          // - entropyReduction( data, attrAvail[i] );
-                                       /* Entropy of subset wrt attribute i */
-        float dataEntropy = data.entropy( target );
-        float dataEntropyReduction = entropyReduction( data, attrAvail[i] );
-        float infoGain = dataEntropy - dataEntropyReduction;
+        float infoGain = gain( data, target, attrAvail[i] );
 
-        // Maintain maximums.
         if ( infoGain > maxGain )
         {
           maxGain = infoGain;
@@ -67,10 +60,32 @@ class h_varianceImpurity : public DTreeHeuristic<T>
       return attrAvail[bestAttrIdx];
     }
 
-    float entropyReduction( const DataSet<T>& data, unsigned int attr )
+    /**
+     * \brief Calculates the reduction in entropy by choosing attribute attr.
+     * \pre attr is in [0, data.m_d.size()).
+     * \pre target is in [0, data.m_d.size()).
+     * \param data -- The DataSet to look in.
+     * \param target -- The class attribute in data.
+     * \param attr -- The attribute to calculate reduction for.
+     * \return The reduciton in entropy expected by choosing attribute attr.
+     */
+    float gain( const DataSet<T>& data, unsigned int target, unsigned int attr )
     {
-      // Second term in Gain equation.
-      float entropyReduction = 0;
+      return data.varianceImpurity( target ) - varianceReduction( data, target, attr );
+    }
+
+    /**
+     * \brief Calculates the reduction in variance by choosing attribute attr.
+     * \pre attr is in [0, data.m_d.size()).
+     * \pre target is in [0, data.m_d.size()).
+     * \param data -- The DataSet to look in.
+     * \param target -- The class attribute in data.
+     * \param attr -- The attribute to calculate reduction for.
+     * \return The reduciton in entropy expected by choosing attribute attr.
+     */
+    float varianceReduction( const DataSet<T>& data, unsigned int target, unsigned int attr )
+    {
+      float varianceReduction = 0;
 
       vector<T> attrUniqueValues;
       data.getUniqueValues( attr, attrUniqueValues );
@@ -80,13 +95,15 @@ class h_varianceImpurity : public DTreeHeuristic<T>
         DataSet<T> partitionedData;
         data.getMatchingVectors( partitionedData, attr, attrUniqueValues[i] );
 
-        entropyReduction += 
+        varianceReduction += 
           (   static_cast<float>(partitionedData.m_d.size()) 
             / static_cast<float>(data.m_d.size()) 
-            * partitionedData.entropy( attr ) 
+            * partitionedData.varianceImpurity( target ) 
           );
       }
 
-      return entropyReduction;
+      return varianceReduction;
     }
 };
+
+#endif

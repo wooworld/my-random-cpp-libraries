@@ -115,6 +115,12 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a data set from file.  <a href="#a47d35c4620360e49fb58eb09299daecf"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#ab40471aa13b3cb5ce2c121f081101243">print</a> ()</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints the <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a> to standard out.  <a href="#ab40471aa13b3cb5ce2c121f081101243"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#a3bda02831b82635be445c075163fa76e">operator=</a> (const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;rhs)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies contents from rhs into this <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a>.  <a href="#a3bda02831b82635be445c075163fa76e"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#a76a6bab36ce2170302ed5dc7dd24ea2a">copyData</a> (const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;rhs)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the data table from rhs into this <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a>.  <a href="#a76a6bab36ce2170302ed5dc7dd24ea2a"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#ac549c704c8bb20fbc97762d871cd7f44">copyHeaders</a> (const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;rhs)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the headers from rhs into this <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a>.  <a href="#ac549c704c8bb20fbc97762d871cd7f44"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#afcaf22b32e6a10a3561e84caa429806b">pure</a> (unsigned int attr, T match) const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if all values of attribute attr in this <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a> == match.  <a href="#afcaf22b32e6a10a3561e84caa429806b"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#a1a858749a1fa7e845626e8b45508e688">getMostCommonValue</a> (unsigned int attr) const </td></tr>
@@ -127,12 +133,20 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of appearances for each unique value of attribute attr in this <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a>.  <a href="#a182a90ed45975a568e2b5233e0ae9c60"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#a23405081e7a02c68f250640c33a972d5">entropy</a> (unsigned int attr) const </td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the entropy of this <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a>.  <a href="#a23405081e7a02c68f250640c33a972d5"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#a79ef1cb46e8b863003bf695241e679be">varianceImpurity</a> (unsigned int target) const </td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the variance of the impurity of this <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a>.  <a href="#a79ef1cb46e8b863003bf695241e679be"></a><br/></td></tr>
 <tr><td colspan="2"><h2><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">vector&lt; vector&lt; T &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#a1e77c8af7ead1e481c7585fa23b3cdb3">m_d</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The data for the table stored as a 2D vector.  <a href="#a1e77c8af7ead1e481c7585fa23b3cdb3"></a><br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">vector&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#a46dafc34093388c9e11c0fc85718fe77">m_n</a></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">A vector of column headers for the data table.  <a href="#a46dafc34093388c9e11c0fc85718fe77"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a427f8c833433885f5dac9c81202702df"></a><!-- doxytag: member="DataSet::POS" ref="a427f8c833433885f5dac9c81202702df" args="" -->
+T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#a427f8c833433885f5dac9c81202702df">POS</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The value representing a POSITIVE feature vector (yes). <br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa1f6be860c11b47c136ee116f03979d8"></a><!-- doxytag: member="DataSet::NEG" ref="aa1f6be860c11b47c136ee116f03979d8" args="" -->
+T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_data_set.html#aa1f6be860c11b47c136ee116f03979d8">NEG</a></td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The value representing a NEGATIVE feature vector (no). <br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class T&gt;<br/>
@@ -140,6 +154,60 @@ class DataSet&lt; T &gt;</h3>
 
 <p>A table of data. </p>
 </div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="a76a6bab36ce2170302ed5dc7dd24ea2a"></a><!-- doxytag: member="DataSet::copyData" ref="a76a6bab36ce2170302ed5dc7dd24ea2a" args="(const DataSet&lt; T &gt; &amp;rhs)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt;::copyData </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Copies the data table from rhs into this <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a>. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rhs</td><td>-- <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a> to copy from. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ac549c704c8bb20fbc97762d871cd7f44"></a><!-- doxytag: member="DataSet::copyHeaders" ref="ac549c704c8bb20fbc97762d871cd7f44" args="(const DataSet&lt; T &gt; &amp;rhs)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt;::copyHeaders </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Copies the headers from rhs into this <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a>. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rhs</td><td>-- <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a> to copy from. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a23405081e7a02c68f250640c33a972d5"></a><!-- doxytag: member="DataSet::entropy" ref="a23405081e7a02c68f250640c33a972d5" args="(unsigned int attr) const " -->
 <div class="memitem">
 <div class="memproto">
@@ -356,6 +424,33 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a3bda02831b82635be445c075163fa76e"></a><!-- doxytag: member="DataSet::operator=" ref="a3bda02831b82635be445c075163fa76e" args="(const DataSet&lt; T &gt; &amp;rhs)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp; <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Copies contents from rhs into this <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a>. </p>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rhs</td><td>-- Right hand side of the equation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="ab40471aa13b3cb5ce2c121f081101243"></a><!-- doxytag: member="DataSet::print" ref="ab40471aa13b3cb5ce2c121f081101243" args="()" -->
 <div class="memitem">
 <div class="memproto">
@@ -423,6 +518,29 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a79ef1cb46e8b863003bf695241e679be"></a><!-- doxytag: member="DataSet::varianceImpurity" ref="a79ef1cb46e8b863003bf695241e679be" args="(unsigned int target) const " -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt;::varianceImpurity </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Calculates the variance of the impurity of this <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a>. </p>
+<dl class="pre"><dt><b>Precondition:</b></dt><dd>attr is in [0, m_d.size()). </dd></dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The Variance Impurity of the <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a> with respect to the class. </dd></dl>
+
+</div>
+</div>
 <hr/><h2>Member Data Documentation</h2>
 <a class="anchor" id="a1e77c8af7ead1e481c7585fa23b3cdb3"></a><!-- doxytag: member="DataSet::m_d" ref="a1e77c8af7ead1e481c7585fa23b3cdb3" args="" -->
 <div class="memitem">
@@ -484,7 +602,7 @@ template&lt;class T&gt; </div>
 </div>
 
 
-    <li class="footer">Generated on Sat Feb 4 2012 22:56:26 for Decision Tree by
+    <li class="footer">Generated on Fri Feb 10 2012 20:52:01 for Decision Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>

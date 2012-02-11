@@ -7,7 +7,9 @@ var NAVTREE =
       [ "DecisionTree< T >", "class_decision_tree.html", null ],
       [ "DNode< T >", "class_d_node.html", null ],
       [ "DTreeHeuristic< T >", "class_d_tree_heuristic.html", null ],
+      [ "h_1StepLookAhead< T >", "classh__1_step_look_ahead.html", null ],
       [ "h_InfoGain< T >", "classh___info_gain.html", null ],
+      [ "h_VarianceImpurity< T >", "classh___variance_impurity.html", null ],
       [ "stop_watch", "structstop__watch.html", null ]
     ] ],
     [ "Class Index", "classes.html", null ],
@@ -17,7 +19,9 @@ var NAVTREE =
       [ "DecisionTree< T >", "class_decision_tree.html", null ],
       [ "DNode< T >", "class_d_node.html", null ],
       [ "DTreeHeuristic< T >", "class_d_tree_heuristic.html", [
-        [ "h_InfoGain< T >", "classh___info_gain.html", null ]
+        [ "h_1StepLookAhead< T >", "classh__1_step_look_ahead.html", null ],
+        [ "h_InfoGain< T >", "classh___info_gain.html", null ],
+        [ "h_VarianceImpurity< T >", "classh___variance_impurity.html", null ]
       ] ],
       [ "stop_watch", "structstop__watch.html", null ]
     ] ],
@@ -29,7 +33,9 @@ var NAVTREE =
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6375/homework1/homework1/decision_tree.h", null, null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6375/homework1/homework1/decision_tree.hpp", null, null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6375/homework1/homework1/dnode.h", null, null ],
+      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6375/homework1/homework1/h_1step_lookahead.h", null, null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6375/homework1/homework1/h_infogain.h", null, null ],
+      [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6375/homework1/homework1/h_variance_impurity.h", null, null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6375/homework1/homework1/hr_timer.cpp", "hr__timer_8cpp.html", null ],
       [ "C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6375/homework1/homework1/hr_timer.h", "hr__timer_8h.html", null ]
     ] ]

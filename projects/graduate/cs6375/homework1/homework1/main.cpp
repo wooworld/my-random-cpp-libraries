@@ -2,12 +2,13 @@
 #include <string>
 #include <vector>
 
-#include "hr_timer.h"
+// #include "hr_timer.h"
 #include "dataset.h"
 #include "decision_tree.h"
 #include "d_tree_heuristic.h"
 #include "h_infogain.h"
 #include "h_1step_lookahead.h"
+#include "h_variance_impurity.h"
 
 using namespace std;
 
@@ -26,13 +27,6 @@ void main( int argc, char* argv[] )
   string validationSetLoc = argv[4];
   string testSetLoc = argv[5];
   string toPrint = argv[6];
-
-  cout << "L = " << L << endl;
-  cout << "K = " << K << endl;
-  cout << "trainingSetLoc = " << trainingSetLoc << endl;
-  cout << "validationSetLoc = " << validationSetLoc << endl;
-  cout << "testSetLoc = " << testSetLoc << endl;
-  cout << "toPrint = " << toPrint << endl;
 
   // Load data sets from files
   DataSet<bool> trainingData;
@@ -54,38 +48,55 @@ void main( int argc, char* argv[] )
   testData.POS = true;
   testData.NEG = false;
 
-  trainingData.print();
-
   // Set of heuristics to use
   vector<DTreeHeuristic<bool>* > heuristics;
   heuristics.push_back( new h_InfoGain<bool>() );
   heuristics.push_back( new h_1StepLookAhead<bool>() );
-  heuristics.push_back( new h_InfoGain<bool>() );
+  heuristics.push_back( new h_VarianceImpurity<bool>() );
 
   // Vector of decisionTree, one for each heuristic.
   vector<DecisionTree<bool> > trees( heuristics.size() );  
 
-  CStopWatch timer;  
+  // CStopWatch timer;  
 
+  // Generate trees.
   for ( unsigned int i = 0; i < trees.size(); i++ )
   {
-    cout << "Creating tree from " << heuristics[i]->m_label << endl;
-    timer.startTimer();
-
-    // Set the necessary data for ID3 to work correctly.
+    // timer.startTimer();
     trees[i].setHeuristic( heuristics[i] );
-
     trees[i].ID3( trainingData, trainingData.m_n.size()-1 );
+    // timer.stopTimer();
 
-    timer.stopTimer();
-
-    cout << "Creation of tree using the " << heuristics[i]->m_label 
-      << " heuristic took " << timer.getElapsedTime() << endl;
+    // cout << "Tree created using the " << heuristics[i]->m_label 
+    //   << " heuristic took " << timer.getElapsedTime() << " seconds." << endl;
   }
 
-  // TODO Validate trees
+  // Output accuracy of trees.
+  for ( unsigned int i = 0; i < trees.size(); i++ )
+  {
+    float accuracy = trees[i].test( testData, testData.m_n.size()-1 );
+    cout << "Tree created using " << heuristics[i]->m_label 
+      << ": Pre-Prune Accuracy on Test Data = " << (accuracy*100.0f) << "%" << endl;
+  }
 
-  // TODO Test trees
+  // Prune some trees.
+  for ( unsigned int i = 0; i < trees.size(); i ++ )
+  {
+    // timer.startTimer();
+    trees[i].prune( trainingData, validationData, validationData.m_n.size()-1, L, K );
+    // timer.stopTimer();
+    
+    // cout << "Pruning tree created using " << heuristics[i]->m_label 
+    //   << " heuristic took " << timer.getElapsedTime() << " seconds." << endl;
+  }
+  
+  // Output accuracy of pruned trees.
+  for ( unsigned int i = 0; i < trees.size(); i++ )
+  {
+    float accuracy = trees[i].test( testData, testData.m_n.size()-1 );
+    cout << "Tree created using " << heuristics[i]->m_label 
+      << ": Post-Prune Accuracy on Test Data = " << (accuracy*100.0f) << "%" << endl;
+  }
 
   // TODO Output trees
   if ( toPrint == "yes" || toPrint == "YES" )
@@ -95,8 +106,6 @@ void main( int argc, char* argv[] )
       trees[i].print();
     }
   }  
-
-  // TODO Output results of tests
 
   return;
 }

@@ -124,8 +124,10 @@ Public Member Functions</h2></td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">The default constructor. <br/></td></tr>
 <tr><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classh___info_gain.html#ac6842c73fa10e58c0cb7a137139f4553">evaluate</a> (const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;data, unsigned int target, const vector&lt; unsigned int &gt; &amp;attrAvail)</td></tr>
 <tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates data with respect to target and returns the expected information gain.  <a href="#ac6842c73fa10e58c0cb7a137139f4553"></a><br/></td></tr>
-<tr><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae6295b44435c1a850ba642f1bb1f1a94"></a><!-- doxytag: member="h_InfoGain::entropyReduction" ref="ae6295b44435c1a850ba642f1bb1f1a94" args="(const DataSet&lt; T &gt; &amp;data, unsigned int attr)" -->
-float&#160;</td><td class="memItemRight" valign="bottom"><b>entropyReduction</b> (const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;data, unsigned int attr)</td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classh___info_gain.html#a50ebf32c73f076de8c9aacc0cfb6eda4">gain</a> (const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;data, unsigned int target, unsigned int attr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluate the gain of an attribute in data.  <a href="#a50ebf32c73f076de8c9aacc0cfb6eda4"></a><br/></td></tr>
+<tr><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classh___info_gain.html#ae6295b44435c1a850ba642f1bb1f1a94">entropyReduction</a> (const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;data, unsigned int attr)</td></tr>
+<tr><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the reduction in entropy by choosing attribute attr.  <a href="#ae6295b44435c1a850ba642f1bb1f1a94"></a><br/></td></tr>
 </table>
 <hr/><a name="details" id="details"></a><h2>Detailed Description</h2>
 <div class="textblock"><h3>template&lt;class T&gt;<br/>
@@ -133,6 +135,46 @@ class h_InfoGain&lt; T &gt;</h3>
 
 <p>The Information Gain heuristic for a decision tree. </p>
 </div><hr/><h2>Member Function Documentation</h2>
+<a class="anchor" id="ae6295b44435c1a850ba642f1bb1f1a94"></a><!-- doxytag: member="h_InfoGain::entropyReduction" ref="ae6295b44435c1a850ba642f1bb1f1a94" args="(const DataSet&lt; T &gt; &amp;data, unsigned int attr)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="classh___info_gain.html">h_InfoGain</a>&lt; T &gt;::entropyReduction </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>attr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Calculates the reduction in entropy by choosing attribute attr. </p>
+<dl class="pre"><dt><b>Precondition:</b></dt><dd>attr is in [0, data.m_d.size()). </dd></dl>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>-- The <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a> to look in. </td></tr>
+    <tr><td class="paramname">attr</td><td>-- The attribute to calculate reduction for. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The reduciton in entropy expected by choosing attribute attr. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="ac6842c73fa10e58c0cb7a137139f4553"></a><!-- doxytag: member="h_InfoGain::evaluate" ref="ac6842c73fa10e58c0cb7a137139f4553" args="(const DataSet&lt; T &gt; &amp;data, unsigned int target, const vector&lt; unsigned int &gt; &amp;attrAvail)" -->
 <div class="memitem">
 <div class="memproto">
@@ -182,6 +224,53 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
+<a class="anchor" id="a50ebf32c73f076de8c9aacc0cfb6eda4"></a><!-- doxytag: member="h_InfoGain::gain" ref="a50ebf32c73f076de8c9aacc0cfb6eda4" args="(const DataSet&lt; T &gt; &amp;data, unsigned int target, unsigned int attr)" -->
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">float <a class="el" href="classh___info_gain.html">h_InfoGain</a>&lt; T &gt;::gain </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_data_set.html">DataSet</a>&lt; T &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>attr</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td><code> [inline]</code></td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>Evaluate the gain of an attribute in data. </p>
+<dl class="pre"><dt><b>Precondition:</b></dt><dd>target is in [0, data.m_d.size()). </dd></dl>
+<dl><dt><b>Parameters:</b></dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>-- The <a class="el" href="class_data_set.html" title="A table of data.">DataSet</a> to look in. </td></tr>
+    <tr><td class="paramname">target</td><td>-- The target attribute in data. </td></tr>
+    <tr><td class="paramname">attr</td><td>-- The attribute to calculate the gain for. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="return"><dt><b>Returns:</b></dt><dd>The information gain by choosing to branch on attr. </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>C:/Users/Gary/Documents/School/my-random-cpp-libraries/trunk/projects/graduate/cs6375/homework1/homework1/<a class="el" href="h__infogain_8h_source.html">h_infogain.h</a></li>
 </ul>
@@ -205,7 +294,7 @@ template&lt;class T &gt; </div>
 </div>
 
 
-    <li class="footer">Generated on Sat Feb 4 2012 22:56:26 for Decision Tree by
+    <li class="footer">Generated on Fri Feb 10 2012 20:52:01 for Decision Tree by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.7.5.1 </li>
    </ul>
