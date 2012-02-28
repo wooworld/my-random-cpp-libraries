@@ -41,8 +41,8 @@ void NaiveBayesClassifier::train( const DataSet& data ) {
     // Denominator for conditional probability update.
     float denom = (float)sumTokens(m_classVocab[i]) + (float)m_vocab.size();
 
-    map<string, unsigned int>::iterator vocabIt;
-    map<string, unsigned int>::iterator tokenLoc;   
+    Dictionary::iterator vocabIt;
+    Dictionary::iterator tokenLoc;   
 
     for ( vocabIt = m_vocab.begin(); vocabIt != m_vocab.end(); vocabIt++ ) {
       // Get count of global token in class specific vocab.
@@ -88,7 +88,7 @@ float NaiveBayesClassifier::test( const DataSet &data ) {
 
 unsigned int NaiveBayesClassifier::classify( const Document& doc ) {
   // Create document vocabulary map.
-  map<string, unsigned int> docVocab;
+  Dictionary docVocab;
   addVocab( doc, docVocab );
 
   // Calculate score for each class.
@@ -96,7 +96,7 @@ unsigned int NaiveBayesClassifier::classify( const Document& doc ) {
   for ( unsigned int i = 0; i < m_classes.size(); i++ ) {
     score[i] = log(m_prior[i]);
 
-    map<string, unsigned int>::iterator vocabIt;
+    Dictionary::iterator vocabIt;
     map<string, vector<float> >::iterator condProbLoc;
 
     // Iterate over all tokens in the document vocabulary and update scores.

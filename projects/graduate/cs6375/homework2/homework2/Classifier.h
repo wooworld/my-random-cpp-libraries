@@ -7,6 +7,8 @@
 #include "DataSet.h"
 #include "Document.h"
 
+typedef map<string, unsigned int> Dictionary;
+
 using namespace std;
 
 class Classifier {
@@ -16,11 +18,8 @@ public:
   virtual unsigned int classify( const Document& doc ) = 0;  
 
 protected:
-  bool addVocab( const vector<Document>& docs, 
-    map<string, unsigned int>& vocab );
-
-  bool addVocab( const Document& doc, map<string, 
-    unsigned int>& vocab );
+  bool addVocab( const vector<Document>& docs, Dictionary& vocab );
+  bool addVocab( const Document& doc, Dictionary& vocab );
 
   void tokenizeDocument( const Document& str,
     string delimiters,
@@ -28,11 +27,11 @@ protected:
     unsigned int minSize,
     vector<string>& split );
 
-  unsigned int sumTokens( map<string, unsigned int>& vocab );
+  unsigned int sumTokens( Dictionary& vocab );
 
   vector<string> m_classes;
-  map<string, unsigned int> m_vocab;
-  vector< map<string, unsigned int> > m_classVocab;
+  Dictionary m_vocab;
+  vector<Dictionary> m_classVocab;
 };
 
 #endif

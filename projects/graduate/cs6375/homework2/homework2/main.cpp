@@ -8,6 +8,9 @@
 #include "NaiveBayesClassifier.h"
 #include "LogisticRegressionClassifier.h"
 
+#include <cmath>
+#include <cfloat>
+
 using namespace std;
 
 void main( int argc, char* argv[] ) {
@@ -33,10 +36,6 @@ void main( int argc, char* argv[] ) {
   cout << "Loading training data completed in " << timer.getElapsedTime() << endl;
 #endif
 
-  /*for (unsigned int i = 0; i < trainingData.m_classes.size(); i++) {
-    cout << trainingData.m_classes[i].first << "; " << trainingData.m_classes[i].second << endl;
-  }*/
-
 #ifdef WINDOWS
   timer.startTimer();
 #endif
@@ -59,9 +58,17 @@ void main( int argc, char* argv[] ) {
   timer.stopTimer();
   cout << "Naive Bayes completed in " << timer.getElapsedTime() << endl;
 #endif
-  /*LogisticRegressionClassifier LRC;
+
+#ifdef WINDOWS
+  timer.startTimer();
+#endif
+  LogisticRegressionClassifier LRC;
   LRC.train( trainingData );
-  cout << "Logistic Regression accuracy = " << LRC.test( testData ) << endl;*/
+  cout << "Logistic Regression accuracy = " << LRC.test( testData ) << endl;
+#ifdef WINDOWS
+  timer.stopTimer();
+  cout << "Logistic Regression completed in " << timer.getElapsedTime() << endl;
+#endif
 
   return;
 }

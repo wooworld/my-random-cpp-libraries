@@ -6,10 +6,10 @@
 #include <string>
 #include "DataSet.h"
 #include "Document.h"
+#include "LogisticRegressionDocument.h"
 #include "Classifier.h"
 
 using namespace std;
-
 
 class LogisticRegressionClassifier : public Classifier {
 public:
@@ -18,52 +18,37 @@ public:
   unsigned int classify( const Document& doc );  
 
 protected:  
-  void gradientAscent( const DataSet& data );
-  float conditionalAPosteriori( string x_i, const DataSet& data );
-  float pHat( map<string, unsigned int>& docVocab );
+  void createVocabToVectorMap();
+  void gradientAscent();
+  double pHat( unsigned int idx );
 
-  map<string, float> m_weights;
+  unsigned int m_numDocs;
+  unsigned int m_numAttrs;
+
+  Dictionary m_vocabToVector;
+
+  vector<vector<unsigned int> > m_data;
+  vector<double> m_w;
+  vector<double> m_dw;
+  vector<double> m_pr; 
 };
 
 #endif
 
-/*function classify(X = bagOfWordsForThisExample, W = weights)
-{
-   return w0 + w1*x1 + ... + wN*xN > 0 ? 0 : 1
-}
+/*
+Professor's pseudo code:
 
-The real work is coming up with the weights (one for each word in the vocab):
+Data = m x (n+2) matrix; each row is training example
+Data[i][n+1] = class attr
+Data[i][0] = w_0 = 1.0
 
-W = weights
-W0 = some value?
+for each example i
+  compute pr[i] = probability(class=1 | data[i], w)
 
-//gradient ascent with hard limit
-for someHardLimit 
-{
-   for each i in W.size
-      Wi = Wi - (0.1)* conditionalAPosteriori(i)
-}
-
-function pHat(X)
-{
-   for each Wi in weights (i = 1..N)
-      sum += Wi * Xi
-
-   temp = e^(W0 + sum)
-   return temp / (1 + temp)
-}
-
-function conditionalAPosteriori(i)
-{
-   W = weights
-   int sum = 0;
-
-   for each j in numOfTrainingExamples
-   {
-      X = bag of words from training example j
-      sum += Xi * (yj - pHat(X))  //----- I don't understand what yj is supposed to be here??
-   }
-
-   //L2 regularization
-   return -alpha*Wi^2 + sum //try different values of alpha here
-}*/
+array dw[0..n] = 0
+for i=0..n
+  for j=0..m-1
+    dw[i] = dw[i] + Data[j][i]*(Data[i][j] - pr[j]);
+for i=0..n
+  w[i] = w[i] - eta*(dw[i] - lambda*w[i]);
+*/
