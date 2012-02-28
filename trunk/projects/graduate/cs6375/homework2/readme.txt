@@ -12,8 +12,9 @@ data/
 The program expects 3 parameters on the command line:
 
 homework2.exe <path to input files> <name of training index file> <name of testing index file>
-ie:
+Example:
 homework2.exe ../data/ train.txt test.txt
+
 NOTE:
   1) The path to input files MUST end in a path delimiter (/ on linux).
   2) The program must have write permissions for generating a temporary file!
@@ -21,7 +22,7 @@ NOTE:
 train.txt and test.txt should have the format:
 <className>
 <path to class' input files in the supplied data directory>
-ie:
+Example:
 notSpam
 train/ham/
 spam
@@ -34,3 +35,13 @@ and then in the specified class directories.
 ie:
 notSpam in ../data/train/ham
 spam in ../data/train/spam
+
+NOTE:
+Please look at the submitted file/directory structure structure if the above is not clear.
+
+The results for runs for Naive Bayes and for Logistic Regression accuracy and
+run times are in results.xlsx or results.pdf (it's the same table).The answers to 
+the questions posed in the instructions are in results_analysis.txt
+
+The running times were generated using Visual Studio 9.0 with no debugging and
+with compiler speed optimizations enabled. 

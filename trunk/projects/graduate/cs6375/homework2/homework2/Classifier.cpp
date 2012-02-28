@@ -12,11 +12,10 @@ const string ignoreFileLoc = "../data/ignore.txt";
 const string stopFileLoc = "../data/stopwords.txt";
 const bool useIgnoreList = true;
 const bool useStopWordsList = true;
-//const string vocabDelimiters = "\n ";
-//const unsigned int minTokenSize = 0;
-const string vocabDelimiters = "\n -:;!@#$%^&*()=+[]{}<>,.?/\\\"'|";
+const string vocabDelimiters = "\n ";
 const unsigned int minTokenSize = 3;
-
+//const string vocabDelimiters = "\n -:;!@#$%^&*()=+[]{}<>,.?/\\\"'|";
+//const unsigned int minTokenSize = 3;
 
 void Classifier::tokenizeDocument( const Document& doc, 
                                    string delimiters, 

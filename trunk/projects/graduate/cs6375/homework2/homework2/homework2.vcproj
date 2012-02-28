@@ -114,6 +114,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -294,6 +295,10 @@
 			</File>
 			<File
 				RelativePath=".\LogisticRegressionClassifier.h"
+				>
+			</File>
+			<File
+				RelativePath=".\LogisticRegressionDocument.h"
 				>
 			</File>
 			<File
