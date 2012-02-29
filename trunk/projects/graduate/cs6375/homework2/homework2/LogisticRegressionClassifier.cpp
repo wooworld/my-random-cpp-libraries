@@ -12,7 +12,7 @@
 const unsigned int gradientAscentIterationsLimit = 50;
 const double w_0 = 1.0;
 const double eta = -0.1;
-const double lambda = 1.0;
+const double lambda = 0.1;
 
 void LogisticRegressionClassifier::train( const DataSet& data ) {
   // Create vocab from all documents.
@@ -83,7 +83,7 @@ void LogisticRegressionClassifier::gradientAscent() {
     // Calculate d-weights.
     for ( unsigned int i = 0; i < m_numAttrs; i++ ) {
       for ( unsigned int j = 0; j < m_numDocs; j++ ) {
-        m_dw[i] += m_data[j][i+1] * (m_data[j][m_numAttrs+1] - m_pr[j]);
+        m_dw[i] += (m_data[j][i+1] * (m_data[j][m_numAttrs+1] - m_pr[j]));
       }
     }
 
@@ -105,7 +105,8 @@ double LogisticRegressionClassifier::pHat( unsigned int idx ) {
 
   // exp(w_0+sum)/(1+exp(w_0+sum) == 1-1/(1+exp(w_0+sum)) by partial fraction decomposition
  
-  return ( sum > 708.0 ? 1.0 : (1.0 - (1.0 / (exp(w_0+sum)+1.0))) );
+  //return ( sum > 708.0 ? 1.0 : (1.0 - (1.0 / (exp(w_0+sum)+1.0))) );
+  return ( sum > 708.0 ? 0.0 : (1.0 / (exp(w_0+sum)+1.0)) );
 }
 
 float LogisticRegressionClassifier::test( const DataSet &data ) {
@@ -149,5 +150,6 @@ unsigned int LogisticRegressionClassifier::classify( const Document& doc ) {
     }
   }
 
-  return ( sum > 0 ? 0 : 1 );
+  //return ( sum > 0 ? 0 : 1 );
+  return ( sum < -w_0 ? 1 : 0 );
 }
