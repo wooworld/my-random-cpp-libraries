@@ -42,6 +42,13 @@ Please look at the submitted file/directory structure structure if the above is 
 The results for runs for Naive Bayes and for Logistic Regression accuracy and
 run times are in results.xlsx or results.pdf (it's the same table).The answers to 
 the questions posed in the instructions are in results_analysis.txt
-
 The running times were generated using Visual Studio 9.0 with no debugging and
 with compiler speed optimizations enabled. 
+
+PROGRAM CONFIGURATION:
+To configure the parameters listed in the results, alter the variables at the
+top of the files:
+  Classifier.cpp: vocabDelimiters, minTokenSize, useIgnoreList, useStopWordsList
+    + These variables will affect both NB and LR.
+  LogisticRegressionClassifier.cpp: lambda, gradientAscentIterationLimit
+    + These variables will only affect LR.

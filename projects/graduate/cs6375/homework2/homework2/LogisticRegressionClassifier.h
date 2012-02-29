@@ -6,7 +6,6 @@
 #include <string>
 #include "DataSet.h"
 #include "Document.h"
-#include "LogisticRegressionDocument.h"
 #include "Classifier.h"
 
 using namespace std;

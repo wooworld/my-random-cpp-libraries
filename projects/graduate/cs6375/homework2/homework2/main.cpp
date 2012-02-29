@@ -48,6 +48,7 @@ void main( int argc, char* argv[] ) {
   cout << "Loading test data completed in " << timer.getElapsedTime() << endl;
 #endif
 
+  
 #ifdef WINDOWS
   timer.startTimer();
 #endif
@@ -58,6 +59,7 @@ void main( int argc, char* argv[] ) {
   timer.stopTimer();
   cout << "Naive Bayes completed in " << timer.getElapsedTime() << endl;
 #endif
+  
 
 #ifdef WINDOWS
   timer.startTimer();
