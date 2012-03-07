@@ -7,14 +7,8 @@
 
 #include "_3DFrame.h"
 
-// #include "cmath"
-// #include "cstdio"
-// #include "cstring"
-
 task main()
-{
-  printf( "lol\n" ); 
-  
+{  
   _3DFrame F;
   
   _3D_translate( F,  1, 2, 3 );
@@ -25,7 +19,5 @@ task main()
   
   _3D_rot_x( F, -_PI );
   
-  print( F );
- 
-  
+  print( F );  
 }

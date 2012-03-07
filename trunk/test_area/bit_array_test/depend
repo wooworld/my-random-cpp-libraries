@@ -1,2 +1,0 @@
-BitArray.o: BitArray.cpp ../../lib/numeric_types.h BitArray.h
-driver.o: driver.cpp ../../lib/numeric_types.h BitArray.h
