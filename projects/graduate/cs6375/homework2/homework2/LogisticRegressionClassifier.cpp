@@ -150,6 +150,5 @@ unsigned int LogisticRegressionClassifier::classify( const Document& doc ) {
     }
   }
 
-  //return ( sum > 0 ? 0 : 1 );
   return ( sum < -w_0 ? 1 : 0 );
 }
