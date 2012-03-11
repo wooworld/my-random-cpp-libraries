@@ -9,9 +9,9 @@
 #include "stringHelp.h"
 #include "hr_timer.h"
 
-const unsigned int weightUpdateIterationsLimit = 5;
+const unsigned int weightUpdateIterationsLimit = 25;
 const double w_0 = 1.0;
-const double eta = 1.0;
+const double eta = .1;
 
 void PerceptronClassifier::train( const DataSet& data ) {
   // Create vocab from all documents.
