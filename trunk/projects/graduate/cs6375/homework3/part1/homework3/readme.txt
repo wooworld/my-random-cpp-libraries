@@ -44,9 +44,3 @@ The results from the previous assignment's NB and LR runs are also there for
 comparison's sake.
 The running times were generated using Visual Studio 9.0 with no debugging and
 with compiler speed optimizations enabled. 
-
-PROGRAM CONFIGURATION:
-To configure the parameters listed in the results for the Perceptron only, 
-alter the variables at the top of the files:
-  Classifier.cpp: vocabDelimiters, minTokenSize, useIgnoreList, useStopWordsList
-  PerceptronClassifier.cpp: eta, weightUpdateIterationsLimit
