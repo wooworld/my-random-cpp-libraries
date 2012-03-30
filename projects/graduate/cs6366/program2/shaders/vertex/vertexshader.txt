@@ -1,0 +1,16 @@
+uniform mat4 myModelViewMatrix;
+uniform mat4 myProjectionMatrix;
+
+//in vec3 vertLoc;
+
+in vec4 vColor;
+out vec4 fColor;
+// for nvidia: varying out vec4 fColor;
+
+void main() {
+  gl_Position = myProjectionMatrix * myModelViewMatrix * gl_Vertex;
+  //gl_Position = gl_ProjectionMatrix * myModelViewMatrix * gl_Vertex;
+  //gl_Position = gl_ProjectionMatrix * gl_ModelViewMatrix * gl_Vertex;
+  
+  fColor = vColor;
+}
