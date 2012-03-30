@@ -1,7 +1,7 @@
 #include "glTypes.h"
 #include "useful_things.h"
 #include "GL/freeglut.h"
-#include "GL/glui.h"
+//#include "GL/glui.h"
 #include "Scene.h"
 #include "Window.h"
 #include <iostream>
@@ -11,7 +11,7 @@ using namespace std;
 Scene scene( 3 );
 
 // Derpalicious
-GLUI *glui;
+//GLUI *glui;
 
 // Window ID numbers
 GLuint IDmainWindow;

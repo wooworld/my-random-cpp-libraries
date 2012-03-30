@@ -68,6 +68,7 @@ GLvoid Camera::translate( GLdouble x, GLdouble y, GLdouble z ) {
   glLoadMatrixd( m_modelviewMatrix );
   glMultMatrixd( m_resultantMatrix ); // T*MM*v
   glGetDoublev( GL_MODELVIEW_MATRIX, m_modelviewMatrix );
+  print();
 }
 
 GLvoid Camera::translate( vec3f* v ) {
@@ -123,6 +124,7 @@ GLvoid Camera::rotate( GLubyte axis, GLdouble theta ) {
   glRotated( theta, m_userRotation[0], m_userRotation[1], m_userRotation[2] );
   glMultMatrixd( m_modelviewMatrix );
   glGetDoublev( GL_MODELVIEW_MATRIX, m_modelviewMatrix );
+  print();
 }
 
 GLvoid Camera::rotate( vec3f* v, GLfloat theta ) {
@@ -193,11 +195,12 @@ GLvoid Camera::centerOn( Model* m ) {
   m_lookAt[1] = m->m_center[1];
   GLdouble modelHeight = (m->m_box[4] - m->m_box[1]);
   GLdouble modelWidth = (m->m_box[3] - m->m_box[0]);
+  GLdouble ez;
   if ( modelWidth <= modelHeight ) {
-    m_lookAt[2] = m->m_center[2] + modelHeight/tan((FOVY/2.0)*conv::DegToRad);
+    ez = m_lookAt[2] = m->m_center[2] + modelHeight/tan((FOVY/2.0)*conv::DegToRad);
   }
   else {
-    m_lookAt[2] = m->m_center[2] + modelWidth/tan((FOVY/2.0)*conv::DegToRad);
+    ez = m_lookAt[2] = m->m_center[2] + modelWidth/tan((FOVY/2.0)*conv::DegToRad);
   }  
   m_lookAt[3] = m->m_center[0];
   m_lookAt[4] = m->m_center[1];
@@ -277,4 +280,10 @@ GLvoid Camera::print() {
   cout << "  [" << m_modelviewMatrix[1] << " " << m_modelviewMatrix[5] << " " << m_modelviewMatrix[9] << " " << m_modelviewMatrix[13] << "]" << endl;
   cout << "  [" << m_modelviewMatrix[2] << " " << m_modelviewMatrix[6] << " " << m_modelviewMatrix[10] << " " << m_modelviewMatrix[14] << "]" << endl;
   cout << "  [" << m_modelviewMatrix[3] << " " << m_modelviewMatrix[7] << " " << m_modelviewMatrix[11] << " " << m_modelviewMatrix[15] << "]" << endl;
+  cout << "projection = " << endl;
+  cout << "  [" << m_projectionMatrix[0] << " " << m_projectionMatrix[4] << " " << m_projectionMatrix[8] << " " << m_projectionMatrix[12] << "]" << endl;
+  cout << "  [" << m_projectionMatrix[1] << " " << m_projectionMatrix[5] << " " << m_projectionMatrix[9] << " " << m_projectionMatrix[13] << "]" << endl;
+  cout << "  [" << m_projectionMatrix[2] << " " << m_projectionMatrix[6] << " " << m_projectionMatrix[10] << " " << m_projectionMatrix[14] << "]" << endl;
+  cout << "  [" << m_projectionMatrix[3] << " " << m_projectionMatrix[7] << " " << m_projectionMatrix[11] << " " << m_projectionMatrix[15] << "]" << endl;
+
 }
