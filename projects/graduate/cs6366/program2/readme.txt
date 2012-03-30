@@ -1,5 +1,5 @@
 To execute:
-Run the program /Release/program1.exe
+Run the program /Release/program2.exe
   Note: No command line parameters are needed.
   
 To use:
