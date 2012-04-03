@@ -64,9 +64,7 @@ GLvoid Camera::translate( GLdouble x, GLdouble y, GLdouble z ) {
   glGetDoublev( GL_MODELVIEW_MATRIX, m_modelviewMatrix );
   glLoadIdentity();
   glTranslated( x, y, z );
-  glGetDoublev( GL_MODELVIEW_MATRIX, m_resultantMatrix );
-  glLoadMatrixd( m_modelviewMatrix );
-  glMultMatrixd( m_resultantMatrix ); // T*MM*v
+  glMultMatrixd( m_modelviewMatrix );
   glGetDoublev( GL_MODELVIEW_MATRIX, m_modelviewMatrix );
   print();
 }
