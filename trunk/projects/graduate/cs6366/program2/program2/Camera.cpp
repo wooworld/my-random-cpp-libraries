@@ -68,7 +68,8 @@ GLvoid Camera::translate( mat4f& m, GLfloat x, GLfloat y, GLfloat z ) {
                 0, 0, 1, 0,
                 x, y, z, 1 };
   // (T * M) * v -> v * (M * T) because column major format
-  multMatrix( m, T_t, m );
+  //multMatrix( m, T_t, m );
+  multMatrix( m, m, T_t );
 }
 
 
