@@ -1,18 +1,12 @@
-#include "Camera.h"
+#include "ShaderCamera.h"
 
 using namespace std;
 
-extern GLuint windowWidth;
-extern GLuint windowHeight;
-extern GLuint subwindowWidth;
-extern GLuint subwindowHeight;
-extern GLubyte borderSize;
-
-Camera::Camera() { 
+ShaderCamera::ShaderCamera() { 
   init();
 }
 
-GLvoid Camera::init() {
+GLvoid ShaderCamera::init() {
   FOVY = 60.0;
   FOVX = 60.0;
   ASPECT_RATIO = 1.0;  
@@ -37,17 +31,17 @@ GLvoid Camera::init() {
   m_clipDelta = 0.05f;
 }
   
-Camera::~Camera() { }
+ShaderCamera::~ShaderCamera() { }
 
-GLvoid Camera::translate( GLfloat x, GLfloat y, GLfloat z ) {
+GLvoid ShaderCamera::translate( GLfloat x, GLfloat y, GLfloat z ) {
   translate( m_modelViewMatr, x, y, z );
 }
 
-GLvoid Camera::translate( const vec3f& v ) {
+GLvoid ShaderCamera::translate( const vec3f& v ) {
   translate( m_modelViewMatr, v[0], v[1], v[2] );
 }
 
-GLvoid Camera::translate( GLubyte axis, GLint dir ) {
+GLvoid ShaderCamera::translate( GLubyte axis, GLint dir ) {
   if ( axis == 'u' || axis == 'U' || axis == 'x' || axis == 'X' ) {
     translate( m_modelViewMatr, dir * m_translateDelta[0], 0.0, 0.0 );
   }
@@ -61,19 +55,18 @@ GLvoid Camera::translate( GLubyte axis, GLint dir ) {
   }
 }
 
-GLvoid Camera::translate( mat4f& m, GLfloat x, GLfloat y, GLfloat z ) {
+GLvoid ShaderCamera::translate( mat4f& m, GLfloat x, GLfloat y, GLfloat z ) {
   // Transpose of a translation matrix, because column major format
   mat4f T_t = { 1, 0, 0, 0,
                 0, 1, 0, 0,
                 0, 0, 1, 0,
                 x, y, z, 1 };
   // (T * M) * v -> v * (M * T) because column major format
-  //multMatrix( m, T_t, m );
   multMatrix( m, m, T_t );
 }
 
 
-GLvoid Camera::rotate( GLubyte axis, GLfloat theta ) {
+GLvoid ShaderCamera::rotate( GLubyte axis, GLfloat theta ) {
   if ( axis == 'u' || axis == 'U' || axis == 'x' || axis == 'X' ) {
     rotateU( m_modelViewMatr, theta );
   }
@@ -87,20 +80,11 @@ GLvoid Camera::rotate( GLubyte axis, GLfloat theta ) {
   }
 }
 
-GLvoid Camera::rotate( const vec3f& v, GLfloat theta ) {
-  /*m_userRotation[0] = (GLfloat) *(v[0]);
-  m_userRotation[1] = (GLfloat) *(v[1]);
-  m_userRotation[2] = (GLfloat) *(v[2]);
-
-  glMatrixMode( GL_MODELVIEW );
-  glGetDoublev( GL_MODELVIEW_MATRIX, m_modelViewMatr );
-  glLoadIdentity();
-  glRotated( theta, m_userRotation[0], m_userRotation[1], m_userRotation[2] );
-  glMultMatrixd( m_modelViewMatr );
-  glGetDoublev( GL_MODELVIEW_MATRIX, m_modelViewMatr );*/
+GLvoid ShaderCamera::rotate( const vec3f& v, GLfloat theta ) {
+  /* NOT IN USE ATM */
 }
 
-GLvoid Camera::rotate( GLubyte axis, GLint dir ) {
+GLvoid ShaderCamera::rotate( GLubyte axis, GLint dir ) {
   if ( axis == 'u' || axis == 'U' || axis == 'x' || axis == 'X' ) {
     rotateU( m_modelViewMatr, dir * m_rotateDelta[0] );
   }
@@ -114,8 +98,8 @@ GLvoid Camera::rotate( GLubyte axis, GLint dir ) {
   }
 }
 
-GLvoid Camera::rotateU( mat4f& m, GLfloat theta ) {
-  theta *= conv::DegToRad;
+GLvoid ShaderCamera::rotateU( mat4f& m, GLfloat theta ) {
+  theta *= (GLfloat)conv::DegToRad;
   // Transpose of a rotation matrix because column major format
   mat4f R_t = { 1, 0,           0,          0,
                 0, cos(theta),  sin(theta), 0,
@@ -126,9 +110,9 @@ GLvoid Camera::rotateU( mat4f& m, GLfloat theta ) {
   multMatrix( m, m, R_t );
 }
 
-GLvoid Camera::rotateV( mat4f& m, GLfloat theta ) {
+GLvoid ShaderCamera::rotateV( mat4f& m, GLfloat theta ) {
 
-  theta *= conv::DegToRad;
+  theta *= (GLfloat)conv::DegToRad;
   // Transpose of a rotation matrix because column major format
   mat4f R_t = { cos(theta), 0, -sin(theta), 0,
                 0,          1, 0,           0,
@@ -139,8 +123,8 @@ GLvoid Camera::rotateV( mat4f& m, GLfloat theta ) {
   multMatrix( m, m, R_t );
 }
 
-GLvoid Camera::rotateN( mat4f& m, GLfloat theta ) {
-  theta *= conv::DegToRad;
+GLvoid ShaderCamera::rotateN( mat4f& m, GLfloat theta ) {
+  theta *= (GLfloat)conv::DegToRad;
 
   // Transpose of a rotation matrix because column major format
   mat4f R_t = { cos(theta),  sin(theta), 0, 0,
@@ -152,7 +136,7 @@ GLvoid Camera::rotateN( mat4f& m, GLfloat theta ) {
   multMatrix( m, m, R_t );
 }
 
-GLvoid Camera::moveClippingPlane( GLubyte plane, GLint dir ) {
+GLvoid ShaderCamera::moveClippingPlane( GLubyte plane, GLint dir ) {
   if ( plane == 'f' ) {
     m_zFar *= (1.0f + ((GLfloat)dir * m_clipDelta));
     if ( m_zFar < m_zNear ) { m_zFar = m_zNear; }
@@ -165,53 +149,27 @@ GLvoid Camera::moveClippingPlane( GLubyte plane, GLint dir ) {
   updatePerspective( m_aspect ); 
 }
 
-GLvoid Camera::calcTranslateDelta( const Model& m ) {
-  // Move 5% of model width/etc for each translation
-  m_translateDelta[0] = (m.m_box[3] - m.m_box[0]) * .05f;
-  m_translateDelta[1] = (m.m_box[4] - m.m_box[1]) * .05f;
-  m_translateDelta[2] = (m.m_box[5] - m.m_box[2]) * .05f;
-}
-
-GLvoid Camera::calcRotateDelta( const Model& m ) {
-  // 50 rotations to complete a circle
-  m_rotateDelta[0] = 360.0f / 50.0f;
-  m_rotateDelta[1] = 360.0f / 50.0f;
-  m_rotateDelta[2] = 360.0f / 50.0f;
-}
-
 /* http://nehe.gamedev.net/article/replacement_for_gluperspective/21002/ */
-GLvoid Camera::updatePerspective( GLfloat fovy, GLfloat aspect, GLfloat zNear, GLfloat zFar ) {
-  /* DOES NOT WORK */
+GLvoid ShaderCamera::updatePerspective( GLfloat fovy, GLfloat aspect, GLfloat zNear, GLfloat zFar ) {
   m_aspect = aspect;
-  GLfloat ymax = zNear * tan(fovy * conv::DegToRad) / 4; /* WORKS BECAUSE OF THE 4 */
+  GLfloat ymax = zNear * (GLfloat)tan(fovy * conv::DegToRad / 2);
   GLfloat xmax = ymax * m_aspect;
-
   setFrustum( -xmax, xmax, -ymax, ymax, zNear, zFar );
-  //transpose( m_projMatr );
-
-  /* WORKS */
-  /*glMatrixMode( GL_PROJECTION );
-  glLoadIdentity();  
-  gluPerspective( fovy, aspect, zNear, zFar );*/
 }
 
-GLvoid Camera::updatePerspective( GLfloat aspect) {
+GLvoid ShaderCamera::updatePerspective( GLfloat aspect) {
   updatePerspective( m_fovY, aspect, m_zNear, m_zFar );
 }
 
-GLvoid Camera::setFrustum( GLfloat l, GLfloat r, GLfloat b, 
-                           GLfloat t, GLfloat n, GLfloat f ) {
-  /*m_projMatr[0] = 2*n/(r-l); m_projMatr[1] = 0;        m_projMatr[2] = (r+l)/(r-l);   m_projMatr[3] = 0;
-  m_projMatr[4] = 0;         m_projMatr[5] = 2*n/(t-b); m_projMatr[6] = (t+b)/(t-b);   m_projMatr[7] = 0;
-  m_projMatr[8] = 0;         m_projMatr[9] = 0;         m_projMatr[10] = -(f+n)/(f-n); m_projMatr[11] = -2*f*n/(f-n);
-  m_projMatr[12] = 0;         m_projMatr[13] = 0;        m_projMatr[14] = -1;           m_projMatr[15] = 0;  */
-                             m_projMatr[0] = 2*n/(r-l); m_projMatr[1] = 0;        m_projMatr[2] = 0;   m_projMatr[3] = 0;
-  m_projMatr[4] = 0;         m_projMatr[5] = 2*n/(t-b); m_projMatr[6] = 0;   m_projMatr[7] = 0;
-  m_projMatr[8] = (r+l)/(r-l);m_projMatr[9] = (t+b)/(t-b);m_projMatr[10] = -(f+n)/(f-n); m_projMatr[11] = -1;
-  m_projMatr[12] = 0;         m_projMatr[13] = 0;        m_projMatr[14] = -2*f*n/(f-n);           m_projMatr[15] = 0; 
+GLvoid ShaderCamera::setFrustum( GLfloat l, GLfloat r, GLfloat b, 
+                                 GLfloat t, GLfloat n, GLfloat f ) {
+  m_projMatr[0] = 2*n/(r-l);  m_projMatr[1] = 0;          m_projMatr[2] = 0;            m_projMatr[3] = 0;
+  m_projMatr[4] = 0;          m_projMatr[5] = 2*n/(t-b) ; m_projMatr[6] = 0;            m_projMatr[7] = 0;
+  m_projMatr[8] = (r+l)/(r-l);m_projMatr[9] = (t+b)/(t-b);m_projMatr[10] = -(f+n)/(f-n);m_projMatr[11] = -1;
+  m_projMatr[12] = 0;         m_projMatr[13] = 0;         m_projMatr[14] = -2*f*n/(f-n);m_projMatr[15] = 0; 
 }
 
-GLvoid Camera::centerOn( const Model& m ) {
+GLvoid ShaderCamera::centerOn( const Model& m, GLint width, GLint height ) {
   // Update model view matrix to be equivalent to lookAt
   GLfloat modelHeight = (m.m_box[4] - m.m_box[1]);
   GLfloat modelWidth = (m.m_box[3] - m.m_box[0]);
@@ -223,11 +181,6 @@ GLvoid Camera::centerOn( const Model& m ) {
     ez = m.m_center[2] + modelWidth/(GLfloat)tan((FOVY/2.0)*conv::DegToRad);
   } 
 
-  cout << "lookAt = " << endl;
-  cout << m.m_center[0] << " " << m.m_center[1] << " " << ez << endl;
-  cout << m.m_center[0] << " " << m.m_center[1] << " " << m.m_center[2] << endl;
-  cout << 0 << " " << 1 << " " << 0 << endl;
-
   identity( m_modelViewMatr );
   lookAt( m.m_center[0], m.m_center[1], ez,
           m.m_center[0], m.m_center[1], m.m_center[2],
@@ -237,10 +190,10 @@ GLvoid Camera::centerOn( const Model& m ) {
   m_zNear = NEAR_CLIPPING_PLANE;
   m_zFar = ez 
     + fun::dist(m.m_center[0], m.m_center[1], ez, 
-                m.m_center[0], m.m_center[1], m.m_box[5] - m.m_box[2] ) + 10.0;
+                m.m_center[0], m.m_center[1], m.m_box[5] - m.m_box[2] ) + 10.0f;
 
   // Update perspective matrix
-  updatePerspective( (GLfloat)windowWidth / (GLfloat)windowHeight );
+  updatePerspective( (GLfloat)width / (GLfloat)height );
 
   // Update deltas for proper translation/rotation control
   calcTranslateDelta( m );
@@ -248,22 +201,20 @@ GLvoid Camera::centerOn( const Model& m ) {
 }
 
 /* http://www.opengl.org/wiki/GluLookAt_code */
-GLvoid Camera::lookAt( GLfloat ex, GLfloat ey, GLfloat ez,
+GLvoid ShaderCamera::lookAt( GLfloat ex, GLfloat ey, GLfloat ez,
                        GLfloat cx, GLfloat cy, GLfloat cz,
                        GLfloat ux, GLfloat uy, GLfloat uz ) {
   vec3f forward = {cx-ex, cy-ey, cz-ez};
   vec3f side = {0, 0, 0};
   vec3f up = {ux, uy, uz};
   normalize( forward );
-  normalize( up );
 
   // side = forward x up
   cross( side, forward, up ); 
   normalize( side );
 
-  // up = side x forward
-  cross( up, side, forward );
-  up[1] = -up[1];
+  // up = forward x side
+  cross( up, forward, side );
 
   mat4f temp = { side[0], up[0], -forward[0], 0,
                  side[1], up[1], -forward[1], 0,
@@ -276,7 +227,7 @@ GLvoid Camera::lookAt( GLfloat ex, GLfloat ey, GLfloat ez,
   memcpy( &m_modelViewMatr, &temp, 16*sizeof(GLfloat) );
 }
 
-GLvoid Camera::normalize( vec3f& v ) {
+GLvoid ShaderCamera::normalize( vec3f& v ) {
   GLfloat length = sqrt( v[0] * v[0] + v[1] * v[1] + v[2] * v[2] );
   if ( length != 0 ) {
     v[0] /= length;
@@ -290,7 +241,7 @@ GLvoid Camera::normalize( vec3f& v ) {
   }
 }
 
-GLvoid Camera::identity( mat4f& m ) {
+GLvoid ShaderCamera::identity( mat4f& m ) {
   memset( m, 0, 16*sizeof(GLfloat) );
   m[0] = 1;
   m[5] = 1;
@@ -298,7 +249,7 @@ GLvoid Camera::identity( mat4f& m ) {
   m[15] = 1;
 }
 
-GLvoid Camera::transpose( mat4f& m ) {
+GLvoid ShaderCamera::transpose( mat4f& m ) {
   mat4f temp;
   temp[0] = m[0];  temp[4] = m[1];  temp[8] = m[2];   temp[12] = m[3];
   temp[1] = m[4];  temp[5] = m[5];  temp[9] = m[6];   temp[13] = m[7];
@@ -307,7 +258,7 @@ GLvoid Camera::transpose( mat4f& m ) {
   memcpy( m, &temp, 16*sizeof(GLfloat) );
 }
 
-GLvoid Camera::multMatrix( mat4f& res, const mat4f& lhs, const mat4f& rhs ) {
+GLvoid ShaderCamera::multMatrix( mat4f& res, const mat4f& lhs, const mat4f& rhs ) {
   mat4f temp;
   temp[0] = lhs[0]*rhs[0] + lhs[1]*rhs[4] + lhs[2]*rhs[8] + lhs[3]*rhs[12];
   temp[1] = lhs[0]*rhs[1] + lhs[1]*rhs[5] + lhs[2]*rhs[9] + lhs[3]*rhs[13];
@@ -328,7 +279,7 @@ GLvoid Camera::multMatrix( mat4f& res, const mat4f& lhs, const mat4f& rhs ) {
   memcpy( res, &temp, 16*sizeof(GLfloat) );
 }
 
-GLvoid Camera::cross( vec3f& res, const vec3f& lhs, const vec3f& rhs ) {
+GLvoid ShaderCamera::cross( vec3f& res, const vec3f& lhs, const vec3f& rhs ) {
   vec3f temp;
   temp[0] = lhs[1] * rhs[2] - rhs[1] * lhs[2];
   temp[1] = lhs[0] * rhs[2] - rhs[0] * lhs[2];
@@ -336,19 +287,20 @@ GLvoid Camera::cross( vec3f& res, const vec3f& lhs, const vec3f& rhs ) {
   memcpy( res, &temp, 3*sizeof(GLfloat) );
 }
 
-GLvoid Camera::print() {
-  cout << "fovy = " << m_fovY << endl;
-  cout << "aspect = " << m_aspect << endl;
-  cout << "near, far = " << m_zNear << " " << m_zFar << endl;
-  cout << "modelview = " << endl;
-  cout << "  [" << m_modelViewMatr[0] << " " << m_modelViewMatr[4] << " " << m_modelViewMatr[8] << " " << m_modelViewMatr[12] << "]" << endl;
-  cout << "  [" << m_modelViewMatr[1] << " " << m_modelViewMatr[5] << " " << m_modelViewMatr[9] << " " << m_modelViewMatr[13] << "]" << endl;
-  cout << "  [" << m_modelViewMatr[2] << " " << m_modelViewMatr[6] << " " << m_modelViewMatr[10] << " " << m_modelViewMatr[14] << "]" << endl;
-  cout << "  [" << m_modelViewMatr[3] << " " << m_modelViewMatr[7] << " " << m_modelViewMatr[11] << " " << m_modelViewMatr[15] << "]" << endl;
+GLvoid ShaderCamera::print() {
+  cout << "ShaderCamera:" << endl;
+  cout << "  fovy = " << m_fovY << endl;
+  cout << "  aspect = " << m_aspect << endl;
+  cout << "  near, far = " << m_zNear << " " << m_zFar << endl;
+  cout << "  modelview = " << endl;
+  cout << "    [" << m_modelViewMatr[0] << " " << m_modelViewMatr[4] << " " << m_modelViewMatr[8] << " " << m_modelViewMatr[12] << "]" << endl;
+  cout << "    [" << m_modelViewMatr[1] << " " << m_modelViewMatr[5] << " " << m_modelViewMatr[9] << " " << m_modelViewMatr[13] << "]" << endl;
+  cout << "    [" << m_modelViewMatr[2] << " " << m_modelViewMatr[6] << " " << m_modelViewMatr[10] << " " << m_modelViewMatr[14] << "]" << endl;
+  cout << "    [" << m_modelViewMatr[3] << " " << m_modelViewMatr[7] << " " << m_modelViewMatr[11] << " " << m_modelViewMatr[15] << "]" << endl;
 
-  cout << "projection = " << endl;
-  cout << "  [" << m_projMatr[0] << " " << m_projMatr[4] << " " << m_projMatr[8] << " " << m_projMatr[12] << "]" << endl;
-  cout << "  [" << m_projMatr[1] << " " << m_projMatr[5] << " " << m_projMatr[9] << " " << m_projMatr[13] << "]" << endl;
-  cout << "  [" << m_projMatr[2] << " " << m_projMatr[6] << " " << m_projMatr[10] << " " << m_projMatr[14] << "]" << endl;
-  cout << "  [" << m_projMatr[3] << " " << m_projMatr[7] << " " << m_projMatr[11] << " " << m_projMatr[15] << "]" << endl;
+  cout << "  projection = " << endl;
+  cout << "    [" << m_projMatr[0] << " " << m_projMatr[4] << " " << m_projMatr[8] << " " << m_projMatr[12] << "]" << endl;
+  cout << "    [" << m_projMatr[1] << " " << m_projMatr[5] << " " << m_projMatr[9] << " " << m_projMatr[13] << "]" << endl;
+  cout << "    [" << m_projMatr[2] << " " << m_projMatr[6] << " " << m_projMatr[10] << " " << m_projMatr[14] << "]" << endl;
+  cout << "    [" << m_projMatr[3] << " " << m_projMatr[7] << " " << m_projMatr[11] << " " << m_projMatr[15] << "]" << endl;
 }
