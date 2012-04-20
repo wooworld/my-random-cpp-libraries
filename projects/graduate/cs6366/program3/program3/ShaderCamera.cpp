@@ -20,6 +20,7 @@ GLvoid ShaderCamera::init() {
   memset( m_projMatr,       0, 16*sizeof(GLfloat) );
   memset( m_modelViewMatr,  0, 16*sizeof(GLfloat) );
   memset( m_tempMatr,       0, 16*sizeof(GLfloat) );
+  memset( m_pos, 0, 4*sizeof(GLfloat) ); m_pos[3] = 1.0f;
 
   m_invertYLook = false;
   m_invertXLook = false;
@@ -204,6 +205,7 @@ GLvoid ShaderCamera::centerOn( const Model& m, GLint width, GLint height ) {
 GLvoid ShaderCamera::lookAt( GLfloat ex, GLfloat ey, GLfloat ez,
                        GLfloat cx, GLfloat cy, GLfloat cz,
                        GLfloat ux, GLfloat uy, GLfloat uz ) {
+  //m_pos[0] = ex; m_pos[1] = ey; m_pos[2] = ez; m_pos[3] = 1.0f; // Necessary?
   vec3f forward = {cx-ex, cy-ey, cz-ez};
   vec3f side = {0, 0, 0};
   vec3f up = {ux, uy, uz};

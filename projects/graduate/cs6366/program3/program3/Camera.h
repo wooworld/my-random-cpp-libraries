@@ -50,21 +50,23 @@ public:
 
   virtual GLvoid print() = 0;
 
-  GLboolean m_invertYLook;   // Invert Y-axis control on camera?
-  GLboolean m_invertXLook;   // Invert X-axis control on camera?
+  GLboolean m_invertYLook;  // Invert Y-axis control on camera?
+  GLboolean m_invertXLook;  // Invert X-axis control on camera?
   GLfloat m_fovY;           // Current FOV_y
   GLfloat m_fovX;           // Current FOV_x
   GLfloat m_aspect;         // Current aspect ratio
   GLfloat m_zNear;          // Current clipping plane
   GLfloat m_zFar;           // Current clipping plane
   GLfloat m_clipDelta;      // Default change for plane inc/decrement
-  
-  vec3f m_translateDelta;    // Default step distances for a translation in u=[0],v=[1],n=[2] directions
-  vec3f m_rotateDelta;       // Default degrees for a rotation about u=[0],v=[1],n=[2] axes
 
-  mat4f m_projMatr;          // The projection matrix
-  mat4f m_modelViewMatr;     // The modelview matrix
-  mat4f m_tempMatr;          // Temp variable for ops
+  GLfloat m_pos[4];         // Position in world coords
+  
+  vec3f m_translateDelta;   // Default step distances for a translation in u=[0],v=[1],n=[2] directions
+  vec3f m_rotateDelta;      // Default degrees for a rotation about u=[0],v=[1],n=[2] axes
+
+  mat4f m_projMatr;         // The projection matrix
+  mat4f m_modelViewMatr;    // The modelview matrix
+  mat4f m_tempMatr;         // Temp variable for ops
 };
 
 #endif

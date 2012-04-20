@@ -9,6 +9,25 @@ private:
   GLvoid init();
   GLfloat COLOR_CHANGE;
 
+  GLint globalAmbientLoc;
+  GLint lightAmbientLoc;
+  GLint lightDiffuseLoc;
+  GLint lightSpecularLoc;
+  GLint matAmbientLoc;
+  GLint matDiffuseLoc;
+  GLint matSpecularLoc;
+  GLint matShininessLoc;
+  GLint lightLocationLoc;
+  GLint viewerLocationLoc;
+  GLint vertexNormalLoc;
+  GLint vertexPositionLoc;
+  GLint lightsEnabledLoc;
+  GLint modelViewLocationLoc;
+  GLint projectionLocationLoc;
+
+protected:
+  GLvoid pairwiseMultiply( col4f& res, const col4f& lhs, const GLfloat* rhs );
+
 public:
   ShaderScene();
   ShaderScene( GLuint numModels );
@@ -26,6 +45,8 @@ public:
   GLvoid handleKeys();
 
   GLvoid print();
+
+  GLvoid setDefaultLights();
 
   GLint m_vShader;             // The vertex shader ID
   GLint m_fShader;             // The fragment shader ID
