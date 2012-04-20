@@ -21,6 +21,8 @@ public:
   GLvoid handleKeys();
 
   GLvoid print();
+
+  GLvoid setDefaultLights();
 };
 
 #endif

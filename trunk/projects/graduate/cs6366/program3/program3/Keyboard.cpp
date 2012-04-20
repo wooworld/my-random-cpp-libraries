@@ -22,7 +22,7 @@ GLvoid Keyboard::specialPress( GLint key, GLint x, GLint y) { m_specialKeys[key]
 GLvoid Keyboard::specialRelease( GLint key, GLint x, GLint y) { m_specialKeys[key] = GL_FALSE; }
 
 GLboolean Keyboard::isPressed( GLubyte key ) { return m_keys[key]; }
-GLboolean Keyboard::isSpecialPressed( GLint key ) { return m_keys[key]; }
+GLboolean Keyboard::isSpecialPressed( GLint key ) { return m_specialKeys[key]; }
 
 GLvoid Keyboard::print() {
   printf( "Normal keys:\n" );

@@ -59,25 +59,25 @@ void Model::read( const string& path ) {
     fscanf( inFile, "v0 %f %f %f %f %f %f %d\n",
       &(m_tris[i].m_verts[0][0]), &(m_tris[i].m_verts[0][1]), &(m_tris[i].m_verts[0][2]),
       &(m_tris[i].m_norms[0][0]), &(m_tris[i].m_norms[0][1]), &(m_tris[i].m_norms[0][2]),
-      &(colorIndex[0]));
+      &(m_tris[i].m_colorIndex[0]));
 
     fscanf( inFile, "v1 %f %f %f %f %f %f %d\n",
       &(m_tris[i].m_verts[1][0]), &(m_tris[i].m_verts[1][1]), &(m_tris[i].m_verts[1][2]),
       &(m_tris[i].m_norms[1][0]), &(m_tris[i].m_norms[1][1]), &(m_tris[i].m_norms[1][2]),
-      &(colorIndex[1]));
+      &(m_tris[i].m_colorIndex[1]));
 
     fscanf( inFile, "v2 %f %f %f %f %f %f %d\n",
       &(m_tris[i].m_verts[2][0]), &(m_tris[i].m_verts[2][1]), &(m_tris[i].m_verts[2][2]),
       &(m_tris[i].m_norms[2][0]), &(m_tris[i].m_norms[2][1]), &(m_tris[i].m_norms[2][2]),
-      &(colorIndex[2]));
+      &(m_tris[i].m_colorIndex[2]));
 
     fscanf( inFile, "face normal %f %f %f\n", &(m_tris[i].m_faceNorm[0]), &(m_tris[i].m_faceNorm[1]),
       &(m_tris[i].m_faceNorm[2]));
 
     // I don't know what this does.
-    m_tris[i].m_colorIndex[0] = (unsigned char)(int)(255*(m_diffuse[colorIndex[0]][0]));
+    /*m_tris[i].m_colorIndex[0] = (unsigned char)(int)(255*(m_diffuse[colorIndex[0]][0]));
     m_tris[i].m_colorIndex[1] = (unsigned char)(int)(255*(m_diffuse[colorIndex[0]][1]));
-    m_tris[i].m_colorIndex[2] = (unsigned char)(int)(255*(m_diffuse[colorIndex[0]][2]));
+    m_tris[i].m_colorIndex[2] = (unsigned char)(int)(255*(m_diffuse[colorIndex[0]][2]));*/
   }
 
   // Calculate bounding box

@@ -20,6 +20,7 @@ GLvoid GLCamera::init() {
   memset( m_projMatr,       0, 16*sizeof(GLfloat) );
   memset( m_modelViewMatr,  0, 16*sizeof(GLfloat) );
   memset( m_tempMatr,       0, 16*sizeof(GLfloat) );
+  memset( m_pos, 0, 4*sizeof(GLfloat) ); m_pos[3] = 1.0f;
 
   m_invertYLook = false;
   m_invertXLook = false;

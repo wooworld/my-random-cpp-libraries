@@ -90,6 +90,7 @@
     <ClInclude Include="GLScene.h" />
     <ClInclude Include="glTypes.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderCamera.h" />

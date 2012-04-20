@@ -9,6 +9,7 @@
 #include "Keyboard.h"
 #include "Model.h"
 #include "Colorizer.h"
+#include "Light.h"
 #include "Window.h"
 #include "textfile.h"
 
@@ -20,6 +21,10 @@ enum RENDER_MODE {
 };
 
 class Scene {
+protected:
+  GLvoid clamp( GLfloat& f );
+  GLvoid clamp( col4f& f );
+
 public:
   GLboolean checkSupport();
 
@@ -27,6 +32,8 @@ public:
   virtual GLvoid centerOnCurrentModel() = 0;
   virtual GLvoid handleKeys() = 0;
   virtual GLvoid print() = 0;
+
+  virtual GLvoid setDefaultLights() = 0;
 
   GLint m_windowWidth;         // Width of window this scene represents
   GLint m_windowHeight;        // Height of window this scene represents
@@ -41,9 +48,15 @@ public:
   
   Colorizer* m_color;          // Colors
 
+  Light* m_light;              // A single light source
+  col4f m_globalAmbient;       // A single light for the global ambient
+  GLfloat m_lightDelta;
+  GLboolean m_lightsEnabled;   // Lights on?
+  GLboolean m_smoothShading;   // Smooth shading?
+
   RENDER_MODE m_rMode;         // Current rendering mode for drawing
   GLboolean m_ccw;             // Draw in counter-clockwise?
-  GLboolean m_backfaceCulling; // Enable/disable culling
+  GLboolean m_backfaceCulling; // Backface culling on?
 };
 
 #endif
