@@ -171,6 +171,9 @@ GLvoid Scene::drawCurrentModel() {
   GLint projection = glGetUniformLocation( m_shaderProgram, "myProjectionMatrix" );
   glUniformMatrix4fv( projection, 1, GL_FALSE, m_cam->m_projMatr );
 
+  cout << "modelView = " << modelView << endl;
+  cout << "projection = " << projection << endl;
+
   glFrontFace( m_ccw ? GL_CCW : GL_CW );    
 
   if ( m_backfaceCulling == GL_TRUE ) { glEnable( GL_CULL_FACE ); }
