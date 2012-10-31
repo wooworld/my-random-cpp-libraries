@@ -9,8 +9,6 @@
 
 #include "strmanip.h"
 
-#include "library.h"
-
 #include <climits>
 #include <cstdio>
 #include <cstdlib>

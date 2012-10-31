@@ -243,19 +243,28 @@
 /// @return long int that is the decimal equivilant of s' hex.
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once //Ensures this file is only included once during compilation
+#ifndef STR_MANIP_H
+#define STR_MANIP_H
 
 #include <string>
-using std::string;
-
 #include <vector>
-using std:: vector;
+#include <iostream>
+#include <sstream>
+#include <cstring>
+#include <cstdio>
+
+#include "exception.h"
+#include "useful_things.h"
+
+using namespace std;
 
 //Functions for getting part of a string
 string str_left( const string& s, const unsigned int& length );
 string str_right( const string& s, const unsigned int& length );
 string str_mid( const string& s, const unsigned int& start_pos, 
           const unsigned int& length );
+string str_mid_range( const string& s, const unsigned int& start_pos,
+          const unsigned int& end_pos );
 
 //Functions for removing part(s) of a string
 string str_remove( const string& s, const string& to_remove );
@@ -267,12 +276,14 @@ int str_to_int( const string& s );
 long int str_to_lint( const string& s );
 unsigned long int str_to_ulint( const string& s );
 double str_to_double( const string& s );
+float str_to_float( const string& s );
 const char* str_to_char( const string& s );
 
 //Functions for converting other formats to strings
 string int_to_str( const int& n );
 string uint_to_str( const unsigned int& n );
 string double_to_str( const double& n );
+string float_to_str( const float& n );
 string char_to_str( const char& c );
 
 //Functions for finding parts of a string
@@ -286,5 +297,7 @@ string str_tolower( const string& s );
 long int bin_to_dec( const string& s );
 long int oct_to_dec( const string& s );
 long int hex_to_dec( const string& s );
+
+#endif
 
 // END OF FILE ----------------------------------------------------------------

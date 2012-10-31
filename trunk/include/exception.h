@@ -46,19 +46,21 @@
 /// @return Returns the errorMessage of the object.
 ///////////////////////////////////////////////////////////////////////////////
 
-#pragma once //ensures this file is only included in the executable one time
+#ifndef EXCEPTION_H
+#define EXCEPTION_H
+
 #include <string>
 
-class Exception
-{
+class Exception {
   public:
     Exception( const int& errorCode, const std::string& errorMsg );
-    int get_errorCode() const;
-    std::string get_errorMsg() const;
+    int code() const;
+    std::string message() const;
   
   private:
-    int m_errorCode;
+    int         m_errorCode;
     std::string m_errorMsg;
 };
 
+#endif
 // END OF FILE-----------------------------------------------------------------

@@ -18,14 +18,10 @@ char* print_msg_name( const msg_t& msg ) {
       return "MSG_T_REQUEST_CS";
     case MSG_T_REPLY_CS:
       return "MSG_T_REPLY_CS";
-    case MSG_T_NODE_COMPUTATION_COMPLETE:
-      return "MSG_T_NODE_COMPUTATION_COMPLETE";
-    case MSG_T_NETWORK_COMPUTATION_COMPLETE:
-      return "MSG_T_NETWORK_COMPUTATION_COMPLETE";
     case MSG_T_RESTART:
       return "MSG_T_RESTART";
-    case MSG_T_JOIN:
-      return "MSG_T_JOIN";
+    case MSG_T_BARRIER:
+      return "MSG_T_BARRIER";
     case MSG_T_END:
       return "MSG_T_END";
     case MSG_T_TERMINATE:

@@ -8,19 +8,16 @@
 
 #include "exception.h"
 
-Exception::Exception( const int& errorCode, const std::string& errorMsg )
-{
+Exception::Exception( const int& errorCode, const std::string& errorMsg ) {
   m_errorCode = errorCode;
   m_errorMsg = errorMsg;
 }
 
-int Exception::get_errorCode() const
-{
+int Exception::code() const {
   return m_errorCode;
 }
 
-std::string Exception::get_errorMsg() const
-{
+std::string Exception::message() const {
   return m_errorMsg;
 }
 

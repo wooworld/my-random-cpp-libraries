@@ -11,6 +11,12 @@
 #include <unistd.h>
 #include "globals.h"
 #include "hr_time.h"
+#include "NaiveAtomicNumber.hpp"
+#include "CriticalSectionTracker.h"
+#include <pthread.h>
+#include "ConditionVariable.h"
+#include "Mutex.h"
+#include "thread_constructs.h"
 
 using std::cout;
 using std::endl;
@@ -26,19 +32,17 @@ thread_t               comm_send_thread_id;
 // Queues for message passing between threads
 concurrent_queue<msg_t> comm_send_q;
 concurrent_queue<msg_t> comm_recv_q;
-CriticalSectionTracker  comm_cs;
+
+// Critical section handling
+CriticalSectionTracker            comm_cs;
 concurrent_queue<cs_stat_entry_t> comm_cs_log;
 
+// Network barrier handling
+barrier_t              comm_barrier_obj;
+
+// Port and contacts to communicate with
 int                    comm_port = -1;
-
 vector<node_contact_t> comm_contacts;
-ConditionVariable      comm_network_joined;
-Mutex                  comm_network_joined_mutex;
-
-ConditionVariable      comm_computation_complete;
-Mutex                  comm_computation_complete_mutex;
-
-unsigned int           comm_join_count = 0; 
 
 // Communication server setup
 int comm_start( char* config_file_path ) {
@@ -86,7 +90,6 @@ int comm_start( char* config_file_path ) {
     // Finished reading from file
     config_file.close();
 
-    //NODE_NETWORK_SIZE = comm_contacts.size() + 1;
     NODE_NETWORK_SIZE = comm_contacts.size();
 
     // Initialize the critical section stuff
@@ -145,7 +148,7 @@ int comm_start( char* config_file_path ) {
     
     cout << "Created send thread" << endl;
 
-    error = comm_join_network();
+    error = comm_barrier();
     if ( error != 0 ) {
       cout << "comm_start Couldn't join the network" << endl;
       return error;
@@ -160,14 +163,6 @@ int comm_start( char* config_file_path ) {
 }
 
 int comm_add_contact( const node_contact_t& contact ) {
-  // Only add node contact if it doesn't already exist
-  /*for ( unsigned int i = 0; i < comm_contacts.size(); i++ ) {
-    if ( comm_contacts[i].id == contact.id ) {
-      cout << "Contact already exists" << endl;
-      return -1;
-    }
-  }*/
-
   comm_contacts.push_back( contact );
 
   return 0;
@@ -338,26 +333,6 @@ int comm_bind_once( int port ) {
   return sockfd;
 }
 
-int comm_join_network() {
-  msg_t join_msg;
-  join_msg.msg_type = MSG_T_JOIN;
-  
-  comm_join_count = 1;
-
-  // Broadcast that this node is ready to join the network
-  if ( comm_broadcast( join_msg ) != 0 ) {
-    cout << "comm_join_network Couldn't broadcast join" << endl;
-    return -1;
-  }
-
-  if ( comm_join_count < NODE_NETWORK_SIZE ) {
-    // Wait until all other nodes have broadcast as well
-    comm_network_joined.wait( comm_network_joined_mutex );
-  }
-
-  return 0;
-}
-
 // Thread entry functions
 void* comm_listen_thread_start( void* data ) {
   recv_thread_t* my_info = reinterpret_cast<recv_thread_t*>(data);
@@ -499,28 +474,14 @@ void* comm_recv_parse_thread_start( void* data ) {
         }
         break;
 
-      case MSG_T_NODE_COMPUTATION_COMPLETE:
-        network_nodes_completed++;
-        if ( network_nodes_completed == comm_contacts.size()
-          && node_computation_complete
-          && NODE_ID == 0 ) {
-          comm_computation_complete.broadcast();
-        }
-        break;
-
-      case MSG_T_NETWORK_COMPUTATION_COMPLETE:
-        comm_computation_complete.broadcast();
-        break;
-
       case MSG_T_RESTART:
         // Nothing...
         break;
 
-      case MSG_T_JOIN:
-        comm_join_count++;
-        if ( comm_join_count == NODE_NETWORK_SIZE ) {
-          //cout << "The network has been globally set up. Notifying all involved" << endl;
-          comm_network_joined.broadcast();
+      case MSG_T_BARRIER:
+        comm_barrier_obj.count++;
+        if ( comm_barrier_obj.count.get() == NODE_NETWORK_SIZE ) {
+          comm_barrier_obj.cv.broadcast();
         }
         break;
 
@@ -606,6 +567,35 @@ msg_t comm_recv() {
   comm_recv_q.wait_and_pop( temp );
 
   return temp;
+}
+
+int comm_barrier() {
+  cout << "BARRIER HIT!" << endl;
+  
+  msg_t barrier_msg;
+  barrier_msg.msg_type = MSG_T_BARRIER;
+  barrier_msg.ts = comm_cs.seq_num;
+  
+  comm_barrier_obj.count++;
+  
+  // Broadcast that this node has hit the barrier
+  if ( comm_broadcast( barrier_msg ) != 0 ) {
+    cout << "comm_barrier Couldn't broadcast barrier hit" << endl;
+    return -1;
+  }
+  
+  if ( comm_barrier_obj.count.get() < NODE_NETWORK_SIZE ) {
+    // wait until all other nodes have hit the barrier
+    comm_barrier_obj.cv.wait( comm_barrier_obj.mutex );
+  }
+  
+  wait_s_duration(1);
+  
+  cout << "BARRIER PASSED" << endl;
+  
+  comm_barrier_obj.count.set(0);
+  
+  return 0;
 }
 
 int comm_stop() {

@@ -7,44 +7,39 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include "str_manip.h"
-#include "exception.h"
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <cstring>
-#include <vector>
-#include <cstdio>
-//#include <ctype>
+
 using namespace std;
 
 //Getting parts of strings ----------------------------------------------------
-//Returns a left number of characters
-string str_left( const string& s, const unsigned int& length ) 
-{
-  return s.substr( 0, length );
+string str_left( const string& s, const unsigned int& length ) {
+  return str_mid( s, 0, length );
 }
 
-//Returns a right number of characters
-string str_right( const string& s, const unsigned int& length ) 
-{
+string str_right( const string& s, const unsigned int& length ) {
   if ( length >= s.length() )
     return s;
     
-  return s.substr( s.length() - length, length );
+  return s.substr( fun::bound( s.length()-length, (unsigned int)0, length ), length );
 }
 
-//Returns a middle number of characters
 string str_mid( const string& s, const unsigned int& start_pos, 
-          const unsigned int& length ) 
-{
-  if ( length >= s.length() )
-    return s;
-    
+                const unsigned int& length ) {    
   return s.substr( start_pos, length );
 }
 
+string str_mid_range( const string& s, const unsigned int& start_pos,
+                      const unsigned int& end_pos ) {
+  unsigned int start = fun::bound( start, (unsigned int)0, s.length() );
+  unsigned int end   = fun::bound( end, (unsigned int)0, s.length() );
+
+  if ( end < start ) {
+    fun::swap( start, end );
+  }
+
+  return s.substr( start, end - start );
+}
+
 //Removing parts of strings ---------------------------------------------------
-//Removes all instances of to_remove from s
 string str_remove( const string& s, const string& to_remove )
 {
   //Check to make sure the string we want to remove is actually in s, if not
@@ -109,128 +104,114 @@ string str_clean( const string& s )
 
 //Converting strings to other types -------------------------------------------
 //String to integer
-int str_to_int( const string& s )
-{
-  return atoi( s.c_str() );
+int str_to_int( const string& s ) {
+  int n;
+  if ( !(istringstream(s) >> n) ) {
+    n = 0;
+  }
+
+  return n;
 }
 
 //String to long integer
-long int str_to_lint( const string& s )
-{
-  return atol( s.c_str() );
+long int str_to_lint( const string& s ) {
+  long int n;
+  if ( !(istringstream(s) >> n) ) {
+    n = 0;
+  }
+
+  return n;
 }
 
 //String to unsigned long integer
-unsigned long int str_to_ulint( const string& s )
-{
-  return strtoul( s.c_str(), NULL, 0 );
+unsigned long int str_to_ulint( const string& s ) {
+  unsigned long int n;
+  if ( !(istringstream(s) >> n) ) {
+    n = 0;
+  }
+
+  return n;
 }
 
 //String to double
-double str_to_double( const string& s )
-{
-  //return strtod( s.c_str(), NULL );
-  return atof( s.c_str() );
+double str_to_double( const string& s ) {
+  double n;
+  if ( !(istringstream(s) >> n) ) {
+    n = 0;
+  }
+
+  return n;
+}
+
+//String to double
+float str_to_float( const string& s ) {
+  float n;
+  if ( !(istringstream(s) >> n) ) {
+    n = 0;
+  }
+
+  return n;
 }
 
 //String to character
-const char* str_to_char( const string& s )
-{
+const char* str_to_char( const string& s ) {
   return s.c_str();
 }
 
 //Converting other types to strings -------------------------------------------
-//Integer to string
-string int_to_str( const int& n )
-{
-  ostringstream o;
-  if (!(o << n))
-    throw Exception( 70, "Bad conversion to string from integer." );
-  return o.str();
+string int_to_str( const int& n ) {
+  return static_cast<ostringstream*>( &(ostringstream() << n) )->str();
 }
 
-//unsigned integer to string
-string uint_to_str( const unsigned int& n )
-{
-  ostringstream o;
-  if (!(o << n))
-    throw Exception( 70, "Bad conversion to string from unsigned integer." );
-  return o.str();
+string uint_to_str( const unsigned int& n ) {
+  return static_cast<ostringstream*>( &(ostringstream() << n) )->str();
 }
 
-//Double to string
-string double_to_str( const double& n )
-{
-  ostringstream o;
-  if (!(o << n))
-    throw Exception( 70, "Bad conversion to string from double." );
-  return o.str();
+string double_to_str( const double& n ) {
+  return static_cast<ostringstream*>( &(ostringstream() << n) )->str();
 }
 
-//Character to string
-string char_to_str( const char& c )
-{
+string float_to_str( const float& n ) {
+  return static_cast<ostringstream*>( &(ostringstream() << n) )->str();
+}
+
+string char_to_str( const char& c ) {
   string s( 1, c );
   return s;
 }
 
 //Functions for finding part of a string --------------------------------------
-//Returns a vector of segments in s broken by delim
-vector<string> str_breakup( string s, const string& delim )
-{
+vector<string> str_breakup( string s, const string& delim ) {
   vector<string> lines;
-  
-  while ( s != "" )
-  {
-    unsigned int delim_pos = s.find_first_of( delim );
-    
-    if ( delim_pos != string::npos )
-    {
-      lines.push_back( str_left( s, delim_pos ) );
-      s = str_right( s, s.length() - delim_pos - delim.length() );
-    }
-    
-    else
-    {
-      lines.push_back( s );
-      s = "";
-    }
-  };
-  
+  unsigned int lhs = 0;
+  unsigned int rhs = s.find_first_of( delim, lhs );
+
+  while ( rhs != string::npos ) {
+    lines.push_back( s.substr( lhs, rhs-lhs ) );
+    lhs = rhs + 1;
+    rhs = s.find_first_of( delim, lhs );
+  }
+
   return lines;
 }
 
-//Returns a vector of unsigned ints indicating the starting location of each 
-//instance of find
 vector<unsigned int> str_find_all( const string& s, const string& find )
 {
   vector<unsigned int> positions;
-  unsigned int currpos = 0;
-  unsigned int last = 0;
-  
-  while( currpos != string::npos )
-  {
-    currpos = s.find( find, last );
-    
-    //Move our starting index just to the right of where our current find is
-    last = currpos + find.length();
-    
-    //If we still have more string to go looking through
-    if ( currpos != string::npos )
-      positions.push_back( currpos );
-    
-  };
-  
+  unsigned int lhs = 0;
+  unsigned int rhs = s.find( find, lhs );
+
+  while ( rhs != string::npos ) {
+    positions.push_back( rhs );
+    lhs = rhs + 1;
+    rhs = s.find( find, lhs );
+  }
+
   return positions;
 }
 
-//Returns a vector of unsigned ints indicating the starting location of each 
-//instance of find
-vector<unsigned int> str_find_all( const string& s, const char& find )
-{
-  vector<unsigned int> v;
-  v = str_find_all( s, char_to_str( find ) );
-  return v;
+vector<unsigned int> str_find_all( const string& s, const char& find ) {
+  return str_find_all( s, char_to_str( find ) );
 }
 
 //Miscellaneous functions -----------------------------------------------------

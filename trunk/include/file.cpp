@@ -15,58 +15,46 @@ using std::ofstream;
 #include "exception.h"
 #include "str_manip.h"
 
-//Default constructor
-File::File()
-{
+File::File() {
   m_filename = "";
-  m_error = false;
 }
 
-//Constructor with a filename
-File::File( const string& filename, bool keep_newline )
-{
+File::File( const string& filename, bool keep_newline ) {
   m_filename = filename;
   load_file( keep_newline );
 }
 
-//Default destructor
-File::~File()
-{
+File::~File() {
   close();
 }
 
-//Open file with specified path/name
-void File::open( const string& filename, bool keep_newline )
-{
+void File::open( const string& filename, bool keep_newline ) {
   m_filename = filename;
   load_file( keep_newline );
   
   return;
 }
 
-//Just reloads the file from disk
-void File::reopen()
-{
+void File::reopen() {
   load_file();
   
   return;
 }
 
-//Save the file to disk
-void File::save()
-{
+void File::save() {
   //Make an ostream for outputting
-  ofstream os( m_filename.c_str(), ofstream::binary );
-  m_error = os.fail();
-  
+  ofstream os( m_filename.c_str(), ios::out | ios::app );
+
   //If the output failed, return
-  if ( m_error ) { return; } 
-  
+  if ( os.fail() ) {
+    throw Exception( 10, "Couldn't save to output file: " + m_filename );
+  }
+
   //Get the raw data from our file to output
   string out = get_raw( 0, get_num_lines() ); 
   
   //Write the data to disk
-  os.write( out.data(), out.length() );
+  os << out;
   
   //Close the file
   os.close();
@@ -74,89 +62,104 @@ void File::save()
   return;
 }
 
-//Saves the current File data to a specific locations
-void File::save( const string& filename )
-{
+void File::save( const string& filename ) {
   m_filename = filename;
   save();
   
   return;
 }
 
-//Closes the current file, saves if save_changes = true
-void File::close( bool save_changes )
-{
-  if ( save_changes ) 
+void File::close( bool save_changes ) {
+  if ( save_changes == true ) {
     save(); 
+  }
   
   m_filename = "";
   clear();
     
   return;
 }
-
-//Returns a specific line from the file data    
-string& File::get_line( const unsigned int& line ) const
-{
-  if ( line < m_file.size() )
-  {
-    return m_file[ line ];
-  }
   
-  else
-  {
+const string& File::get_line( const unsigned int& line ) const {
+  if ( line < get_num_lines() )
+    return m_file[ line ];
+  
+  else {
     throw Exception( 50, "Invalid read from file. Line " +
       uint_to_str( line ) + " does not exist in file \"" + 
       m_filename + "\"." );
   }
 } 
 
-//Returns a specific line from the file data
-string& File::operator[]( const unsigned int& line )
-{
-  if ( line > get_num_lines() )
-    throw( Exception( 90, "Tried to access an invalid line. operator[]" ) );
-  return get_line( line );
+string& File::get_line( const unsigned int& line ) {
+  if ( line < get_num_lines() )
+    return m_file[ line ];
+  
+  else {
+    throw Exception( 50, "Invalid read from file. Line " +
+      uint_to_str( line ) + " does not exist in file \"" + 
+      m_filename + "\"." );
+  }
+} 
+
+const string& File::operator[]( const unsigned int& line ) const {
+  if ( line < get_num_lines() )
+    return m_file[ line ];
+  
+  else {
+    throw Exception( 50, "Invalid read from file. Line " +
+      uint_to_str( line ) + " does not exist in file \"" + 
+      m_filename + "\"." );
+  }
 }
 
-//Returns a specific line from the file data
-/*const string& File::operator[]( const unsigned int& line ) const
-{
-  if ( line > get_num_lines() )
-    throw( Exception( 90, "Tried to access an invalid line. operator[]" ) );
-  return get_line( line );
-}*/
+string& File::operator[]( const unsigned int& line ) {
+  if ( line < get_num_lines() )
+    return m_file[ line ];
+  
+  else {
+    throw Exception( 50, "Invalid read from file. Line " +
+      uint_to_str( line ) + " does not exist in file \"" + 
+      m_filename + "\"." );
+  }
+}
 
-//Inserts a line to a specific spot in the file data
-void File::insert_line( const unsigned int& line, const string& s, bool break_lines )
-{
-  //Convert the string to a deque of 1 string
+void File::append( const string& s, bool break_lines ) {
+  if ( break_lines == true ) {
+    vector<string> lines = str_breakup( s, "\n" );
+    
+    m_file.insert( m_file.end(), lines.begin(), lines.end() );
+  }
+
+  else {
+    m_file.push_back( s );
+  }
+}
+
+void File::insert_line( const unsigned int& line, const string& s, bool break_lines ) {
+  // Convert the string to a deque of 1 string
   insert_lines( line, deque<string>( 1, s ), break_lines );
   
   return;
 }
 
-//Inserts multiple lines starting at a specific spot into file data
-void File::insert_lines( const unsigned int& line, const vector<string>& v, bool break_lines )
-{
-  //convert the vector to a deque of string
+void File::insert_lines( const unsigned int& line, const vector<string>& v, bool break_lines ) {
+  // Convert the vector to a deque of string
   insert_lines( line, deque<string>( v.begin(), v.end() ), break_lines );
   
   return;
 }
 
-//Inserts multiple lines starting at a specific spot into file data
-void File::insert_lines( const unsigned int& line, deque<string> d, bool break_lines )
-{
-  if ( break_lines )
-  {
+void File::insert_lines( const unsigned int& line, deque<string> d, bool break_lines ) {
+  unsigned int temp = fun::bound( line, (unsigned int) 0, get_num_lines() );
+
+  if ( break_lines ) {
     deque<string> ready;
     vector<string> lines;
     
-    for ( unsigned int i = 0; i < d.size(); i++ )
-    {
-      lines = str_breakup( d[i], "\n" );
-      
+    // Break each line in d on \n if specified, before putting into file contents
+    for ( unsigned int i = 0; i < d.size(); i++ ) {
+      lines = str_breakup( d[i], "\n" );      
       ready.insert( ready.end(), lines.begin(), lines.end() );
     }
     
@@ -168,50 +171,38 @@ void File::insert_lines( const unsigned int& line, deque<string> d, bool break_l
   return;
 }
 
-//Removes a single line from a file
-void File::remove_line( const unsigned int& line )
-{
-  if ( line >= m_file.size() )
-  {
-    throw Exception( 60, "Invalid remove from file. Line " +
-      uint_to_str( line ) + " does not exist in file \"" + 
-      m_filename + "\"." );
-  }
-  
-  //Erase the line
-  else
-  {
+void File::remove_line( const unsigned int& line ) {
+  if ( line < get_num_lines() )
     m_file.erase( m_file.begin() + line );
-  }
   
-  return;
-}
-
-//Removes multiple lines from a file
-void File::remove_lines( const unsigned int& line, unsigned int n )
-{
-  if ( line >= m_file.size() )
-  {
+  else {
     throw Exception( 60, "Invalid remove from file. Line " +
       uint_to_str( line ) + " does not exist in file \"" + 
       m_filename + "\"." );
   }
-  
-  //If we try to remove lines past the end of the file
-  //Make it just go to end of file
-  if ( line + n >= m_file.size() )
-  {
-    n = m_file.size() - line;
-  }
-
-  m_file.erase( m_file.begin() + line, m_file.begin() + line + n );
 
   return;
 }
 
-//Sets the file data to the string
-void File::set_data( const string& data )
-{
+void File::remove_lines( const unsigned int& line, unsigned int n ) {
+  if ( line < get_num_lines() ) {
+    if ( line + n >= get_num_lines() ) {
+      n = m_file.size() - line;
+    }
+
+    m_file.erase( m_file.begin() + line, m_file.begin() + line + n );
+  }
+   
+  else {
+    throw Exception( 60, "Invalid remove from file. Line " +
+      uint_to_str( line ) + " does not exist in file \"" + 
+      m_filename + "\"." );
+  }
+
+  return;
+}
+
+void File::set_data( const string& data ) {
   //Just convert data to a vector of size 1 with a string in it
   vector<string> v;
   v.push_back( data );
@@ -220,58 +211,43 @@ void File::set_data( const string& data )
   return;
 }
 
-//Sets the file data to the vector of strings
-void File::set_data( const vector<string>& data )
-{
-  m_file.clear();
-  
-  //Convert the vector to a deque
-  for ( unsigned int i = 0; i < data.size(); i++ )
-    m_file.push_back( data[i] );
-  
+void File::set_data( const vector<string>& data ) {
+  m_file.assign( data.begin(), data.end() );
+
   return;
 }
 
-//Sets the file data to the deque of strings
-void File::set_data( const deque<string>&  data )
-{
+void File::set_data( const deque<string>&  data ) {
   m_file = data;
   
   return;
 }
 
-//Gets the current file data in a deque
-const deque<string>& File::get_data() const
-{
+const deque<string>& File::get_data() const {
   return m_file;
 }
 
-//Gets the current file data in a vector
 const vector<string>& File::get_data_vector() const
 {
   vector<string> v;
-  
-  //Convert the data deque to a vector
-  for ( unsigned int i = 0; i < m_file.size(); i++ )
-    v.push_back( m_file[i] );
+  v.assign( m_file.begin(), m_file.end() );
   
   return v;
 }
 
-//Gets all of the file data in one big, ugly string
 const string& File::get_raw( unsigned int start, unsigned int end )
 {
   //If the file doesn'e exist, return a blank string
-  if ( m_file.empty() )
+  if ( get_num_lines() == 0 ) {
     return "";
-  
-  //Make sure our start index is in range
-  if ( start >= m_file.size() )
-    start = m_file.size() - 1;
-    
-  //Make sure our end index is in range
-  if ( end >= m_file.size() )
-    end = m_file.size() - 1;
+  }
+
+  if ( end < start ) {
+    fun::swap( start, end );
+  }
+
+  start = fun::bound( start, (unsigned int)0, get_num_lines() );
+  end   = fun::bound( start, (unsigned int)0, get_num_lines() );
     
   string raw = "";
   
@@ -290,69 +266,52 @@ const string& File::get_raw( unsigned int start, unsigned int end )
   return raw;
 }
 
-//Get the filename    
-const string& File::get_filename() const
-{
+const string& File::get_filename() const {
   return m_filename;
 }
   
-//Get the number of lines in the current File data  
-unsigned int File::get_num_lines() const
-{
+unsigned int File::get_num_lines() const {
   return m_file.size();
 }
 
-//Return whether the last operation caused an error
-bool File::get_error() const
-{
-  return m_error;
-}
-
-//Return whether or not the File data is empty
-bool File::empty() const
-{
+bool File::empty() const {
   return m_file.empty();
 }
 
-//Clear the File data
-void File::clear()
-{
+
+void File::clear() {
   m_file.clear();
 
   return;
 }
 
-//Load the data from m_filename
+// IF file does not exist, create it, then blah blah
 void File::load_file( bool keep_newline )
 {
   //Clear the current data
   m_file.clear();
   
   //Create an in stream for the contents of the file
-  ifstream is( m_filename.c_str(), ifstream::binary );
-  m_error = is.fail();
+  ifstream is( m_filename.c_str(), ios::in | ios::out | ios::app );
   
   //If the output failed, return
-  if ( m_error ) { return; } 
+  if ( is.fail() ) { 
+    throw Exception( 20, "Couldn't open the file: " + m_filename ); 
+  } 
   
   string file;
   string line;
   
   //As long as we're not at the end of the file
-  while ( !is.eof() )
-  {
+  while ( !is.eof() ) {
     getline( is, line );
-    file += line;
-    
-    if ( keep_newline )
-    {
-      if ( !is.eof() )
-        file += char_to_str( '\n' );
+
+    if ( keep_newline ) {
+      line += char_to_str( '\n' );
     }
+
+    m_file.push_back( line );
   };
-  
-  //Throw the data into our file data holder now
-  set_data( str_breakup( file, char_to_str( '\n' ) ) );
   
   return;
 }

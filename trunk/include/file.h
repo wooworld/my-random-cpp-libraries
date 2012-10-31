@@ -304,6 +304,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 /// @Exceptions
+/// 10 - Invalid save to file. Can't create outstream to file. 
+/// 20 - Invalid file to open. Can't access file to read. 
 /// 50 - Invalid read from file. Line x does not exist in file y.
 /// 60 - Invalid remove from file. Line x does not exist in file y.
 ///////////////////////////////////////////////////////////////////////////////
@@ -319,14 +321,16 @@ using std::deque;
 #include <vector>
 using std::vector;
 
+#include "useful_things.h"
+
 class File
 {
   public:
     File();
-    File( const string& filename, bool keep_newline = true );
+    File( const string& filename, bool keep_newline = false );
     ~File();
     
-    void open( const string& filename, bool keep_newline = true );
+    void open( const string& filename, bool keep_newline = false );
     void reopen();
     
     void save();
@@ -334,10 +338,13 @@ class File
     
     void close( bool save = false );
     
-    string& get_line( const unsigned int& line ) const;
-    string& operator[]( const unsigned int& line );
-    //const string& File::operator[]( const unsigned int& line ) const;
+    const string& get_line( const unsigned int& line ) const;
+    string& get_line( const unsigned int& line );
+    const string& operator[]( const unsigned int& line ) const;
+    string& operator[]( const unsigned int& line );    
     
+    void append( const string& s, bool break_lines = true );
+
     void insert_line( const unsigned int& line, const string& s, bool break_lines = true );
     void insert_lines( const unsigned int& line, const vector<string>& v, bool break_lines = true );
     void insert_lines( const unsigned int& line, deque<string> d, bool break_lines = true );
@@ -355,7 +362,6 @@ class File
     
     const string& get_filename() const;
     unsigned int get_num_lines() const;
-    bool get_error() const;
     
     bool empty() const;
     void clear();
@@ -365,9 +371,7 @@ class File
     
   private:
     deque<string> m_file;
-    string m_filename;
-    bool m_error;
-  
+    string m_filename;  
 };
 
 // END OF FILE ----------------------------------------------------------------

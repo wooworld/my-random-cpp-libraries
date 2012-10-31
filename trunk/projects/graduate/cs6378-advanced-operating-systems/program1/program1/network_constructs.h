@@ -6,14 +6,19 @@ using std::string;
 
 #include <sys/time.h>
 
+#include "NaiveAtomicNumber.hpp"
+#include "Mutex.h"
+#include "ConditionVariable.h"
+
 // Different types of messages in the system
 typedef enum {
   MSG_T_REQUEST_CS = 0,
   MSG_T_REPLY_CS,
-  MSG_T_NODE_COMPUTATION_COMPLETE,
-  MSG_T_NETWORK_COMPUTATION_COMPLETE,
+  //MSG_T_NODE_COMPUTATION_COMPLETE,
+  //MSG_T_NETWORK_COMPUTATION_COMPLETE,
   MSG_T_RESTART,
-  MSG_T_JOIN,
+  //MSG_T_JOIN,
+  MSG_T_BARRIER,
   MSG_T_END,
   MSG_T_TERMINATE,
   
@@ -42,6 +47,12 @@ typedef struct {
   double       wait_time;
   unsigned int msg_count;
 } cs_stat_entry_t;
+
+typedef struct {
+  NaiveAtomicNumber<unsigned int> count;
+  Mutex mutex;
+  ConditionVariable cv;
+} barrier_t;
 
 // For printing receive and send messages for debugging
 void print_recv_msg( const msg_t& incoming );
