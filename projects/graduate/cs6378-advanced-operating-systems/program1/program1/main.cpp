@@ -2,11 +2,35 @@
 #include "calculator.h"
 #include "communication_server.h"
 #include <iostream>
+//#include <atomic>
+#include "NaiveAtomicNumber.hpp"
 
 using std::cout;
 using std::endl;
 
 int main( int argc, char* argv[] ) {
+  //std::atomic<int> atomicInt;
+  //atomicInt++;
+  
+  NaiveAtomicNumber<int> atomicInt;
+  cout << "atomic value = " << atomicInt.get() << endl;
+  for ( unsigned int i = 0; i < 100; i++ ) {
+    atomicInt.inc();
+  }
+  cout << "atomic value = " << atomicInt.get() << endl;
+  for ( unsigned int i = 0; i < 100; i++ ) {
+    atomicInt++;
+  }
+  cout << "atomic value = " << atomicInt.get() << endl;
+  for ( unsigned int i = 0; i < 100; i++ ) {
+    atomicInt--;
+  }
+  cout << "atomic value = " << atomicInt.get() << endl;
+  atomicInt = 42;
+  cout << "atomic value = " << atomicInt.get() << endl;
+  atomicInt.set( 1337 );
+  cout << "atomic value = " << atomicInt.get() << endl;
+  
   int error = 0;
 
   // Set the node ID

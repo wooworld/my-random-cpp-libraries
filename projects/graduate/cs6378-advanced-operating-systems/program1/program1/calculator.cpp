@@ -73,30 +73,8 @@ void* calc_thread_start( void* data ) {
 void calc_to_completion() {
   pthread_join ( calc_thread_id.id, NULL );
   
-  node_computation_complete = true;
-  
-  // Wait for all other nodes to finish calculations
-  if ( NODE_ID == 0 ) {
-    if ( network_nodes_completed != comm_contacts.size() ) {
-      comm_computation_complete.wait( comm_computation_complete_mutex );
-    }
-    
-    // Now broadcast that the network is done
-    msg_t outgoing;
-    outgoing.msg_type = MSG_T_NETWORK_COMPUTATION_COMPLETE;
-    outgoing.ts = comm_cs.seq_num;
-    comm_broadcast( outgoing );
-  }
-  
-  // Send message to node 0 indicating completion then wait for rest of network
-  else {
-    msg_t outgoing;
-    outgoing.msg_type = MSG_T_NODE_COMPUTATION_COMPLETE;
-    outgoing.ts = comm_cs.seq_num;
-    outgoing.dest_ID = 0;
-    comm_send( outgoing );
-    comm_computation_complete.wait( comm_computation_complete_mutex );
-  } 
+  // Wait for all other threads to complete calculations
+  comm_barrier();
 }
 
 // Calculator interaction functions
