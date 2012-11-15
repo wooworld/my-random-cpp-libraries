@@ -8,7 +8,7 @@
 #ifndef MatrixMath_h
 #define MatrixMath_h
 
-#include "WProgram.h"
+#include <WProgram.h>
 
 class MatrixMath
 {
