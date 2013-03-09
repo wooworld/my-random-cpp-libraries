@@ -1,0 +1,13 @@
+# pobtools project
+pobtools.version=4
+target.name=./assignment3.hex
+sources.number=5
+sources.0=./assignment3.c
+sources.1=./bitmap.h
+sources.2=./pattern.h
+sources.3=./joystick.c
+sources.4=./joystick.h
+bmps.number=0
+patterns.number=0
+sdk=pobeye2
+lang=C
