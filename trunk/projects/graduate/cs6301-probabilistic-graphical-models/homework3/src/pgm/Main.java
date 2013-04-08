@@ -15,39 +15,11 @@ public class Main {
 	 * @param args
 	 */
   public static void main(String[] args) {
-	  String networkConfigPath;
-	  String evidencePath;
-	  
-	  switch (args.length) {
-	    case 0:
-	      System.err.println("You must supply at least one file path to the network configuration.");
-	      return;
-	    case 1:
-	      networkConfigPath = args[0];
-	      evidencePath = "";
-	      break;
-	    case 2:
-	    default:
-	      networkConfigPath = args[0];
-	      evidencePath = args[1];
-	      break;	      
-	  }  
-
 		try {
 		  System.out.println("Running directory: " + System.getProperty("user.dir"));
-		  
       GraphModel gm = new GraphModel();
-      gm.orderHeuristic = GraphModelOrderHeuristicType.MIN_DEGREE;
+      gm.setup(args);
       
-      if (args.length == 4) {
-        gm.eliminationAlgorithm = GraphModelEliminationAlgorithmType.VE_WCUTSET_BUCKET_ELIMINATION;
-        gm.maxTreeWidth = Integer.valueOf(args[2]);
-        gm.maxSampleIterations = Integer.valueOf(args[3]);
-      } else {
-        gm.eliminationAlgorithm = GraphModelEliminationAlgorithmType.VE_BUCKET_ELIMINATION;
-      }      
-      
-      gm.read(networkConfigPath, evidencePath);
       LogNumber zp = gm.computeZorP();
       System.out.println("log_10(Z or P) = " + zp);
       System.out.println("       Z or P  = " + zp.toReal());
