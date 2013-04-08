@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import lib.LogNumber;
+import lib.Stopwatch;
 
 public class BucketEliminator implements VariableEliminatorType {
   protected VariableCollectionType variables = new VariableList();
@@ -23,6 +24,9 @@ public class BucketEliminator implements VariableEliminatorType {
   
   @Override
   public LogNumber eliminate() {
+    
+    instantiateEvidence();
+    
     ArrayList<Integer> bucketListOrder = new ArrayList<Integer>();    
     bucketListOrder = computeMinDegreeOrder(this.functions);
         
@@ -175,4 +179,24 @@ public class BucketEliminator implements VariableEliminatorType {
     
     return f;
   }  
+
+  protected void instantiateEvidence() {
+    Stopwatch stopwatch = new Stopwatch();
+    stopwatch.start();
+    /*System.out.println("Functions before instantiation");
+    for (FunctionTable f : this.functions) {
+      System.out.println(f.toRealString()); }*/
+    
+    for (int i = 0; i < this.functions.size(); i++) {
+      FunctionTable nVal = this.functions.get(i).instantiate(
+          this.evidence, 
+          this.variables);
+      this.functions.set(i, nVal);
+    }
+    stopwatch.stop();
+    System.out.println("Instantiated evidence: " + stopwatch);
+    /*System.out.println("Functions after instantiation");
+    for (FunctionTable f : this.functions) {
+      System.out.println(f.toRealString()); }*/
+  }
 }

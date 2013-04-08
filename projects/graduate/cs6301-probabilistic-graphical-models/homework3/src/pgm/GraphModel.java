@@ -22,20 +22,120 @@ public class GraphModel {
   protected EvidenceCollectionType evidence = new EvidenceHashMap();
   protected ArrayList<FunctionTable> functions = new ArrayList<FunctionTable>();
   
+  public VariableEliminatorType eliminator;
+  
   public GraphModelType type;  
   public GraphModelEliminationAlgorithmType eliminationAlgorithm;  
-  public GraphModelOrderHeuristicType orderHeuristic;
+  public GraphModelOrderHeuristicType orderHeuristic; 
   
-  public int maxTreeWidth;
-  public int maxSampleIterations; 
+  private boolean validState = false;
   
   public GraphModel() {
     this.type = GraphModelType.MARKOV;
     this.eliminationAlgorithm = GraphModelEliminationAlgorithmType.VE_BUCKET_ELIMINATION;
     this.orderHeuristic = GraphModelOrderHeuristicType.MIN_DEGREE;
     
-    this.maxTreeWidth = -1;
-    this.maxSampleIterations = -1;
+    this.validState = false;
+  }  
+  
+  public void setup(String[] args) throws IOException {   
+    this.validState = false;
+    
+    switch (args.length) {
+    case 1:
+      this.read(args[0], "");
+      this.eliminationAlgorithm = GraphModelEliminationAlgorithmType.VE_BUCKET_ELIMINATION;
+      this.orderHeuristic = GraphModelOrderHeuristicType.MIN_DEGREE;
+      this.eliminator = new BucketEliminator(this.variables, this.evidence, this.functions);
+      this.validState = true;
+      return;
+    case 2:
+      this.read(args[0], args[1]);
+      this.eliminationAlgorithm = GraphModelEliminationAlgorithmType.VE_BUCKET_ELIMINATION;
+      this.orderHeuristic = GraphModelOrderHeuristicType.MIN_DEGREE;
+      this.eliminator = new BucketEliminator(this.variables, this.evidence, this.functions);
+      this.validState = true;
+      return;
+    case 4:
+      if (Integer.parseInt(args[2]) == 0) {
+        this.eliminationAlgorithm = GraphModelEliminationAlgorithmType.VE_BUCKET_ELIMINATION;
+      } else {
+        System.out.println(this.printCmdLineHelp());
+        return;
+      }
+      if (Integer.parseInt(args[3]) == 0) {
+        this.orderHeuristic = GraphModelOrderHeuristicType.MIN_DEGREE;
+      } else {
+        System.out.println(this.printCmdLineHelp());
+        return;
+      }
+      this.read(args[0], args[1]);      
+      this.eliminator = new BucketEliminator(this.variables, this.evidence, this.functions);      
+      this.validState = true;      
+      return;
+    case 7:
+      if (Integer.parseInt(args[2]) == 1) {
+        this.eliminationAlgorithm = GraphModelEliminationAlgorithmType.VE_WCUTSET_BUCKET_ELIMINATION;
+      } else {
+        System.out.println(this.printCmdLineHelp());
+        return;
+      }
+      if (Integer.parseInt(args[3]) == 0) {
+        this.orderHeuristic = GraphModelOrderHeuristicType.MIN_DEGREE;
+      } else {
+        System.out.println(this.printCmdLineHelp());
+        return;
+      }
+      Integer maxClusterSize = Integer.parseInt(args[4]);
+      Integer maxIterations = Integer.parseInt(args[5]);
+      WCutsetBucketEliminatorSampleMode sampleMode;
+      if (Integer.parseInt(args[6]) == 0) {
+        sampleMode = WCutsetBucketEliminatorSampleMode.UNIFORM;
+      } else if (Integer.parseInt(args[6]) == 1) {
+        sampleMode = WCutsetBucketEliminatorSampleMode.DYNAMIC;
+      } else {
+        System.out.println(this.printCmdLineHelp());
+        return;
+      }
+      this.read(args[0], args[1]);      
+      this.eliminator = new WCutsetBucketEliminator(
+          this.variables, 
+          this.evidence, 
+          this.functions,
+          maxClusterSize,
+          maxIterations,
+          sampleMode);      
+      this.validState = true;      
+      return;
+    default:
+      System.out.println(this.printCmdLineHelp());
+      break;
+    }
+  }
+  
+  private String printCmdLineHelp() {
+    StringBuilder s = new StringBuilder();
+    s.append("Usage:\n");
+    s.append("[0] = UAI file path\n");
+    s.append("[1] = UAI.evid file path\n\n");
+    
+    s.append("Following that you may specify algorithms and their parameters. ");
+    s.append("If you don't, it defaults to Bucket elimination + min-degree ordering.\n");
+    s.append("[2] = #\n");
+    s.append("      0 = Bucket elimination\n");
+    s.append("      1 = W-cutset Bucket elimination\n");
+    s.append("[3] = #\n");
+    s.append("      0 = Min-degree bucket ordering\n\n");
+    
+    s.append("If you specify w-cutset Bucket elimination:\n");
+    s.append("[4] = #\n");
+    s.append("      # = Maximum cluster size after w-cutset\n");
+    s.append("[5] = #\n");
+    s.append("      # = Number of samplings after w-cutset\n");
+    s.append("[6] = #\n");
+    s.append("      0 = Uniform distribution sampling\n");
+    s.append("      1 = Dynamic-learning distribution sampling\n");    
+    return s.toString();
   }
   
   public void read(String networkConfigPath, String evidencePath) throws IOException { 
@@ -113,6 +213,10 @@ public class GraphModel {
   }
   
   public void print(PrintStream out) {
+    if (out == null) {
+      return;
+    }
+    
     out.println(this.type.toString());
     out.println(this.eliminationAlgorithm.toString());
     out.println(this.orderHeuristic.toString());  
@@ -149,28 +253,13 @@ public class GraphModel {
     }
     return out.toString();
   }
-  
-  public void instantiateEvidence() {
-    Stopwatch stopwatch = new Stopwatch();
-    stopwatch.start();
-    /*System.out.println("Functions before instantiation");
-    for (FunctionTable f : this.functions) {
-      System.out.println(f.toRealString()); }*/
-    
-    for (int i = 0; i < this.functions.size(); i++) {
-      FunctionTable nVal = this.functions.get(i).instantiate(
-          this.evidence, 
-          this.variables);
-      this.functions.set(i, nVal);
-    }
-    stopwatch.stop();
-    System.out.println("Instantiated evidence: " + stopwatch);
-    /*System.out.println("Functions after instantiation");
-    for (FunctionTable f : this.functions) {
-      System.out.println(f.toRealString()); }*/
-  }
-  
+   
   public LogNumber computeZorP() {
+    if (!this.validState) {
+      System.err.println("The graph model is not in a valid state. Use setup().");
+      return new LogNumber(0.0);
+    }
+    
     Stopwatch stopwatch = new Stopwatch();
     stopwatch.start();
     
@@ -179,29 +268,8 @@ public class GraphModel {
     }
     
     LogNumber value = new LogNumber(0);
-    switch(this.eliminationAlgorithm) {
-      case VE_BUCKET_ELIMINATION:
-        this.instantiateEvidence();
-        BucketEliminator BE = new BucketEliminator(
-            this.variables,
-            this.evidence,
-            this.functions);
-        value = BE.eliminate();
-        break;
-      case VE_WCUTSET_BUCKET_ELIMINATION:
-        this.instantiateEvidence();
-        WCutsetBucketEliminator WCBE = new WCutsetBucketEliminator(
-            this.variables,
-            this.evidence,
-            this.functions,
-            this.maxTreeWidth,
-            this.maxSampleIterations);
-        value = WCBE.eliminate();
-        break;
-      default:
-        System.err.println("Unknown algorithm for partition function computation.");
-        break;
-    }
+
+    value = eliminator.eliminate();
     
     stopwatch.stop();
     System.out.println("Computed Z or P: " + stopwatch);

@@ -6,25 +6,41 @@ import lib.LogNumber;
 
 public class WCutsetBucketEliminator extends BucketEliminator {
   protected VariableCollectionType cutset = new VariableList();
-  protected EvidenceCollectionType cutsetEvidence = new EvidenceHashMap();  
+  protected EvidenceCollectionType cutsetEvidence = new EvidenceHashMap();
   
-  public int maxTreeWidth;
-  public int maxSampleIterations; 
+  protected int maxTreeWidth;
+  protected int maxSampleIterations;
+  
+  protected WCutsetBucketEliminatorSampleMode sampleMode;  
   
   WCutsetBucketEliminator(
       VariableCollectionType v, 
       EvidenceCollectionType e,
       ArrayList<FunctionTable> f,
       int maxTreeWidth,
-      int maxSampleIterations) {
+      int maxSampleIterations,
+      WCutsetBucketEliminatorSampleMode sampleMode) {
     super(v, e, f);
     this.maxTreeWidth = maxTreeWidth;
     this.maxSampleIterations = maxSampleIterations;
+    this.sampleMode = sampleMode;
   }
   
   @Override
   public LogNumber eliminate() {
-    return null;
+    
+    
+    ArrayList<VariableType> X = computeWCutset();
+    
+    
+    
+    return new LogNumber(0.0);
   }
 
+  protected ArrayList<VariableType> computeWCutset() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+  
+  
 }
