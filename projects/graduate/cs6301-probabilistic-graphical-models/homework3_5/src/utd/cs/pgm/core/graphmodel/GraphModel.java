@@ -113,11 +113,6 @@ public class GraphModel {
     Stopwatch sw = new Stopwatch();
     sw.start();   
     
-    /*System.out.println("Received setup commands:");
-    for (String s : args) {
-      System.out.println(s);
-    }*/
-    
     this.validState = false;    
     switch (args.length) {
     case 1:
