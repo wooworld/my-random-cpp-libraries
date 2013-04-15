@@ -4,9 +4,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
-import utd.cs.lib.Stopwatch;
+
 import utd.cs.pgm.core.function.*;
 import utd.cs.pgm.core.variable.*;
 import utd.cs.pgm.util.LogDouble;
@@ -14,9 +15,9 @@ import utd.cs.pgm.util.PGMPrinter;
 
 public class GraphModel {
   protected GraphModelType      type;
-  protected Variable derp = new MyVariable(); // this works but the below doesn't?
-  protected ArrayList<Variable> variables = new ArrayList<MyVariable>();
-  protected ArrayList<Function> functions = new ArrayList<MyFunction>();
+  protected IVariable derp = new Variable(); // this works but the below doesn't?
+  protected ArrayList<IVariable> variables = new ArrayList<IVariable>();
+  protected ArrayList<IFunction> functions = new ArrayList<IFunction>();
   
   protected boolean validState;
   
@@ -32,6 +33,7 @@ public class GraphModel {
     
     return s.toString();
   }
+  
   
   public void print(PrintStream out) {
     out.print(this);
@@ -54,7 +56,7 @@ public class GraphModel {
     int numVariables = sc.nextInt();
     this.variables.ensureCapacity(numVariables);
     for (int i = 0; i < numVariables; i++) {
-      this.variables.add(new MyVariable(i, -1, sc.nextInt()));
+      this.variables.add(new Variable(i, -1, sc.nextInt()));
     }
     variables.trimToSize();
     
@@ -62,7 +64,7 @@ public class GraphModel {
     int numFunctions = sc.nextInt();
     this.functions.ensureCapacity(numFunctions);
     for (int i = 0; i < numFunctions; i++) {
-      Function f = new MyFunction();
+      IFunction f = new Function();
       int fScopeSize = sc.nextInt(); 
       f.getVariables().ensureCapacity(fScopeSize);
       for (int j = 0; j < fScopeSize; j++) {
@@ -74,7 +76,7 @@ public class GraphModel {
     this.functions.trimToSize();
     
     // Read function table values
-    for (Function f : this.functions) {
+    for (IFunction f : this.functions) {
       int fTableSize = sc.nextInt();
       f.getTable().ensureCapacity(fTableSize);
       for (int i = 0; i < fTableSize; i++) {
@@ -113,4 +115,11 @@ public class GraphModel {
     return s.toString();
   }
 
+
+  public ArrayList<HashSet<Variable>> moralizeGraph(){
+	  //TODO: fill out this function
+	  
+	return null;
+  }
+  
 }

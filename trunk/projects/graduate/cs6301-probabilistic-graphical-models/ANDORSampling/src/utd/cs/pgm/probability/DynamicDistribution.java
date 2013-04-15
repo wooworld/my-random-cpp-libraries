@@ -3,20 +3,20 @@ package utd.cs.pgm.probability;
 import java.util.ArrayList;
 import java.util.Random;
 
-import utd.cs.pgm.core.variable.Variable;
+import utd.cs.pgm.core.variable.IVariable;
 import utd.cs.pgm.util.LogDouble;
 
-public class DynamicDistribution implements ProbabilityDistribution {
-  ArrayList<Variable> variables = new ArrayList<Variable>();
+public class DynamicDistribution implements IProbabilityDistribution {
+  ArrayList<IVariable> variables = new ArrayList<IVariable>();
   ArrayList<ArrayList<LogDouble>> P = new ArrayList<ArrayList<LogDouble>>();
   ArrayList<ArrayList<LogDouble>> W = new ArrayList<ArrayList<LogDouble>>();
   Random rng = new Random(System.currentTimeMillis());  
   int sampleCounter = 0;
   int updateAfterSampleCount = 0;
   
-  public DynamicDistribution(ArrayList<Variable> variables, int updateAfterSamples) {      
+  public DynamicDistribution(ArrayList<IVariable> variables, int updateAfterSamples) {      
     // Create P and W tables
-    for (Variable v : variables) {
+    for (IVariable v : variables) {
       this.variables.add(v.copy());
       
       // Fill with uniform value for each variable's distribution
@@ -41,7 +41,7 @@ public class DynamicDistribution implements ProbabilityDistribution {
   }
   
   @Override
-  public ArrayList<Variable> generateSample() {
+  public ArrayList<IVariable> generateSample() {
     // Loop over all variables.
     // Roll a rand() in [0,1] for each variable in the distribution.
     // Then setEvidence on the appropriate value from its distribution.
@@ -78,7 +78,7 @@ public class DynamicDistribution implements ProbabilityDistribution {
   }
 
   @Override
-  public LogDouble probabilityOf(ArrayList<Variable> assignment) {
+  public LogDouble probabilityOf(ArrayList<IVariable> assignment) {
     if (this.P.size() != assignment.size()) {
       System.err.println("Mismatched assignment query.");
       return new LogDouble(0.0);
@@ -94,11 +94,11 @@ public class DynamicDistribution implements ProbabilityDistribution {
   }
   
   @Override
-  public String printSample(ArrayList<Variable> sample) {
+  public String printSample(ArrayList<IVariable> sample) {
     StringBuilder s = new StringBuilder();
     
     s.append("sample = \n");
-    for (Variable v : sample) {
+    for (IVariable v : sample) {
       s.append(v + "\n");
     }
     
@@ -110,7 +110,7 @@ public class DynamicDistribution implements ProbabilityDistribution {
     StringBuilder s = new StringBuilder();
     
     s.append("V = \n");
-    for (Variable v : this.variables) {
+    for (IVariable v : this.variables) {
       s.append(v + "\n");
     }
     s.append("P = \n");
