@@ -4,7 +4,9 @@ import utd.cs.pgm.ao.core.Node;
 import utd.cs.pgm.util.LogDouble;
 
 public class MyAOTree implements AOTree {
-  
+ 
+  Node root;
+	
   public MyAOTree() {
     
   }
