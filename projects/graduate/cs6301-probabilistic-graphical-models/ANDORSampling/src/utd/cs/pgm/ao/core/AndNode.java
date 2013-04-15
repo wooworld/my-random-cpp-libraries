@@ -2,7 +2,7 @@ package utd.cs.pgm.ao.core;
 
 import utd.cs.pgm.util.LogDouble;
 
-public class AndNode extends MyNode {
+public class AndNode extends Node {
 	LogDouble value;
 	
 	public AndNode() {

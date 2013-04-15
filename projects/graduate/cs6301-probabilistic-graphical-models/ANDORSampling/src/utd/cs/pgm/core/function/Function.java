@@ -2,20 +2,48 @@ package utd.cs.pgm.core.function;
 
 import java.util.ArrayList;
 
-import utd.cs.pgm.core.variable.Variable;
+import utd.cs.pgm.core.variable.*;
 import utd.cs.pgm.util.LogDouble;
 
-public interface Function {  
-  public ArrayList<Variable> getVariables();
-  public void setVariables(ArrayList<Variable> vars);
+public class Function implements IFunction {
+  ArrayList<IVariable> variables = new ArrayList<IVariable>();
+  ArrayList<LogDouble> table = new ArrayList<LogDouble>();
   
-  public ArrayList<LogDouble> getTable();
-  public void setTable(ArrayList<LogDouble> table);
+  public Function() {}
   
-  public LogDouble rowToValue(ArrayList<Integer> row);
-  public int rowToIndex(ArrayList<Integer> row);
-	
-  public ArrayList<Integer> indexToRow(int index);	
-	
-  public String toString();
+  @Override
+  public LogDouble rowToValue(ArrayList<Integer> row) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public int rowToIndex(ArrayList<Integer> row) {
+    // TODO Auto-generated method stub
+    return 0;
+  }
+
+  @Override
+  public ArrayList<Integer> indexToRow(int index) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public ArrayList<IVariable> getVariables() {
+    return this.variables;
+  }
+  
+  public void setVariables(ArrayList<IVariable> vars) {
+    this.variables = vars;
+  }
+  
+  public ArrayList<LogDouble> getTable() {
+    return this.table;
+  }
+  
+  public void setTable(ArrayList<LogDouble> table) {
+    this.table = table;
+  }
+
 }
