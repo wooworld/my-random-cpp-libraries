@@ -1,6 +1,9 @@
 #ifndef DODRIO_H
 #define DODRIO_H
 
+//Check wether it is safe to cross in a given direction
+int getCanCross(int dir);
+
 // Initialize the servos, camera, and LCD
 void initRobit();
 
@@ -20,6 +23,6 @@ void stopMovement();
 void captureImage();
 
 // Decipher image and output identified shape(s) onto the LCD.
-void decipherImage();
+void decipherImage(int direction);
 
 #endif

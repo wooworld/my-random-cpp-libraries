@@ -12,9 +12,9 @@
 #include "cqueue.h"
 
 Task * tasks[FRAMES][MAX_TASKS_PER_FRAME] =
-{   /* Frame 1*/ {&lookLeftTask, &captureImgLeftTask, &lookLeftCenterTask, &captureImgLeftCenterTask, &lookCenterTask, 0, 0, 0, 0, 0},
-    /* Frame 2*/ {&captureImgCenterTask, &lookRightCenterTask, &captureImgRightCenterTask, &lookRightTask, &captureImgRightTask, &decipherImgLeftTask, &decipherImgLeftCenterTask, &decipherImgCenterTask, 0, 0},
-    /* Frame 3*/ {&decipherImgRightCenterTask, &decipherImgRightTask, &realignCenterTask, &initiateCrossingTask, 0, 0, 0, 0, 0, 0},
+{   /* Frame 1*/ {&lookLeftTask, &captureImgLeftTask, &lookLeftCenterTask, &captureImgLeftCenterTask, 0, 0, 0, 0, 0, 0},
+    /* Frame 2*/ {&lookCenterTask, &captureImgCenterTask, &lookRightCenterTask, &captureImgRightCenterTask, &lookRightTask, 0, 0, 0, 0, 0},
+    /* Frame 3*/ {&captureImgRightTask,&realignCenterTask,&initiateCrossingTask, 0, 0, 0, 0, 0, 0, 0},
     /* Frame 4*/ {0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
 };
 
@@ -24,8 +24,8 @@ void scheduler()
     int k = 0;          /* current frame */
     int taskIdx = 0;    /* keeps track what task we're on */
     int idle = 1;       /* keeps track if we executed a task or not */
-    
-    while(1)
+    int continueLoop=1;
+    while(continueLoop)
     {
         idle = 1;
         //sleep(1); // FOR DEBUG ONLY!
@@ -84,6 +84,7 @@ void scheduler()
             /* execute SPORADIC tasks */
             if(!isEmpty(sporadicQ)) 
             {
+			 continueLoop=0;                
                 int remainingTime = FRAME_SIZE - (t%FRAME_SIZE);
                 
                 /* This is the major difference between the sporadic and aperiodic
