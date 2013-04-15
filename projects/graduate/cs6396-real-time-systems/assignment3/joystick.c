@@ -1,4 +1,5 @@
 #include <pob-eye.h>
+
 #include "joystick.h"
 
 // Initialize the proto to have some properties which allow use and navigation by joystick

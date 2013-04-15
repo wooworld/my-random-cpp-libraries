@@ -5,6 +5,13 @@
 #include "pattern.h"
 #include "bitmap.h"
 
+//Constant for movement loops
+#define LOOP_ROTATE 330000
+#define LOOP_FORWARD 330000
+
+/*Struct to hold all images*/
+int canCross[]={0,0,0,0,0};
+
 UInt8 numFormsThisFrame = 0;
 UInt8 formsThisFrameIdx = 0;
 Form  formsListThisFrame[MAX_OF_FORM];
@@ -16,51 +23,55 @@ UInt8 * cameraFrame;
 UInt8 LCD_Buffer[LCD_WIDTH*LCD_HEIGHT*BITS];
 GraphicBuffer screenBuffer;
 
+int getCanCross(int i) {
+  return canCross[i];
+}
+
 void initCameraAndLCD();
 
-void initRobit()
-{
+void initRobit() {
   //Initialize POB-EYE (lib), POB-LCD (lib), POB-PROTO(file Functions.c) and Servomotors
   InitPobeye2();
   InitI2C(I2C_100_KHZ);
   InitCameraPobeye2();
   InitLCD();      
-  SwitchOnAllServo();  
-  initCameraAndLCD();
+  SetupJoystick();
+  SwitchOnAllServo();
+  initCameraAndLCD();  
 }
 
 // I don't know how many degrees left this rotates
-void rotateLeft() 
-{
+void rotateLeft(int deg) {
   MoveBot(LEFT); 
+  WaitUs(deg/10*LOOP_ROTATE);
+  stopMovement();
 }
 
 // I don't know how many degrees right this rotates
-void rotateRight()
-{
+void rotateRight(int deg) {
   MoveBot(RIGHT);
+  WaitUs(deg/10*LOOP_ROTATE);
+  stopMovement();
 }
 
 // I don't know how far forward this moves the robot
-void moveForward()
-{
+void moveForward(int dist) {
   MoveBot(FORWARD);
+  WaitUs(dist*LOOP_FORWARD);
+  stopMovement();
 }
 
-// I don'tk now how far backward this moves the robot
-void moveBackward()
-{
+// I don't know how far backward this moves the robot
+void moveBackward() {
   MoveBot(BACK);
 }
 
 // Each of the above rotate/move functions stays ON until stopMovement() is called
-void stopMovement()
-{
+void stopMovement() {
   MoveBot(STOP);
 }
 
-void initCameraAndLCD()
-{
+void initCameraAndLCD() {
   // Get the pointer of the red,green and blue video buffer
   cameraFrame = GetRGBFrame();
   
@@ -70,17 +81,15 @@ void initCameraAndLCD()
   ClearGraphicBuffer(&screenBuffer);
 }
 
-void captureImage()
-{
+void captureImage() {
   // grab the RGB components from the camera
   GrabRGBFrame();        
 }
 
-void decipherImage() 
-{
+void decipherImage(int direction) {
   // Convert RGB camera frame to binary
   BinaryRGBFrame(cameraFrame); 
-  
+  WaitUs(3000000);
   // Try to identify the forms and make a list of it.
   // CAN IDENTIFY MULTIPLE FORMS IN THE SAME IMAGE.
   // pattern defined in pattern.h
@@ -90,6 +99,7 @@ void decipherImage()
   if (numFormsThisFrame == 0) {
     DrawBitmap(0, 0, IDB_NOFORMS, bitmap, &screenBuffer);
     DrawLCD(&screenBuffer);
+    canCross[direction]=-1;
   }
   
   // Parse the list of the form and print result on the Pob-Terminal and the LCD Screen
@@ -101,18 +111,26 @@ void decipherImage()
       case IDP_0_CROSS:
         DrawBitmap(0, 0, IDB_CROSS, bitmap, &screenBuffer);
         DrawLCD(&screenBuffer);
+        //this is a track
+        canCross[direction]=IDP_0_CROSS;
         break;          
       case IDP_1_BIGA:
         DrawBitmap(0, 0, IDB_BIGA, bitmap, &screenBuffer);
         DrawLCD(&screenBuffer);
+        //Robot
+        canCross[direction]=IDP_5_TRIANGLE;
         break;
       case IDP_2_KING:
         DrawBitmap(0, 0, IDB_KING, bitmap, &screenBuffer);
         DrawLCD(&screenBuffer);
+        //this is a train
+        canCross[direction]=IDP_2_KING;
         break;
       case IDP_3_TOWER:
         DrawBitmap(0, 0, IDB_TOWER, bitmap, &screenBuffer);
         DrawLCD(&screenBuffer);
+        //this is a track
+        canCross[direction]=IDP_0_CROSS;
         break;        
       case IDP_4_TREFLE:
         DrawBitmap(0, 0, IDB_BIGA, bitmap, &screenBuffer);
@@ -121,9 +139,12 @@ void decipherImage()
       case IDP_5_TRIANGLE:
         DrawBitmap(0, 0, IDB_TRIANGLE, bitmap, &screenBuffer);
         DrawLCD(&screenBuffer);
+        //Robot
+        canCross[direction]=IDP_5_TRIANGLE;
         break;
       default:
+        canCross[direction]=-1;
         break;
     }        
-  }   
+  }
 }

@@ -1,16 +1,17 @@
 #include "dodrio.h"
 #include "scheduler.h"
 
+#include <pob-eye.h>
+
 int  main(void) {  
   //Initialize the robit
-  initRobit();
+  initRobit();  
   
-  // Make some aperiodic tasks
+  // Approach the track
   approachTrack(); 
-	
-  while (1) {
-    scheduler();
-  }
+
+  // Run the schedule 
+  scheduler();
  
   return 0;  
 }
