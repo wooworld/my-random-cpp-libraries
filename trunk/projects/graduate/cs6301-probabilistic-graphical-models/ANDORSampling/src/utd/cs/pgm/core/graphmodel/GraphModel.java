@@ -116,10 +116,26 @@ public class GraphModel {
   }
 
 
-  public ArrayList<HashSet<Variable>> moralizeGraph(){
+  public ArrayList<HashSet<IVariable>> moralizeGraph(){
 	  //TODO: fill out this function
 	  
-	return null;
+	  ArrayList<HashSet<IVariable>> structure = new ArrayList<HashSet<IVariable>>();
+	  for(IVariable v : variables)
+	  {
+		  structure.add(new HashSet<IVariable>());
+	  }
+	  
+	  for(IFunction f : functions)
+	  {
+		  for(IVariable v : f.getVariables())
+		  {
+			  for(IVariable v2: f.getVariables())
+			  {
+				 structure.get(v.getId()).add(v2);
+			  }
+		  }
+	  }
+	return structure;
   }
   
 }

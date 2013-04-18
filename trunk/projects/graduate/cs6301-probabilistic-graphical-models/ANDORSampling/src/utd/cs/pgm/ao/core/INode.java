@@ -11,6 +11,7 @@ public interface INode {
 	
 	public ArrayList<INode> getChildren();
 	public void setChildren(ArrayList<INode> c);
+	public void addChild(INode n);
 	
 	public IVariable getVariable();	
 	public void setVariable(IVariable v);

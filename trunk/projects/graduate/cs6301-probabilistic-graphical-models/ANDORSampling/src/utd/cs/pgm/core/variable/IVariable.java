@@ -14,4 +14,5 @@ public interface IVariable {
 	
 	public String toString();
 	public int compareTo(IVariable v2);
+	public boolean isEvid();
 }
