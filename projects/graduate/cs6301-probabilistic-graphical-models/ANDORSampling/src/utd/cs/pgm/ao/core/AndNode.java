@@ -6,10 +6,12 @@ public class AndNode extends Node {
 	LogDouble value;
 	
 	public AndNode() {
+		super(null,null);
 	  this.value = new LogDouble(0.0);
 	}
 	
 	public AndNode(LogDouble v) {
+		super(null,null);
 	  this.value = v.copy();
 	}
 	

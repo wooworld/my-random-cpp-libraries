@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import utd.cs.pgm.ao.core.INode;
 import utd.cs.pgm.core.graphmodel.GraphModel;
-import utd.cs.pgm.core.variable.Variable;
+import utd.cs.pgm.core.variable.IVariable;
 import utd.cs.pgm.util.LogDouble;
 
 public class AOTree implements IAOTree {
  
   INode root;
 	
-  public AOTree(GraphModel gm, ArrayList<Variable> ordering){
+  public AOTree(GraphModel gm, ArrayList<IVariable> ordering){
 	  
   }
   

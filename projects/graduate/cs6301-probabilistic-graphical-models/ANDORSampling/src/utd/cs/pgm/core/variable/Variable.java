@@ -68,4 +68,10 @@ public class Variable implements IVariable {
 		//else they're equal
 		return 0;
 	}
+
+	@Override
+	public boolean isEvid() {
+		// TODO Auto-generated method stub
+		return (this.getEvid()!=-1);
+	}
 }

@@ -10,6 +10,14 @@ public class Node implements INode {
 	ArrayList<INode> children;
 	INode parent;
 	
+	
+	public Node(INode p, IVariable v)
+	{
+		this.setParent(p);
+		children = new ArrayList<INode>();
+		this.setVariable(v);
+	}
+	
 	@Override
 	public INode getParent() {
 		return this.parent;
@@ -63,5 +71,11 @@ public class Node implements INode {
 	public LogDouble computeValue() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void addChild(INode n) {
+		// TODO Auto-generated method stub
+		this.children.add(n);
 	}
 }
