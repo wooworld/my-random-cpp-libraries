@@ -46,4 +46,16 @@ public class Function implements IFunction {
     this.table = table;
   }
 
+@Override
+public int getIndexFromEvidence() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+@Override
+public ArrayList<IVariable> getEvidenceFromIndex(int idx) {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 }

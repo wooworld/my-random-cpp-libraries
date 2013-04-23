@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import utd.cs.pgm.util.LogDouble;
 
 public class OrNode extends AndNode {
-	ArrayList<LogDouble> arcLabels;
+	ArrayList<LogDouble> weights;
 	
 	public OrNode() {
 	  super();
-    this.arcLabels = new ArrayList<LogDouble>();
+    this.weights = new ArrayList<LogDouble>();
   }
 
 	@Override
@@ -17,7 +17,10 @@ public class OrNode extends AndNode {
 		return value;
 		
 	}
-	
+	public void addWeight(LogDouble weight)
+	{
+		weights.add(weight);
+	}
 	@Override
 	public String toString() {
 	  
@@ -25,11 +28,11 @@ public class OrNode extends AndNode {
 	  StringBuilder s = new StringBuilder();
 	  
 	  s.append("O: " + this.value.toRealString() + "\n");
-	  for (LogDouble d : this.arcLabels) {
+	  for (LogDouble d : this.weights) {
       s.append(d.toRealString() + " ");
     }
 	  
-	  for (LogDouble d : this.arcLabels) {
+	  for (LogDouble d : this.weights) {
 	    s.append(d.toRealString() + " ");
 	  }
 	  
