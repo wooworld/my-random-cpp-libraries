@@ -120,7 +120,7 @@ public class GraphModel {
 	  //TODO: fill out this function
 	  
 	  ArrayList<HashSet<IVariable>> structure = new ArrayList<HashSet<IVariable>>();
-	  for(IVariable v : variables)
+	  for(int i = 0; i < variables.size(); i++)
 	  {
 		  structure.add(new HashSet<IVariable>());
 	  }
@@ -138,4 +138,10 @@ public class GraphModel {
 	return structure;
   }
   
+  public ArrayList<IFunction> getFunctions(){
+	  return this.functions;
+  }
+  public ArrayList<IVariable> getVariables(){
+	  return this.variables;
+  }
 }

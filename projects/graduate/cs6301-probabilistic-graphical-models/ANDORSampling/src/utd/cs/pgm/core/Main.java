@@ -6,7 +6,6 @@ import utd.cs.pgm.ao.core.tree.AOTree;
 import utd.cs.pgm.ao.core.tree.PseudoTree;
 import utd.cs.pgm.core.graphmodel.*;
 import utd.cs.pgm.core.variable.IVariable;
-import utd.cs.pgm.core.variable.Variable;
 import utd.cs.pgm.util.LogDouble;
 
 public class Main {
@@ -20,11 +19,14 @@ public class Main {
     // pseudotree t = gm.generatepseudotree()
     PseudoTree t = new PseudoTree(markovStruct);
     // arraylist<variable> ordering = gm.getorderingfor(t)
-    ArrayList<IVariable> ordering = t.getOrdering(); //DFS of PseudoTree
+    //ArrayList<IVariable> ordering = t.getOrdering(); //DFS of PseudoTree
+    
     // aotree aot = createaotreefromgraphandordering(gm, ordering)
-    AOTree aot = new AOTree(gm, ordering);
+    AOTree aot = new AOTree(gm, t);
+    
     // logdouble v = aot.computePE()
     LogDouble v = aot.computePE();
+    
     // system.out.println(vlaue = v)
     System.out.println("Value: " + v);
   }

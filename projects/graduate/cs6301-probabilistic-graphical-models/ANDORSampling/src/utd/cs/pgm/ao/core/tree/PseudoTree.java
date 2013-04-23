@@ -11,7 +11,7 @@ public class PseudoTree implements IPseudoTree {
 
 	INode root;
 	
-	public void buildTree(ArrayList<HashSet<IVariable>> structure, 
+	protected void buildTree(ArrayList<HashSet<IVariable>> structure, 
 			INode curNode, 
 			HashSet<IVariable> inTree){
 		if(curNode.getParent() == null){
@@ -26,7 +26,7 @@ public class PseudoTree implements IPseudoTree {
 		}
 		
 		for(IVariable v : structure.get(curNode.getVariable().getId())){
-			if(!inTree.contains(v) && !v.isEvid()){
+			if(!inTree.contains(v)){
 				inTree.add(v);
 				INode newNode = new Node(curNode, v);
 				curNode.addChild(newNode);
@@ -36,11 +36,23 @@ public class PseudoTree implements IPseudoTree {
 		
 	}
 	
+	protected void removeEvidenceFromTree(INode n){
+		for(INode c : n.getChildren()){
+			if(c.getVariable().isEvid()){
+				for(INode orphan : c.getChildren()){
+					orphan.setParent(n);
+					n.addChild(orphan);
+				}
+			}
+		}
+	}
+	
 	public PseudoTree(ArrayList<HashSet<IVariable>> structure){
 		//DFS using the structure
 		root = new Node(null, null);
 		HashSet<IVariable> inTree = new HashSet<IVariable>();
 		buildTree(structure,root,inTree);
+		removeEvidenceFromTree(root);
 	}
 	
   @Override

@@ -18,4 +18,7 @@ public interface IFunction {
   public ArrayList<Integer> indexToRow(int index);	
 	
   public String toString();
+  
+  public int getIndexFromEvidence();
+  public ArrayList<IVariable> getEvidenceFromIndex(int idx);
 }
