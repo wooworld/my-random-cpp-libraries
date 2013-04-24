@@ -46,16 +46,42 @@ public class Function implements IFunction {
     this.table = table;
   }
 
-@Override
-public int getIndexFromEvidence() {
-	// TODO Auto-generated method stub
-	return 0;
-}
+  //By looking at the evidence in this function it can return
+  //the index of the tuple specified by that evidence.
+  @Override
+  public int getIndexFromEvidence() {
+    // TODO Auto-generated method stub
+	
+	int domain = 1;
+	int sum = 0;
+	for(int i = this.variables.size()-1; i >= 0; i--)
+	{
+		sum += this.variables.get(i).getEvid() * domain;
+		domain *= this.variables.get(i).getDomainSize();
+	}
+	
+	return sum;
+  }
 
-@Override
-public ArrayList<IVariable> getEvidenceFromIndex(int idx) {
-	// TODO Auto-generated method stub
-	return null;
-}
+  //this sets the evidence (always returns null) for a given
+  //index. (maybe change this to setEvidenceFromIndex?)
+  @Override
+  public ArrayList<IVariable> getEvidenceFromIndex(int idx) {
+	  // TODO Auto-generated method stub
+	int vars = this.variables.size();
+	
+	int domain = 1;
+	for(int i = 0; i < vars; i++)
+	  domain *= this.variables.get(i).getDomainSize();
 
+	for(int i = 0; i < vars; i++)
+	{
+		domain /= this.variables.get(i).getDomainSize();//f->variables[i]->d;
+		//value1.first = f->variables[i]->id;
+		//value1.second = idx/domain;
+		this.variables.get(i).setEvid(idx/domain);
+		idx -= this.variables.get(i).getEvid() * domain;
+	}
+	  return null;
+  }
 }
