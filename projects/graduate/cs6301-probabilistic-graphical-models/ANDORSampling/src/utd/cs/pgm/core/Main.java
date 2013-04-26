@@ -1,6 +1,7 @@
 package utd.cs.pgm.core;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Stack;
 
 import utd.cs.pgm.ao.core.tree.AOTree;
 import utd.cs.pgm.ao.core.tree.PseudoTree;
@@ -11,7 +12,7 @@ import utd.cs.pgm.util.LogDouble;
 public class Main {
   public static void main(String[] args) {
     // create graphical model, passing it args[]
-    GraphModel gm = new GraphModel();
+    /*GraphModel gm = new GraphModel();
     // it reads the uai and evid files for us, if specified in args[]
     ArrayList<HashSet<IVariable>> markovStruct = gm.moralizeGraph();
     // if the gm is bayes, convert it to markov
@@ -28,6 +29,18 @@ public class Main {
     LogDouble v = aot.computePE();
     
     // system.out.println(vlaue = v)
-    System.out.println("Value: " + v);
+    System.out.println("Value: " + v);*/
+	
+	Stack<Integer> s = new Stack<Integer>();
+	ArrayList<Integer> a = new ArrayList<Integer>();
+	
+	for (int i = 0; i < 20; i++) {
+		s.push(i);
+	}
+	
+	a.addAll(s);
+	
+	System.out.println(s);
+	System.out.println(a);	
   }
 }
