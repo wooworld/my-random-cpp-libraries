@@ -1,5 +1,7 @@
 package utd.cs.pgm.core.variable;
 
+import java.util.Collection;
+
 public class Variable implements IVariable {
   protected int id;
   protected int value;
@@ -73,5 +75,14 @@ public class Variable implements IVariable {
 	public boolean isEvid() {
 		// TODO Auto-generated method stub
 		return (this.getEvid()!=-1);
+	}
+	
+	public static long productDomainSize(Collection<IVariable> vars) {
+		long r = 1;
+		for (IVariable v : vars) {
+			r *= v.getDomainSize();
+		}		
+		return r;
+		
 	}
 }
