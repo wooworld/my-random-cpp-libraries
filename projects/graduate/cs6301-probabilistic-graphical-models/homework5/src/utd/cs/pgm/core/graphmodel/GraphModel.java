@@ -45,6 +45,14 @@ public class GraphModel {
     out.print(this);
   }
     
+  public GraphModelType getType() {
+    return this.type;
+  }
+  
+  public void setType(GraphModelType type) {
+    this.type = type;
+  }
+  
   public void readUAI(String path) throws IOException {
     //System.out.println("Reading " + path);
     
@@ -156,7 +164,7 @@ public class GraphModel {
       // output function table size
       s.append(f.table.size() + "\n");
       
-      int rowSize = f.variables.get(f.variables.size()-1).getDomainSize();     
+      //int rowSize = f.variables.get(f.variables.size()-1).getDomainSize();     
       
       // output table
       /*for (int i = 0; i < f.table.size();) {
@@ -168,10 +176,23 @@ public class GraphModel {
         s.append("\n");
         
       }*/
-      for (LogDouble d : f.table) {
+      /*for (LogDouble d : f.table) {
         s.append(String.format("%.6f ", d.getRealValue()) + " ");
       }
-      s.append("\n\n");
+      s.append("\n\n");*/
+      
+      // Normalize
+      int setSize = this.variables.get(this.variables.size()-1).getDomainSize();
+      int fTableSize = f.table.size();
+      for (int i = 0; i < fTableSize; i+=setSize) {
+        s.append(" ");
+        int setEndIdx = i + setSize;
+        for (int j = i; j < setEndIdx; j++) {
+          s.append(f.table.get(j).toRealString() + " ");
+        }
+        s.append("\n");  
+      }
+      s.append("\n");
     }    
     
     BufferedWriter bw = new BufferedWriter(new FileWriter(path), s.length());    
@@ -337,16 +358,38 @@ public class GraphModel {
     return this.variables;
   }
   
-  public void setEvidence(ArrayList<Variable> evidence) {
-    for (Variable e : evidence) {
+  public void setAssignment(ArrayList<Variable> assignment) {
+    for (Variable e : assignment) {
       if (e.getId() >= this.variables.size()) {
         continue;
       }
-      this.variables.get(e.getId()).setEvidence(e.getValue());
+      this.variables.get(e.getId()).setValue(e.getValue());
     }
   }
   
   public ArrayList<Function> getFunctions() {
     return this.functions;
+  }
+
+  // TODO test me!
+  public LogDouble computeProbabilityOfFullAssignment(
+      ArrayList<Variable> example) {
+    LogDouble p = new LogDouble(1.0);
+    
+    // Loop over each function and project the full assignment onto the function
+    // and multiply the value into p
+    for (Function f : this.functions) {
+      // Store in t a subset of example which is the context of f
+      ArrayList<Variable> t = new ArrayList<Variable>();
+      for (Variable v : f.variables) {
+        t.add(example.get(v.getId()));
+      }
+      
+      int idx = Variable.getAddress(t);
+      
+      p = p.mul(f.table.get(idx));
+    }
+    
+    return p;
   }
 }

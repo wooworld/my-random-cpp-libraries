@@ -91,44 +91,44 @@ public class LogDouble implements Comparable<LogDouble>{
   }
   
   // Use this when you would subtract two numbers in real space
-  public LogDouble sub(LogDouble rhs) {
+  public LogDouble sub(LogDouble rhs) throws IllegalArgumentException {
     if (this.isZero && rhs.isZero) {
       return LogDouble.LS_ZERO;
+    } else if (this.isZero || (this.value < rhs.value)) {
+      return new LogDouble(0.0);
+      //throw new IllegalArgumentException("LogDouble: 0.sub(positive value) is invalid operation.");
+    } else if (rhs.isZero) {
+      return this.copy();
+    } else {
+      //double a = Math.max(this.value, rhs.value);
+      //double b = Math.min(this.value, rhs.value);
+      double a = this.value;
+      double b = rhs.value;
+      //System.out.println(Math.pow(10, b-a));
+      double c = a + Math.log10(1.0 - Math.pow(10, b-a));
+      //System.out.println(c);
+      return new LogDouble(c, true);
+    }
+    /*if (this.isZero && rhs.isZero) {
+      return LogDouble.LS_ZERO;
     } else if (this.isZero) {
-      return rhs.copy().mul(new LogDouble(-1.0, true));
+      throw new IllegalArgumentException("LogDouble: 0.sub(positive value) is invalid operation.");
     } else if (rhs.isZero) {
       return this.copy();
     } else {
       double a = Math.max(this.value, rhs.value);
       double b = Math.min(this.value, rhs.value);
       //System.out.println(Math.pow(10, b-a));
-      double c = a + Math.log10(1.0 - Math.pow(10, b-a));
+      double c = a + Math.log10(1.0 + Math.pow(10, (-b)-a));
       //System.out.println(c);
       return new LogDouble(c, true);
-    }
+    }*/
   }
   
   // Use this when you want the absolute difference between two numbers in
   // real space
   public LogDouble absDif(LogDouble rhs) {
-    if (this.isZero && rhs.isZero) {
-      return LogDouble.LS_ZERO;
-    } else if (this.isZero) {
-      return rhs.copy();
-    } else if (rhs.isZero) {
-      return this.copy();
-    } else {
-      if (this.compareTo(rhs) == -1) {
-        return rhs.absDif(this);
-      }      
-      
-      double a = Math.max(this.value, rhs.value);
-      double b = Math.min(this.value, rhs.value);
-      //System.out.println(Math.pow(10, b-a));
-      double c = a + Math.log10(1.0 - Math.pow(10, b-a));
-      //System.out.println(c);
-      return new LogDouble(c, true);
-    }
+    return (this.value > rhs.value) ? this.sub(rhs) : rhs.sub(this);
   }
   
   // Returns a LogDouble with the stored value as v transformed to log_base

@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import utd.cs.pgm.core.function.Function;
 import utd.cs.pgm.core.graphmodel.GraphModel;
+import utd.cs.pgm.core.graphmodel.GraphModelType;
 import utd.cs.pgm.core.variable.Variable;
 import utd.cs.pgm.util.LogDouble;
 
@@ -37,22 +38,25 @@ public class BN_MLE_FOD implements IModelLearner {
 
       // Read training data examples, one example at a time.
       for (int i = 0; i < numExamples; i++) {
-        StringBuilder example = new StringBuilder(numVariables);
+        ArrayList<Integer> example = new ArrayList<Integer>();
         
         for (int j = 0; j < numVariables; j++) {
-          example.append(Integer.valueOf(sc.nextInt()));
+          example.add(sc.nextInt());
         }
         
         //System.out.println("example = " + example);
         
-        this.examples.add(example.toString());
+        this.examples.add(example);
       }
       
-      System.out.println(this.examples);
+      //System.out.println(this.examples);
       
       // All finished with the examples
       sc.close();
       fr.close();
+      
+      // Set the structure as type BAYES
+      this.learnedModel.setType(GraphModelType.BAYES);
       
       // Now start filling in the learned model.
       // First copy the variables from the true model
@@ -78,7 +82,8 @@ public class BN_MLE_FOD implements IModelLearner {
         for (int i = 0; i < gTableSize; i++) {
           Variable.setAddress(g.variables, i);         
 
-          LogDouble value = getMLEEstimate(g.variables, gTableSize);
+          // Operates on the stored samples
+          LogDouble value = getMLEEstimate(g.variables);
           
           // Store the ratio now
           g.table.add(value);
@@ -87,7 +92,7 @@ public class BN_MLE_FOD implements IModelLearner {
         //g.table.trimToSize();
         
         // Since this is a CPT it must be normalized.
-        g = g.normalize();
+        g = g.normalize(); // FIX THIS.
         
         learnedModel.getFunctions().add(g);
       }
@@ -99,29 +104,26 @@ public class BN_MLE_FOD implements IModelLearner {
     return learnedModel;
   }
 
-  protected LogDouble getMLEEstimate(ArrayList<Variable> v, long vJointSize) {
+  protected LogDouble getMLEEstimate(ArrayList<Variable> t) {
+    if (t.isEmpty()) {
+      return new LogDouble(0.0);
+    }
+    
+    // t is a full variable assignment. Say P(B|A) is the tuple then it's 
+    // stored as F(AB). Compute as P(A,B) / P(A) from the counts table. 
+    
+    // MLE estimate for t is always at least the uniform value for its tuple.
+    // Same as laplace correction. 
+    int numer = 1;
+    int denom = t.get(t.size()-1).getDomainSize();
+    
     // Get number of examples matching g's ith tuple.
-    int numer = this.examples.getCountOf(v);
+    numer += this.examples.getCountOf(t);
 
     // Get number of examples amtching g's parents' ith tuple.
-    int denom = this.examples.getCountOfDiscludeChild(v);
+    denom += this.examples.getCountOfDiscludeChild(t);
     
-    // numer <= denom always. This is because numer is more specific than denom.    
-    
-    // Handle case where tuple isn't seen ever
-    //if (denom == 0) {
-    if (denom == 0 || numer == 0) {
-      return new LogDouble(1.0d / vJointSize);
-    }
-    
-    // Laplace correction!
-    return new LogDouble( (double)(numer + 1) / (double)(denom + 1));
-    /*if (denom == 0) {
-      //return new LogDouble(0.0);
-      return new LogDouble(1.0d / vJointSize);
-    }
-    
-    return new LogDouble((double)numer / (double)denom);*/
+    return new LogDouble((double)numer / (double)denom);
   }
   
   @Override
@@ -158,22 +160,29 @@ public class BN_MLE_FOD implements IModelLearner {
       for (int i = 0; i < numExamples; i++) {
         // Read the example
         for (int j = 0; j < numVariables; j++) {
+          //example.get(j).setEvidence(sc.nextInt());
           example.get(j).setEvidence(sc.nextInt());
         }
         
-        System.out.println(Variable.variableCollectionString(example));
+        //System.out.println(Variable.variableCollectionString(example));
         
-        // Calculate probability of this example from each mode. Then calcluate
+        // Calculate probability of this example from each mode. Then calculate
         // the difference in those and accumulate it into totalDifference.
-        this.learnedModel.setEvidence(example);
-        this.trueModel.setEvidence(example);
+        /*this.learnedModel.setAssignment(example);
+        this.trueModel.setAssignment(example);*/       
         
-        learnedModelLikelihood = learnedModel.computeZorP();
-        trueModelLikelihood = trueModel.computeZorP();
+        learnedModelLikelihood = learnedModel.computeProbabilityOfFullAssignment(example);
+        trueModelLikelihood = trueModel.computeProbabilityOfFullAssignment(example);
         
         LogDouble diff = trueModelLikelihood.absDif(learnedModelLikelihood);
         
+        /*System.out.println("learnedModelLikelihood = " + learnedModelLikelihood.toRealString());
+        System.out.println("trueModelLikelihood = " + trueModelLikelihood.toRealString());
+        System.out.println("l.absDif(t) = " + learnedModelLikelihood.absDif(trueModelLikelihood).toRealString());
+        System.out.println("t.absDif(l) = " + trueModelLikelihood.absDif(learnedModelLikelihood).toRealString());
+        */
         totalDifference = totalDifference.add(diff);
+        //System.out.println("totalDifference =" + totalDifference.toRealString());
       }     
       
       // All finished with the examples

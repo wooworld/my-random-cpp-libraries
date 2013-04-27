@@ -4,16 +4,15 @@ import java.util.ArrayList;
 
 import utd.cs.pgm.core.variable.Variable;
 
-public class ExampleArrayList extends ArrayList<String> {
-  private static final long serialVersionUID = -860487977572053755L;
-  //public boolean useLaplaceCorrection = false;
-  
+public class ExampleArrayList extends ArrayList<ArrayList<Integer>> {  
   @Override 
   public String toString() {
     StringBuilder s = new StringBuilder();
-    //s.append("laplace correction: " + this.useLaplaceCorrection + "\n");
-    for (String e : this) {      
-      s.append(e + "\n");
+    for (ArrayList<Integer> e : this) {
+      for (Integer i : e) {
+        s.append(i + " ");
+      }
+      s.append("\n");
     }
     return s.toString();
   }
@@ -25,7 +24,7 @@ public class ExampleArrayList extends ArrayList<String> {
     
     int count = 0;
     
-    for (String e : this) {
+    for (ArrayList<Integer> e : this) {
       if (matches(t, e)) {
         ++count;
       }
@@ -39,18 +38,17 @@ public class ExampleArrayList extends ArrayList<String> {
       return 0;
     }
     
-    ArrayList<Variable> vars = new ArrayList<Variable>(t);
-    vars.remove(vars.size()-1);
+    ArrayList<Variable> t2 = new ArrayList<Variable>(t);
+    t2.remove(t2.size()-1);
     
-    return this.getCountOf(vars);
+    return getCountOf(t2);
   }
   
-  protected boolean matches(ArrayList<Variable> t, String s) {
+  protected boolean matches(ArrayList<Variable> t, ArrayList<Integer> s) {
     for (Variable v : t) {
       // Check tuple s (stored as a series of 10101011100011 etc) at index of
       // v's ID to see if the value stored at v's index matches v's value.
-      String a = s.substring(v.getId(), v.getId() + 1);
-      if (Integer.valueOf(a) != v.getValue()) {
+      if (s.get(v.getId()) != v.getValue()) {
         return false;
       }
     }    
