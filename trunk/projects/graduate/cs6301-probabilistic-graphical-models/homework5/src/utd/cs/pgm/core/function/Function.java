@@ -180,21 +180,29 @@ public class Function {
       return this;
     }
     
-    LogDouble divisor = new LogDouble(0.0);      
-    for (LogDouble d : this.table) {
-      divisor = divisor.add(d);
-    }
-
+    // Create result function
     Function r = new Function();
-    //r.variables.addAll(this.variables);
+    
+    // Copy scope over
     for (Variable v : this.variables) {
       r.variables.add(v.copy());
     }
     r.variables.trimToSize();
     
-    for (LogDouble v : this.table) {
-      r.table.add(v.div(divisor));
-    }    
+    // Normalize
+    int setSize = this.variables.get(this.variables.size()-1).getDomainSize();
+    
+    for (int i = 0; i < this.table.size(); i+=setSize) {
+      LogDouble divisor = new LogDouble(0.0);
+      for (int j = i; j < i+setSize; j++) {
+        divisor = divisor.add(this.table.get(j));
+      }
+      
+      for (int j = i; j < i+setSize; j++) {
+        r.table.add(this.table.get(j).div(divisor));
+      }      
+    }
+    
     r.table.trimToSize();
     
     return r;
