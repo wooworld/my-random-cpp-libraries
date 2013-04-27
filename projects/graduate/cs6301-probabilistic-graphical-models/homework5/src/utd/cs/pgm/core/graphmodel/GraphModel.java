@@ -156,17 +156,22 @@ public class GraphModel {
       // output function table size
       s.append(f.table.size() + "\n");
       
-      int j = 0;
+      int rowSize = f.variables.get(f.variables.size()-1).getDomainSize();     
       
       // output table
-      for (Variable v : f.variables) {
+      /*for (int i = 0; i < f.table.size();) {
         s.append(" ");
-        for (int i = 0; i < v.getDomainSize(); i++) {
-          s.append(String.format("%.6f ", f.table.get(j)) + " ");
-          j++;
+        for (int j = 0; j < rowSize; j++) {
+          s.append(String.format("%.6f ", f.table.get(i).getRealValue()) + " ");
+          ++i;
         }
         s.append("\n");
+        
+      }*/
+      for (LogDouble d : f.table) {
+        s.append(String.format("%.6f ", d.getRealValue()) + " ");
       }
+      s.append("\n\n");
     }    
     
     BufferedWriter bw = new BufferedWriter(new FileWriter(path), s.length());    

@@ -13,7 +13,7 @@ import utd.cs.pgm.util.LogDouble;
 public class BN_MLE_FOD implements IModelLearner {
   GraphModel learnedModel = new GraphModel();
   GraphModel trueModel = new GraphModel();
-  ArrayList<Integer> jointCounts = new ArrayList<Integer>();
+  ExampleArrayList examples = new ExampleArrayList();    
   
   public BN_MLE_FOD() {};
   
@@ -28,44 +28,27 @@ public class BN_MLE_FOD implements IModelLearner {
 
   @Override
   public GraphModel train(String path, GraphModel structure) {
-    ExampleArrayList examples = new ExampleArrayList();    
     try {
       FileReader fr = new FileReader(path);
       Scanner sc = new Scanner(fr);
       
       int numVariables = sc.nextInt();
       int numExamples = sc.nextInt();
-      
-      // Initialize the counting for the joint distribution. 
-      long jointSize = (long)Math.pow(2, numVariables); // doesn't work. need sparse table. boo.
-      
-      // Counts start at 1, that is, Laplace correction!
-      for (int i = 0; i < jointSize; i++) {
-        this.jointCounts.add(1);
-      }
-      this.jointCounts.trimToSize();
-      
-      // Create ArrayList to hold the current example (this is reused later)
-      ArrayList<Variable> example = new ArrayList<Variable>(numVariables);
-      for (int i = 0; i < numVariables; i++) {
-        example.add(new Variable(i, 2));
-      }
-      
+
       // Read training data examples, one example at a time.
       for (int i = 0; i < numExamples; i++) {
-        // Read the example
+        StringBuilder example = new StringBuilder(numVariables);
+        
         for (int j = 0; j < numVariables; j++) {
-          example.get(j).setEvidence(sc.nextInt());
+          example.append(Integer.valueOf(sc.nextInt()));
         }
         
-        // print example for debugging purposes
+        //System.out.println("example = " + example);
         
-        // Increment count for observed tuple
-        int idx = Variable.getAddress(example);
-        this.jointCounts.set(idx, this.jointCounts.get(idx) + 1);
-        
-        // print counts, for debugging purposes
-      }     
+        this.examples.add(example.toString());
+      }
+      
+      System.out.println(this.examples);
       
       // All finished with the examples
       sc.close();
@@ -73,12 +56,12 @@ public class BN_MLE_FOD implements IModelLearner {
       
       // Now start filling in the learned model.
       // First copy the variables from the true model
-      for (Variable v : this.trueModel.getVariables()) {
+      for (Variable v : structure.getVariables()) {
         this.learnedModel.getVariables().add(v.copy());
       }
       
       // Now copy the structure
-      for (Function f : this.trueModel.getFunctions()) {
+      for (Function f : structure.getFunctions()) {
         Function g = new Function();
         
         // Copy variables from the true structure
@@ -86,43 +69,27 @@ public class BN_MLE_FOD implements IModelLearner {
           g.variables.add(v.copy());
         }
         
-        long gTableSize = (long)Variable.productDomainSize(g.variables);
+        long gTableSize = Variable.productDomainSize(g.variables);
         
         // Fill in g's table with the MLE estimates from counts by iterating
         // over each tuple in g. G is a CPT so it represents a posterior.
         // Compute posterior for g. IE P(B|A) is actually stored as F(AB)
         // so compute that as P(A,B) / P(A) from the counts table
         for (int i = 0; i < gTableSize; i++) {
-          Variable.setAddress(g.variables, i);
-          
-          LogDouble numer = new LogDouble(0.0); // the P(A,B)
-          LogDouble denom = new LogDouble(0.0); // the P(A)
-          
-          // For each tuple i in g, project onto each tuple j in jointCounts.
-          // example is reused simply so I don't create another data structure.
-          // Accumulate counts matching projections.
-          for (int j = 0; j < jointSize; j++) {
-            Variable.setAddress(example, j);
-            
-            LogDouble currCount = new LogDouble(this.jointCounts.get(j));
-            
-            // Project entire tuple (for numerator counting)
-            if (matches(g.variables, example, true)) {
-              numer = numer.add(currCount);
-            }
-            
-            // Project entire tuple minus last value (for denominator counting)
-            if (matches(g.variables, example, false)) {
-              denom = denom.add(currCount);
-            }
-          }
+          Variable.setAddress(g.variables, i);         
+
+          LogDouble value = getMLEEstimate(g.variables, gTableSize);
           
           // Store the ratio now
-          g.table.add(numer.div(denom));
+          g.table.add(value);
         }
+        
+        //g.table.trimToSize();
         
         // Since this is a CPT it must be normalized.
         g = g.normalize();
+        
+        learnedModel.getFunctions().add(g);
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -132,6 +99,31 @@ public class BN_MLE_FOD implements IModelLearner {
     return learnedModel;
   }
 
+  protected LogDouble getMLEEstimate(ArrayList<Variable> v, long vJointSize) {
+    // Get number of examples matching g's ith tuple.
+    int numer = this.examples.getCountOf(v);
+
+    // Get number of examples amtching g's parents' ith tuple.
+    int denom = this.examples.getCountOfDiscludeChild(v);
+    
+    // numer <= denom always. This is because numer is more specific than denom.    
+    
+    // Handle case where tuple isn't seen ever
+    //if (denom == 0) {
+    if (denom == 0 || numer == 0) {
+      return new LogDouble(1.0d / vJointSize);
+    }
+    
+    // Laplace correction!
+    return new LogDouble( (double)(numer + 1) / (double)(denom + 1));
+    /*if (denom == 0) {
+      //return new LogDouble(0.0);
+      return new LogDouble(1.0d / vJointSize);
+    }
+    
+    return new LogDouble((double)numer / (double)denom);*/
+  }
+  
   @Override
   public GraphModel getTrueModel() {
     return this.trueModel;
@@ -169,7 +161,7 @@ public class BN_MLE_FOD implements IModelLearner {
           example.get(j).setEvidence(sc.nextInt());
         }
         
-        // print example for debugging purposes
+        System.out.println(Variable.variableCollectionString(example));
         
         // Calculate probability of this example from each mode. Then calcluate
         // the difference in those and accumulate it into totalDifference.
@@ -199,23 +191,7 @@ public class BN_MLE_FOD implements IModelLearner {
     StringBuffer s = new StringBuffer();
     s.append("Learned Model\n" + this.learnedModel.toString() + "\n");
     s.append("True Model\n" + this.trueModel.toString() + "\n");
-    s.append("Counts\n" + this.jointCounts.toString() + "\n");
+    s.append("Examples\n" + this.examples.toString() + "\n");
     return s.toString();
-  }
-
-  protected boolean matches(ArrayList<Variable> a, ArrayList<Variable> b, boolean useAChild) {
-    int lastIdx = useAChild ? a.size() : a.size() - 1;
-    
-    if (lastIdx <= 0) {
-      return false;
-    }
-    
-    for (int i = 0; i < lastIdx; i++) {
-      if (b.get(a.get(i).getId()).getValue() != a.get(i).getValue()) {
-        return false;
-      }
-    }
-    
-    return true;
   }
 }
