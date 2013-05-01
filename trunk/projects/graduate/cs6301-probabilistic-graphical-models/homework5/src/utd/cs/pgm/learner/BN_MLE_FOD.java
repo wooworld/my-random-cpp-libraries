@@ -10,6 +10,7 @@ import utd.cs.pgm.core.graphmodel.GraphModel;
 import utd.cs.pgm.core.graphmodel.GraphModelType;
 import utd.cs.pgm.core.variable.Variable;
 import utd.cs.pgm.util.LogDouble;
+import utd.cs.pgm.util.StaticUtilities;
 
 public class BN_MLE_FOD implements IModelLearner {
   GraphModel learnedModel = new GraphModel();
@@ -106,7 +107,7 @@ public class BN_MLE_FOD implements IModelLearner {
 
   protected LogDouble getMLEEstimate(ArrayList<Variable> t) {
     if (t.isEmpty()) {
-      return new LogDouble(0.0);
+      return LogDouble.LS_ZERO;
     }
     
     // t is a full variable assignment. Say P(B|A) is the tuple then it's 
@@ -138,61 +139,8 @@ public class BN_MLE_FOD implements IModelLearner {
 
   @Override
   public LogDouble test(String path) {
-    LogDouble totalDifference = new LogDouble(0.0);
-    try {
-      FileReader fr = new FileReader(path);
-      Scanner sc = new Scanner(fr);
-      
-      int numVariables = sc.nextInt();
-      int numExamples = sc.nextInt();
-
-      // Create ArrayList to hold the current example (this is reused later)
-      ArrayList<Variable> example = new ArrayList<Variable>(numVariables);
-      for (int i = 0; i < numVariables; i++) {
-        example.add(new Variable(i, 2));
-      }
-      
-      LogDouble learnedModelLikelihood;
-      LogDouble trueModelLikelihood;
-      
-      
-      // Read training data examples, one example at a time.
-      for (int i = 0; i < numExamples; i++) {
-        // Read the example
-        for (int j = 0; j < numVariables; j++) {
-          //example.get(j).setEvidence(sc.nextInt());
-          example.get(j).setEvidence(sc.nextInt());
-        }
-        
-        //System.out.println(Variable.variableCollectionString(example));
-        
-        // Calculate probability of this example from each mode. Then calculate
-        // the difference in those and accumulate it into totalDifference.
-        /*this.learnedModel.setAssignment(example);
-        this.trueModel.setAssignment(example);*/       
-        
-        learnedModelLikelihood = learnedModel.computeProbabilityOfFullAssignment(example);
-        trueModelLikelihood = trueModel.computeProbabilityOfFullAssignment(example);
-        
-        LogDouble diff = trueModelLikelihood.absDif(learnedModelLikelihood);
-        
-        /*System.out.println("learnedModelLikelihood = " + learnedModelLikelihood.toRealString());
-        System.out.println("trueModelLikelihood = " + trueModelLikelihood.toRealString());
-        System.out.println("l.absDif(t) = " + learnedModelLikelihood.absDif(trueModelLikelihood).toRealString());
-        System.out.println("t.absDif(l) = " + trueModelLikelihood.absDif(learnedModelLikelihood).toRealString());
-        */
-        totalDifference = totalDifference.add(diff);
-        //System.out.println("totalDifference =" + totalDifference.toRealString());
-      }     
-      
-      // All finished with the examples
-      sc.close();
-      fr.close();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    
-    return totalDifference;
+    return StaticUtilities.computeLogLikelihoodDifference(
+        this.learnedModel, this.trueModel, path);
   }
   
   @Override

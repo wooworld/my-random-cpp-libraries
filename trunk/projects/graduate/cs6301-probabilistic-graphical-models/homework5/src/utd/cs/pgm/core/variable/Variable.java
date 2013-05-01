@@ -63,8 +63,12 @@ public class Variable {
     }
   }
   
+  public boolean equals(Variable rhs) {
+    return ((this.id == rhs.id) && (this.getValue() == rhs.getValue()));
+  }
+  
   public String toString() {
-    return id + " " + value + "c" + domainSize;
+    return id + ":" + getValue() + "c" + domainSize;
   }
   
   public static String variableCollectionString(Collection<Variable> vars) {

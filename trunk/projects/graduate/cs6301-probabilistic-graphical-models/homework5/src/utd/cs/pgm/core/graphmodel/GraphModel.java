@@ -371,7 +371,6 @@ public class GraphModel {
     return this.functions;
   }
 
-  // TODO test me!
   public LogDouble computeProbabilityOfFullAssignment(
       ArrayList<Variable> example) {
     LogDouble p = new LogDouble(1.0);
