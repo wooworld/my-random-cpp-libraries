@@ -101,9 +101,9 @@ public class BN_EM_POD implements IModelLearner {
           g.variables.add(v.copy());
         }
         
-        //g = g.initTableToUniform();
+        g = g.initTableToUniform();
         
-        g = g.initTableToRandom(true);
+        //g = g.initTableToRandom(true);
         
         this.learnedModel.getFunctions().add(g);
       }
