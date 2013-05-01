@@ -4,7 +4,9 @@ import utd.cs.lib.Stopwatch;
 import utd.cs.pgm.core.graphmodel.GraphModel;
 import utd.cs.pgm.learner.BN_EM_POD;
 import utd.cs.pgm.learner.BN_MLE_FOD;
+import utd.cs.pgm.learner.BS_CL_FOD;
 import utd.cs.pgm.learner.IModelLearner;
+import utd.cs.pgm.learner.IStructureLearner;
 import utd.cs.pgm.util.LogDouble;
 
 public class Main {
@@ -63,10 +65,10 @@ public class Main {
         learner = new BN_EM_POD(Integer.valueOf(args[5]));
         learner.train(trainDataPath, trueModel);
       } else if (args[4].compareTo("2") == 0) {
-        //IStructureLearner sl = new BS_CL_FOD();
-        //GraphModel learnedStructure = sl.train(trainDataPath);
-        //learner = new BN_MLE_FOD();
-        //learner.train(trainDataPath, learnedStructure);
+        IStructureLearner sl = new BS_CL_FOD();
+        GraphModel learnedStructure = sl.train(trainDataPath);
+        learner = new BN_MLE_FOD();
+        learner.train(trainDataPath, learnedStructure);
       } else { 
         System.err.println("Incorrect learning mode.");
         System.err.println(howToRun());

@@ -187,9 +187,9 @@ public class LogDouble implements Comparable<LogDouble>{
     if (this.isZero && rhs.isZero) {
       return 0;
     } else if (this.isZero && !rhs.isZero) {
-      return 1;
-    } else if (!this.isZero && rhs.isZero) {
       return -1;
+    } else if (!this.isZero && rhs.isZero) {
+      return 1;
     } else if (this.value < rhs.value) {
       return -1;
     } else if (this.value > rhs.value) {
@@ -197,6 +197,14 @@ public class LogDouble implements Comparable<LogDouble>{
     } else {
       return 0;
     }
+  }
+  
+  public int compareToAscending(LogDouble rhs) {
+    return this.compareTo(rhs);
+  }
+  
+  public int compareToDescending(LogDouble rhs) {
+    return this.compareTo(rhs) * -1;
   }
   
   public boolean equals(LogDouble rhs) {

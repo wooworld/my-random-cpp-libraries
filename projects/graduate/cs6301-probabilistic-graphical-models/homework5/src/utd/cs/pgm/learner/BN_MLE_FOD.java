@@ -93,7 +93,7 @@ public class BN_MLE_FOD implements IModelLearner {
         //g.table.trimToSize();
         
         // Since this is a CPT it must be normalized.
-        g = g.normalize(); // FIX THIS.
+        g = g.normalize();
         
         learnedModel.getFunctions().add(g);
       }
