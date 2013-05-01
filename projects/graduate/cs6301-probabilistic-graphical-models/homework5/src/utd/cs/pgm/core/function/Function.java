@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Random;
 
 import utd.cs.pgm.core.variable.Variable;
 import utd.cs.pgm.util.LogDouble;
@@ -206,5 +207,68 @@ public class Function {
     r.table.trimToSize();
     
     return r;
+  }
+  
+  public Function initTableToUniform() {
+    if (isEmpty()) {
+      return this;
+    } else if (isTrivial()) {
+      Function r = new Function();
+      r.table.add(LogDouble.LS_ONE);
+      r.table.trimToSize();
+      return r;
+    }
+    
+    // Create result function
+    Function r = new Function();
+    
+    // Copy scope over
+    for (Variable v : this.variables) {
+      r.variables.add(v.copy());
+    }
+    r.variables.trimToSize();
+    
+    long tableSize = Variable.productDomainSize(this.variables);
+    
+    // Normalize
+    int setSize = this.variables.get(this.variables.size()-1).getDomainSize();
+    LogDouble value = new LogDouble(1.0 / setSize);
+    
+    for (int i = 0; i < tableSize; i++) {
+        r.table.add(value);
+    }    
+    r.table.trimToSize();
+    
+    return r;
+  }
+  
+  public Function initTableToRandom(boolean reNormalize) {
+    this.table.clear();
+    
+    Random rng = new Random(System.nanoTime());
+    
+    long tableSize = Variable.productDomainSize(this.variables);
+    
+    // Create result function
+    Function r = new Function();
+    
+    // Copy scope over
+    for (Variable v : this.variables) {
+      r.variables.add(v.copy());
+    }
+    
+    // Put random numbers into the table
+    for (int i = 0; i < tableSize; i++) {
+      this.table.add(new LogDouble(rng.nextDouble()));
+    }
+    
+    if (reNormalize) {
+      return this.normalize();
+    } else {
+      this.table.trimToSize();
+      this.variables.trimToSize();
+      return this;
+    }
+    
   }
 }

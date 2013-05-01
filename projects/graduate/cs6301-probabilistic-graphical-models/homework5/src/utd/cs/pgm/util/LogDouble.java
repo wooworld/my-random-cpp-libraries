@@ -94,11 +94,13 @@ public class LogDouble implements Comparable<LogDouble>{
   public LogDouble sub(LogDouble rhs) throws IllegalArgumentException {
     if (this.isZero && rhs.isZero) {
       return LogDouble.LS_ZERO;
-    } else if (this.isZero || (this.value < rhs.value)) {
+    } else if (this.isZero && !rhs.isZero) {
       return new LogDouble(0.0);
       //throw new IllegalArgumentException("LogDouble: 0.sub(positive value) is invalid operation.");
-    } else if (rhs.isZero) {
+    } else if (!this.isZero && rhs.isZero) {
       return this.copy();
+    } else if (this.value < rhs.value) {
+      return new LogDouble(0.0);
     } else {
       //double a = Math.max(this.value, rhs.value);
       //double b = Math.min(this.value, rhs.value);
@@ -128,7 +130,13 @@ public class LogDouble implements Comparable<LogDouble>{
   // Use this when you want the absolute difference between two numbers in
   // real space
   public LogDouble absDif(LogDouble rhs) {
-    return (this.value > rhs.value) ? this.sub(rhs) : rhs.sub(this);
+    if (this.isZero) {
+      return rhs.sub(this);
+    } else if (rhs.isZero) {
+      return this.sub(rhs);
+    } else {
+      return (this.value > rhs.value) ? this.sub(rhs) : rhs.sub(this);
+    }
   }
   
   // Returns a LogDouble with the stored value as v transformed to log_base
