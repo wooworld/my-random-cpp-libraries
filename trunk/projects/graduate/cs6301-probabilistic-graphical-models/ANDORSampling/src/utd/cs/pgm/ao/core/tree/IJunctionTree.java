@@ -6,9 +6,10 @@ import java.util.Stack;
 import utd.cs.pgm.ao.core.INode;
 import utd.cs.pgm.ao.core.JTNode;
 import utd.cs.pgm.core.variable.IVariable;
+import utd.cs.pgm.probability.DynamicDistribution;
 
 public interface IJunctionTree {
-	public void buildTree(INode pt_n, JTNode jt_n, Stack<IVariable> context);
+	public void buildTree(INode pt_n, JTNode jt_n, Stack<IVariable> context, DynamicDistribution Q);
 	public JTNode getRoot();
 	public void setRoot(JTNode jt);
 	public ArrayList<JTNode> getLeaves();

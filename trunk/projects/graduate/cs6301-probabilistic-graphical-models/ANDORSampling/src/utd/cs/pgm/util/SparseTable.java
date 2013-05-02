@@ -2,10 +2,21 @@ package utd.cs.pgm.util;
 
 import java.util.ArrayList;
 
-public class SparseTable {
+import utd.cs.pgm.core.variable.IVariable;
+
+public class SparseTable implements Cloneable {
+	protected ArrayList<IVariable> vars = new ArrayList<IVariable>();
 	protected ArrayList<ArrayList<Integer>> keys = new ArrayList<ArrayList<Integer>>();
 	protected ArrayList<Integer> counts = new ArrayList<Integer>();
 	protected ArrayList<LogDouble> weights = new ArrayList<LogDouble>();
+	
+	public SparseTable(ArrayList<IVariable> vars){
+		this.vars = vars;
+	}
+	
+	public ArrayList<IVariable> getVariables() {
+		return this.vars;
+	}	
 	
 	public LogDouble getWeight(ArrayList<Integer> key){
 		int size = keys.size();
@@ -23,6 +34,39 @@ public class SparseTable {
 				return i;
 		}
 		return -1;
+	}	
+	
+	// deep copy
+	@Override
+	public SparseTable clone() {
+		// shallow copy variables
+		SparseTable temp = new SparseTable(this.vars);
+		
+	    // deep copy keys
+		for (ArrayList<Integer> key : this.keys) {
+			ArrayList<Integer> newEntry = new ArrayList<Integer>(key.size());
+			for (Integer i : key) {
+				newEntry.add(i.intValue());
+			}
+			newEntry.trimToSize();
+			temp.keys.add(newEntry);
+		}
+		temp.keys.trimToSize();
+		
+		// deep copy counts
+		for (Integer i : this.counts) {
+			temp.counts.add(i.intValue());
+		}
+		temp.counts.trimToSize();
+		
+		
+		// deep copy weights
+		for (LogDouble w : this.weights) {
+			temp.weights.add(w.copy());
+		}
+		temp.weights.trimToSize();
+		
+		return temp;
 	}
 	
 	public ArrayList<Integer> getKey(int index) {

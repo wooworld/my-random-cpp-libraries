@@ -10,7 +10,7 @@ public class DynamicDistribution implements IProbabilityDistribution {
   ArrayList<IVariable> variables = new ArrayList<IVariable>();
   ArrayList<ArrayList<LogDouble>> P = new ArrayList<ArrayList<LogDouble>>();
   ArrayList<ArrayList<LogDouble>> W = new ArrayList<ArrayList<LogDouble>>();
-  Random rng = new Random(System.currentTimeMillis());  
+  Random rng = new Random(System.nanoTime());  
   int sampleCounter = 0;
   int updateAfterSampleCount = 0;
   
@@ -81,7 +81,7 @@ public class DynamicDistribution implements IProbabilityDistribution {
   public LogDouble probabilityOf(ArrayList<IVariable> assignment) {
     if (this.P.size() != assignment.size()) {
       System.err.println("Mismatched assignment query.");
-      return new LogDouble(0.0);
+      return LogDouble.LS_ZERO;
     }
     
     LogDouble v = new LogDouble(1.0);
@@ -90,7 +90,23 @@ public class DynamicDistribution implements IProbabilityDistribution {
       v = v.mul(this.P.get(i).get(assignment.get(i).getEvid()));
     }
     
+    updateWeights(v);
+    
     return v;
+  }
+  
+  // Assumes assignment is of some subset of variables this distribution 
+  // was created with
+  public LogDouble probabilityOfSubset(ArrayList<IVariable> assignment) {
+	  LogDouble p = new LogDouble(1.0);
+	  
+	  for (IVariable v : assignment) {
+		  p = p.mul(this.P.get(v.getId()).get(v.getEvid()));
+	  }
+	  
+	  updateWeights(p);
+	  
+	  return p;	  
   }
   
   @Override
