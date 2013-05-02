@@ -47,12 +47,16 @@ public class Main {
       System.out.println("|" + z.toRealString() + " - " + w.toRealString() + "| = " + z.absDif(w).toRealString());
       System.out.println("|" + z.toRealString() + " - " + y.toRealString() + "| = " + z.absDif(y).toRealString());
       */
+      /*for (String s : args) {
+        System.out.println(s);
+      }*/
+      
       // Read true model from file
       GraphModel trueModel = new GraphModel();
       String trueModelPath = args[0];
       trueModel.readUAI(trueModelPath);
-      System.out.println("True model:");
-      System.out.println(trueModel);
+      //System.out.println("True model:");
+      //System.out.println(trueModel);
       
       // Create and train learner model
       IModelLearner learner = new BN_MLE_FOD();
@@ -75,8 +79,8 @@ public class Main {
         return;
       }
       
-      System.out.println("Learned a model.");
-      System.out.println(learner.getLearnedModel());
+      //System.out.println("Learned a model.");
+      //System.out.println(learner.getLearnedModel());
       
       // Write learned model to UAI file
       String outputUAIpath = args[3];
