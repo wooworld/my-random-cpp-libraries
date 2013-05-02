@@ -17,6 +17,9 @@ With the eclipse project simply specify these parameters in the run configuratio
 
 Be sure to give the Java VM the command line parameter -Xmx2000M to ensure enough memory is allocated for a smooth run.
 
+### Example Run ###
+data/3.uai.data/3.uai data/3.uai.data/train-f-5.txt data/3.uai.data/test.txt output/3.uai/BN_MLE_FOD-learned-f-5.txt 0
+
 ### Results ###
 Results of the runs are collated and nicely formatted with graphs in results.(xlsx|pdf) 
 in the /output/ folder.
