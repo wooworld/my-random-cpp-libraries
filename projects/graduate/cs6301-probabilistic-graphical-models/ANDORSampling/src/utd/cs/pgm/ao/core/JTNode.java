@@ -8,7 +8,7 @@ import utd.cs.pgm.core.function.IFunction;
 import utd.cs.pgm.core.graphmodel.GraphModel;
 import utd.cs.pgm.core.variable.IVariable;
 import utd.cs.pgm.core.variable.Variable;
-import utd.cs.pgm.probability.DynamicDistribution;
+import utd.cs.pgm.probability.DynamicDistributionDos;
 import utd.cs.pgm.util.ExampleArrayList;
 import utd.cs.pgm.util.LogDouble;
 import utd.cs.pgm.util.SparseTable;
@@ -37,8 +37,9 @@ public class JTNode{
 	public ArrayList<JTNode> getChildren(){
 		return children;
 	}
-	//hard limit on number of variables at 2^16
-	public void fillOutSparseTable(ExampleArrayList samples, DynamicDistribution Q){
+	
+	
+	public void fillOutSparseTable(ArrayList<ArrayList<Integer>> samples, DynamicDistributionDos Q){
 		if (samples.isEmpty()) {
 			return;
 		}
@@ -79,7 +80,7 @@ public class JTNode{
 			// trick to multiply by uniform distro value
 			//currWeight = currWeight.mul(productDomainSize);
 			
-			currWeight = currWeight.mul(Q.probabilityOfSubset(assignment))
+			currWeight = currWeight.mul(Q.probabilityOfSubset(assignment));
 			
 			
 			st.setWeight(i, currWeight);
@@ -204,15 +205,13 @@ public class JTNode{
 	}
 	
 	public void addFunctions(GraphModel gm){
-		Iterator<IFunction> x = gm.getFunctions().iterator();
-		IFunction f;
-		while(x.hasNext()){
-			f = x.next();
-			if(f != null && context.containsAll(f.getVariables())) //better not reverse these >.>
+		int fsize = gm.getFunctions().size();
+		for(int i = 0; i < fsize; i++){
+			if(gm.functionIsMarked(i) && context.containsAll(gm.getFunctions().get(i).getVariables()))
 			{
-				this.functions.add(f);
-				x.remove();
+				this.functions.add(gm.getFunctions().get(i));
+				gm.markFunction(i);
 			}
-		}		
+		}
 	}
 }

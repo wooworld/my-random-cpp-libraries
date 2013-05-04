@@ -1,6 +1,7 @@
 package utd.cs.pgm.core.function;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import utd.cs.pgm.core.variable.*;
 import utd.cs.pgm.util.LogDouble;
@@ -83,5 +84,110 @@ public class Function implements IFunction {
 		idx -= this.variables.get(i).getEvid() * domain;
 	}
 	  return null;
+  }
+  
+  @Override
+  public Function tableToUniform() {    
+    // Create result function
+    Function r = new Function();
+    
+    // Copy scope over
+    for (IVariable v : this.variables) {
+      r.variables.add(v.copy());
+    }
+    r.variables.trimToSize();
+    
+    long tableSize = Variable.productDomainSize(this.variables);
+    
+    // Normalize
+    int setSize = this.variables.get(this.variables.size()-1).getDomainSize();
+    LogDouble value = new LogDouble(1.0 / setSize);
+    
+    for (int i = 0; i < tableSize; i++) {
+        r.table.add(value);
+    }    
+    r.table.trimToSize();
+    
+    return r;
+  }
+  
+  @Override
+  public Function tableToRandom(boolean reNormalize) {
+    this.table.clear();
+    
+    Random rng = new Random(System.nanoTime());
+    
+    long tableSize = Variable.productDomainSize(this.variables);
+    
+    // Create result function
+    Function r = new Function();
+    
+    // Copy scope over
+    for (IVariable v : this.variables) {
+      r.variables.add(v.copy());
+    }
+    
+    // Put random numbers into the table
+    for (int i = 0; i < tableSize; i++) {
+      this.table.add(new LogDouble(rng.nextDouble()));
+    }
+    
+    if (reNormalize) {
+      return this.normalize();
+    } else {
+      this.table.trimToSize();
+      this.variables.trimToSize();
+      return this;
+    }
+  }
+  
+  @Override
+  public Function normalize() {
+	// Create result function
+	Function r = new Function();
+	
+	// Copy scope over
+	for (IVariable v : this.variables) {
+	  r.variables.add(v.copy());
+	}
+	r.variables.trimToSize();
+	
+	// Normalize
+    int setSize = this.variables.get(this.variables.size()-1).getDomainSize();
+    
+    for (int i = 0; i < this.table.size(); i+=setSize) {
+      LogDouble divisor = LogDouble.LS_ZERO;
+      for (int j = i; j < i+setSize; j++) {
+        divisor = divisor.add(this.table.get(j));
+      }
+      
+      for (int j = i; j < i+setSize; j++) {
+        r.table.add(this.table.get(j).div(divisor));
+      }
+    }
+    
+    r.table.trimToSize();
+    
+    return r;
+  }
+  
+  
+  public Function clone() {
+	  // Create result function
+	  Function r = new Function();
+	  
+	  // Copy scope over
+	  for (IVariable v : this.variables) {
+		  r.variables.add(v.copy());
+	  }
+	  r.variables.trimToSize();
+	  
+	  // Copy table over
+	  for (LogDouble d : this.table) {
+		  r.table.add(d.copy());
+	  }
+	  r.table.trimToSize();
+	  
+	  return r;
   }
 }

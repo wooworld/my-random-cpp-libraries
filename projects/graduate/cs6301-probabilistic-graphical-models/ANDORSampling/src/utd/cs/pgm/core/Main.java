@@ -1,4 +1,5 @@
 package utd.cs.pgm.core;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Stack;
@@ -9,6 +10,7 @@ import utd.cs.pgm.ao.core.tree.PseudoTree;
 import utd.cs.pgm.core.graphmodel.*;
 import utd.cs.pgm.core.variable.IVariable;
 import utd.cs.pgm.probability.DynamicDistribution;
+import utd.cs.pgm.probability.DynamicDistributionDos;
 import utd.cs.pgm.util.LogDouble;
 
 public class Main {
@@ -24,7 +26,12 @@ public class Main {
     GraphModel gm = new GraphModel();
     
     // it reads the uai and evid files for us, if specified in args[]
-    gm.readUAI(path);
+    try {
+		gm.readUAI(path);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     
     // if the gm is bayes, convert it to markov
     ArrayList<HashSet<IVariable>> markovStruct = gm.moralizeGraph();    
@@ -33,16 +40,20 @@ public class Main {
     
     LogDouble z = LogDouble.LS_ZERO;
     
-    DynamicDistribution Q = new DynamicDistribution(t.getOrdering(), 100);
+    DynamicDistributionDos Q = new DynamicDistributionDos(gm.getVariables());    
     
     for (int i = 0; i < 5; i++) {
-    	JunctionTree j = new JunctionTree(gm, samples, Q);
+    	ArrayList<ArrayList<Integer>> samples = Q.generateSamples(numSamples);
+    	
+    	JunctionTree j = new JunctionTree(gm, samples);
     	
     	j.buildTree(t.getRoot(), j.getRoot(), new Stack<IVariable>(), Q);
     	
     	z = j.computeZ();
     	
     	Q.update(samples);
+    	
+    	gm.unmarkAll();
     }
     
     System.out.println("Partition function = " + z.toRealString());    

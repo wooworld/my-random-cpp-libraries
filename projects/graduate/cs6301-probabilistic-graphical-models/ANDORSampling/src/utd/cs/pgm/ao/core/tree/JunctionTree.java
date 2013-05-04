@@ -7,8 +7,7 @@ import utd.cs.pgm.ao.core.INode;
 import utd.cs.pgm.ao.core.JTNode;
 import utd.cs.pgm.core.graphmodel.GraphModel;
 import utd.cs.pgm.core.variable.IVariable;
-import utd.cs.pgm.probability.DynamicDistribution;
-import utd.cs.pgm.util.ExampleArrayList;
+import utd.cs.pgm.probability.DynamicDistributionDos;
 import utd.cs.pgm.util.LogDouble;
 
 public class JunctionTree implements IJunctionTree {
@@ -16,16 +15,16 @@ public class JunctionTree implements IJunctionTree {
 	protected JTNode root = new JTNode(null);
 	protected ArrayList<JTNode> leaves = new ArrayList<JTNode>();
 	protected GraphModel gm;
-	protected ExampleArrayList samples;
+	protected ArrayList<ArrayList<Integer>> samples;
 	protected ArrayList<JTNode> nodes = new ArrayList<JTNode>();
 	
-	public JunctionTree(GraphModel g, ExampleArrayList s){
+	public JunctionTree(GraphModel g, ArrayList<ArrayList<Integer>> s){
 		this.gm = g;
 		this.samples = s;
 	}
 	
 	@Override
-	public void buildTree(INode pt_n, JTNode jt_n, Stack<IVariable> context, DynamicDistribution Q) {
+	public void buildTree(INode pt_n, JTNode jt_n, Stack<IVariable> context, DynamicDistributionDos Q) {
 		// TODO Auto-generated method stub
 		context.push(pt_n.getVariable());
 		nodes.add(jt_n);

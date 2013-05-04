@@ -18,6 +18,7 @@ public class GraphModel {
   protected IVariable derp = new Variable(); // this works but the below doesn't?
   protected ArrayList<IVariable> variables = new ArrayList<IVariable>();
   protected ArrayList<IFunction> functions = new ArrayList<IFunction>();
+  protected ArrayList<Boolean> marked = new ArrayList<Boolean>();
   
   protected boolean validState;
   
@@ -77,6 +78,7 @@ public class GraphModel {
     
     // Read function table values
     for (IFunction f : this.functions) {
+      this.marked.add(false);
       int fTableSize = sc.nextInt();
       f.getTable().ensureCapacity(fTableSize);
       for (int i = 0; i < fTableSize; i++) {
@@ -87,6 +89,20 @@ public class GraphModel {
     
     sc.close();
     fr.close();
+  }
+  
+  public boolean functionIsMarked(int i){
+	  return this.marked.get(i);
+  }
+  
+  public void markFunction(int i){
+  	this.marked.set(i, true);
+  }
+  
+  public void unmarkAll(){
+	  int size = this.marked.size();
+	  for(int i = 0; i < size; i++)
+		  this.marked.set(i,false);
   }
   
   public void readUAIevid(String path) throws IOException {

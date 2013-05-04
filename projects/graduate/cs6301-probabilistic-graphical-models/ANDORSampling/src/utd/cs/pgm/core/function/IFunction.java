@@ -21,4 +21,8 @@ public interface IFunction {
   
   public int getIndexFromEvidence();
   public ArrayList<IVariable> getEvidenceFromIndex(int idx);
+  
+  public IFunction tableToRandom(boolean reNormalize);
+  public IFunction tableToUniform();
+  public IFunction normalize();
 }
