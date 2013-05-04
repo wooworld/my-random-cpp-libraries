@@ -8,6 +8,7 @@ public class LogDouble implements Comparable<LogDouble>{
   public static final double LS_MIN_VAL = -(Double.MAX_VALUE/2.0); // Smallest number that is nonzero from logspace
   
   public static final LogDouble LS_ZERO = new LogDouble(0.0);
+  public static final LogDouble LS_ONE = new LogDouble(1.0);
   
   public LogDouble() {
     value = 0.0;
