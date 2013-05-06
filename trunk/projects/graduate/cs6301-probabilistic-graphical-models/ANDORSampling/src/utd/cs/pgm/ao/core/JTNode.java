@@ -2,6 +2,7 @@ package utd.cs.pgm.ao.core;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import utd.cs.pgm.core.function.IFunction;
@@ -21,7 +22,7 @@ public class JTNode{
 	protected SparseTable st;
 	protected ArrayList<IFunction> functions = new ArrayList<IFunction>();
 	protected ArrayList<SparseTable> messages = new ArrayList<SparseTable>();
-
+	
 	public JTNode(JTNode p){
 		this.parent = p;
 	}
@@ -60,7 +61,7 @@ public class JTNode{
 		
 		if(this.functions.isEmpty()){
 			for(int i = 0; i < sts; i++)
-				this.st.setWeight(i, new LogDouble(1.0));
+				this.st.setWeight(i, new LogDouble(this.st.getCount(i)));
 			return;
 		}
 
@@ -68,9 +69,14 @@ public class JTNode{
 		int fs = this.functions.size();
 		int cs = this.context.size();
 		
-		System.out.println(this.context.get(this.context.size()-1).getId());
-		for(IFunction f : this.functions)
-			System.out.println(f);
+		HashSet<IVariable> functionContext = new HashSet<IVariable>();
+		for(IFunction f : this.functions){
+			functionContext.addAll(f.getVariables());
+		}
+		
+		//System.out.println(this.context.get(this.context.size()-1).getId());
+		//for(IFunction f : this.functions)
+		//	System.out.println(f);
 		
 		for (int i = 0; i < sts; i++) {
 			// convert local sample to arraylist of variables with those assignments
@@ -79,7 +85,7 @@ public class JTNode{
 				this.context.get(j).setEvid(st.getKey(i).get(j));
 			}
 			
-			LogDouble currWeight = new LogDouble(1.0);
+			LogDouble currWeight = LogDouble.LS_ONE;
 			
 			for (int j = 0; j < fs; j++) {
 				int idx = this.functions.get(j).getIndexFromEvidence();
@@ -89,25 +95,26 @@ public class JTNode{
 			// Now mult currWeight by count
 			LogDouble blah = new LogDouble(this.st.getCount(i));
 			currWeight = currWeight.mul(blah);
-			
-			
-			
+
 			// Divide by Q
 			// trick to multiply by uniform distro value
 			//currWeight = currWeight.mul(productDomainSize);
 			
 			//might be wrong
-			LogDouble prob = Q.probabilityOfSubset(st.getKey(i),context);
-			currWeight = currWeight.mul(prob);
+			LogDouble prob = Q.probabilityOfSubset(st.getKey(i), this.context, functionContext);
+			currWeight = currWeight.div(prob);
 			
 			//System.out.println(currWeight.toRealString());
-			
-			
-			
 			st.setWeight(i, currWeight);
 		}
 		
-		System.out.println(this.st);
+		
+		for(IVariable v : functionContext){
+			Q.setMarked(v.getId());
+		}
+	
+		
+		System.out.println("Initial table\n" + this.st);
 	}
 	
 	public SparseTable multiplyMessages(){		
@@ -129,10 +136,11 @@ public class JTNode{
 			// Look at the context of this node's sparse table
 			for (int i = 0; i < contextSize; i++) {
 				for (int j = 0; j < msgContextSize; j++) {
+					
 					// if the variables match, add an index for this sparse table's context
 					// aka the columns for variables match
 					if (this.st.getVariables().get(i).getId() == msg.getVariables().get(j).getId()) {
-						mapping.add(j);
+						mapping.add(i);
 					}
 				}
 			}
@@ -147,20 +155,25 @@ public class JTNode{
 			for (int j = 0; j < numMessages; j++) {
 				ArrayList<Integer> prunedTuple = new ArrayList<Integer>();
 				int mappingSize = mappings.get(j).size();
-				// Reduce the entry in this sparse table to the context of the message
+				
+				// Reduce the entry in this sparse table to the context of the incoming message
 				// so we can ask the message's sparse table for a weight easily
 				for (int k = 0; k < mappingSize; k++) {
-					prunedTuple.add(this.st.getKey(i).get(mappings.get(j).get(k)));
+					prunedTuple.add(temp.getKey(i).get(mappings.get(j).get(k)));
 				}
 				
 				// Actually query the message's table for a weight
 				LogDouble w = this.messages.get(j).getWeight(prunedTuple);
+				//int idx = this.messages.get(j).getIndex(prunedTuple);
+				//LogDouble w = this.messages.get(j).getWeight(idx).div(new LogDouble(this.messages.get(j).getCount(idx)));
+				
 				// Multiply in the message's weight into this sparse table
 				temp.setWeight(i, temp.getWeight(i).mul(w));
+				//temp.setCount(i, temp.getCount(i)+this.messages.get(j).getCount(prunedTuple));
 			}			
 		}
 		
-		System.out.println(temp);
+		System.out.println("Result of multiplying messages: \n" + temp);
 		
 		return temp;
 	}
@@ -173,12 +186,14 @@ public class JTNode{
 		
 		
 		if(this.parent==null){ //we're the root
-			//sum out to get a trivial function			
+			//sum out to get a trivial function
 			int size = temp.size();
+			long sum = 0;
 			for(int i = 0; i < size; i++){
 				value = value.add(temp.getWeight(i));
+				sum += temp.getCount(i);
 			}
-			
+			value = value.div(new LogDouble(sum));
 			return value;
 		}
 		
@@ -218,7 +233,7 @@ public class JTNode{
 			}
 		}
 		
-		System.out.println(indicesForContext);
+		System.out.println("IFC: " + indicesForContext);
 		
 		//loop over our sparse table
 		int sts = temp.size();
@@ -236,17 +251,21 @@ public class JTNode{
 		}
 		
 		//not quite right
+		int rsize = r.size();
+		for(int i = 0; i < rsize; i++)
+			r.setWeight(i, r.getWeight(i).div(new LogDouble(r.getCount(i))));
+		
 		/*int rsize = r.size();
 		long sum;
 		boolean match;
 		for(int i = 0; i < rsize; i++){
 			sum = 0;
-			ArrayList<Integer> iEntry = temp.getKey(i);
+			ArrayList<Integer> iEntry = r.getKey(i);
 			for(int j = 0; j < rsize; j++){
 				match = true;
 				if(i==j) continue;
 				
-				ArrayList<Integer> jEntry = temp.getKey(j);
+				ArrayList<Integer> jEntry = r.getKey(j);
 				for(int k = 0; k < ifc-1; k++){
 					if(iEntry.get(k)!=jEntry.get(k)){
 						match = false;
@@ -254,9 +273,9 @@ public class JTNode{
 					}
 				}
 				if(match)
-					sum += temp.getCount(j);
+					sum += r.getCount(j);
 			}
-			temp.setWeight(i, temp.getWeight(i).mul(new LogDouble((double)temp.getCount(i) / (double)sum)));
+			r.setWeight(i, r.getWeight(i).div(new LogDouble((double)sum)));
 		}*/
 		
 		System.out.println("Message to Parent: " + r);

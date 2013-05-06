@@ -1,6 +1,7 @@
 package utd.cs.pgm.probability;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 import utd.cs.pgm.core.variable.IVariable;
@@ -10,6 +11,7 @@ public class DynamicDistributionDos {
 
 	//protected ArrayList<IFunction> q = new ArrayList<IFunction>();
 	protected ArrayList<ArrayList<LogDouble>> q = new ArrayList<ArrayList<LogDouble>>();
+	protected ArrayList<Boolean> marked = new ArrayList<Boolean>();
 	protected ArrayList<LogDouble> w = new ArrayList<LogDouble>();
 	protected int qSize = 0;
 	protected Random rng = new Random(System.nanoTime());  
@@ -38,6 +40,7 @@ public class DynamicDistributionDos {
 	      
 	      qEntry.trimToSize();
 	      this.q.add(qEntry);
+	      this.marked.add(false);
 	    }
 		
 		this.qSize = this.q.size();
@@ -100,13 +103,16 @@ public class DynamicDistributionDos {
 		return p;
 	}
 	
-	public LogDouble probabilityOfSubset(ArrayList<Integer> sample, ArrayList<IVariable> context){
+	public LogDouble probabilityOfSubset(ArrayList<Integer> sample, ArrayList<IVariable> context, HashSet<IVariable> fContext){
 		LogDouble p = LogDouble.LS_ONE;
-		int sampleSize = sample.size();
+		int cSize = context.size();
 		
-		//loop over sample/context and mul
-		for(int i = 0; i < sampleSize; i++){
-			p = p.mul(this.q.get(context.get(i).getId()).get(sample.get(i)));
+		//multiply sample weights that appear in the function context (fContext)
+		for(IVariable v : fContext){
+			for(int i = 0; i < cSize; i++){
+				if(context.get(i).getId()==v.getId() && !this.marked.get(v.getId()))
+					p = p.mul(this.q.get(v.getId()).get(sample.get(i)));
+			}
 		}
 		
 		return p;
@@ -163,4 +169,18 @@ public class DynamicDistributionDos {
 	    return s.toString();
 	  }
 
+	 public void setMarked(int i){
+		 this.marked.set(i, true);
+	 }
+	 
+	 public boolean getMarked(int i){
+		 return this.marked.get(i);
+	 }
+	 
+	 public void unmarkAll(){
+		 int size = this.marked.size();
+		 for(int i = 0; i < size; i++){
+			 this.marked.set(i,false);
+		 }
+	 }
 }
