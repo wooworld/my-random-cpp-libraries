@@ -134,7 +134,7 @@ public class SparseTable implements Cloneable {
 			}
 		}
 		
-		insert(entry, 1, new LogDouble(0.0));
+		insert(entry, 1, LogDouble.LS_ZERO);
 	}
 	
 	/*public void incrementCount(String key){
@@ -150,6 +150,10 @@ public class SparseTable implements Cloneable {
 	
 	public void incrementCount(int i){
 		counts.set(i,counts.get(i)+1);
+	}
+	
+	public void setCount(int i, int val){
+		counts.set(i,val);
 	}
 	
 	public void setWeight(ArrayList<Integer> key, LogDouble w){

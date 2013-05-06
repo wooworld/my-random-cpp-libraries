@@ -43,6 +43,8 @@ public class Main {
     DynamicDistributionDos Q = new DynamicDistributionDos(gm.getVariables());    
     System.out.println(Q);
     for (int i = 0; i < 1; i++) {
+    	Q.unmarkAll();
+    	
     	ArrayList<ArrayList<Integer>> samples = Q.generateSamples(numSamples);
     	
     	JunctionTree j = new JunctionTree(gm, samples);

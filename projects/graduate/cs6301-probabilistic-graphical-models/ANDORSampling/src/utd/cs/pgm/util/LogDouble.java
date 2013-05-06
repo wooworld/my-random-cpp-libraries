@@ -40,8 +40,8 @@ public class LogDouble implements Comparable<LogDouble>{
   }
   
   public String toString() {
-    //return ((Double)getValue()).toString();
-	  return this.toRealString();
+    return ((Double)getValue()).toString();
+	  //return this.toRealString();
   }
   
   public String toRealString() {
