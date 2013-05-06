@@ -40,10 +40,12 @@ public class JTNode{
 	
 	
 	public void fillOutSparseTable(ArrayList<ArrayList<Integer>> samples, DynamicDistributionDos Q){
+		this.st = new SparseTable(context);
 		if (samples.isEmpty()) {
 			return;
 		}
 		
+		//reduces the samples to the context of this node and stores it in st
 		for(ArrayList<Integer> s : samples){
 			ArrayList<Integer> ct = new ArrayList<Integer>(this.context.size());
 
@@ -53,13 +55,24 @@ public class JTNode{
 			
 			this.st.insert(ct);
 		}
+		
+		int sts = this.st.size();
+		
+		if(this.functions.isEmpty()){
+			for(int i = 0; i < sts; i++)
+				this.st.setWeight(i, new LogDouble(1.0));
+			return;
+		}
 
-		int ss = this.st.size();
+		
 		int fs = this.functions.size();
 		int cs = this.context.size();
-		LogDouble productDomainSize = new LogDouble(Variable.productDomainSize(context));
 		
-		for (int i = 0; i < ss; i++) {
+		System.out.println(this.context.get(this.context.size()-1).getId());
+		for(IFunction f : this.functions)
+			System.out.println(f);
+		
+		for (int i = 0; i < sts; i++) {
 			// convert local sample to arraylist of variables with those assignments
 			
 			for (int j = 0; j < cs; j++) {
@@ -70,25 +83,39 @@ public class JTNode{
 			
 			for (int j = 0; j < fs; j++) {
 				int idx = this.functions.get(j).getIndexFromEvidence();
-				currWeight = currWeight.mul(this.functions.get(j).getTable().get(idx));				
+				currWeight = currWeight.mul(this.functions.get(j).getTable().get(idx));	
 			}
 			
 			// Now mult currWeight by count
-			currWeight = currWeight.mul(new LogDouble(this.st.getCount(i)));
+			LogDouble blah = new LogDouble(this.st.getCount(i));
+			currWeight = currWeight.mul(blah);
+			
+			
 			
 			// Divide by Q
 			// trick to multiply by uniform distro value
 			//currWeight = currWeight.mul(productDomainSize);
 			
-			currWeight = currWeight.mul(Q.probabilityOfSubset(assignment));
+			//might be wrong
+			LogDouble prob = Q.probabilityOfSubset(st.getKey(i),context);
+			currWeight = currWeight.mul(prob);
+			
+			//System.out.println(currWeight.toRealString());
+			
 			
 			
 			st.setWeight(i, currWeight);
 		}
+		
+		System.out.println(this.st);
 	}
 	
-	public SparseTable multiplyMessages(){
+	public SparseTable multiplyMessages(){		
+		if(this.messages.isEmpty())
+			return this.st;
+		
 		SparseTable temp = this.st.clone();
+		
 		
 		// Maps temp's columns into each message's columns
 		ArrayList<ArrayList<Integer>> mappings = new ArrayList<ArrayList<Integer>>();
@@ -104,7 +131,7 @@ public class JTNode{
 				for (int j = 0; j < msgContextSize; j++) {
 					// if the variables match, add an index for this sparse table's context
 					// aka the columns for variables match
-					if (this.st.getVariables().get(i) == msg.getVariables().get(j)) {
+					if (this.st.getVariables().get(i).getId() == msg.getVariables().get(j).getId()) {
 						mapping.add(j);
 					}
 				}
@@ -123,16 +150,17 @@ public class JTNode{
 				// Reduce the entry in this sparse table to the context of the message
 				// so we can ask the message's sparse table for a weight easily
 				for (int k = 0; k < mappingSize; k++) {
-					prunedTuple.add(this.st.getKey(i).get(k));
+					prunedTuple.add(this.st.getKey(i).get(mappings.get(j).get(k)));
 				}
 				
 				// Actually query the message's table for a weight
 				LogDouble w = this.messages.get(j).getWeight(prunedTuple);
-				
 				// Multiply in the message's weight into this sparse table
 				temp.setWeight(i, temp.getWeight(i).mul(w));
 			}			
 		}
+		
+		System.out.println(temp);
 		
 		return temp;
 	}
@@ -145,10 +173,10 @@ public class JTNode{
 		
 		
 		if(this.parent==null){ //we're the root
-			//sum out to get a trivial function
+			//sum out to get a trivial function			
 			int size = temp.size();
 			for(int i = 0; i < size; i++){
-				value = value.add(st.getWeight(i));
+				value = value.add(temp.getWeight(i));
 			}
 			
 			return value;
@@ -168,9 +196,13 @@ public class JTNode{
 		return res;
 	}
 	
+	public ArrayList<IVariable> getContext(){
+		return this.context;
+	}
+	
 	//sums out variables not in the context
 	public SparseTable computeMessageToParent(SparseTable temp) {
-		//compute the message context for the parent
+		//compute the message context for the parent (intersection of variable ids)
 		ArrayList<IVariable> msgContext = new ArrayList<IVariable>(this.context);
 		msgContext.retainAll(this.parent.context);
 		
@@ -186,8 +218,10 @@ public class JTNode{
 			}
 		}
 		
+		System.out.println(indicesForContext);
+		
 		//loop over our sparse table
-		int sts = this.st.size();
+		int sts = temp.size();
 		int ifc = indicesForContext.size();
 		//for each entry in the sparse table
 		for (int i = 0; i < sts; i++) {
@@ -195,11 +229,37 @@ public class JTNode{
 			ArrayList<Integer> rEntry = new ArrayList<Integer>(msgContext.size());
 			//adding variables specific to the context to the new sparse table entry
 			for (int j = 0; j < ifc; j++) {
-				rEntry.add(this.st.getKey(i).get(indicesForContext.get(j)));
+				rEntry.add(temp.getKey(i).get(indicesForContext.get(j)));
 			}
 			// insert each entry to r
-			r.insertSumWeights(rEntry, st.getCount(i), st.getWeight(i));
+			r.insertSumWeights(rEntry, temp.getCount(i), temp.getWeight(i));
 		}
+		
+		//not quite right
+		/*int rsize = r.size();
+		long sum;
+		boolean match;
+		for(int i = 0; i < rsize; i++){
+			sum = 0;
+			ArrayList<Integer> iEntry = temp.getKey(i);
+			for(int j = 0; j < rsize; j++){
+				match = true;
+				if(i==j) continue;
+				
+				ArrayList<Integer> jEntry = temp.getKey(j);
+				for(int k = 0; k < ifc-1; k++){
+					if(iEntry.get(k)!=jEntry.get(k)){
+						match = false;
+						break;
+					}
+				}
+				if(match)
+					sum += temp.getCount(j);
+			}
+			temp.setWeight(i, temp.getWeight(i).mul(new LogDouble((double)temp.getCount(i) / (double)sum)));
+		}*/
+		
+		System.out.println("Message to Parent: " + r);
 		
 		return r;
 	}
@@ -207,7 +267,7 @@ public class JTNode{
 	public void addFunctions(GraphModel gm){
 		int fsize = gm.getFunctions().size();
 		for(int i = 0; i < fsize; i++){
-			if(gm.functionIsMarked(i) && context.containsAll(gm.getFunctions().get(i).getVariables()))
+			if(!gm.functionIsMarked(i) && context.containsAll(gm.getFunctions().get(i).getVariables()))
 			{
 				this.functions.add(gm.getFunctions().get(i));
 				gm.markFunction(i);

@@ -100,6 +100,18 @@ public class DynamicDistributionDos {
 		return p;
 	}
 	
+	public LogDouble probabilityOfSubset(ArrayList<Integer> sample, ArrayList<IVariable> context){
+		LogDouble p = LogDouble.LS_ONE;
+		int sampleSize = sample.size();
+		
+		//loop over sample/context and mul
+		for(int i = 0; i < sampleSize; i++){
+			p = p.mul(this.q.get(context.get(i).getId()).get(sample.get(i)));
+		}
+		
+		return p;
+	}
+	
 	public void update(ArrayList<ArrayList<Integer>> samples) {
 		// Step 1: zero the Qs
 		for (int j = 0; j < this.qSize; j++) {
@@ -130,4 +142,25 @@ public class DynamicDistributionDos {
 		    }
 		}
 	}
+	
+	 @Override
+	  public String toString() {
+	    StringBuilder s = new StringBuilder();
+	   
+	    s.append("Q = \n");
+	    for (ArrayList<LogDouble> t : q) {
+	      for (LogDouble d : t) {
+	        s.append(d.toRealString() + " ");
+	      }
+	      s.append("\n");
+	    }
+	    s.append("W = \n");
+	    for (LogDouble t : w) {
+	      s.append(t.toRealString() + " ");
+	      s.append("\n");
+	    }
+	    
+	    return s.toString();
+	  }
+
 }

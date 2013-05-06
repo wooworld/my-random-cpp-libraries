@@ -59,6 +59,30 @@ public class JunctionTree implements IJunctionTree {
 		// TODO Auto-generated method stub
 		return leaves;
 	}
+	
+	public String toStringHelper(int indent, JTNode n){
+		  StringBuilder sb = new StringBuilder();
+		  sb.append(n.getContext().get(n.getContext().size()-1).getId());
+		  
+		  if(!n.getChildren().isEmpty())
+		  sb.append("->");
+		  
+		  for(JTNode t : n.getChildren()){
+			  sb.append(toStringHelper(indent+1, t));
+		  }
+		  sb.append("\n");
+		  for(int i = 0; i < indent; i++)
+			  sb.append("  ");
+		  
+		  return sb.toString();
+	  }
+	  
+	  @Override
+	  public String toString() {
+		
+		return toStringHelper(0,root);
+	    
+	  }
 
 	public LogDouble computeZ() {		
 		for (JTNode leaf : this.leaves) {
