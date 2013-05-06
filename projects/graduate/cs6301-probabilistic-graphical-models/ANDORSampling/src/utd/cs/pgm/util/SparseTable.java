@@ -14,6 +14,27 @@ public class SparseTable implements Cloneable {
 		this.vars = vars;
 	}
 	
+	  public String toString() {
+	    StringBuilder s = new StringBuilder();
+	    s.append("size = [" + this.keys.size() + "]\n");
+	    for (IVariable v : this.vars) {
+	    	s.append(v.getId() + " ");
+	    }
+	    s.append("\n");
+	    int sz = this.keys.size();
+	    for (int i = 0; i < sz; i++) {
+	      s.append("[" + i + "] ");
+	      s.append(this.weights.get(i).toRealString() + " ");
+	      s.append(this.counts.get(i) + " ");
+	      int esz = this.keys.get(i).size();
+	      for (int j = 0; j < esz; j++) {
+	        s.append(this.keys.get(i).get(j) + " ");
+	      }
+	      s.append("\n");
+	    }
+	    return s.toString();
+	  }
+	
 	public ArrayList<IVariable> getVariables() {
 		return this.vars;
 	}	
@@ -66,6 +87,9 @@ public class SparseTable implements Cloneable {
 		}
 		temp.weights.trimToSize();
 		
+		System.out.println("Clone: ");
+		System.out.println(this);
+		
 		return temp;
 	}
 	
@@ -90,7 +114,6 @@ public class SparseTable implements Cloneable {
 	}
 	
 	public int getCount(int index){
-		assert(index > 0 && index < counts.size());
 		return counts.get(index);
 	}
 	

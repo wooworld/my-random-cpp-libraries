@@ -33,7 +33,6 @@ public class PseudoTree implements IPseudoTree {
 				buildTree(structure, newNode, inTree);
 			}
 		}
-		
 	}
 	
 	protected void removeEvidenceFromTree(INode n){
@@ -64,10 +63,28 @@ public class PseudoTree implements IPseudoTree {
   public void setRoot(INode n) {
     this.root = n;
   }
+
+  public String toStringHelper(int indent, INode n){
+	  StringBuilder sb = new StringBuilder();
+	  sb.append(n.getVariable().getId());
+	  
+	  if(!n.getChildren().isEmpty())
+	  sb.append("->");
+	  
+	  for(INode t : n.getChildren()){
+		  sb.append(toStringHelper(indent+1, t));
+	  }
+	  sb.append("\n");
+	  for(int i = 0; i < indent; i++)
+		  sb.append("  ");
+	  
+	  return sb.toString();
+  }
   
   @Override
   public String toString() {
-	return null;
+	
+	return toStringHelper(0,root);
     
   }
 

@@ -13,6 +13,32 @@ public class Function implements IFunction {
   public Function() {}
   
   @Override
+  public String toString() {
+	/*StringBuilder s = new StringBuilder();
+	s.append("v: [" + this.variables.size() + "] ");
+	for (IVariable v : this.variables) {
+	  s.append(v.getId() + " ");
+	} s.append("\nt: [" + this.table.size() + "] ");
+	for (LogDouble n : this.table) {
+    s.append(String.format("%.6f ", n.getValue()));
+    }
+    return s.toString();*/
+	  return this.toRealString();
+  }
+  
+  public String toRealString() {
+    StringBuilder s = new StringBuilder();
+    s.append("v: [" + this.variables.size() + "] ");
+    for (IVariable v : this.variables) {
+      s.append(v.getId() + " ");
+    } s.append("\nt: [" + this.table.size() + "] ");
+    for (LogDouble n : this.table) {
+      s.append(String.format("%.6f ", n.getRealValue()));
+    }
+    return s.toString();
+  }
+  
+  @Override
   public LogDouble rowToValue(ArrayList<Integer> row) {
     // TODO Auto-generated method stub
     return null;

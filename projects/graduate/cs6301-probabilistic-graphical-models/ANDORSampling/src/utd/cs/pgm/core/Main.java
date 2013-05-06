@@ -37,12 +37,12 @@ public class Main {
     ArrayList<HashSet<IVariable>> markovStruct = gm.moralizeGraph();    
     
     PseudoTree t = new PseudoTree(markovStruct);
-    
+    System.out.println(t);
     LogDouble z = LogDouble.LS_ZERO;
     
     DynamicDistributionDos Q = new DynamicDistributionDos(gm.getVariables());    
-    
-    for (int i = 0; i < 5; i++) {
+    System.out.println(Q);
+    for (int i = 0; i < 1; i++) {
     	ArrayList<ArrayList<Integer>> samples = Q.generateSamples(numSamples);
     	
     	JunctionTree j = new JunctionTree(gm, samples);
