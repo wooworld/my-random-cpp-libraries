@@ -121,14 +121,14 @@ void initiateCrossing()
 void crossTrack()
 {
 	PrintTextOnPobTerminal("Cross Track Task\n");
-	WaitUs(5000000);
+	//WaitUs(5000000);
 	moveForward(10);
 }
 /* APERIODIC TASKS */
 void avoidRobot()
 {
 	PrintTextOnPobTerminal("Avoid Robot Task\n");
-	WaitUs(5000000);
+	//WaitUs(5000000);
 	rotateRight(20);
 	rotateRight(20);
 	rotateRight(10);

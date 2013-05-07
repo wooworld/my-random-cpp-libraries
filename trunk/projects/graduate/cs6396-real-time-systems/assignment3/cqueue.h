@@ -11,7 +11,7 @@ typedef struct
     Task * arr[QUEUE_SIZE];
     int rear;
     int front;
-}Cqueue;
+} Cqueue;
 
 extern Cqueue _aperiodicQ;
 extern Cqueue _sporadicQ;
