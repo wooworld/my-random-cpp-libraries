@@ -20,6 +20,7 @@ public interface IFunction {
   public String toString();
   
   public int getIndexFromEvidence();
+  public int getIndexFromAssignment(ArrayList<Integer> assignment);
   public ArrayList<IVariable> getEvidenceFromIndex(int idx);
   
   public IFunction tableToRandom(boolean reNormalize);
