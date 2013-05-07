@@ -22,7 +22,7 @@ int queueInsert(Task * tsk, void * queue)
     {
         if(q->rear == -1)
         {
-            q->front = q->rear = 0; //what??
+            q->front = q->rear = 0; 
         }
         else
         {
@@ -77,7 +77,6 @@ Task * queueRemove(void * queue)
 /* return front of queue without actually removing it from the queue */
 Task * queuePeek(void * queue)
 {
-    // UNUSED??
     //Task * item;    
     Cqueue * q = (Cqueue *)queue;
     

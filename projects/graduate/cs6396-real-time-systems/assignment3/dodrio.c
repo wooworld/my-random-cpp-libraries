@@ -35,33 +35,31 @@ void initRobit() {
   InitI2C(I2C_100_KHZ);
   InitCameraPobeye2();
   InitLCD();      
+  // Even though this project doesn't directly use the joystick, still set up
+  // the ports to allow reading/writing of values to the DC motors
   SetupJoystick();
   SwitchOnAllServo();
   initCameraAndLCD();  
 }
 
-// I don't know how many degrees left this rotates
 void rotateLeft(int deg) {
   MoveBot(LEFT); 
-  WaitUs(deg/10*LOOP_ROTATE);
+  //WaitUs(deg/10*LOOP_ROTATE);
   stopMovement();
 }
 
-// I don't know how many degrees right this rotates
 void rotateRight(int deg) {
   MoveBot(RIGHT);
-  WaitUs(deg/10*LOOP_ROTATE);
+  //WaitUs(deg/10*LOOP_ROTATE);
   stopMovement();
 }
 
-// I don't know how far forward this moves the robot
 void moveForward(int dist) {
   MoveBot(FORWARD);
-  WaitUs(dist*LOOP_FORWARD);
+  //WaitUs(dist*LOOP_FORWARD);
   stopMovement();
 }
 
-// I don't know how far backward this moves the robot
 void moveBackward() {
   MoveBot(BACK);
 }
@@ -89,7 +87,7 @@ void captureImage() {
 void decipherImage(int direction) {
   // Convert RGB camera frame to binary
   BinaryRGBFrame(cameraFrame); 
-  WaitUs(3000000);
+  //WaitUs(3000000);
   // Try to identify the forms and make a list of it.
   // CAN IDENTIFY MULTIPLE FORMS IN THE SAME IMAGE.
   // pattern defined in pattern.h
@@ -108,40 +106,48 @@ void decipherImage(int direction) {
   for (formsThisFrameIdx = 0; formsThisFrameIdx < numFormsThisFrame; formsThisFrameIdx++) {
   // Switch on the Pattern ID observed this frame
     switch (formsListThisFrame[formsThisFrameIdx].id) {
+	 // TRACK
       case IDP_0_CROSS:
         DrawBitmap(0, 0, IDB_CROSS, bitmap, &screenBuffer);
         DrawLCD(&screenBuffer);
-        //this is a track
         canCross[direction]=IDP_0_CROSS;
-        break;          
+        break;  
+        
+      // ROBOT        
       case IDP_1_BIGA:
         DrawBitmap(0, 0, IDB_BIGA, bitmap, &screenBuffer);
         DrawLCD(&screenBuffer);
-        //Robot
         canCross[direction]=IDP_5_TRIANGLE;
         break;
+        
+      // TRAIN
       case IDP_2_KING:
         DrawBitmap(0, 0, IDB_KING, bitmap, &screenBuffer);
         DrawLCD(&screenBuffer);
-        //this is a train
         canCross[direction]=IDP_2_KING;
         break;
+      
+      // TRACK
       case IDP_3_TOWER:
         DrawBitmap(0, 0, IDB_TOWER, bitmap, &screenBuffer);
         DrawLCD(&screenBuffer);
-        //this is a track
         canCross[direction]=IDP_0_CROSS;
-        break;        
+        break; 
+      
+      // NOT USED
       case IDP_4_TREFLE:
         DrawBitmap(0, 0, IDB_BIGA, bitmap, &screenBuffer);
         DrawLCD(&screenBuffer);
-        break;        
+        break; 
+      
+      // ROBOT  
       case IDP_5_TRIANGLE:
         DrawBitmap(0, 0, IDB_TRIANGLE, bitmap, &screenBuffer);
         DrawLCD(&screenBuffer);
-        //Robot
         canCross[direction]=IDP_5_TRIANGLE;
         break;
+      
+      // SAFE
       default:
         canCross[direction]=-1;
         break;
