@@ -87,8 +87,8 @@ public class SparseTable implements Cloneable {
 		}
 		temp.weights.trimToSize();
 		
-		System.out.println("Clone: ");
-		System.out.println(this);
+		//System.out.println("Clone: ");
+		//System.out.println(this);
 		
 		return temp;
 	}

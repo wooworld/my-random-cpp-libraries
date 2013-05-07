@@ -5,10 +5,12 @@ public class LogDouble implements Comparable<LogDouble>{
   private boolean isZero; // True if this number is 0 in real space.
   
   public static final double MIN_VAL = 10e-250; // Smallest number that is nonzero.
-  public static final double LS_MIN_VAL = -(Double.MAX_VALUE/2.0); // Smallest number that is nonzero from logspace
+  //public static final double LS_MIN_VAL =Double.MAX_VALUE/2.0; // Smallest number that is nonzero from logspace
+  public static final double LS_MIN_VAL = Math.log10(MIN_VAL);
   
   public static final LogDouble LS_ZERO = new LogDouble(0.0);
   public static final LogDouble LS_ONE = new LogDouble(1.0);
+  public static final LogDouble LS_SMALL = new LogDouble(MIN_VAL);
   
   public LogDouble() {
     value = 0.0;
@@ -27,12 +29,14 @@ public class LogDouble implements Comparable<LogDouble>{
   
   // Create a LogDouble from a number already in log10 space if fromLS is true
   public LogDouble(double v, boolean fromLS) {
-    if (v < LS_MIN_VAL) {
+    /*if (v < LS_MIN_VAL) {
       this.isZero = true;
     } else {
       this.value = v;
       this.isZero = false;
-    }
+    }*/
+	  this.value = v;
+	  this.isZero = false;
   }
   
   public LogDouble copy() {

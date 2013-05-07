@@ -1,10 +1,16 @@
 package utd.cs.pgm.ao.core.tree;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import utd.cs.pgm.ao.core.INode;
 import utd.cs.pgm.ao.core.JTNode;
+import utd.cs.pgm.ao.core.LeafNodeTask;
 import utd.cs.pgm.core.graphmodel.GraphModel;
 import utd.cs.pgm.core.variable.IVariable;
 import utd.cs.pgm.probability.DynamicDistributionDos;
@@ -84,14 +90,33 @@ public class JunctionTree implements IJunctionTree {
 	    
 	  }
 
-	public LogDouble computeZ() {		
-		for (JTNode leaf : this.leaves) {
+	public LogDouble computeZ() throws InterruptedException, ExecutionException {	
+		ExecutorService pool = Executors.newFixedThreadPool(16);
+
+		List<Future<LogDouble>> futures = new ArrayList<Future<LogDouble>>(leaves.size());
+
+		for(int i = 0; i < leaves.size(); i++){
+		   futures.add(pool.submit(new LeafNodeTask(leaves.get(i))));
+		}
+		
+		LogDouble actualResult = LogDouble.LS_ONE;
+		for(Future<LogDouble> future : futures){
+		   LogDouble result = future.get();
+		   
+		   if(result != LogDouble.LS_ZERO)
+			   actualResult = result;
+		   //Compute the result
+		}
+
+		pool.shutdown(); 
+		
+		/*for (JTNode leaf : this.leaves) {
 			LogDouble z = leaf.computeNodeValue();
 			if (z != LogDouble.LS_ZERO) {
 				return z;
 			}
-		}
+		}*/
 		
-		return LogDouble.LS_ZERO;
+		return actualResult;
 	}	
 }

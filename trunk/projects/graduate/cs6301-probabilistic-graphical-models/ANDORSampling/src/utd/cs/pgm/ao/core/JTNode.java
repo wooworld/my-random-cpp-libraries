@@ -81,14 +81,24 @@ public class JTNode{
 		for (int i = 0; i < sts; i++) {
 			// convert local sample to arraylist of variables with those assignments
 			
-			for (int j = 0; j < cs; j++) {
-				this.context.get(j).setEvid(st.getKey(i).get(j));
-			}
+		
+			//for (int j = 0; j < cs; j++) {
+				//this.context.get(j).setEvid(st.getKey(i).get(j));
+			//}
 			
 			LogDouble currWeight = LogDouble.LS_ONE;
 			
-			for (int j = 0; j < fs; j++) {
-				int idx = this.functions.get(j).getIndexFromEvidence();
+			for (int j = 0; j < fs; j++) {	
+				ArrayList<Integer> assignment = new ArrayList<Integer>();
+				int fSize = this.functions.get(j).getVariables().size();
+				for(int k = 0; k < fSize; k++){
+					for(int m = 0; m < cs; m++){
+						if(this.functions.get(j).getVariables().get(k).getId()==context.get(m).getId())
+							assignment.add(st.getKey(i).get(m));
+					}
+					
+				}
+				int idx = this.functions.get(j).getIndexFromAssignment(assignment);
 				currWeight = currWeight.mul(this.functions.get(j).getTable().get(idx));	
 			}
 			
@@ -114,15 +124,14 @@ public class JTNode{
 		}
 	
 		
-		System.out.println("Initial table\n" + this.st);
+		//System.out.println("Initial table\n" + this.st);
 	}
 	
 	public SparseTable multiplyMessages(){		
 		if(this.messages.isEmpty())
 			return this.st;
 		
-		SparseTable temp = this.st.clone();
-		
+		SparseTable temp = this.st;//.clone();
 		
 		// Maps temp's columns into each message's columns
 		ArrayList<ArrayList<Integer>> mappings = new ArrayList<ArrayList<Integer>>();
@@ -173,7 +182,7 @@ public class JTNode{
 			}			
 		}
 		
-		System.out.println("Result of multiplying messages: \n" + temp);
+		//System.out.println("Result of multiplying messages: \n" + temp);
 		
 		return temp;
 	}
@@ -233,7 +242,7 @@ public class JTNode{
 			}
 		}
 		
-		System.out.println("IFC: " + indicesForContext);
+		//System.out.println("IFC: " + indicesForContext);
 		
 		//loop over our sparse table
 		int sts = temp.size();
@@ -278,7 +287,7 @@ public class JTNode{
 			r.setWeight(i, r.getWeight(i).div(new LogDouble((double)sum)));
 		}*/
 		
-		System.out.println("Message to Parent: " + r);
+		//System.out.println("Message to Parent: " + r);
 		
 		return r;
 	}

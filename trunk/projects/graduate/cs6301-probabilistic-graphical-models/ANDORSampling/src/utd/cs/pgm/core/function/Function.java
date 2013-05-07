@@ -90,6 +90,21 @@ public class Function implements IFunction {
 	return sum;
   }
 
+  @Override
+  public int getIndexFromAssignment(ArrayList<Integer> assignment) {
+    // TODO Auto-generated method stub
+	
+	int domain = 1;
+	int sum = 0;
+	for(int i = this.variables.size()-1; i >= 0; i--)
+	{
+		sum += assignment.get(i) * domain;
+		domain *= this.variables.get(i).getDomainSize();
+	}
+	
+	return sum;
+  }
+  
   //this sets the evidence (always returns null) for a given
   //index. (maybe change this to setEvidenceFromIndex?)
   @Override

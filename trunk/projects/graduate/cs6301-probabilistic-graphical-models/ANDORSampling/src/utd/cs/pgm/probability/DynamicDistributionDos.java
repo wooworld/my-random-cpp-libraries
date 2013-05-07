@@ -122,16 +122,14 @@ public class DynamicDistributionDos {
 		// Step 1: zero the Qs
 		for (int j = 0; j < this.qSize; j++) {
 			for (int k = 0; k < this.q.get(j).size(); k++) {
-				this.q.get(j).set(k, LogDouble.LS_ZERO);
+				this.q.get(j).set(k, LogDouble.LS_SMALL);
 		    }
 		}
 		
 		// Step 2: fill in Qs based on weights in w and the sampled value in samples
 		int ss = samples.size();
-		LogDouble total = LogDouble.LS_ZERO;
 		for (int i = 0; i < ss; i++) {
 			LogDouble wEntry = this.w.get(i);
-			total = total.add(wEntry);
 			for (int j = 0; j < this.qSize; j++) {
 				int sampledValue = samples.get(i).get(j);
 				ArrayList<LogDouble> qEntry = this.q.get(j);
@@ -143,9 +141,19 @@ public class DynamicDistributionDos {
 		for (int j = 0; j < this.qSize; j++) {
 			ArrayList<LogDouble> qEntry = this.q.get(j);
 			int qEntrySize = qEntry.size();
+			LogDouble sum = LogDouble.LS_ZERO;
 			for (int k = 0; k < qEntrySize; k++) {
-				qEntry.set(k, qEntry.get(k).div(total));
+				sum = sum.add(qEntry.get(k));
 		    }
+			if(sum.compareTo(LogDouble.LS_ZERO)==0){
+				for(int k = 0; k < qEntrySize; k++){
+					qEntry.set(k, new LogDouble(1.0/(double)qEntrySize));
+				}
+			}else{
+				for (int k = 0; k < qEntrySize; k++) {
+					qEntry.set(k, qEntry.get(k).div(sum));
+			    }
+			}
 		}
 	}
 	
