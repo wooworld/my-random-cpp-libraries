@@ -21,6 +21,7 @@ public class GraphModel {
   protected ArrayList<Boolean> marked = new ArrayList<Boolean>();
   
   protected boolean validState;
+  public Object lock1 = new Object();
   
   public GraphModel() {};
   
@@ -95,7 +96,7 @@ public class GraphModel {
 	  return this.marked.get(i);
   }
   
-  public void markFunction(int i){
+  public synchronized void markFunction(int i){
   	this.marked.set(i, true);
   }
   
@@ -160,4 +161,25 @@ public class GraphModel {
   public ArrayList<IVariable> getVariables(){
 	  return this.variables;
   }
+  
+  public LogDouble computeProbabilityOfFullAssignment(
+	  ArrayList<Integer> example) {
+	LogDouble p = LogDouble.LS_ONE;
+	
+	// Loop over each function and project the full assignment onto the function
+	// and multiply the value into p
+	for (IFunction f : this.functions) {
+	  // Store in t a subset of example which is the context of f
+	      ArrayList<Integer> t = new ArrayList<Integer>();
+	      for (IVariable v : f.getVariables()) {
+	        t.add(example.get(v.getId()));
+	      }
+	      
+	      int idx = f.getIndexFromAssignment(t);
+	      
+	      p = p.mul(f.getTable().get(idx));
+	    }
+	    
+	    return p;
+	  }
 }
