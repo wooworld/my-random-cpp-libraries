@@ -3,7 +3,9 @@ package utd.cs.pgm.ao.core.tree;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -46,6 +48,29 @@ public class JunctionTree implements IJunctionTree {
 			buildTree(pt_n.getChildren().get(i), temp, context, Q);
 		}
 		context.pop();
+	}
+	
+	public void buildTreeDos(INode pt_n, JTNode jt_n, Stack<IVariable> context, DynamicDistributionDos Q) throws InterruptedException, ExecutionException {
+		ExecutorService es = Executors.newFixedThreadPool(1);
+		CompletionService<JTBuildTaskRetType> pool = new ExecutorCompletionService<JTBuildTaskRetType>(es);
+		
+		//start at the root
+		pool.submit(new JTBuildTask(jt_n, pt_n, context, Q, gm, samples));
+		
+		//every time a node returns, add its children as new tasks and any leaves are added to leaves.
+		int total = 1;
+		for(int i = 0; i < total; i++){
+			JTBuildTaskRetType ret = pool.take().get();
+			for(JTBuildTask jtb : ret.tasks){
+				pool.submit(jtb);
+				++total;
+			}
+			for(JTNode jtl : ret.leaves)
+				this.leaves.add(jtl);
+		}
+		
+		//shutdown the pool
+		es.shutdown();
 	}
 
 	@Override
@@ -94,7 +119,7 @@ public class JunctionTree implements IJunctionTree {
 		ExecutorService pool = Executors.newFixedThreadPool(16);
 
 		List<Future<LogDouble>> futures = new ArrayList<Future<LogDouble>>(leaves.size());
-
+		
 		for(int i = 0; i < leaves.size(); i++){
 		   futures.add(pool.submit(new LeafNodeTask(leaves.get(i))));
 		}

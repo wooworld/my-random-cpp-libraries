@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
+import utd.cs.pgm.core.graphmodel.GraphModel;
 import utd.cs.pgm.core.variable.IVariable;
 import utd.cs.pgm.util.LogDouble;
 
@@ -14,7 +15,8 @@ public class DynamicDistributionDos {
 	protected ArrayList<Boolean> marked = new ArrayList<Boolean>();
 	protected ArrayList<LogDouble> w = new ArrayList<LogDouble>();
 	protected int qSize = 0;
-	protected Random rng = new Random(System.nanoTime());  
+	protected Random rng = new Random(System.nanoTime());
+	public Object lock1 = new Object();
 	
 	public DynamicDistributionDos(ArrayList<IVariable> initialSetup){		
 		for (IVariable v : initialSetup) {		      
@@ -46,7 +48,7 @@ public class DynamicDistributionDos {
 		this.qSize = this.q.size();
 	}
 	
-	public ArrayList<ArrayList<Integer>> generateSamples(int numSamples) {
+	public ArrayList<ArrayList<Integer>> generateSamples(int numSamples, GraphModel gm) {
 		// Loop over all variables.
 	    // Roll a rand() in [0,1] for each variable in the distribution.
 	    // Then setEvidence on the appropriate value from its distribution.
@@ -66,7 +68,9 @@ public class DynamicDistributionDos {
 	  	    }
 	    	
 	    	samples.add(sample);
-	    	this.w.add(probabilityOfSample(sample));
+	    	LogDouble ve = gm.computeProbabilityOfFullAssignment(sample);
+	    	
+	    	this.w.add(ve.div(probabilityOfSample(sample)));
 	    }
 	    
 	    return samples;
@@ -119,10 +123,32 @@ public class DynamicDistributionDos {
 	}
 	
 	public void update(ArrayList<ArrayList<Integer>> samples) {
-		// Step 1: zero the Qs
+		//Step 1: sum weights
+		LogDouble total = LogDouble.LS_ZERO, 
+				numer;
+		for(LogDouble ld : w){
+			total = total.add(ld);
+		}
+		
+		//Step 2: add weights to numer where dirac-delta function = 1
+		int ss = samples.size();
+		for (int i = 0; i < this.qSize; i++) {
+			//total = total.add(new LogDouble(1.0/this.q.get(i).size()));
+			for(int j = 0; j < this.q.get(i).size(); j++){
+				numer = new LogDouble(50); //learning rate
+				total = total.add(numer);
+				for(int k = 0; k < ss; k++){
+					numer = numer.add(w.get(k).mul((samples.get(k).get(i)==j?LogDouble.LS_ONE:LogDouble.LS_ZERO)));
+				}
+				this.q.get(i).set(j, numer.div(total));
+			}
+		}
+		
+		//
+		/*// Step 1: zero the Qs
 		for (int j = 0; j < this.qSize; j++) {
 			for (int k = 0; k < this.q.get(j).size(); k++) {
-				this.q.get(j).set(k, LogDouble.LS_SMALL);
+				this.q.get(j).set(k, LogDouble.LS_ZERO);//LogDouble.LS_ZERO);
 		    }
 		}
 		
@@ -137,14 +163,16 @@ public class DynamicDistributionDos {
 			}
 		}
 		
-		// Step 3: normalize by dividing by the total weights
+		*/// Step 3: normalize by dividing by the total weights
 		for (int j = 0; j < this.qSize; j++) {
 			ArrayList<LogDouble> qEntry = this.q.get(j);
 			int qEntrySize = qEntry.size();
 			LogDouble sum = LogDouble.LS_ZERO;
+			
 			for (int k = 0; k < qEntrySize; k++) {
 				sum = sum.add(qEntry.get(k));
 		    }
+			
 			if(sum.compareTo(LogDouble.LS_ZERO)==0){
 				for(int k = 0; k < qEntrySize; k++){
 					qEntry.set(k, new LogDouble(1.0/(double)qEntrySize));
@@ -177,7 +205,7 @@ public class DynamicDistributionDos {
 	    return s.toString();
 	  }
 
-	 public void setMarked(int i){
+	 public synchronized void setMarked(int i){
 		 this.marked.set(i, true);
 	 }
 	 
@@ -190,5 +218,9 @@ public class DynamicDistributionDos {
 		 for(int i = 0; i < size; i++){
 			 this.marked.set(i,false);
 		 }
+	 }
+	 
+	 public ArrayList<ArrayList<LogDouble>> getDistribution(){
+		 return this.q;
 	 }
 }

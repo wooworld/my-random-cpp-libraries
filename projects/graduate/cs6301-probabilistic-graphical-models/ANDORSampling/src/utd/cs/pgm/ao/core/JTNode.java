@@ -3,14 +3,11 @@ package utd.cs.pgm.ao.core;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import utd.cs.pgm.core.function.IFunction;
 import utd.cs.pgm.core.graphmodel.GraphModel;
 import utd.cs.pgm.core.variable.IVariable;
-import utd.cs.pgm.core.variable.Variable;
 import utd.cs.pgm.probability.DynamicDistributionDos;
-import utd.cs.pgm.util.ExampleArrayList;
 import utd.cs.pgm.util.LogDouble;
 import utd.cs.pgm.util.SparseTable;
 
@@ -22,6 +19,7 @@ public class JTNode{
 	protected SparseTable st;
 	protected ArrayList<IFunction> functions = new ArrayList<IFunction>();
 	protected ArrayList<SparseTable> messages = new ArrayList<SparseTable>();
+	protected ArrayList<ArrayList<LogDouble>> qSubset = new ArrayList<ArrayList<LogDouble>>();
 	
 	public JTNode(JTNode p){
 		this.parent = p;
@@ -90,6 +88,8 @@ public class JTNode{
 			
 			for (int j = 0; j < fs; j++) {	
 				ArrayList<Integer> assignment = new ArrayList<Integer>();
+				
+				//reduces the context of an assignment to the function context
 				int fSize = this.functions.get(j).getVariables().size();
 				for(int k = 0; k < fSize; k++){
 					for(int m = 0; m < cs; m++){
@@ -98,7 +98,9 @@ public class JTNode{
 					}
 					
 				}
+				//uses that to compute the index into the table
 				int idx = this.functions.get(j).getIndexFromAssignment(assignment);
+				//multiply
 				currWeight = currWeight.mul(this.functions.get(j).getTable().get(idx));	
 			}
 			
@@ -107,11 +109,9 @@ public class JTNode{
 			currWeight = currWeight.mul(blah);
 
 			// Divide by Q
-			// trick to multiply by uniform distro value
-			//currWeight = currWeight.mul(productDomainSize);
-			
-			//might be wrong
 			LogDouble prob = Q.probabilityOfSubset(st.getKey(i), this.context, functionContext);
+			if(prob.compareTo(LogDouble.LS_ZERO) == 0)
+				prob = LogDouble.LS_ONE;
 			currWeight = currWeight.div(prob);
 			
 			//System.out.println(currWeight.toRealString());
@@ -293,13 +293,39 @@ public class JTNode{
 	}
 	
 	public void addFunctions(GraphModel gm){
-		int fsize = gm.getFunctions().size();
-		for(int i = 0; i < fsize; i++){
-			if(!gm.functionIsMarked(i) && context.containsAll(gm.getFunctions().get(i).getVariables()))
-			{
-				this.functions.add(gm.getFunctions().get(i));
-				gm.markFunction(i);
+		synchronized(gm.lock1){
+			int fsize = gm.getFunctions().size();
+			for(int i = 0; i < fsize; i++){
+				if(!gm.functionIsMarked(i) && context.containsAll(gm.getFunctions().get(i).getVariables()))
+				{
+					this.functions.add(gm.getFunctions().get(i));
+					gm.markFunction(i);
+				}
 			}
 		}
+	}
+	
+	public void addQ(DynamicDistributionDos q){
+		synchronized(q.lock1){
+			//get function context
+			HashSet<IVariable> functionContext = new HashSet<IVariable>();
+			for(IFunction f : this.functions){
+				functionContext.addAll(f.getVariables());
+			}
+			
+			for(IVariable v : functionContext)
+			{
+				this.qSubset.add(q.getDistribution().get(v.getId()));
+				q.setMarked(v.getId());
+			}
+		}
+	}
+	
+	public LogDouble getProbabilityOfSubset(ArrayList<Integer> key, ArrayList<IVariable> functionContext){
+		LogDouble r = LogDouble.LS_ONE;
+		
+		
+		
+		return r;
 	}
 }
