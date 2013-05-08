@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Random;
 
 import utd.cs.pgm.core.graphmodel.GraphModel;
+import utd.cs.pgm.core.graphmodel.GraphModelType;
 import utd.cs.pgm.core.variable.IVariable;
 import utd.cs.pgm.util.LogDouble;
 
@@ -17,8 +18,12 @@ public class DynamicDistributionDos {
 	protected int qSize = 0;
 	protected Random rng = new Random(System.nanoTime());
 	public Object lock1 = new Object();
+	protected ArrayList<IVariable> vars = new ArrayList<IVariable>();
+	protected GraphModelType gmt;
 	
-	public DynamicDistributionDos(ArrayList<IVariable> initialSetup){		
+	public DynamicDistributionDos(ArrayList<IVariable> initialSetup, GraphModelType gmt){	
+		this.gmt = gmt;
+		vars = initialSetup;
 		for (IVariable v : initialSetup) {		      
 	      // Fill with uniform value for each variable's distribution
 			int vDomSize = v.getDomainSize();
@@ -89,6 +94,8 @@ public class DynamicDistributionDos {
 		for (int i = 0; i < t.size(); i++) {
 		  temp = temp.add(t.get(i));
 		  if (v.compareTo(temp) == -1) {
+			  if(t.get(i).compareTo(LogDouble.LS_ZERO) == 0)
+				  System.out.println("Jdfkl;sjadfljsalfkj");
 		    return i;
 		  }
 		}
@@ -135,7 +142,7 @@ public class DynamicDistributionDos {
 		for (int i = 0; i < this.qSize; i++) {
 			//total = total.add(new LogDouble(1.0/this.q.get(i).size()));
 			for(int j = 0; j < this.q.get(i).size(); j++){
-				numer = new LogDouble(50); //learning rate
+				numer = new LogDouble(10); //learning rate
 				total = total.add(numer);
 				for(int k = 0; k < ss; k++){
 					numer = numer.add(w.get(k).mul((samples.get(k).get(i)==j?LogDouble.LS_ONE:LogDouble.LS_ZERO)));
@@ -144,27 +151,22 @@ public class DynamicDistributionDos {
 			}
 		}
 		
-		//
-		/*// Step 1: zero the Qs
+		// Step 3: normalize by dividing by the total weights
 		for (int j = 0; j < this.qSize; j++) {
-			for (int k = 0; k < this.q.get(j).size(); k++) {
-				this.q.get(j).set(k, LogDouble.LS_ZERO);//LogDouble.LS_ZERO);
-		    }
-		}
-		
-		// Step 2: fill in Qs based on weights in w and the sampled value in samples
-		int ss = samples.size();
-		for (int i = 0; i < ss; i++) {
-			LogDouble wEntry = this.w.get(i);
-			for (int j = 0; j < this.qSize; j++) {
-				int sampledValue = samples.get(i).get(j);
-				ArrayList<LogDouble> qEntry = this.q.get(j);
-				qEntry.set(sampledValue, wEntry.add(qEntry.get(sampledValue)));
+			if(this.vars.get(j).isEvid())
+			{
+				
+				int evidVal = vars.get(j).getEvid();
+		    	  for (int i = 0; i < vars.get(j).getDomainSize(); i++) {
+		    		  if (i == evidVal) {
+		    			  q.get(j).set(i, LogDouble.LS_ONE);
+		    		  } else {
+		    			  q.get(j).set(i, LogDouble.LS_ZERO);
+		    		  }
+		    	  }
+				continue;
 			}
-		}
-		
-		*/// Step 3: normalize by dividing by the total weights
-		for (int j = 0; j < this.qSize; j++) {
+			
 			ArrayList<LogDouble> qEntry = this.q.get(j);
 			int qEntrySize = qEntry.size();
 			LogDouble sum = LogDouble.LS_ZERO;
