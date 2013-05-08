@@ -148,9 +148,9 @@ public class LogDouble implements Comparable<LogDouble>{
     if (this.isZero && rhs.isZero) {
       return 0;
     } else if (this.isZero && !rhs.isZero) {
-      return 1;
-    } else if (!this.isZero && rhs.isZero) {
       return -1;
+    } else if (!this.isZero && rhs.isZero) {
+      return 1;
     } else if (this.value < rhs.value) {
       return -1;
     } else if (this.value > rhs.value) {

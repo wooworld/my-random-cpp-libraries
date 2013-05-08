@@ -11,7 +11,6 @@ import java.util.Scanner;
 import utd.cs.pgm.core.function.*;
 import utd.cs.pgm.core.variable.*;
 import utd.cs.pgm.util.LogDouble;
-import utd.cs.pgm.util.PGMPrinter;
 
 public class GraphModel {
   protected GraphModelType      type;
@@ -29,10 +28,7 @@ public class GraphModel {
     StringBuilder s = new StringBuilder();
     
     s.append(this.type + "\n");
-    s.append(this.validState + "\n");
-    s.append(PGMPrinter.variableCollectionToString(this.variables));
-    s.append(PGMPrinter.functionCollectionToRealString(this.functions));    
-    
+    s.append(this.validState + "\n");    
     return s.toString();
   }
   
@@ -182,4 +178,7 @@ public class GraphModel {
 	    
 	    return p;
 	  }
+  public GraphModelType getType(){
+	  return this.type;
+  }
 }

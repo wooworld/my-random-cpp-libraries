@@ -17,11 +17,11 @@ public class PseudoTree implements IPseudoTree {
 		if(curNode.getParent() == null){
 			//this is the root
 			for(IVariable v : structure.get(0)){
-				if(!v.isEvid()){
+				//if(!v.isEvid()){
 					curNode.setVariable(v);
 					inTree.add(curNode.getVariable());
 					break;
-				}
+				//}
 			}
 		}
 		
@@ -51,7 +51,7 @@ public class PseudoTree implements IPseudoTree {
 		root = new Node(null, null);
 		HashSet<IVariable> inTree = new HashSet<IVariable>();
 		buildTree(structure,root,inTree);
-		removeEvidenceFromTree(root);
+		//removeEvidenceFromTree(root);
 	}
 	
   @Override

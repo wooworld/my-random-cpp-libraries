@@ -15,19 +15,21 @@ import utd.cs.pgm.util.LogDouble;
 
 public class Main {
   public static void main(String[] args) throws InterruptedException, ExecutionException {
-	  if (args.length != 2) {
+	  if (args.length != 3) {
 		  printHelp();
 	  }
 	  
-	  String path = args[0];
-	  int numSamples = Integer.valueOf(args[1]);
+	  String uaiPath = args[0];
+	  String evidPath = args[1];
+	  int numSamples = Integer.valueOf(args[2]);
 
     // create graphical model, passing it args[]
     GraphModel gm = new GraphModel();
     
     // it reads the uai and evid files for us, if specified in args[]
     try {
-		gm.readUAI(path);
+		gm.readUAI(uaiPath);
+		gm.readUAIevid(evidPath);
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -37,10 +39,11 @@ public class Main {
     ArrayList<HashSet<IVariable>> markovStruct = gm.moralizeGraph();    
     
     PseudoTree t = new PseudoTree(markovStruct);
+    
     //System.out.println(t);
     LogDouble z = LogDouble.LS_ZERO;
     LogDouble sum = LogDouble.LS_ZERO;
-    DynamicDistributionDos Q = new DynamicDistributionDos(gm.getVariables());    
+    DynamicDistributionDos Q = new DynamicDistributionDos(gm.getVariables(), gm.getType());    
     //System.out.println(Q);
     
     Stopwatch sw = new Stopwatch();
@@ -66,11 +69,12 @@ public class Main {
     
     sw.stop();
     
-    System.out.println("Z = " + sum.div(new LogDouble(numSamples/100)).toRealString());
-    System.out.println("t = " + sw);
+    //System.out.println("Z = " + sum.div(new LogDouble(numSamples/100)));
+    //System.out.println("t = " + sw);
+    System.out.println(sum.div(new LogDouble(numSamples/100)) + "," + sw);
   }
   
   protected static void printHelp() {
-    System.out.println("[0] = uai file \n[1] = num samples.");
+    System.out.println("[0] = uai file \n[1] = uai evid file \n[2] = num samples.");
   }
 }
