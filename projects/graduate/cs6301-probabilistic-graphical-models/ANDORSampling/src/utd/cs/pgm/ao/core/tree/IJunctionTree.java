@@ -9,9 +9,9 @@ import utd.cs.pgm.core.variable.IVariable;
 import utd.cs.pgm.probability.DynamicDistributionDos;
 
 public interface IJunctionTree {
-	public void buildTree(INode pt_n, JTNode jt_n, Stack<IVariable> context, DynamicDistributionDos Q);
-	public JTNode getRoot();
-	public void setRoot(JTNode jt);
-	public ArrayList<JTNode> getLeaves();
-	
+  public void buildTree(INode pt_n, JTNode jt_n, Stack<IVariable> context, DynamicDistributionDos Q);
+  public JTNode getRoot();
+  public void setRoot(JTNode jt);
+  public ArrayList<JTNode> getLeaves();
+  public String toString();
 }

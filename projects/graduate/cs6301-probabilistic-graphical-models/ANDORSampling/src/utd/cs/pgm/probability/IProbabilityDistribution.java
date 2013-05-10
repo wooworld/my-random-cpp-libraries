@@ -7,12 +7,8 @@ import utd.cs.pgm.util.LogDouble;
 
 public interface IProbabilityDistribution {
   public ArrayList<IVariable> generateSample();
-  
   public LogDouble probabilityOf(ArrayList<IVariable> assignment);
-  
   public String toString();
-  
   public String printSample(ArrayList<IVariable> sample);
-
   public void updateWeights(LogDouble w);
 }

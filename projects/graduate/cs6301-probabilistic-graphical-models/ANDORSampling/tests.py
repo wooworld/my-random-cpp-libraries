@@ -9,7 +9,7 @@ sys.stdout = outfile # set this output to outfile
 def runTest(uaiFile, uaiEvid, numSamples):
   for i in range(10):
     # run the homework jar with the given parameters, redirect output to outfile as well
-    subprocess.call(["java", "-Xmx1500M", "-jar", "aosampling.jar", uaiFile, uaiEvid, numSamples], stdout=outfile, stderr=outfile, shell=False)
+    subprocess.call(["java", "-Xmx1000M", "-jar", "aosampling.jar", uaiFile, uaiEvid, numSamples], stdout=outfile, stderr=outfile, shell=False)
     outfile.flush()
   
 def main():
@@ -25,17 +25,16 @@ def main():
       uaifilePath = uaiPath + filename + ".uai"
       uaievidPath = uaiPath + filename + ".uai.evid"
       
-      print '"' + uaifilePath, sval + '"'
-      print "z", ",t"
+      #python 3 made print a function call so it has to have ()s.
+      #python 2 has print as a single inline. No parens.
+      print("\"" , uaifilePath, sval , "\"")
+      print("z", ",t")
       outfile.flush()
       runTest(uaifilePath, uaievidPath, sval)
-      print ""
+      print("")
           
 # Execution begins here
 if __name__ == "__main__":
-  #start = time.time()
   main()
-  #end = time.time()
-  #print("Testing completed in", end - start, "s.")
   
 outfile.close()

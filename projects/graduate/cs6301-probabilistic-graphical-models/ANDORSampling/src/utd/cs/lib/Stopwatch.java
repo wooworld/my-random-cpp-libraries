@@ -10,29 +10,29 @@ public class Stopwatch {
 
   public static final double NANOS_PER_SEC = 1000000000.0;
 
-  public void start() {  
+  public void start() {
     startTime = System.nanoTime();
   }
 
-  public void stop() {  
-    stopTime = System.nanoTime();  
+  public void stop() {
+    stopTime = System.nanoTime();
   }
 
   // Returns recorded time in seconds
-  public double time() {  
+  public double time() {
     return (stopTime - startTime) / NANOS_PER_SEC;
   }
 
-  public String toString() {   
+  public String toString() {
     //return time() + " s";
     return String.valueOf(time());
   }
 
   // Returns recorded time in nanoseconds
-  public long timeInNanoseconds() {  
-    return (stopTime - startTime);  
+  public long timeInNanoseconds() {
+    return (stopTime - startTime);
   }
-  
+
   public String toNanoString() {
     //return timeInNanoseconds() + " ns";
     return String.valueOf(timeInNanoseconds());
