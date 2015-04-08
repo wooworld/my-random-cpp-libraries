@@ -1,0 +1,1 @@
+This is a repository of all of my programming projects (for classes or otherwise) while studying at University. Both undergraduate and graduate projects are included.
